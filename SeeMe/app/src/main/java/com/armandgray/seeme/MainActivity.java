@@ -4,10 +4,12 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.ColorStateList;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -39,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
             setupRvUsers(Arrays.asList(foodItems));
         }
     };
+    private FloatingActionButton fab;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,10 +56,11 @@ public class MainActivity extends AppCompatActivity {
                         new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
 
         networkOK = NetworkHelper.hasNetworkAccess(this);
+        updateFAB(true);
     }
 
     private void setupFAB() {
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -69,6 +73,16 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private void updateFAB(boolean isWifiConnected) {
+        if (isWifiConnected) {
+            fab.setBackgroundTintList(ColorStateList.valueOf(
+                    ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null)));
+        } else {
+            fab.setBackgroundTintList(ColorStateList.valueOf(
+                    ResourcesCompat.getColor(getResources(), R.color.fabNoWifiColor, null)));
+        }
     }
 
     private void setupRvUsers(List<FoodItem> list) {
