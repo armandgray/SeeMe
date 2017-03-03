@@ -1,0 +1,31 @@
+{
+  "name": "seeme",
+  "version": "1.0.0",
+  "description": "FlockUI app for connecting local user through bluetooth",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/SalasC2/SeeMe.git"
+  },
+  "keywords": [
+    "bluetooth",
+    "Flock",
+    "mobile",
+    "web"
+  ],
+  "author": "Armand Gray",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/SalasC2/SeeMe/issues"
+  },
+  "homepage": "https://github.com/SalasC2/SeeMe#readme",
+  "dependencies": {
+    "chrono-node": "^1.2.5",
+    "express": "^4.14.1",
+    "flockos": "0.0.6",
+    "request": "^2.79.0"
+  }
+}
