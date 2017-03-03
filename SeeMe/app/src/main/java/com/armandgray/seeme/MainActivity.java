@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         }
     };
     private FloatingActionButton fab;
+    private boolean isWifiConnected;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +57,8 @@ public class MainActivity extends AppCompatActivity {
                         new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
 
         networkOK = NetworkHelper.hasNetworkAccess(this);
-        updateFAB(true);
+        isWifiConnected = false;
+        updateFAB();
     }
 
     private void setupFAB() {
@@ -64,18 +66,18 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (networkOK) {
+                if (networkOK && isWifiConnected) {
                     Intent intent = new Intent(MainActivity.this, HttpService.class);
                     intent.setData(Uri.parse(JSON_URI));
                     startService(intent);
                 } else {
-                    Toast.makeText(MainActivity.this, "Network Unavailable!", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "WiFi Connection Unsuccessful!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
     }
 
-    private void updateFAB(boolean isWifiConnected) {
+    private void updateFAB() {
         if (isWifiConnected) {
             fab.setBackgroundTintList(ColorStateList.valueOf(
                     ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null)));
