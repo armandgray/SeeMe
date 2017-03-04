@@ -5,6 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.ColorStateList;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -27,11 +29,16 @@ import com.armandgray.seeme.utils.UserRVAdapter;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.armandgray.seeme.utils.NetworkHelper.getNetworkInfo;
+
 public class MainActivity extends AppCompatActivity {
 
     public static final String JSON_URI = "http://560057.youcanlearnit.net/services/json/itemsfeed.php";
+
     private boolean networkOK;
-    RecyclerView rvUsers;
+    private boolean isWifiConnected;
+
+    private FloatingActionButton fab;
 
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -41,8 +48,17 @@ public class MainActivity extends AppCompatActivity {
             setupRvUsers(Arrays.asList(foodItems));
         }
     };
-    private FloatingActionButton fab;
-    private boolean isWifiConnected;
+
+    private BroadcastReceiver wiFiReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            NetworkInfo networkInfo = getNetworkInfo(context);
+            if (networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+                isWifiConnected = true;
+                updateFAB();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +73,6 @@ public class MainActivity extends AppCompatActivity {
                         new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
 
         networkOK = NetworkHelper.hasNetworkAccess(this);
-        isWifiConnected = false;
         updateFAB();
     }
 
@@ -97,7 +112,7 @@ public class MainActivity extends AppCompatActivity {
 //        listUsers.add(u2);
 //        listUsers.add(u3);
 
-        rvUsers = (RecyclerView) findViewById(R.id.rvUsers);
+        RecyclerView rvUsers = (RecyclerView) findViewById(R.id.rvUsers);
         rvUsers.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         rvUsers.setAdapter(new UserRVAdapter(this, list));
 
