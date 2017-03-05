@@ -5,10 +5,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.widget.Toast;
 
 public class WifiReceiver extends BroadcastReceiver {
-    public boolean isWifiConnected = false;
+    private boolean isWifiConnected;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -16,11 +15,11 @@ public class WifiReceiver extends BroadcastReceiver {
                 (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
 
-        if (activeNetInfo != null
-                && activeNetInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-            Toast.makeText(context, "Wifi Connected!", Toast.LENGTH_SHORT).show();
+        if (activeNetInfo != null && activeNetInfo.getType() == ConnectivityManager.TYPE_WIFI) {
+            BroadcastObserver.getInstance().updateWifiState(true);
         } else {
-            Toast.makeText(context, "Wifi Not Connected!", Toast.LENGTH_SHORT).show();
+            BroadcastObserver.getInstance().updateWifiState(false);
         }
     }
+
 }
