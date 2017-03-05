@@ -16,6 +16,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -29,34 +30,21 @@ import com.armandgray.seeme.utils.UserRVAdapter;
 import java.util.Arrays;
 import java.util.List;
 
-import static com.armandgray.seeme.utils.NetworkHelper.getNetworkInfo;
-
 public class MainActivity extends AppCompatActivity {
 
     public static final String JSON_URI = "http://560057.youcanlearnit.net/services/json/itemsfeed.php";
+    private static final String DEBUG_TAG = "DEBUG_TAG";
 
     private boolean networkOK;
-    private boolean isWifiConnected;
-
     private FloatingActionButton fab;
 
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
+            Log.e("BroadcastReceiver: ", "http Broadcast Received");
             FoodItem[] foodItems =
                     (FoodItem[]) intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_PAYLOAD);
             setupRvUsers(Arrays.asList(foodItems));
-        }
-    };
-
-    private BroadcastReceiver wiFiReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(Context context, Intent intent) {
-            NetworkInfo networkInfo = getNetworkInfo(context);
-            if (networkInfo != null && networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-                isWifiConnected = true;
-                updateFAB();
-            }
         }
     };
 
@@ -68,12 +56,23 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         setupFAB();
 
-        LocalBroadcastManager.getInstance(getApplicationContext())
-                .registerReceiver(httpBroadcastReceiver,
+        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getApplicationContext());
+        broadcastManager.registerReceiver(httpBroadcastReceiver,
                         new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
 
+        ConnectivityManager connMgr = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        boolean isWifiConnected = networkInfo.isConnected();
+        networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        boolean isMobileConn = networkInfo.isConnected();
+        Log.e("Wifi connected: ", String.valueOf(isWifiConnected));
+        Log.e("Mobile connected: ", String.valueOf(isMobileConn));
+
+        Log.e("BroadcastReceiver: ", "Created");
+
         networkOK = NetworkHelper.hasNetworkAccess(this);
-        updateFAB();
+        updateFAB(isWifiConnected);
     }
 
     private void setupFAB() {
@@ -81,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (networkOK && isWifiConnected) {
+                if (networkOK) {
                     Intent intent = new Intent(MainActivity.this, HttpService.class);
                     intent.setData(Uri.parse(JSON_URI));
                     startService(intent);
@@ -92,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void updateFAB() {
+    private void updateFAB(boolean isWifiConnected) {
         if (isWifiConnected) {
             fab.setBackgroundTintList(ColorStateList.valueOf(
                     ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null)));

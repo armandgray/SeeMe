@@ -6,6 +6,8 @@ import android.net.NetworkInfo;
 
 public class NetworkHelper {
 
+    public static final String WIFI_BROADCAST_MESSAGE = "android.net.wifi.STATE_CHANGE";
+
     public static boolean hasNetworkAccess(Context context) {
         NetworkInfo networkInfo = getNetworkInfo(context);
         return networkInfo != null && networkInfo.isConnectedOrConnecting();
