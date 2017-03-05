@@ -16,9 +16,9 @@ public class WifiReceiver extends BroadcastReceiver {
         NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
 
         if (activeNetInfo != null && activeNetInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-            BroadcastObserver.getInstance().updateWifiState(true);
+            BroadcastObserver.getInstance().updateWifiState(activeNetInfo);
         } else {
-            BroadcastObserver.getInstance().updateWifiState(false);
+            BroadcastObserver.getInstance().updateWifiState(null);
         }
     }
 

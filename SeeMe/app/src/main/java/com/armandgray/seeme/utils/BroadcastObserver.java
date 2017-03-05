@@ -1,5 +1,7 @@
 package com.armandgray.seeme.utils;
 
+import android.net.NetworkInfo;
+
 import java.util.Observable;
 
 public class BroadcastObserver extends Observable {
@@ -10,10 +12,10 @@ public class BroadcastObserver extends Observable {
 
     private BroadcastObserver() {}
 
-    public void updateWifiState(boolean isWifiConnected) {
+    void updateWifiState(NetworkInfo networkInfo) {
         synchronized (this) {
             setChanged();
-            notifyObservers(isWifiConnected);
+            notifyObservers(networkInfo);
         }
     }
 }

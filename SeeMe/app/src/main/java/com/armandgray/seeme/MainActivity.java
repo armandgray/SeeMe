@@ -155,7 +155,8 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     @Override
     public void update(Observable o, Object data) {
-        isWifiConnected = (boolean) data;
+        NetworkInfo info = (NetworkInfo) data;
+        isWifiConnected = info != null;
         updateFAB();
     }
 }
