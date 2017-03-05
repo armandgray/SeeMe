@@ -8,6 +8,8 @@ import android.content.res.ColorStateList;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.LocalBroadcastManager;
@@ -158,5 +160,15 @@ public class MainActivity extends AppCompatActivity implements Observer {
         NetworkInfo info = (NetworkInfo) data;
         isWifiConnected = info != null;
         updateFAB();
+        if (info != null) {
+            WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService (Context.WIFI_SERVICE);
+            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+            String ssid  = wifiInfo.getSSID();
+            if (ssid.equals("<unknown ssid>")) {
+                Log.i("ActiveNetInfo", "Wifi Network Not Found: " + String.valueOf(ssid));
+            } else {
+                Log.i("ActiveNetInfo", "Wifi Network: " + String.valueOf(ssid));
+            }
+        }
     }
 }
