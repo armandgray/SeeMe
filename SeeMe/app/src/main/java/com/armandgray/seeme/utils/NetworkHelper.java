@@ -6,17 +6,20 @@ import android.net.NetworkInfo;
 
 public class NetworkHelper {
 
+    public static final String WIFI_BROADCAST_MESSAGE = "android.net.wifi.STATE_CHANGE";
+
     public static boolean hasNetworkAccess(Context context) {
+        NetworkInfo networkInfo = getNetworkInfo(context);
+        return networkInfo != null && networkInfo.isConnectedOrConnecting();
+    };
 
-        ConnectivityManager connectivityManager =
-                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
+    public static NetworkInfo getNetworkInfo(Context context) {
         try {
-            NetworkInfo activeNetwork = connectivityManager.getActiveNetworkInfo();
-            return activeNetwork != null && activeNetwork.isConnectedOrConnecting();
+            ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+            return cm.getActiveNetworkInfo();
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
+            return null;
         }
-    };
+    }
 }
