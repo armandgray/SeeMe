@@ -1,7 +1,7 @@
 package main
 
 import (
-  _ "./models"
+  . "./models"
 
   "net/http"
   "encoding/json"
@@ -20,7 +20,7 @@ func main()  {
   db, _ = sql.Open("mysql", "root:#54nFr4nc15c0@/seeme_db")
 
   mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-    js, err := json.Marshal(nil)
+    js, err := json.Marshal(CreateDummyUsers())
     if err != nil {
       http.Error(w, err.Error(), http.StatusInternalServerError)
       return
