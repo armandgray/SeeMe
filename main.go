@@ -3,20 +3,19 @@ package main
 import (
   . "seeme/routes"
   . "seeme/models"
+  . "seeme/helpers"
 
   "fmt"
   "net/http"
-
-  "database/sql"
 
   "github.com/urfave/negroni"
   _ "github.com/go-sql-driver/mysql"
 )
 
-var db *sql.DB
 
 func main()  {
-  db, _ = sql.Open("mysql", "root:#54nFr4nc15c0@/seeme_db")
+  InitMySQLConnection()
+  db := GetMySQLConnection()
 
   mux := http.NewServeMux()
   mux.HandleFunc("/allusers", HandlerAllUser)
@@ -34,15 +33,8 @@ func main()  {
   }
 
   n := negroni.Classic()
-  n.Use(negroni.HandlerFunc(verifyDB))
+  n.Use(negroni.HandlerFunc(VerifyMySQLConnection))
   n.UseHandler(mux)
   fmt.Println("Running...")
   n.Run(":8080")
-}
-
-func verifyDB(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
-  if err := db.Ping(); err != nil {
-    http.Error(w, err.Error(), http.StatusInternalServerError)
-  }
-  next(w, r)
 }
