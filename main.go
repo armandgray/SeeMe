@@ -1,11 +1,9 @@
 package main
 
 import (
-  . "./models"
-  _ "./routes"
+  . "./routes"
 
   "net/http"
-  "encoding/json"
 
   "database/sql"
 
@@ -27,17 +25,6 @@ func main()  {
   n.UseHandler(mux)
   n.Run(":8080")
 }
-
-func Handler(w http.ResponseWriter, r *http.Request) {
-    js, err := json.Marshal(CreateDummyUsers())
-    if err != nil {
-      http.Error(w, err.Error(), http.StatusInternalServerError)
-      return
-    }
-
-    w.Header().Set("Content-Type", "application/json")
-    w.Write(js)
-  }
 
 func verifyDB(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
   if err := db.Ping(); err != nil {
