@@ -12,6 +12,8 @@ type User struct {
   LastName string
   Username string
   Secret []byte
+  Discoverable bool
+  Network string
 }
 
 func main()  {
@@ -20,8 +22,8 @@ func main()  {
   mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
     var s []byte
     s = make([]byte, 5, 5)
-    user1 := User{"Armand", "Gray", "email", s}
-    user2 := User{"Daniela", "Meza", "username", s}
+    user1 := User{"Armand", "Gray", "email", s, true, "Instruct2"}
+    user2 := User{"Daniela", "Meza", "username", s, false, "Instruct2"}
     slcUser := []User{user1, user2}
       
     js, err := json.Marshal(slcUser)
