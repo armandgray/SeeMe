@@ -1,8 +1,8 @@
 package main
 
 import (
-  . "./routes"
-  . "./models"
+  . "seeme/routes"
+  . "seeme/models"
 
   "fmt"
   "net/http"
@@ -30,7 +30,7 @@ func main()  {
                     user.FirstName, user.LastName, user.Role, user.Username, 
                     user.Secret, user.Discoverable, user.Network)
   if (err != nil) {
-    fmt.Println("Database Insert Failure")
+    fmt.Println("Database Insert Failure: " + err.Error())
   }
 
   n := negroni.Classic()

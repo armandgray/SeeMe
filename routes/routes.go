@@ -1,7 +1,7 @@
 package routes
 
 import (
-	. "../models"
+	. "seeme/models"
 
   "net/http"
   "encoding/json"
