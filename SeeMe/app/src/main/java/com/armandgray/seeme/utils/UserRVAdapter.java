@@ -2,6 +2,7 @@ package com.armandgray.seeme.utils;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,8 +39,9 @@ public class UserRVAdapter extends
         TextView tvUserName = viewHolder.tvUserName;
         TextView tvRole = viewHolder.tvRole;
 
-        tvUserName.setText(user.getFirstName() + " - " + user.getLastName());
-        tvRole.setText("Discoverable: True");
+        tvUserName.setText(user.getFirstName() + " " + user.getLastName() + " - Disc: " + user.isDiscoverable());
+        tvRole.setText("Role: " + user.getRole());
+        Log.i("User Connection: ", user.getNetwork());
     }
 
     @Override

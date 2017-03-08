@@ -5,4 +5,5 @@
     <dimen name="fab_margin">16dp</dimen>
 
     <dimen name="navbar_icon_size">25dp</dimen>
+    <dimen name="userImgSize">40dp</dimen>
 </resources>
