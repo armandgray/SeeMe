@@ -2,7 +2,9 @@ package main
 
 import (
   . "./routes"
+  . "./models"
 
+  "fmt"
   "net/http"
 
   "database/sql"
@@ -19,9 +21,22 @@ func main()  {
   mux := http.NewServeMux()
   mux.HandleFunc("/", Handler)
 
+  var s []byte
+  s = make([]byte, 5, 5)
+  user := User{"Armand", "Gray", "email", s, true, "Software Engineer", "Instruct2"}
+  fmt.Println(user)
+
+  _, err := db.Exec("INSERT INTO users (first_name, last_name, role, username, secret, discoverable, network) VALUES (?, ?, ?, ?, ?, ?, ?)", 
+                    user.FirstName, user.LastName, user.Role, user.Username, 
+                    user.Secret, user.Discoverable, user.Network)
+  if (err != nil) {
+    fmt.Println("Database Insert Failure")
+  }
+
   n := negroni.Classic()
   n.Use(negroni.HandlerFunc(verifyDB))
   n.UseHandler(mux)
+  fmt.Println("Running...")
   n.Run(":8080")
 }
 
