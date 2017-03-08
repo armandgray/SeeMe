@@ -19,7 +19,7 @@ func main()  {
   db, _ = sql.Open("mysql", "root:#54nFr4nc15c0@/seeme_db")
 
   mux := http.NewServeMux()
-  mux.HandleFunc("/", Handler)
+  mux.HandleFunc("/allusers", HandlerAllUser)
 
   var s []byte
   s = make([]byte, 5, 5)

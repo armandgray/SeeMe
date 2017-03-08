@@ -7,7 +7,7 @@ import (
   "encoding/json"
 )
 
-func Handler(w http.ResponseWriter, r *http.Request) {
+func HandlerAllUser(w http.ResponseWriter, r *http.Request) {
   js, err := json.Marshal(CreateDummyUsers())
   if err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
