@@ -7,10 +7,18 @@ public class User implements Parcelable {
 
     private String firstName;
     private String lastName;
+    private String username;
+    private String secret;
+    private boolean discoverable;
+    private String network;
 
-    public User(String firstName, String lastName) {
+    public User(String firstName, String lastName, String username, String secret, boolean discoverable, String network) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.username = username;
+        this.secret = secret;
+        this.discoverable = discoverable;
+        this.network = network;
     }
 
     public String getFirstName() {
@@ -19,6 +27,22 @@ public class User implements Parcelable {
 
     public String getLastName() {
         return lastName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getSecret() {
+        return secret;
+    }
+
+    public boolean isDiscoverable() {
+        return discoverable;
+    }
+
+    public String getNetwork() {
+        return network;
     }
 
     @Override
