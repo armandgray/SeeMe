@@ -2,6 +2,7 @@ package main
 
 import (
   . "./models"
+  _ "./routes"
 
   "net/http"
   "encoding/json"
@@ -19,7 +20,15 @@ func main()  {
 
   db, _ = sql.Open("mysql", "root:#54nFr4nc15c0@/seeme_db")
 
-  mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+  mux.HandleFunc("/", Handler)
+
+  n := negroni.Classic()
+  n.Use(negroni.HandlerFunc(verifyDB))
+  n.UseHandler(mux)
+  n.Run(":8080")
+}
+
+func Handler(w http.ResponseWriter, r *http.Request) {
     js, err := json.Marshal(CreateDummyUsers())
     if err != nil {
       http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -28,13 +37,7 @@ func main()  {
 
     w.Header().Set("Content-Type", "application/json")
     w.Write(js)
-  })
-
-  n := negroni.Classic()
-  n.Use(negroni.HandlerFunc(verifyDB))
-  n.UseHandler(mux)
-  n.Run(":8080")
-}
+  }
 
 func verifyDB(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
   if err := db.Ping(); err != nil {
