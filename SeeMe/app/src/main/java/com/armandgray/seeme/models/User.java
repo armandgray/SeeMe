@@ -5,16 +5,18 @@ import android.os.Parcelable;
 
 public class User implements Parcelable {
 
-    private String firstName;
-    private String lastName;
-    private String username;
-    private String secret;
-    private boolean discoverable;
-    private String network;
+    private final String role;
+    private final String firstName;
+    private final String lastName;
+    private final String username;
+    private final String secret;
+    private final boolean discoverable;
+    private final String network;
 
-    public User(String firstName, String lastName, String username, String secret, boolean discoverable, String network) {
+    public User(String firstName, String lastName, String role, String username, String secret, boolean discoverable, String network) {
         this.firstName = firstName;
         this.lastName = lastName;
+        this.role = role;
         this.username = username;
         this.secret = secret;
         this.discoverable = discoverable;
@@ -45,6 +47,10 @@ public class User implements Parcelable {
         return network;
     }
 
+    public String getRole() {
+        return role;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -52,13 +58,23 @@ public class User implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.role);
         dest.writeString(this.firstName);
         dest.writeString(this.lastName);
+        dest.writeString(this.username);
+        dest.writeString(this.secret);
+        dest.writeByte(this.discoverable ? (byte) 1 : (byte) 0);
+        dest.writeString(this.network);
     }
 
     protected User(Parcel in) {
+        this.role = in.readString();
         this.firstName = in.readString();
         this.lastName = in.readString();
+        this.username = in.readString();
+        this.secret = in.readString();
+        this.discoverable = in.readByte() != 0;
+        this.network = in.readString();
     }
 
     public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
