@@ -14,10 +14,9 @@ import (
 var db *sql.DB
 
 func main()  {
-  mux := http.NewServeMux()
-
   db, _ = sql.Open("mysql", "root:#54nFr4nc15c0@/seeme_db")
 
+  mux := http.NewServeMux()
   mux.HandleFunc("/", Handler)
 
   n := negroni.Classic()
