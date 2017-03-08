@@ -4,18 +4,15 @@ public class User {
 
     private String firstName;
     private String lastName;
-    private String role;
 
     private User(Builder builder) {
         this.firstName = builder.firstName;
         this.lastName = builder.lastName;
-        this.role = builder.role;
     }
 
     public static class Builder {
         private String firstName;
         private String lastName;
-        private String role;
 
         public Builder() { }
 
@@ -29,11 +26,6 @@ public class User {
             return this;
         }
 
-        public Builder role(String s) {
-            role = s;
-            return this;
-        }
-
         public User build() { return new User(this); }
     }
 
@@ -43,9 +35,5 @@ public class User {
 
     public String getLastName() {
         return lastName;
-    }
-
-    public String getRole() {
-        return role;
     }
 }

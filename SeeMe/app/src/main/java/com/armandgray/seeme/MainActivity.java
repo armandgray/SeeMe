@@ -25,6 +25,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.armandgray.seeme.models.FoodItem;
+import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.services.HttpService;
 import com.armandgray.seeme.utils.BroadcastObserver;
 import com.armandgray.seeme.utils.NetworkHelper;
@@ -109,7 +110,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         }
     }
 
-    private void setupRvUsers(List<FoodItem> list) {
+    private void setupRvUsers(List<User> list) {
 //        ArrayList<User> listUsers = new ArrayList<>();
 //        User u1 = new User.Builder().firstName("Armand").lastName("Gray").role("Mobile Developer").build();
 //        User u2 = new User.Builder().firstName("Daniela").lastName("Gray").role("Program Coordinator").build();
