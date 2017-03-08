@@ -1,13 +1,13 @@
 package main
 
 import (
-  "fmt"
   "net/http"
   "encoding/json"
 
   "database/sql"
 
   "github.com/urfave/negroni"
+  _ "github.com/go-sql-driver/mysql"
 )
 
 type User struct {
@@ -26,11 +26,7 @@ var db *sql.DB
 func main()  {
   mux := http.NewServeMux()
 
-  var err error
-  if db, err = sql.Open("mysql", "root:#54nFr4nc15c0@/seeme_db"); err != nil {
-    fmt.Println("Database Connectection Failed: " + err.Error())
-  }
-  defer db.Close()
+  db, _ = sql.Open("mysql", "root:#54nFr4nc15c0@/seeme_db")
 
   mux.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
     var s []byte
@@ -50,6 +46,14 @@ func main()  {
   })
 
   n := negroni.Classic()
+  n.Use(negroni.HandlerFunc(verifyDB))
   n.UseHandler(mux)
   n.Run(":8080")
+}
+
+func verifyDB(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
+  if err := db.Ping(); err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+  }
+  next(w, r)
 }
