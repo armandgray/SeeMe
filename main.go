@@ -20,11 +20,11 @@ func main()  {
 
   mux := http.NewServeMux()
   mux.HandleFunc("/allusers", HandlerAllUser)
+  mux.HandleFunc("/register", HandlerRegisterUser)
 
   var s []byte
   s = make([]byte, 5, 5)
   user := User{"Armand", "Gray", "email", s, true, "Software Engineer", "Instruct2"}
-  fmt.Println(user)
 
   _, err := db.Exec("INSERT INTO users (first_name, last_name, role, username, secret, discoverable, network) VALUES (?, ?, ?, ?, ?, ?, ?)", 
                     user.FirstName, user.LastName, user.Role, user.Username, 
