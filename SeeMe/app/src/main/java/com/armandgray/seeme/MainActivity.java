@@ -24,7 +24,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.armandgray.seeme.models.FoodItem;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.services.HttpService;
 import com.armandgray.seeme.utils.BroadcastObserver;
@@ -38,7 +37,7 @@ import java.util.Observer;
 
 public class MainActivity extends AppCompatActivity implements Observer {
 
-    public static final String JSON_URI = "http://560057.youcanlearnit.net/services/json/itemsfeed.php";
+    public static final String JSON_URI = "http://52.39.178.132:8080/";
     private static final String DEBUG_TAG = "DEBUG_TAG";
 
     private boolean networkOK;
@@ -49,9 +48,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.e("BroadcastReceiver: ", "http Broadcast Received");
-            FoodItem[] foodItems =
-                    (FoodItem[]) intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_PAYLOAD);
-            setupRvUsers(Arrays.asList(foodItems));
+            User[] userList =
+                    (User[]) intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_PAYLOAD);
+            setupRvUsers(Arrays.asList(userList));
         }
     };
 
@@ -85,6 +84,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void setupFAB() {
+        // TODO REMOVE THIS
+        isWifiConnected = true;
+
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -101,6 +103,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void updateFAB() {
+        // TODO REMOVE THIS
+        isWifiConnected = true;
+
         if (isWifiConnected) {
             fab.setBackgroundTintList(ColorStateList.valueOf(
                     ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null)));
@@ -111,15 +116,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void setupRvUsers(List<User> list) {
-//        ArrayList<User> listUsers = new ArrayList<>();
-//        User u1 = new User.Builder().firstName("Armand").lastName("Gray").role("Mobile Developer").build();
-//        User u2 = new User.Builder().firstName("Daniela").lastName("Gray").role("Program Coordinator").build();
-//        User u3 = new User.Builder().firstName("Penny").lastName("Luke").role("Dog").build();
-//
-//        listUsers.add(u1);
-//        listUsers.add(u2);
-//        listUsers.add(u3);
-
         RecyclerView rvUsers = (RecyclerView) findViewById(R.id.rvUsers);
         rvUsers.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         rvUsers.setAdapter(new UserRVAdapter(this, list));
