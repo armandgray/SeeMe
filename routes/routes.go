@@ -6,6 +6,8 @@ import (
 
   "fmt"
   "net/http"
+  "html/template"
+
   "encoding/json"
 )
 
@@ -21,7 +23,7 @@ func HandlerAllUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandlerRegisterUser(w http.ResponseWriter, r *http.Request) {
-  fmt.Fprintf(w, "Register User")
+  templLogin := template.Must(template.ParseFiles("views/login.html"))
 
   db := GetDatabaseInstance()
 
@@ -34,5 +36,9 @@ func HandlerRegisterUser(w http.ResponseWriter, r *http.Request) {
                     user.Secret, user.Discoverable, user.Network)
   if (err != nil) {
     fmt.Println("Database Insert Failure: " + err.Error())
+  }
+
+  if err := templLogin.ExecuteTemplate(w, "login.html", nil); err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
   }
 }
