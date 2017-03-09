@@ -9,12 +9,11 @@ import (
   "html/template"
 
   "encoding/json"
-
   "golang.org/x/crypto/bcrypt"
 )
 
 func HandlerAllUser(w http.ResponseWriter, r *http.Request) {
-  js, err := json.Marshal(CreateDummyUsers())
+  js, err := json.Marshal(GetAllUsersFromDB(w))
   if err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
     return
@@ -25,29 +24,43 @@ func HandlerAllUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandlerRegisterUser(w http.ResponseWriter, r *http.Request) {
-  templLogin := template.Must(template.ParseFiles("views/login.html"))
+  templLogin := template.Must(template.ParseFiles("views/register.html"))
   var page Page
 
-  db := GetDatabaseInstance()
-
   if r.FormValue("register") != "" {
-    secret, _ := bcrypt.GenerateFromPassword ([]byte(r.FormValue("password")), bcrypt.DefaultCost)
-
-    user := User{r.FormValue("firstName"), r.FormValue("lastName"), r.FormValue("username"), secret, false, r.FormValue("role"), "Instruct2"}
-    if r.FormValue("discoverable") != "" {
-      user.Discoverable = true
-    }
-
-    fmt.Println(user)
-
-    _, err := db.Exec("INSERT INTO users (first_name, last_name, role, username, secret, discoverable, network) VALUES (?, ?, ?, ?, ?, ?, ?)", 
-                  user.FirstName, user.LastName, user.Role, user.Username, 
-                  user.Secret, user.Discoverable, "Instruct2")
-    if (err != nil) {
+    if err := InsertNewUser(CreateUserFromRequest(r)); err != nil { 
       page.Alert = err.Error()
       fmt.Println("Database Insert Failure: " + err.Error())
     } else {
       page.Alert = "User Registered"
+    }
+  }
+
+  if err := templLogin.ExecuteTemplate(w, "register.html", page); err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+  }
+}
+
+func HandlerLoginUser(w http.ResponseWriter, r *http.Request) {
+  templLogin := template.Must(template.ParseFiles("views/login.html"))
+  var page Page
+
+  if r.FormValue("register") != "" {
+    http.Redirect(w, r, "/register", http.StatusFound)
+    return
+  } else if r.FormValue("login") != "" {
+    user, err := GetUserFromDB(r.FormValue("username")); 
+    if err != nil {
+      page.Alert = err.Error()
+    }
+    if user.Username == "" {
+      page.Alert = "User " + r.FormValue("username") + " not found"
+    } else {
+      if err := bcrypt.CompareHashAndPassword(user.Secret, []byte(r.FormValue("password"))); err != nil {
+        page.Alert = err.Error()
+      } else {
+        page.Alert = "User " + user.Username + ": Authenticated"
+      }
     }
   }
 
