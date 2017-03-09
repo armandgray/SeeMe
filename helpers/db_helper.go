@@ -20,6 +20,6 @@ func VerifyMySQLConnection(w http.ResponseWriter, r *http.Request, next http.Han
   next(w, r)
 }
 
-func GetMySQLConnection() (*sql.DB) {
+func GetDatabaseInstance() (*sql.DB) {
 	return db
 }
