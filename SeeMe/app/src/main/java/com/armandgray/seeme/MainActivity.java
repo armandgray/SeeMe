@@ -68,10 +68,10 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
         ConnectivityManager connMgr = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        isWifiConnected = networkInfo.isConnected();
-        networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        boolean isMobileConn = networkInfo.isConnected();
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        isWifiConnected = networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
+        networkInfo = connMgr.getActiveNetworkInfo();
+        boolean isMobileConn = networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_MOBILE;
         Log.e("Wifi connected: ", String.valueOf(isWifiConnected));
         Log.e("Mobile connected: ", String.valueOf(isMobileConn));
 
