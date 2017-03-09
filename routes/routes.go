@@ -9,6 +9,8 @@ import (
   "html/template"
 
   "encoding/json"
+
+  "golang.org/x/crypto/bcrypt"
 )
 
 func HandlerAllUser(w http.ResponseWriter, r *http.Request) {
@@ -28,11 +30,10 @@ func HandlerRegisterUser(w http.ResponseWriter, r *http.Request) {
 
   db := GetDatabaseInstance()
 
-  var s []byte
-  s = make([]byte, 5, 5)
-
   if r.FormValue("register") != "" {
-    user := User{r.FormValue("firstName"), r.FormValue("lastName"), "email", s, false, r.FormValue("role"), "Instruct2"}
+    secret, _ := bcrypt.GenerateFromPassword ([]byte(r.FormValue("password")), bcrypt.DefaultCost)
+
+    user := User{r.FormValue("firstName"), r.FormValue("lastName"), r.FormValue("username"), secret, false, r.FormValue("role"), "Instruct2"}
     if r.FormValue("discoverable") != "" {
       user.Discoverable = true
     }
@@ -45,6 +46,8 @@ func HandlerRegisterUser(w http.ResponseWriter, r *http.Request) {
     if (err != nil) {
       page.Alert = err.Error()
       fmt.Println("Database Insert Failure: " + err.Error())
+    } else {
+      page.Alert = "User Registered"
     }
   }
 
