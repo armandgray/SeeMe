@@ -1,6 +1,8 @@
 package helpers
 
 import (
+	. "seeme/models"
+
   "net/http"
 
 	"database/sql"
@@ -22,4 +24,11 @@ func VerifyMySQLConnection(w http.ResponseWriter, r *http.Request, next http.Han
 
 func GetDatabaseInstance() (*sql.DB) {
 	return db
+}
+
+func InsertNewUser(user User) (error) {
+	_, err := db.Exec("INSERT INTO users (first_name, last_name, role, username, secret, discoverable, network) VALUES (?, ?, ?, ?, ?, ?, ?)", 
+                  user.FirstName, user.LastName, user.Role, user.Username, 
+                  user.Secret, user.Discoverable, user.Network)
+	return err
 }
