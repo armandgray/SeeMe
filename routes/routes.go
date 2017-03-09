@@ -9,6 +9,7 @@ import (
   "html/template"
 
   "encoding/json"
+  "golang.org/x/crypto/bcrypt"
 )
 
 func HandlerAllUser(w http.ResponseWriter, r *http.Request) {
@@ -63,7 +64,15 @@ func HandlerLoginUser(w http.ResponseWriter, r *http.Request) {
         page.Alert = err.Error()
       }
     }
-    fmt.Println(username, secret)
+    if username == "" {
+        page.Alert = "User " + r.FormValue("username") + " not found"
+      } else {
+        if err = bcrypt.CompareHashAndPassword(secret, []byte(r.FormValue("password"))); err != nil {
+          page.Alert = err.Error()
+        } else {
+          page.Alert = "User " + username + ": Authenticated"
+        }
+      }
   }
 
   if err := templLogin.ExecuteTemplate(w, "login.html", page); err != nil {
