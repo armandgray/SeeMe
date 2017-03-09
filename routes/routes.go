@@ -33,9 +33,10 @@ func HandlerRegisterUser(w http.ResponseWriter, r *http.Request) {
   user := User{"Armand", "Gray", "email", s, true, "Software Engineer", "Instruct2"}
 
   if r.FormValue("register") != "" {
+    fmt.Println("disc: " + r.FormValue("discoverable"))
     _, err := db.Exec("INSERT INTO users (first_name, last_name, role, username, secret, discoverable, network) VALUES (?, ?, ?, ?, ?, ?, ?)", 
                   user.FirstName, user.LastName, user.Role, user.Username, 
-                  user.Secret, user.Discoverable, user.Network)
+                  user.Secret, user.Discoverable, "Instruct2")
     if (err != nil) {
       page.Alert = err.Error()
       fmt.Println("Database Insert Failure: " + err.Error())
