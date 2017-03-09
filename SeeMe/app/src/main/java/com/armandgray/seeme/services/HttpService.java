@@ -38,7 +38,6 @@ public class HttpService extends IntentService {
         Gson gson = new GsonBuilder()
                 .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
                 .create();
-        Log.i("RESPONSE: ", response);
         User[] userArray = gson.fromJson(response, User[].class);
 
         Intent messageIntent = new Intent(HTTP_SERVICE_MESSAGE);

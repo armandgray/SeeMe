@@ -37,7 +37,7 @@ import java.util.Observer;
 
 public class MainActivity extends AppCompatActivity implements Observer {
 
-    public static final String JSON_URI = "http://52.39.178.132:8080/";
+    public static final String JSON_URI = "http://52.39.178.132:8080/discoverable/allusers";
     private static final String DEBUG_TAG = "DEBUG_TAG";
 
     private boolean networkOK;
