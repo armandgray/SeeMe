@@ -30,10 +30,15 @@ func HandlerRegisterUser(w http.ResponseWriter, r *http.Request) {
 
   var s []byte
   s = make([]byte, 5, 5)
-  user := User{"Armand", "Gray", "email", s, true, "Software Engineer", "Instruct2"}
 
   if r.FormValue("register") != "" {
-    fmt.Println("disc: " + r.FormValue("discoverable"))
+    user := User{r.FormValue("firstName"), r.FormValue("lastName"), "email", s, false, r.FormValue("role"), "Instruct2"}
+    if r.FormValue("discoverable") != "" {
+      user.Discoverable = true
+    }
+
+    fmt.Println(user)
+
     _, err := db.Exec("INSERT INTO users (first_name, last_name, role, username, secret, discoverable, network) VALUES (?, ?, ?, ?, ?, ?, ?)", 
                   user.FirstName, user.LastName, user.Role, user.Username, 
                   user.Secret, user.Discoverable, "Instruct2")
