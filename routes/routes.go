@@ -27,9 +27,7 @@ func HandlerRegisterUser(w http.ResponseWriter, r *http.Request) {
   var page Page
 
   if r.FormValue("register") != "" {
-    user := CreateUserFromRequest(r)
-
-    if err := InsertNewUser(user); err != nil { 
+    if err := InsertNewUser(CreateUserFromRequest(r)); err != nil { 
       page.Alert = err.Error()
       fmt.Println("Database Insert Failure: " + err.Error())
     } else {
@@ -38,6 +36,37 @@ func HandlerRegisterUser(w http.ResponseWriter, r *http.Request) {
   }
 
   if err := templLogin.ExecuteTemplate(w, "register.html", page); err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+  }
+}
+
+func HandlerLoginUser(w http.ResponseWriter, r *http.Request) {
+  templLogin := template.Must(template.ParseFiles("views/login.html"))
+  var page Page
+
+  db := GetDatabaseInstance()
+
+  if r.FormValue("register") != "" {
+    http.Redirect(w, r, "/register", http.StatusFound)
+    return
+  } else if r.FormValue("login") != "" {
+    var username string
+    var secret []byte
+
+    rows, err := db.Query("select username, secret from users where username = ?", r.FormValue("username"))
+    if err != nil {
+      page.Alert = err.Error()
+    }
+    defer rows.Close()
+    for rows.Next() {
+      if err := rows.Scan(&username, &secret); err != nil {
+        page.Alert = err.Error()
+      }
+    }
+    fmt.Println(username, secret)
+  }
+
+  if err := templLogin.ExecuteTemplate(w, "login.html", page); err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
   }
 }
