@@ -45,34 +45,23 @@ func HandlerLoginUser(w http.ResponseWriter, r *http.Request) {
   templLogin := template.Must(template.ParseFiles("views/login.html"))
   var page Page
 
-  db := GetDatabaseInstance()
-
   if r.FormValue("register") != "" {
     http.Redirect(w, r, "/register", http.StatusFound)
     return
   } else if r.FormValue("login") != "" {
-    var username string
-    var secret []byte
-
-    rows, err := db.Query("select username, secret from users where username = ?", r.FormValue("username"))
+    user, err := GetUserFromDB(r.FormValue("username")); 
     if err != nil {
       page.Alert = err.Error()
     }
-    defer rows.Close()
-    for rows.Next() {
-      if err := rows.Scan(&username, &secret); err != nil {
+    if user.Username == "" {
+      page.Alert = "User " + r.FormValue("username") + " not found"
+    } else {
+      if err := bcrypt.CompareHashAndPassword(user.Secret, []byte(r.FormValue("password"))); err != nil {
         page.Alert = err.Error()
+      } else {
+        page.Alert = "User " + user.Username + ": Authenticated"
       }
     }
-    if username == "" {
-        page.Alert = "User " + r.FormValue("username") + " not found"
-      } else {
-        if err = bcrypt.CompareHashAndPassword(secret, []byte(r.FormValue("password"))); err != nil {
-          page.Alert = err.Error()
-        } else {
-          page.Alert = "User " + username + ": Authenticated"
-        }
-      }
   }
 
   if err := templLogin.ExecuteTemplate(w, "login.html", page); err != nil {

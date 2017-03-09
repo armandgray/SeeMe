@@ -32,3 +32,11 @@ func InsertNewUser(user User) (error) {
                   user.Secret, user.Discoverable, user.Network)
 	return err
 }
+
+func GetUserFromDB(username string) (User, error) {
+  var user User
+  row := db.QueryRow("select first_name, last_name, role, username, secret, discoverable, network from users where username = ?", username)
+  err := row.Scan(&user.FirstName, &user.LastName, &user.Role, &user.Username, &user.Secret, &user.Discoverable, &user.Network)
+
+  return user, err
+}
