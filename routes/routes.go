@@ -45,6 +45,10 @@ func HandlerLoginUser(w http.ResponseWriter, r *http.Request) {
   templLogin := template.Must(template.ParseFiles("views/login.html"))
   var page Page
 
+  userList := GetAllUsersFromDB(page)
+  fmt.Println("UserList")
+  fmt.Println(userList)  
+
   if r.FormValue("register") != "" {
     http.Redirect(w, r, "/register", http.StatusFound)
     return

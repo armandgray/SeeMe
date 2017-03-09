@@ -35,8 +35,32 @@ func InsertNewUser(user User) (error) {
 
 func GetUserFromDB(username string) (User, error) {
   var user User
-  row := db.QueryRow("select first_name, last_name, role, username, secret, discoverable, network from users where username = ?", username)
+  row := db.QueryRow("select * from users where username = ?", username)
   err := row.Scan(&user.FirstName, &user.LastName, &user.Role, &user.Username, &user.Secret, &user.Discoverable, &user.Network)
 
   return user, err
+}
+
+func GetAllUsersFromDB(page Page) ([]User) {
+  var userList []User
+  var user User
+
+  rows, err := db.Query("select * from users")
+  if err != nil {
+    page.Alert = err.Error()
+  }
+  defer rows.Close()
+  for rows.Next() {
+    if err := rows.Scan(&user.FirstName, &user.LastName, &user.Role, &user.Username, 
+                        &user.Secret, &user.Discoverable, &user.Network); err != nil {
+      page.Alert = err.Error()
+    } else {
+      userList = append(userList, user)
+    }
+  }
+  if err = rows.Err(); err != nil {
+    page.Alert = err.Error()
+  }
+
+  return userList
 }
