@@ -16,7 +16,7 @@ func main()  {
   InitMySQLConnection()
 
   mux := http.NewServeMux()
-  mux.HandleFunc("/allusers", HandlerAllUser)
+  mux.HandleFunc("/discoverable/allusers", HandlerDiscoverableUser)
   mux.HandleFunc("/login", HandlerLoginUser)
   mux.HandleFunc("/register", HandlerRegisterUser)
 
