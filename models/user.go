@@ -1,5 +1,9 @@
 package models
 
+import (
+  "golang.org/x/crypto/bcrypt"
+)
+
 type User struct {
   FirstName string
   LastName string
@@ -12,10 +16,10 @@ type User struct {
 }
 
 func CreateDummyUsers() ([]User) {
-	var s []byte
-    s = make([]byte, 5, 5)
+  password := "pass"
+  secret, _ := bcrypt.GenerateFromPassword ([]byte(password), bcrypt.DefaultCost)
 
-	user1 := User{"Armand", "Gray", "email", s, true, "Software Engineer", "Instruct2"}
-    user2 := User{"Daniela", "Meza", "username", s, false, "Program Coordinator", "Instruct2"}
-    return []User{user1, user2}
+	user1 := User{"Armand", "Gray", "email", secret, true, "Software Engineer", "Instruct2"}
+  user2 := User{"Daniela", "Meza", "username", secret, false, "Program Coordinator", "Instruct2"}
+  return []User{user1, user2}
 }

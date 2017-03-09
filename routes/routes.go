@@ -25,7 +25,7 @@ func HandlerAllUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandlerRegisterUser(w http.ResponseWriter, r *http.Request) {
-  templLogin := template.Must(template.ParseFiles("views/login.html"))
+  templLogin := template.Must(template.ParseFiles("views/register.html"))
   var page Page
 
   db := GetDatabaseInstance()
@@ -38,11 +38,9 @@ func HandlerRegisterUser(w http.ResponseWriter, r *http.Request) {
       user.Discoverable = true
     }
 
-    fmt.Println(user)
-
     _, err := db.Exec("INSERT INTO users (first_name, last_name, role, username, secret, discoverable, network) VALUES (?, ?, ?, ?, ?, ?, ?)", 
                   user.FirstName, user.LastName, user.Role, user.Username, 
-                  user.Secret, user.Discoverable, "Instruct2")
+                  user.Secret, user.Discoverable, user.Network)
     if (err != nil) {
       page.Alert = err.Error()
       fmt.Println("Database Insert Failure: " + err.Error())
@@ -51,7 +49,7 @@ func HandlerRegisterUser(w http.ResponseWriter, r *http.Request) {
     }
   }
 
-  if err := templLogin.ExecuteTemplate(w, "login.html", page); err != nil {
+  if err := templLogin.ExecuteTemplate(w, "register.html", page); err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
   }
 }
