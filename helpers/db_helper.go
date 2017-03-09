@@ -41,17 +41,17 @@ func GetUserFromDB(username string) (User, error) {
   return user, err
 }
 
-func GetAllUsersFromDB(w http.ResponseWriter) ([]User) {
+func GetDiscoverableUsersFromDB(w http.ResponseWriter) ([]User) {
   var userList []User
   var user User
 
-  rows, err := db.Query("select * from users")
+  rows, err := db.Query("select * from users where discoverable = ?", 1)
   if err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
   }
   defer rows.Close()
   for rows.Next() {
-    if err := rows.Scan(&user.FirstName, &user.LastName, &user.Role, &user.Username, 
+    if err = rows.Scan(&user.FirstName, &user.LastName, &user.Role, &user.Username, 
                         &user.Secret, &user.Discoverable, &user.Network); err != nil {
       http.Error(w, err.Error(), http.StatusInternalServerError)
     } else {

@@ -12,8 +12,8 @@ import (
   "golang.org/x/crypto/bcrypt"
 )
 
-func HandlerAllUser(w http.ResponseWriter, r *http.Request) {
-  js, err := json.Marshal(GetAllUsersFromDB(w))
+func HandlerDiscoverableUser(w http.ResponseWriter, r *http.Request) {
+  js, err := json.Marshal(GetDiscoverableUsersFromDB(w))
   if err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
     return
