@@ -78,12 +78,22 @@ func GetLocalUsersForNetwork(w http.ResponseWriter, r *http.Request) ([]User) {
       http.Error(w, err.Error(), http.StatusInternalServerError)
     }
   }
+  
+  if err := UpdateUserNetwork(r); err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+  }
   return GetExistingUsersForNetwork(w, networkId)
 }
 
 func InsertNewNetwork(r *http.Request) (error) {
   _, err := db.Exec("INSERT INTO networks (network_id, ssid) VALUES (?, ?)", 
                   r.FormValue("networkId"), r.FormValue("ssid"))
+  return err
+}
+
+func UpdateUserNetwork(r *http.Request) (error) {
+  _, err := db.Exec("UPDATE users SET network_id=? WHERE username= ?", 
+                  r.FormValue("networkId"), r.FormValue("username"))
   return err
 }
 
