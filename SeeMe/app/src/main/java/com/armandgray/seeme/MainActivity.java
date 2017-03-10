@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     private String ssid;
     private String networkId;
-    private String other;
 
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -94,7 +93,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
             public void onClick(View view) {
                 if (networkOK && isWifiConnected) {
                     Intent intent = new Intent(MainActivity.this, HttpService.class);
-                    intent.setData(Uri.parse(JSON_URI + networkId));
+                    intent.setData(Uri.parse(JSON_URI + networkId
+                            + "&ssid="+ ssid.substring(1, ssid.length() - 1).replaceAll(" ", "%20")
+                            + "&username=knusbaum@uber.com"));
                     startService(intent);
                 } else {
                     Toast.makeText(MainActivity.this, "WiFi Connection Unsuccessful!", Toast.LENGTH_SHORT).show();
