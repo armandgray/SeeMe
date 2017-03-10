@@ -1,0 +1,35 @@
+<html>
+	<head>
+		<style type="text/css">
+			#login-form div {
+				text-align: center;
+			}
+
+			#login-form input {
+				margin: .5em 1em;
+			}
+			#alert {
+				text-align: center;
+				color: red;
+				margin-top: 1em;
+			}
+		</style>
+	</head>
+	<body>
+		<form id="login-form">
+			<div>
+				Username: <input type="email" name="username"/>
+			</div>
+			<div>
+				Password: <input type="password" name="password"/>
+			</div>
+			<div>
+				<input type="submit" value="Log In" name="login" />
+				<input type="submit" value="Register" name="register" />
+			</div>
+		</form>
+		<div id="alert">
+			{{.Alert}}
+		</div>
+	</body>
+</html>

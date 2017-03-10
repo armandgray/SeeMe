@@ -1,0 +1,46 @@
+<html>
+	<head>
+		<style type="text/css">
+			#login-form div {
+				text-align: center;
+			}
+
+			#login-form input {
+				margin: .5em 1em;
+			}
+			#alert {
+				text-align: center;
+				color: red;
+				margin-top: 1em;
+			}
+		</style>
+	</head>
+	<body>
+		<form id="login-form">
+			<div>
+				Username: <input type="email" name="username" required/>
+			</div>
+			<div>
+				Password: <input type="password" name="password" required/>
+			</div>
+			<div>
+				First Name: <input name="firstName" required/>
+			</div>
+			<div>
+				Last Name: <input name="lastName" required/>
+			</div>
+			<div>
+				Role: <input name="role" required/>
+			</div>
+			<div>
+				Discoverable: <input type="checkbox" name="discoverable"/>
+			</div>
+			<div>
+				<input type="submit" value="Register" name="register" />
+			</div>
+		</form>
+		<div id="alert">
+			{{.Alert}}
+		</div>
+	</body>
+</html>
