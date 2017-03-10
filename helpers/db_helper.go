@@ -66,6 +66,11 @@ func GetDiscoverableUsersFromDB(w http.ResponseWriter) ([]User) {
 }
 
 func GetLocalUsersForNetwork(w http.ResponseWriter, networkId string) ([]User) {
+
+  return GetExistingUsersForNetwork(w, networkId)
+}
+
+func GetExistingUsersForNetwork(w http.ResponseWriter, networkId string) ([]User) {
   var userList []User
   var user User
 
