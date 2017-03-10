@@ -70,8 +70,7 @@ func HandlerDiscoverableUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandlerLocalUser(w http.ResponseWriter, r *http.Request) {
-  fmt.Println(r.FormValue("network_id"))
-  js, err := json.Marshal(GetDiscoverableUsersFromDB(w))
+  js, err := json.Marshal(GetLocalUsersForNetwork(w, r.FormValue("network_id")))
   if err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
     return
