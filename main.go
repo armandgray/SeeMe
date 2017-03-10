@@ -16,10 +16,11 @@ func main()  {
   InitMySQLConnection()
 
   mux := http.NewServeMux()
+  mux.HandleFunc("/login", HandlerLogin)
+  mux.HandleFunc("/login/user", HandlerLoginUser)
+  mux.HandleFunc("/register", HandlerRegisterUser)
   mux.HandleFunc("/discoverable/allusers", HandlerDiscoverableUser)
   mux.HandleFunc("/discoverable/localusers", HandlerLocalUser)
-  mux.HandleFunc("/login", HandlerLoginUser)
-  mux.HandleFunc("/register", HandlerRegisterUser)
 
   n := negroni.Classic()
   n.Use(negroni.HandlerFunc(VerifyMySQLConnection))

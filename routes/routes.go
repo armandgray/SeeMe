@@ -21,7 +21,8 @@ func HandlerRegisterUser(w http.ResponseWriter, r *http.Request) {
       page.Alert = err.Error()
       fmt.Println("Database Insert Failure: " + err.Error())
     } else {
-      page.Alert = "User Registered"
+      http.Redirect(w, r, "/login/user?username=" + r.FormValue("username"), http.StatusFound)
+      return
     }
   }
 
@@ -30,7 +31,7 @@ func HandlerRegisterUser(w http.ResponseWriter, r *http.Request) {
   }
 }
 
-func HandlerLoginUser(w http.ResponseWriter, r *http.Request) {
+func HandlerLogin(w http.ResponseWriter, r *http.Request) {
   templLogin := template.Must(template.ParseFiles("views/login.html"))
   var page Page
 
@@ -48,7 +49,8 @@ func HandlerLoginUser(w http.ResponseWriter, r *http.Request) {
       if err := bcrypt.CompareHashAndPassword(user.Secret, []byte(r.FormValue("password"))); err != nil {
         page.Alert = err.Error()
       } else {
-        page.Alert = "User " + user.Username + ": Authenticated"
+        http.Redirect(w, r, "/login/user?username=" + r.FormValue("username"), http.StatusFound)
+        return
       }
     }
   }
@@ -56,6 +58,19 @@ func HandlerLoginUser(w http.ResponseWriter, r *http.Request) {
   if err := templLogin.ExecuteTemplate(w, "login.html", page); err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
   }
+}
+
+func HandlerLoginUser(w http.ResponseWriter, r *http.Request) {
+  user, _ := GetUserFromDB(r.FormValue("username"))
+
+  js, err := json.Marshal(user)
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
+
+  w.Header().Set("Content-Type", "application/json")
+  w.Write(js)
 }
 
 func HandlerDiscoverableUser(w http.ResponseWriter, r *http.Request) {
