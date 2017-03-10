@@ -64,3 +64,27 @@ func GetDiscoverableUsersFromDB(w http.ResponseWriter) ([]User) {
 
   return userList
 }
+
+func GetLocalUsersForNetwork(w http.ResponseWriter, networkId string) ([]User) {
+  var userList []User
+  var user User
+
+  rows, err := db.Query("SELECT first_name, last_name, role, username, secret, discoverable, ssid FROM users INNER JOIN networks USING (network_id) WHERE discoverable = ? AND network_id=?", 1, networkId)
+  if err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+  }
+  defer rows.Close()
+  for rows.Next() {
+    if err = rows.Scan(&user.FirstName, &user.LastName, &user.Role, &user.Username, 
+                        &user.Secret, &user.Discoverable, &user.Network); err != nil {
+      http.Error(w, err.Error(), http.StatusInternalServerError)
+    } else {
+      userList = append(userList, user)
+    }
+  }
+  if err = rows.Err(); err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+  }
+
+  return userList
+}

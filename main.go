@@ -17,6 +17,7 @@ func main()  {
 
   mux := http.NewServeMux()
   mux.HandleFunc("/discoverable/allusers", HandlerDiscoverableUser)
+  mux.HandleFunc("/discoverable/localusers", HandlerLocalUser)
   mux.HandleFunc("/login", HandlerLoginUser)
   mux.HandleFunc("/register", HandlerRegisterUser)
 
