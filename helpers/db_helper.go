@@ -2,6 +2,7 @@ package helpers
 
 import (
 	. "seeme/models"
+  "fmt"
 
   "net/http"
 
@@ -65,9 +66,25 @@ func GetDiscoverableUsersFromDB(w http.ResponseWriter) ([]User) {
   return userList
 }
 
-func GetLocalUsersForNetwork(w http.ResponseWriter, networkId string) ([]User) {
-
+func GetLocalUsersForNetwork(w http.ResponseWriter, r *http.Request) ([]User) {
+  var networkId string
+  row := db.QueryRow("select network_id from networks where network_id = ?", r.FormValue("networkId"))
+  if err := row.Scan(&networkId); err != nil {
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+  }
+  fmt.Println(networkId)
+  if networkId == "" {
+    if err := InsertNewNetwork(r); err != nil {
+      http.Error(w, err.Error(), http.StatusInternalServerError)
+    }
+  }
   return GetExistingUsersForNetwork(w, networkId)
+}
+
+func InsertNewNetwork(r *http.Request) (error) {
+  _, err := db.Exec("INSERT INTO networks (network_id, ssid) VALUES (?, ?)", 
+                  r.FormValue("networkId"), r.FormValue("ssid"))
+  return err
 }
 
 func GetExistingUsersForNetwork(w http.ResponseWriter, networkId string) ([]User) {
