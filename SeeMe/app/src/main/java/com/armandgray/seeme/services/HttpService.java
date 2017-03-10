@@ -6,9 +6,11 @@ import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.armandgray.seeme.models.FoodItem;
+import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.utils.HttpHelper;
+import com.google.gson.FieldNamingPolicy;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 
@@ -33,11 +35,13 @@ public class HttpService extends IntentService {
             return;
         }
 
-        Gson gson = new Gson();
-        FoodItem[] foodItems = gson.fromJson(response, FoodItem[].class);
+        Gson gson = new GsonBuilder()
+                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                .create();
+        User[] userArray = gson.fromJson(response, User[].class);
 
         Intent messageIntent = new Intent(HTTP_SERVICE_MESSAGE);
-        messageIntent.putExtra(HTTP_SERVICE_PAYLOAD, foodItems);
+        messageIntent.putExtra(HTTP_SERVICE_PAYLOAD, userArray);
         LocalBroadcastManager broadcastManager =
                 LocalBroadcastManager.getInstance(getApplicationContext());
         broadcastManager.sendBroadcast(messageIntent);

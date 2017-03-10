@@ -1,40 +1,26 @@
 package com.armandgray.seeme.models;
 
-public class User {
+import android.os.Parcel;
+import android.os.Parcelable;
 
-    private String firstName;
-    private String lastName;
-    private String role;
+public class User implements Parcelable {
 
-    private User(Builder builder) {
-        this.firstName = builder.firstName;
-        this.lastName = builder.lastName;
-        this.role = builder.role;
-    }
+    private final String role;
+    private final String firstName;
+    private final String lastName;
+    private final String username;
+    private final String secret;
+    private final boolean discoverable;
+    private final String network;
 
-    public static class Builder {
-        private String firstName;
-        private String lastName;
-        private String role;
-
-        public Builder() { }
-
-        public Builder firstName(String s) {
-            firstName = s;
-            return this;
-        }
-
-        public Builder lastName(String s) {
-            lastName = s;
-            return this;
-        }
-
-        public Builder role(String s) {
-            role = s;
-            return this;
-        }
-
-        public User build() { return new User(this); }
+    public User(String firstName, String lastName, String role, String username, String secret, boolean discoverable, String network) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.role = role;
+        this.username = username;
+        this.secret = secret;
+        this.discoverable = discoverable;
+        this.network = network;
     }
 
     public String getFirstName() {
@@ -45,7 +31,61 @@ public class User {
         return lastName;
     }
 
+    public String getUsername() {
+        return username;
+    }
+
+    public String getSecret() {
+        return secret;
+    }
+
+    public boolean isDiscoverable() {
+        return discoverable;
+    }
+
+    public String getNetwork() {
+        return network;
+    }
+
     public String getRole() {
         return role;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(this.role);
+        dest.writeString(this.firstName);
+        dest.writeString(this.lastName);
+        dest.writeString(this.username);
+        dest.writeString(this.secret);
+        dest.writeByte(this.discoverable ? (byte) 1 : (byte) 0);
+        dest.writeString(this.network);
+    }
+
+    protected User(Parcel in) {
+        this.role = in.readString();
+        this.firstName = in.readString();
+        this.lastName = in.readString();
+        this.username = in.readString();
+        this.secret = in.readString();
+        this.discoverable = in.readByte() != 0;
+        this.network = in.readString();
+    }
+
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel source) {
+            return new User(source);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 }

@@ -2,6 +2,7 @@ package com.armandgray.seeme.utils;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,7 +10,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.armandgray.seeme.R;
-import com.armandgray.seeme.models.FoodItem;
+import com.armandgray.seeme.models.User;
 
 import java.util.List;
 
@@ -17,9 +18,9 @@ public class UserRVAdapter extends
         RecyclerView.Adapter<UserRVAdapter.ViewHolder> {
 
     Activity activity;
-    List<FoodItem> listUsers;
+    List<User> listUsers;
 
-    public UserRVAdapter(Activity activity, List<FoodItem> listUsers) {
+    public UserRVAdapter(Activity activity, List<User> listUsers) {
         this.activity = activity;
         this.listUsers = listUsers;
     }
@@ -32,14 +33,15 @@ public class UserRVAdapter extends
 
     @Override
     public void onBindViewHolder(UserRVAdapter.ViewHolder viewHolder, int position) {
-        FoodItem user = listUsers.get(position);
+        User user = listUsers.get(position);
 
         ImageView ivUserProfile = viewHolder.ivUserProfile;
         TextView tvUserName = viewHolder.tvUserName;
         TextView tvRole = viewHolder.tvRole;
 
-        tvUserName.setText(user.getItemName() + " - " + user.getCategory());
-        tvRole.setText(String.valueOf(user.getPrice()));
+        tvUserName.setText(user.getFirstName() + " " + user.getLastName() + " - Disc: " + user.isDiscoverable());
+        tvRole.setText("Role: " + user.getRole());
+        Log.i("User Connection: ", user.getNetwork());
     }
 
     @Override

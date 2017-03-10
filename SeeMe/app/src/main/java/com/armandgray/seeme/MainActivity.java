@@ -24,7 +24,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.armandgray.seeme.models.FoodItem;
+import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.services.HttpService;
 import com.armandgray.seeme.utils.BroadcastObserver;
 import com.armandgray.seeme.utils.NetworkHelper;
@@ -37,20 +37,28 @@ import java.util.Observer;
 
 public class MainActivity extends AppCompatActivity implements Observer {
 
-    public static final String JSON_URI = "http://560057.youcanlearnit.net/services/json/itemsfeed.php";
+    public static final String JSON_URI = "http://52.39.178.132:8080/discoverable/localusers?networkId=";
     private static final String DEBUG_TAG = "DEBUG_TAG";
 
     private boolean networkOK;
     private boolean isWifiConnected;
     private FloatingActionButton fab;
 
+    private String ssid;
+    private String networkId;
+    private String other;
+
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.e("BroadcastReceiver: ", "http Broadcast Received");
-            FoodItem[] foodItems =
-                    (FoodItem[]) intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_PAYLOAD);
-            setupRvUsers(Arrays.asList(foodItems));
+            User[] userList =
+                    (User[]) intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_PAYLOAD);
+            if (userList != null) {
+                setupRvUsers(Arrays.asList(userList));
+            } else {
+                Log.i("USER_LIST", "LIST IS NULL");
+            }
         }
     };
 
@@ -66,16 +74,12 @@ public class MainActivity extends AppCompatActivity implements Observer {
         broadcastManager.registerReceiver(httpBroadcastReceiver,
                         new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
 
-        ConnectivityManager connMgr = (ConnectivityManager)
-                getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
-        isWifiConnected = networkInfo.isConnected();
-        networkInfo = connMgr.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
-        boolean isMobileConn = networkInfo.isConnected();
-        Log.e("Wifi connected: ", String.valueOf(isWifiConnected));
-        Log.e("Mobile connected: ", String.valueOf(isMobileConn));
-
-        Log.e("BroadcastReceiver: ", "Created");
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        isWifiConnected = networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
+        if (isWifiConnected) {
+            getWifiNetworkId();
+        }
 
         BroadcastObserver.getInstance().addObserver(this);
 
@@ -90,7 +94,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
             public void onClick(View view) {
                 if (networkOK && isWifiConnected) {
                     Intent intent = new Intent(MainActivity.this, HttpService.class);
-                    intent.setData(Uri.parse(JSON_URI));
+                    intent.setData(Uri.parse(JSON_URI + networkId));
                     startService(intent);
                 } else {
                     Toast.makeText(MainActivity.this, "WiFi Connection Unsuccessful!", Toast.LENGTH_SHORT).show();
@@ -109,16 +113,29 @@ public class MainActivity extends AppCompatActivity implements Observer {
         }
     }
 
-    private void setupRvUsers(List<FoodItem> list) {
-//        ArrayList<User> listUsers = new ArrayList<>();
-//        User u1 = new User.Builder().firstName("Armand").lastName("Gray").role("Mobile Developer").build();
-//        User u2 = new User.Builder().firstName("Daniela").lastName("Gray").role("Program Coordinator").build();
-//        User u3 = new User.Builder().firstName("Penny").lastName("Luke").role("Dog").build();
-//
-//        listUsers.add(u1);
-//        listUsers.add(u2);
-//        listUsers.add(u3);
+    private void getWifiNetworkId() {
+        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService (Context.WIFI_SERVICE);
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        ssid  = wifiInfo.getSSID();
+        networkId = wifiInfo.getBSSID();
+        if (ssid.equals("<unknown ssid>")) {
+            Log.i("ActiveNetInfo", "Wifi Network Not Found: " + String.valueOf(ssid));
+        } else {
+            Log.i("ActiveNetInfo", "Wifi Network " + String.valueOf(ssid) + ": " + networkId);
+        }
+    }
 
+    @Override
+    public void update(Observable o, Object data) {
+        NetworkInfo info = (NetworkInfo) data;
+        isWifiConnected = info != null;
+        updateFAB();
+        if (info != null) {
+            getWifiNetworkId();
+        }
+    }
+
+    private void setupRvUsers(List<User> list) {
         RecyclerView rvUsers = (RecyclerView) findViewById(R.id.rvUsers);
         rvUsers.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         rvUsers.setAdapter(new UserRVAdapter(this, list));
@@ -153,22 +170,5 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
         LocalBroadcastManager.getInstance(getApplicationContext())
                 .unregisterReceiver(httpBroadcastReceiver);
-    }
-
-    @Override
-    public void update(Observable o, Object data) {
-        NetworkInfo info = (NetworkInfo) data;
-        isWifiConnected = info != null;
-        updateFAB();
-        if (info != null) {
-            WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService (Context.WIFI_SERVICE);
-            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-            String ssid  = wifiInfo.getSSID();
-            if (ssid.equals("<unknown ssid>")) {
-                Log.i("ActiveNetInfo", "Wifi Network Not Found: " + String.valueOf(ssid));
-            } else {
-                Log.i("ActiveNetInfo", "Wifi Network: " + String.valueOf(ssid));
-            }
-        }
     }
 }
