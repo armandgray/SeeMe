@@ -74,34 +74,35 @@ func GetLocalUsersForNetwork(w http.ResponseWriter, r *http.Request) ([]User) {
   }
   fmt.Println(networkId)
   if networkId == "" {
-    if err := InsertNewNetwork(r); err != nil {
+    if err := insertNewNetwork(r); err != nil {
       http.Error(w, err.Error(), http.StatusInternalServerError)
     }
   }
-  
-  if err := UpdateUserNetwork(r); err != nil {
+
+  if err := updateUserNetwork(r); err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
   }
-  return GetExistingUsersForNetwork(w, networkId)
+  return getExistingUsersForNetwork(w, r)
 }
 
-func InsertNewNetwork(r *http.Request) (error) {
+func insertNewNetwork(r *http.Request) (error) {
   _, err := db.Exec("INSERT INTO networks (network_id, ssid) VALUES (?, ?)", 
                   r.FormValue("networkId"), r.FormValue("ssid"))
   return err
 }
 
-func UpdateUserNetwork(r *http.Request) (error) {
+func updateUserNetwork(r *http.Request) (error) {
   _, err := db.Exec("UPDATE users SET network_id=? WHERE username= ?", 
                   r.FormValue("networkId"), r.FormValue("username"))
   return err
 }
 
-func GetExistingUsersForNetwork(w http.ResponseWriter, networkId string) ([]User) {
+func getExistingUsersForNetwork(w http.ResponseWriter, r *http.Request) ([]User) {
   var userList []User
   var user User
 
-  rows, err := db.Query("SELECT first_name, last_name, role, username, secret, discoverable, ssid FROM users INNER JOIN networks USING (network_id) WHERE discoverable = ? AND network_id=?", 1, networkId)
+  rows, err := db.Query("SELECT first_name, last_name, role, username, secret, discoverable, ssid FROM users INNER JOIN networks USING (network_id) WHERE discoverable = ? AND network_id=? AND !(username = ?)", 
+    1, r.FormValue("networkId"), r.FormValue("username"))
   if err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
   }
