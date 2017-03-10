@@ -37,12 +37,16 @@ import java.util.Observer;
 
 public class MainActivity extends AppCompatActivity implements Observer {
 
-    public static final String JSON_URI = "http://52.39.178.132:8080/discoverable/allusers";
+    public static final String JSON_URI = "http://52.39.178.132:8080/discoverable/localusers?networkId=";
     private static final String DEBUG_TAG = "DEBUG_TAG";
 
     private boolean networkOK;
     private boolean isWifiConnected;
     private FloatingActionButton fab;
+
+    private String ssid;
+    private String networkId;
+    private String other;
 
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -50,7 +54,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
             Log.e("BroadcastReceiver: ", "http Broadcast Received");
             User[] userList =
                     (User[]) intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_PAYLOAD);
-            setupRvUsers(Arrays.asList(userList));
+            if (userList != null) {
+                setupRvUsers(Arrays.asList(userList));
+            } else {
+                Log.i("USER_LIST", "LIST IS NULL");
+            }
         }
     };
 
@@ -66,16 +74,12 @@ public class MainActivity extends AppCompatActivity implements Observer {
         broadcastManager.registerReceiver(httpBroadcastReceiver,
                         new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
 
-        ConnectivityManager connMgr = (ConnectivityManager)
-                getSystemService(Context.CONNECTIVITY_SERVICE);
+        ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         isWifiConnected = networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
-        networkInfo = connMgr.getActiveNetworkInfo();
-        boolean isMobileConn = networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_MOBILE;
-        Log.e("Wifi connected: ", String.valueOf(isWifiConnected));
-        Log.e("Mobile connected: ", String.valueOf(isMobileConn));
-
-        Log.e("BroadcastReceiver: ", "Created");
+        if (isWifiConnected) {
+            getWifiNetworkId();
+        }
 
         BroadcastObserver.getInstance().addObserver(this);
 
@@ -84,16 +88,13 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void setupFAB() {
-        // TODO REMOVE THIS
-        isWifiConnected = true;
-
         fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (networkOK && isWifiConnected) {
                     Intent intent = new Intent(MainActivity.this, HttpService.class);
-                    intent.setData(Uri.parse(JSON_URI));
+                    intent.setData(Uri.parse(JSON_URI + networkId));
                     startService(intent);
                 } else {
                     Toast.makeText(MainActivity.this, "WiFi Connection Unsuccessful!", Toast.LENGTH_SHORT).show();
@@ -103,15 +104,34 @@ public class MainActivity extends AppCompatActivity implements Observer {
     }
 
     private void updateFAB() {
-        // TODO REMOVE THIS
-        isWifiConnected = true;
-
         if (isWifiConnected) {
             fab.setBackgroundTintList(ColorStateList.valueOf(
                     ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null)));
         } else {
             fab.setBackgroundTintList(ColorStateList.valueOf(
                     ResourcesCompat.getColor(getResources(), R.color.fabNoWifiColor, null)));
+        }
+    }
+
+    private void getWifiNetworkId() {
+        WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService (Context.WIFI_SERVICE);
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        ssid  = wifiInfo.getSSID();
+        networkId = wifiInfo.getBSSID();
+        if (ssid.equals("<unknown ssid>")) {
+            Log.i("ActiveNetInfo", "Wifi Network Not Found: " + String.valueOf(ssid));
+        } else {
+            Log.i("ActiveNetInfo", "Wifi Network " + String.valueOf(ssid) + ": " + networkId);
+        }
+    }
+
+    @Override
+    public void update(Observable o, Object data) {
+        NetworkInfo info = (NetworkInfo) data;
+        isWifiConnected = info != null;
+        updateFAB();
+        if (info != null) {
+            getWifiNetworkId();
         }
     }
 
@@ -150,22 +170,5 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
         LocalBroadcastManager.getInstance(getApplicationContext())
                 .unregisterReceiver(httpBroadcastReceiver);
-    }
-
-    @Override
-    public void update(Observable o, Object data) {
-        NetworkInfo info = (NetworkInfo) data;
-        isWifiConnected = info != null;
-        updateFAB();
-        if (info != null) {
-            WifiManager wifiManager = (WifiManager) getApplicationContext().getSystemService (Context.WIFI_SERVICE);
-            WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-            String ssid  = wifiInfo.getSSID();
-            if (ssid.equals("<unknown ssid>")) {
-                Log.i("ActiveNetInfo", "Wifi Network Not Found: " + String.valueOf(ssid));
-            } else {
-                Log.i("ActiveNetInfo", "Wifi Network: " + String.valueOf(ssid));
-            }
-        }
     }
 }
