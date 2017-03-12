@@ -3,4 +3,8 @@
     <string name="action_settings">Settings</string>
     <string name="armand_gray_placeholder">Armand Gray</string>
     <string name="software_engineer_placeholder">Software Engineer</string>
+    <string name="username_icon">username icon</string>
+    <string name="please_enter_email">Please Enter Email</string>
+    <string name="please_enter_password">Please Enter Password</string>
+    <string name="login">Login</string>
 </resources>
