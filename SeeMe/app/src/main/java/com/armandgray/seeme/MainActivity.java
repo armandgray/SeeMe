@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private boolean isWifiConnected;
     private FloatingActionButton fab;
 
+    private User activeUser;
     private String ssid;
     private String networkId;
 
@@ -69,13 +70,19 @@ public class MainActivity extends AppCompatActivity implements Observer {
         setSupportActionBar(toolbar);
         setupFAB();
 
+        if (activeUser == null) {
+            startActivity(new Intent(this, LoginActivity.class));
+        }
+
         LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getApplicationContext());
         broadcastManager.registerReceiver(httpBroadcastReceiver,
                         new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
 
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        isWifiConnected = networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
+        if (networkInfo != null) {
+            isWifiConnected = networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
+        }
         if (isWifiConnected) {
             getWifiNetworkId();
         }
