@@ -35,12 +35,14 @@ public class HttpService extends IntentService {
             return;
         }
 
-        Log.i(TAG, response);
+        User[] userArray = null;
 
-        Gson gson = new GsonBuilder()
-                .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
-                .create();
-        User[] userArray = gson.fromJson(response, User[].class);
+        if (response != null) {
+            Gson gson = new GsonBuilder()
+                    .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                    .create();
+            userArray = gson.fromJson(response, User[].class);
+        }
 
         Intent messageIntent = new Intent(HTTP_SERVICE_MESSAGE);
         messageIntent.putExtra(HTTP_SERVICE_PAYLOAD, userArray);

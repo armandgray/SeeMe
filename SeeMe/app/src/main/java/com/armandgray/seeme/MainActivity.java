@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.content.res.ColorStateList;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -36,6 +35,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import static com.armandgray.seeme.LoginActivity.LOGIN_PAYLOAD;
+import static com.armandgray.seeme.utils.HttpHelper.sendRequest;
 
 public class MainActivity extends AppCompatActivity implements Observer {
 
@@ -103,11 +103,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
             @Override
             public void onClick(View view) {
                 if (networkOK && isWifiConnected) {
-                    Intent intent = new Intent(MainActivity.this, HttpService.class);
-                    intent.setData(Uri.parse(LOCAL_USERS_URI + networkId
+                    String url = LOCAL_USERS_URI
+                            + networkId
                             + "&ssid="+ ssid.substring(1, ssid.length() - 1).replaceAll(" ", "%20")
-                            + "&username=" + activeUser.getUsername()));
-                    startService(intent);
+                            + "&username=" + activeUser.getUsername();
+                    sendRequest(url, getApplicationContext());
                 } else {
                     Toast.makeText(MainActivity.this, "WiFi Connection Unsuccessful!", Toast.LENGTH_SHORT).show();
                 }
