@@ -61,11 +61,21 @@
     </LinearLayout>
 
     <Button
+        android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:padding="7dp"
         android:background="@drawable/login_button"
         android:textColor="@android:color/white"
         android:text="@string/login"/>
+
+    <Button
+        android:id="@+id/btnRegister"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="7dp"
+        android:background="@drawable/register_button"
+        android:textColor="@android:color/white"
+        android:text="@string/register"/>
 
 </LinearLayout>
