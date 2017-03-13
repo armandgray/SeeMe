@@ -3,8 +3,10 @@ package com.armandgray.seeme;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -29,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
         public void onReceive(Context context, Intent intent) {
             Log.e("BroadcastReceiver: ", "http Broadcast Received");
             User[] userList = (User[]) intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_PAYLOAD);
-            if (userList[0] == null) {
+            if (userList.length == 0) {
                 Toast.makeText(LoginActivity.this,
                         "User " + etUsername.getText().toString() + " Not Found!",
                         Toast.LENGTH_SHORT).show();
@@ -68,5 +70,17 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "Register New User", Toast.LENGTH_SHORT).show();
             }
         });
+
+        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getApplicationContext());
+        broadcastManager.registerReceiver(httpBroadcastReceiver,
+                new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+
+        LocalBroadcastManager.getInstance(getApplicationContext())
+                .unregisterReceiver(httpBroadcastReceiver);
     }
 }
