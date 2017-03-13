@@ -44,12 +44,13 @@ func HandlerLogin(w http.ResponseWriter, r *http.Request) {
       page.Alert = err.Error()
     }
     if user.Username == "" {
-      page.Alert = "User " + r.FormValue("username") + " not found"
+      http.Redirect(w, r, "/login/user?username=", http.StatusFound)
+      return
     } else {
       if err := bcrypt.CompareHashAndPassword(user.Secret, []byte(r.FormValue("password"))); err != nil {
         page.Alert = err.Error()
       } else {
-        http.Redirect(w, r, "/login/user?username=" + r.FormValue("username"), http.StatusFound)
+        http.Redirect(w, r, "/login/user?username=" + user.Username, http.StatusFound)
         return
       }
     }
@@ -61,9 +62,11 @@ func HandlerLogin(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandlerLoginUser(w http.ResponseWriter, r *http.Request) {
-  user, _ := GetUserFromDB(r.FormValue("username"))
-
-  js, err := json.Marshal(user)
+  var user User
+  if r.FormValue("username") != "" {
+    user, _ = GetUserFromDB(r.FormValue("username"))
+  }
+  js, err := json.Marshal([]User{user})
   if err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
     return
