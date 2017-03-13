@@ -37,7 +37,8 @@ import java.util.Observer;
 
 public class MainActivity extends AppCompatActivity implements Observer {
 
-    public static final String JSON_URI = "http://52.39.178.132:8080/discoverable/localusers?networkId=";
+    public static final String API_URI = "http://52.39.178.132:8080";
+    private static final String LOCAL_USERS_URI = API_URI + "/discoverable/localusers?networkId=";
     private static final String DEBUG_TAG = "DEBUG_TAG";
 
     private boolean networkOK;
@@ -100,7 +101,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
             public void onClick(View view) {
                 if (networkOK && isWifiConnected) {
                     Intent intent = new Intent(MainActivity.this, HttpService.class);
-                    intent.setData(Uri.parse(JSON_URI + networkId
+                    intent.setData(Uri.parse(LOCAL_USERS_URI + networkId
                             + "&ssid="+ ssid.substring(1, ssid.length() - 1).replaceAll(" ", "%20")
                             + "&username=knusbaum@uber.com"));
                     startService(intent);

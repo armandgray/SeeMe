@@ -11,9 +11,11 @@ import android.widget.Toast;
 
 import com.armandgray.seeme.services.HttpService;
 
+import static com.armandgray.seeme.MainActivity.API_URI;
+
 public class LoginActivity extends AppCompatActivity {
 
-    public static final String LOGIN_URI = "http://52.39.178.132:8080/login?login=Log+In";
+    public static final String LOGIN_URI = API_URI + "/login?login=Log+In";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,7 +29,7 @@ public class LoginActivity extends AppCompatActivity {
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(LoginActivity.this, "User Not Found", Toast.LENGTH_SHORT).show();
+                Toast.makeText(LoginActivity.this, "Authenticating...", Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(LoginActivity.this, HttpService.class);
                 intent.setData(Uri.parse(LOGIN_URI
                         + "&username=" + etUsername.getText().toString()
