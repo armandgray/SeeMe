@@ -62,11 +62,12 @@ func HandlerLogin(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandlerLoginUser(w http.ResponseWriter, r *http.Request) {
-  var user User
+  var userSlice = []User{}
   if r.FormValue("username") != "" {
-    user, _ = GetUserFromDB(r.FormValue("username"))
+    user, _ := GetUserFromDB(r.FormValue("username"))
+    userSlice = []User{user}
   }
-  js, err := json.Marshal([]User{user})
+  js, err := json.Marshal(userSlice)
   if err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
     return
