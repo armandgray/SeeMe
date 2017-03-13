@@ -1,5 +1,11 @@
 package com.armandgray.seeme.utils;
 
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
+
+import com.armandgray.seeme.services.HttpService;
+
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -11,6 +17,12 @@ import java.net.URL;
  * Helper class for working with a remote server
  */
 public class HttpHelper {
+
+    public static void sendRequest(String url, Context context) {
+        Intent intent = new Intent(context, HttpService.class);
+        intent.setData(Uri.parse(url));
+        context.startService(intent);
+    }
 
     /**
      * Returns text from a URL on a web server
