@@ -35,6 +35,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import static com.armandgray.seeme.LoginActivity.LOGIN_PAYLOAD;
+
 public class MainActivity extends AppCompatActivity implements Observer {
 
     public static final String API_URI = "http://52.39.178.132:8080";
@@ -71,6 +73,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         setSupportActionBar(toolbar);
         setupFAB();
 
+        activeUser = getIntent().getParcelableExtra(LOGIN_PAYLOAD);
         if (activeUser == null) {
             startActivity(new Intent(this, LoginActivity.class));
         }

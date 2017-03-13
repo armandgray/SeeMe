@@ -33,7 +33,7 @@ public class LoginActivity extends AppCompatActivity {
             User[] userList = (User[]) intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_PAYLOAD);
             if (userList.length == 0) {
                 Toast.makeText(LoginActivity.this,
-                        "User " + etUsername.getText().toString() + " Not Found!",
+                        "Username or Password Incorrect",
                         Toast.LENGTH_SHORT).show();
             } else {
                 Intent loginIntent = new Intent(context, MainActivity.class);
