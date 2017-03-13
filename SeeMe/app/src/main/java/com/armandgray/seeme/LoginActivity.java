@@ -87,4 +87,9 @@ public class LoginActivity extends AppCompatActivity {
         LocalBroadcastManager.getInstance(getApplicationContext())
                 .unregisterReceiver(httpBroadcastReceiver);
     }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
+    }
 }
