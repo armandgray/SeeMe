@@ -13,7 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.armandgray.seeme.controllers.HttpController;
+import com.armandgray.seeme.controllers.LoginActivityController;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.services.HttpService;
 
@@ -28,7 +28,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etUsername;
     private EditText etPassword;
 
-    private HttpController controller;
+    private LoginActivityController controller;
 
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -55,7 +55,7 @@ public class LoginActivity extends AppCompatActivity {
         etUsername = (EditText) findViewById(R.id.etUsername);
         etPassword = (EditText) findViewById(R.id.etPassword);
 
-        controller = new HttpController(this);
+        controller = new com.armandgray.seeme.controllers.LoginActivityController(this);
 
         Button btnLogin = (Button) findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new View.OnClickListener() {
@@ -71,7 +71,9 @@ public class LoginActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(LoginActivity.this, "Register New User", Toast.LENGTH_SHORT).show();
+                controller.registerUser(
+                        etUsername.getText().toString(),
+                        etPassword.getText().toString());
             }
         });
     }
@@ -96,7 +98,8 @@ public class LoginActivity extends AppCompatActivity {
         moveTaskToBack(true);
     }
 
-    public interface LoginActivityController {
+    public interface LoginController {
         void authenticateUser(String username, String password);
+        void registerUser(String username, String password);
     }
 }
