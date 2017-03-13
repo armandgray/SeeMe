@@ -23,6 +23,7 @@ public class LoginActivity extends AppCompatActivity {
 
     public static final String LOGIN_URI = API_URI + "/login?login=Log+In";
     public static final String LOGIN_PAYLOAD = "LOGIN_PAYLOAD";
+    private static final String TAG = "LOGIN_ACTIVITY";
     private EditText etUsername;
     private EditText etPassword;
 
@@ -70,16 +71,19 @@ public class LoginActivity extends AppCompatActivity {
                 Toast.makeText(LoginActivity.this, "Register New User", Toast.LENGTH_SHORT).show();
             }
         });
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getApplicationContext());
         broadcastManager.registerReceiver(httpBroadcastReceiver,
                 new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
     }
 
     @Override
-    protected void onDestroy() {
-        super.onDestroy();
-
+    protected void onPause() {
+        super.onPause();
         LocalBroadcastManager.getInstance(getApplicationContext())
                 .unregisterReceiver(httpBroadcastReceiver);
     }

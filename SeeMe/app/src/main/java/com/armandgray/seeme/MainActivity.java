@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
                     Intent intent = new Intent(MainActivity.this, HttpService.class);
                     intent.setData(Uri.parse(LOCAL_USERS_URI + networkId
                             + "&ssid="+ ssid.substring(1, ssid.length() - 1).replaceAll(" ", "%20")
-                            + "&username=knusbaum@uber.com"));
+                            + "&username=" + activeUser.getUsername()));
                     startService(intent);
                 } else {
                     Toast.makeText(MainActivity.this, "WiFi Connection Unsuccessful!", Toast.LENGTH_SHORT).show();
