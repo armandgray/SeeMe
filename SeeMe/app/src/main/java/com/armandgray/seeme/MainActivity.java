@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
                     ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null)));
         } else {
             fab.setBackgroundTintList(ColorStateList.valueOf(
-                    ResourcesCompat.getColor(getResources(), R.color.fabNoWifiColor, null)));
+                    ResourcesCompat.getColor(getResources(), R.color.colorAccent, null)));
         }
     }
 
