@@ -44,9 +44,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
     private boolean isWifiConnected;
     private FloatingActionButton fab;
 
+    private User activeUser;
     private String ssid;
     private String networkId;
-    private String other;
 
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -70,13 +70,19 @@ public class MainActivity extends AppCompatActivity implements Observer {
         setSupportActionBar(toolbar);
         setupFAB();
 
+        if (activeUser == null) {
+            startActivity(new Intent(this, LoginActivity.class));
+        }
+
         LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getApplicationContext());
         broadcastManager.registerReceiver(httpBroadcastReceiver,
                         new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
 
         ConnectivityManager connMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        isWifiConnected = networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
+        if (networkInfo != null) {
+            isWifiConnected = networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
+        }
         if (isWifiConnected) {
             getWifiNetworkId();
         }
@@ -94,7 +100,9 @@ public class MainActivity extends AppCompatActivity implements Observer {
             public void onClick(View view) {
                 if (networkOK && isWifiConnected) {
                     Intent intent = new Intent(MainActivity.this, HttpService.class);
-                    intent.setData(Uri.parse(JSON_URI + networkId));
+                    intent.setData(Uri.parse(JSON_URI + networkId
+                            + "&ssid="+ ssid.substring(1, ssid.length() - 1).replaceAll(" ", "%20")
+                            + "&username=knusbaum@uber.com"));
                     startService(intent);
                 } else {
                     Toast.makeText(MainActivity.this, "WiFi Connection Unsuccessful!", Toast.LENGTH_SHORT).show();

@@ -24,16 +24,19 @@
         </activity>
 
         <service
-            android:name="com.armandgray.seeme.services.HttpService"
-            android:exported="false">
-        </service>
-        <receiver android:name=".utils.WifiReceiver"
+            android:name=".services.HttpService"
+            android:exported="false"></service>
+
+        <receiver
+            android:name=".utils.WifiReceiver"
             android:label="NetworkConnection">
             <intent-filter>
                 <action android:name="android.net.wifi.STATE_CHANGE" />
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
             </intent-filter>
         </receiver>
+
+        <activity android:name=".LoginActivity"></activity>
     </application>
 
 </manifest>
