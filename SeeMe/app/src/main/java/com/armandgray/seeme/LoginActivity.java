@@ -4,7 +4,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
@@ -14,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.armandgray.seeme.controllers.HttpController;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.services.HttpService;
 
@@ -24,8 +24,11 @@ public class LoginActivity extends AppCompatActivity {
     public static final String LOGIN_URI = API_URI + "/login?login=Log+In";
     public static final String LOGIN_PAYLOAD = "LOGIN_PAYLOAD";
     private static final String TAG = "LOGIN_ACTIVITY";
+
     private EditText etUsername;
     private EditText etPassword;
+
+    private HttpController controller;
 
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -52,15 +55,15 @@ public class LoginActivity extends AppCompatActivity {
         etUsername = (EditText) findViewById(R.id.etUsername);
         etPassword = (EditText) findViewById(R.id.etPassword);
 
+        controller = new HttpController(this);
+
         Button btnLogin = (Button) findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(LoginActivity.this, HttpService.class);
-                intent.setData(Uri.parse(LOGIN_URI
-                        + "&username=" + etUsername.getText().toString()
-                        + "&password=" + etPassword.getText().toString()));
-                startService(intent);
+                controller.authenticateUser(
+                        etUsername.getText().toString(),
+                        etPassword.getText().toString());
             }
         });
 
@@ -91,5 +94,9 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
+    }
+
+    public interface LoginActivityController {
+        void authenticateUser(String username, String password);
     }
 }
