@@ -6,4 +6,5 @@
 
     <dimen name="navbar_icon_size">25dp</dimen>
     <dimen name="userImgSize">40dp</dimen>
+    <dimen name="login_logo_size">100dp</dimen>
 </resources>
