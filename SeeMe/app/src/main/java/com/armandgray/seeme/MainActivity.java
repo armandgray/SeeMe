@@ -37,7 +37,8 @@ import java.util.Observer;
 import static com.armandgray.seeme.LoginActivity.LOGIN_PAYLOAD;
 import static com.armandgray.seeme.utils.HttpHelper.sendRequest;
 
-public class MainActivity extends AppCompatActivity implements Observer {
+public class MainActivity extends AppCompatActivity
+        implements Observer, NavBarFragment.NavBarFragmentListener {
 
     public static final String API_URI = "http://52.39.178.132:8080";
     private static final String LOCAL_USERS_URI = API_URI + "/discoverable/localusers?networkId=";
@@ -183,5 +184,30 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
         LocalBroadcastManager.getInstance(getApplicationContext())
                 .unregisterReceiver(httpBroadcastReceiver);
+    }
+
+    @Override
+    public void onHomeClick() {
+
+    }
+
+    @Override
+    public void onCampaignsClick() {
+
+    }
+
+    @Override
+    public void onMessagesClick() {
+
+    }
+
+    @Override
+    public void onBlocClick() {
+
+    }
+
+    @Override
+    public void onNotificationsClick() {
+
     }
 }

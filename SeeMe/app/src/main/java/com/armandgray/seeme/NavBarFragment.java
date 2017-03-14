@@ -1,24 +1,23 @@
-package com.armandgray.seeme.views;
+package com.armandgray.seeme;
+
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.armandgray.seeme.R;
 
+/**
+ * A simple {@link Fragment} subclass.
+ */
 public class NavBarFragment extends Fragment {
 
     private NavBarFragmentListener mListener;
 
-    public NavBarFragment(){
-        // Required empty public constructor
-    }
+    public NavBarFragment() {}
 
     @Override
     public void onAttach(Context context) {
@@ -31,14 +30,11 @@ public class NavBarFragment extends Fragment {
         }
     }
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater,
-                             ViewGroup container,
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        Log.i("FRAG", "Fragment Created");
+        // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_navbar, container, false);
-        // onClick calls to mListener for each theme
         ImageView home = (ImageView) rootView.findViewById(R.id.home);
         home.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,7 +73,6 @@ public class NavBarFragment extends Fragment {
                 mListener.onBlocClick();
             }
         });
-
         return rootView;
     }
 
