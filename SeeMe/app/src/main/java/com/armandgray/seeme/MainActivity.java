@@ -188,27 +188,27 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onHomeClick() {
+    public void onNavDiscover() {
 
     }
 
     @Override
-    public void onCampaignsClick() {
+    public void onNavNetwork() {
 
     }
 
     @Override
-    public void onMessagesClick() {
+    public void onNavSeeMe() {
 
     }
 
     @Override
-    public void onBlocClick() {
+    public void onNavProfile() {
 
     }
 
     @Override
-    public void onNotificationsClick() {
+    public void onNavNotes() {
 
     }
 }

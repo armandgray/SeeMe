@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import com.armandgray.seeme.R;
 
@@ -37,53 +38,53 @@ public class NavBarFragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_navbar, container, false);
-        ImageView home = (ImageView) rootView.findViewById(R.id.home);
-        home.setOnClickListener(new View.OnClickListener() {
+        RelativeLayout navDiscover = (RelativeLayout) rootView.findViewById(R.id.navDiscover);
+        navDiscover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.onHomeClick();
+                mListener.onNavDiscover();
             }
         });
 
-        ImageView calendar = (ImageView) rootView.findViewById(R.id.calendar);
-        calendar.setOnClickListener(new View.OnClickListener() {
+        RelativeLayout navNetwork = (RelativeLayout) rootView.findViewById(R.id.navNetwork);
+        navNetwork.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.onCampaignsClick();
+                mListener.onNavNetwork();
             }
         });
 
-        ImageView messages = (ImageView) rootView.findViewById(R.id.messages);
+        ImageView messages = (ImageView) rootView.findViewById(R.id.navSeeMe);
         messages.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.onMessagesClick();
+                mListener.onNavSeeMe();
             }
         });
 
-        ImageView blinds = (ImageView) rootView.findViewById(R.id.blinds);
-        blinds.setOnClickListener(new View.OnClickListener() {
+        RelativeLayout navNotes = (RelativeLayout) rootView.findViewById(R.id.navNotes);
+        navNotes.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {mListener.onNotificationsClick();
+            public void onClick(View view) {mListener.onNavNotes();
             }
         });
 
-        ImageView bloc = (ImageView) rootView.findViewById(R.id.ic_bloc);
-        bloc.setOnClickListener(new View.OnClickListener() {
+        RelativeLayout navProfile = (RelativeLayout) rootView.findViewById(R.id.navProfile);
+        navProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                mListener.onBlocClick();
+                mListener.onNavProfile();
             }
         });
         return rootView;
     }
 
     public interface NavBarFragmentListener {
-        void onHomeClick();
-        void onCampaignsClick();
-        void onMessagesClick();
-        void onBlocClick();
-        void onNotificationsClick();
+        void onNavDiscover();
+        void onNavNetwork();
+        void onNavSeeMe();
+        void onNavProfile();
+        void onNavNotes();
     }
 
 }

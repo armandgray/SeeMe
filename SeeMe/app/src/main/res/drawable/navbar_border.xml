@@ -3,7 +3,7 @@
     <!-- lower rectangle (border color) -->
     <item>
         <shape android:shape="rectangle">
-            <solid android:color="@color/colorPrimaryDark" />
+            <solid android:color="@color/colorAccent" />
         </shape>
     </item>
 
@@ -11,7 +11,7 @@
     <item android:top="1dp"
         android:bottom=".5dp">
         <shape android:shape="rectangle">
-            <solid android:color="@color/colorAccent" />
+            <solid android:color="@android:color/white" />
         </shape>
     </item>
 </layer-list>

@@ -12,112 +12,108 @@
     tools:context=".MainActivity">
 
     <RelativeLayout
+        android:id="@+id/navDiscover"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.2">
 
         <ImageView
-            android:id="@+id/home"
+            android:id="@+id/ivDiscover"
             android:layout_width="@dimen/navbar_icon_size"
             android:layout_height="@dimen/navbar_icon_size"
             android:layout_centerHorizontal="true"
             android:contentDescription="@string/navbar_icon"
+            android:tint="@color/colorGray"
             app:srcCompat="@drawable/ic_bluetooth_transfer_white_48dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/home"
+            android:layout_below="@+id/ivDiscover"
             android:layout_centerHorizontal="true"
-            android:text="Home"
+            android:text="@string/discover"
             android:textSize="@dimen/navbar_text_size" />
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/navNetwork"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.2">
 
         <ImageView
-            android:id="@+id/calendar"
+            android:id="@+id/ivNetwork"
             android:layout_width="@dimen/navbar_icon_size"
             android:layout_height="@dimen/navbar_icon_size"
             android:layout_centerHorizontal="true"
             android:contentDescription="@string/navbar_icon"
+            android:tint="@color/colorGray"
             app:srcCompat="@drawable/ic_bluetooth_transfer_white_48dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/calendar"
+            android:layout_below="@+id/ivNetwork"
             android:layout_centerHorizontal="true"
-            android:text="Cal"
+            android:text="@string/network"
+            android:textSize="@dimen/navbar_text_size" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/navSeeMe"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_weight="0.2"
+        android:contentDescription="@string/navbar_icon"
+        android:tint="@color/colorGray"
+        app:srcCompat="@drawable/seeme_sm_logo" />
+
+    <RelativeLayout
+        android:id="@+id/navNotes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2">
+
+        <ImageView
+            android:id="@+id/ivNotes"
+            android:layout_width="@dimen/navbar_icon_size"
+            android:layout_height="@dimen/navbar_icon_size"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/navbar_icon"
+            android:tint="@color/colorGray"
+            app:srcCompat="@drawable/ic_bluetooth_transfer_white_48dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivNotes"
+            android:layout_centerHorizontal="true"
+            android:text="Notes"
             android:textSize="@dimen/navbar_text_size" />
     </RelativeLayout>
 
     <RelativeLayout
+        android:id="@+id/navProfile"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="0.2">
 
         <ImageView
-            android:id="@+id/messages"
+            android:id="@+id/ivProfile"
             android:layout_width="@dimen/navbar_icon_size"
             android:layout_height="@dimen/navbar_icon_size"
             android:layout_centerHorizontal="true"
             android:contentDescription="@string/navbar_icon"
+            android:tint="@color/colorGray"
             app:srcCompat="@drawable/ic_bluetooth_transfer_white_48dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/messages"
+            android:layout_below="@+id/ivProfile"
             android:layout_centerHorizontal="true"
-            android:text="Chat"
-            android:textSize="@dimen/navbar_text_size" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.2">
-
-        <ImageView
-            android:id="@+id/blinds"
-            android:layout_width="@dimen/navbar_icon_size"
-            android:layout_height="@dimen/navbar_icon_size"
-            android:layout_centerHorizontal="true"
-            android:contentDescription="@string/navbar_icon"
-            app:srcCompat="@drawable/ic_bluetooth_transfer_white_48dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/blinds"
-            android:layout_centerHorizontal="true"
-            android:text="Noti"
-            android:textSize="@dimen/navbar_text_size" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="0.2">
-
-        <ImageView
-            android:id="@+id/ic_bloc"
-            android:layout_width="@dimen/navbar_icon_size"
-            android:layout_height="@dimen/navbar_icon_size"
-            android:layout_centerHorizontal="true"
-            android:contentDescription="@string/navbar_icon"
-            app:srcCompat="@drawable/ic_bluetooth_transfer_white_48dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/ic_bloc"
-            android:layout_centerHorizontal="true"
-            android:text="Bloc"
+            android:text="@string/profile"
             android:textSize="@dimen/navbar_text_size" />
     </RelativeLayout>
 
