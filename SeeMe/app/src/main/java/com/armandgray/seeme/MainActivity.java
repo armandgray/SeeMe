@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.content.res.ColorStateList;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -35,9 +34,13 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import static com.armandgray.seeme.LoginActivity.LOGIN_PAYLOAD;
+import static com.armandgray.seeme.utils.HttpHelper.sendRequest;
+
 public class MainActivity extends AppCompatActivity implements Observer {
 
-    public static final String JSON_URI = "http://52.39.178.132:8080/discoverable/localusers?networkId=";
+    public static final String API_URI = "http://52.39.178.132:8080";
+    private static final String LOCAL_USERS_URI = API_URI + "/discoverable/localusers?networkId=";
     private static final String DEBUG_TAG = "DEBUG_TAG";
 
     private boolean networkOK;
@@ -70,8 +73,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
         setSupportActionBar(toolbar);
         setupFAB();
 
+        activeUser = getIntent().getParcelableExtra(LOGIN_PAYLOAD);
         if (activeUser == null) {
             startActivity(new Intent(this, LoginActivity.class));
+        } else {
+            Toast.makeText(this, "Welcome Back " + activeUser.getFirstName(), Toast.LENGTH_SHORT).show();
         }
 
         LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getApplicationContext());
@@ -99,11 +105,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
             @Override
             public void onClick(View view) {
                 if (networkOK && isWifiConnected) {
-                    Intent intent = new Intent(MainActivity.this, HttpService.class);
-                    intent.setData(Uri.parse(JSON_URI + networkId
+                    String url = LOCAL_USERS_URI
+                            + networkId
                             + "&ssid="+ ssid.substring(1, ssid.length() - 1).replaceAll(" ", "%20")
-                            + "&username=knusbaum@uber.com"));
-                    startService(intent);
+                            + "&username=" + activeUser.getUsername();
+                    sendRequest(url, getApplicationContext());
                 } else {
                     Toast.makeText(MainActivity.this, "WiFi Connection Unsuccessful!", Toast.LENGTH_SHORT).show();
                 }
@@ -117,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
                     ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null)));
         } else {
             fab.setBackgroundTintList(ColorStateList.valueOf(
-                    ResourcesCompat.getColor(getResources(), R.color.fabNoWifiColor, null)));
+                    ResourcesCompat.getColor(getResources(), R.color.colorPrimaryDark, null)));
         }
     }
 
