@@ -5,12 +5,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 public class RegisterActivity extends AppCompatActivity {
 
     private RegisterController controller;
+    private EditText[] editTexts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -19,12 +21,18 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         controller = null;
+        editTexts = new EditText[5];
+        editTexts[0] = (EditText) findViewById(R.id.etUsername);
+        editTexts[1] = (EditText) findViewById(R.id.etPassword);
+        editTexts[2] = (EditText) findViewById(R.id.etFirstName);
+        editTexts[3] = (EditText) findViewById(R.id.etLastName);
+        editTexts[4] = (EditText) findViewById(R.id.etRole);
 
         Button btnCreateAccount = (Button) findViewById(R.id.btnCreateAccount);
         btnCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                controller.onAccountSubmit();
+                controller.onAccountSubmit(editTexts);
             }
         });
 
@@ -46,6 +54,6 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     public interface RegisterController {
-        void onAccountSubmit();
+        void onAccountSubmit(EditText[] arrayEditTextFields);
     }
 }
