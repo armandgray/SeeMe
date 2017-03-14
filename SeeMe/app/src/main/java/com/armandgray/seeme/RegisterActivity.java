@@ -13,16 +13,19 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.armandgray.seeme.controllers.RegisterActivityController;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.services.HttpService;
+import com.armandgray.seeme.utils.DiscoverableDialog;
 
 import java.util.HashMap;
 
 import static com.armandgray.seeme.MainActivity.API_URI;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity
+        implements DiscoverableDialog.DiscoverableListener {
 
     public static final String REGISTER_URI = API_URI + "/register?register=Register&";
 
@@ -94,9 +97,9 @@ public class RegisterActivity extends AppCompatActivity {
         return et.getText().toString();
     }
 
-    public interface RegisterController {
-        void onAccountSubmit(HashMap<String, String> mapEditTextStrings);
-        void getUserFromResponse(Context context, User[] userList);
+    @Override
+    public void onSubmitDiscoverable(boolean b) {
+        Toast.makeText(this, "Discoverable = " + b, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -112,5 +115,10 @@ public class RegisterActivity extends AppCompatActivity {
         super.onPause();
         LocalBroadcastManager.getInstance(getApplicationContext())
                 .unregisterReceiver(httpBroadcastReceiver);
+    }
+
+    public interface RegisterController {
+        void onAccountSubmit(HashMap<String, String> mapEditTextStrings);
+        void getUserFromResponse(Context context, User[] userList);
     }
 }
