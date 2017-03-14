@@ -28,9 +28,9 @@ func GetDatabaseInstance() (*sql.DB) {
 }
 
 func InsertNewUser(user User) (error) {
-	_, err := db.Exec("INSERT INTO users (first_name, last_name, role, username, secret, discoverable, network) VALUES (?, ?, ?, ?, ?, ?, ?)", 
+	_, err := db.Exec("INSERT INTO users (first_name, last_name, role, username, secret, discoverable, network_id) VALUES (?, ?, ?, ?, ?, ?, ?)", 
                   user.FirstName, user.LastName, user.Role, user.Username, 
-                  user.Secret, user.Discoverable, user.Network)
+                  user.Secret, user.Discoverable, nil)
 	return err
 }
 
