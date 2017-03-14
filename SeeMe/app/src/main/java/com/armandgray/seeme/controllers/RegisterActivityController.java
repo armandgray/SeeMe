@@ -21,6 +21,7 @@ import static com.armandgray.seeme.RegisterActivity.PASSWORD;
 import static com.armandgray.seeme.RegisterActivity.REGISTER_URI;
 import static com.armandgray.seeme.RegisterActivity.ROLE;
 import static com.armandgray.seeme.RegisterActivity.USERNAME;
+import static com.armandgray.seeme.utils.HttpHelper.sendRequest;
 
 public class RegisterActivityController implements RegisterActivity.RegisterController {
 
@@ -31,36 +32,19 @@ public class RegisterActivityController implements RegisterActivity.RegisterCont
     private static final String PASSWORD_PTR = "^(?=.*[0-9])(?=\\S+$).{6,}$";
 
     private AppCompatActivity activity;
+    private HashMap<String, String> mapEditTextStrings;
 
     public RegisterActivityController(AppCompatActivity activity) {
         this.activity = activity;
+        this.mapEditTextStrings = new HashMap<>();
     }
 
     @Override
     public void onAccountSubmit(HashMap<String, String> mapEditTextStrings) {
         if (areValidFieldValues(mapEditTextStrings)) {
+            this.mapEditTextStrings = mapEditTextStrings;
             new DiscoverableDialog().show(
                     activity.getSupportFragmentManager(), DIALOG);
-            String url = REGISTER_URI
-                    + "username=" + mapEditTextStrings.get(USERNAME)
-                    + "&password=" + mapEditTextStrings.get(PASSWORD)
-                    + "&firstName=" + capitalizeString(mapEditTextStrings.get(FIRST_NAME))
-                    + "&lastName=" + capitalizeString(mapEditTextStrings.get(LAST_NAME))
-                    + "&role=" + mapEditTextStrings.get(ROLE)
-                    + "&discoverable=true";
-//            sendRequest(url, activity);
-        }
-    }
-
-    @Override
-    public void getUserFromResponse(Context context, User[] userList) {
-        if (userList.length == 0) {
-            Log.e(TAG, "REGISTRATION ERROR ON RETURN");
-            Toast.makeText(context, "Registration Failed!", Toast.LENGTH_SHORT).show();
-        } else {
-            Intent loginIntent = new Intent(context, MainActivity.class);
-            loginIntent.putExtra(LOGIN_PAYLOAD, userList[0]);
-            context.startActivity(loginIntent);
         }
     }
 
@@ -84,6 +68,18 @@ public class RegisterActivityController implements RegisterActivity.RegisterCont
         return true;
     }
 
+    @Override
+    public void onSubmitDiscoverable(boolean discoverable) {
+        String url = REGISTER_URI
+                + "username=" + mapEditTextStrings.get(USERNAME)
+                + "&password=" + mapEditTextStrings.get(PASSWORD)
+                + "&firstName=" + capitalizeString(mapEditTextStrings.get(FIRST_NAME))
+                + "&lastName=" + capitalizeString(mapEditTextStrings.get(LAST_NAME))
+                + "&role=" + mapEditTextStrings.get(ROLE)
+                + "&discoverable=" + discoverable;
+            sendRequest(url, activity);
+    }
+
     private static String capitalizeString(String string) {
         char[] chars = string.toLowerCase().toCharArray();
         boolean found = false;
@@ -96,5 +92,17 @@ public class RegisterActivityController implements RegisterActivity.RegisterCont
             }
         }
         return String.valueOf(chars);
+    }
+
+    @Override
+    public void getUserFromResponse(Context context, User[] userList) {
+        if (userList.length == 0) {
+            Log.e(TAG, "REGISTRATION ERROR ON RETURN");
+            Toast.makeText(context, "Registration Failed!", Toast.LENGTH_SHORT).show();
+        } else {
+            Intent loginIntent = new Intent(context, MainActivity.class);
+            loginIntent.putExtra(LOGIN_PAYLOAD, userList[0]);
+            context.startActivity(loginIntent);
+        }
     }
 }

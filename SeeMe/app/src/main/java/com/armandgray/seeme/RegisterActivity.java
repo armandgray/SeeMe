@@ -7,13 +7,13 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.armandgray.seeme.controllers.RegisterActivityController;
 import com.armandgray.seeme.models.User;
@@ -99,7 +99,7 @@ public class RegisterActivity extends AppCompatActivity
 
     @Override
     public void onSubmitDiscoverable(boolean b) {
-        Toast.makeText(this, "Discoverable = " + b, Toast.LENGTH_SHORT).show();
+        controller.onSubmitDiscoverable(b);
     }
 
     @Override
@@ -120,5 +120,6 @@ public class RegisterActivity extends AppCompatActivity
     public interface RegisterController {
         void onAccountSubmit(HashMap<String, String> mapEditTextStrings);
         void getUserFromResponse(Context context, User[] userList);
+        void onSubmitDiscoverable(boolean b);
     }
 }
