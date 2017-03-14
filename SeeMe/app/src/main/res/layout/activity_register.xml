@@ -1,16 +1,21 @@
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FFFFFF"
-    tools:context="com.armandgray.seeme.RegisterActivity">
+    android:fitsSystemWindows="true"
+    android:padding="@dimen/activity_horizontal_margin">
 
-    <!-- The primary full-screen view. This can be replaced with whatever view
-         is needed to present your content, e.g. VideoView, SurfaceView,
-         TextureView, etc. -->
+    <ImageView
+        android:id="@+id/ivBackButton"
+        android:layout_width="wrap_content"
+        android:layout_height="25dp"
+        android:layout_marginTop="@dimen/activity_vertical_margin"
+        android:contentDescription="@string/launcher_icon_logo"
+        android:tint="@color/colorPrimary"
+        android:rotation="45"
+        app:srcCompat="@drawable/ic_arrow_bottom_left_white_48dp" />
+
     <LinearLayout
-        android:id="@+id/fullscreen_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -19,14 +24,16 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/register_logo_size"
             android:layout_gravity="center"
-            android:tint="@color/colorPrimary"
+            android:layout_marginTop="@dimen/activity_vertical_margin"
             android:contentDescription="@string/launcher_icon_logo"
+            android:tint="@color/colorPrimary"
             app:srcCompat="@drawable/seeme_sm_logo" />
 
         <TextView
             android:id="@+id/tvAlreadyHaveAccount"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp"
             android:gravity="center_horizontal"
             android:text="@string/already_have_account"
             android:textColor="@color/colorPrimary"
@@ -35,49 +42,132 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/already_have_account"
+            android:text="@string/email_address"
             android:textColor="@color/colorGray"
             android:textSize="12sp" />
 
         <EditText
-            android:id="@+id/etAmbition"
+            android:id="@+id/etUsername"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/border_bottom_background_colorgray"
+            android:layout_marginBottom="@dimen/register_margin_between"
             android:ems="15"
             android:hint="@string/email"
             android:inputType="textEmailAddress"
             android:textColorHint="@color/colorGray"
             android:textSize="14sp" />
 
-    </LinearLayout>
-
-    <!-- This FrameLayout insets its children based on system windows using
-         android:fitsSystemWindows. -->
-    <FrameLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:fitsSystemWindows="true">
-
-        <LinearLayout
-            android:id="@+id/fullscreen_content_controls"
-            style="?metaButtonBarStyle"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="bottom|center_horizontal"
-            android:background="@color/black_overlay"
-            android:orientation="horizontal"
-            tools:ignore="UselessParent">
+            android:text="@string/password"
+            android:textColor="@color/colorGray"
+            android:textSize="12sp" />
 
-            <Button
-                android:id="@+id/dummy_button"
-                style="?metaButtonBarButtonStyle"
+        <EditText
+            android:id="@+id/etPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/register_margin_between"
+            android:ems="15"
+            android:hint="@string/password"
+            android:inputType="textPassword"
+            android:textColorHint="@color/colorGray"
+            android:textSize="14sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/dummy_button" />
+                android:layout_weight=".5"
+                android:text="@string/first_name"
+                android:textColor="@color/colorGray"
+                android:textSize="12sp" />
 
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight=".5"
+                android:text="@string/last_name"
+                android:textColor="@color/colorGray"
+                android:textSize="12sp" />
         </LinearLayout>
-    </FrameLayout>
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/etFirstName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:layout_weight=".5"
+                android:ems="15"
+                android:hint="@string/first_name"
+                android:inputType="textShortMessage"
+                android:paddingRight="@dimen/register_margin_between"
+                android:textColorHint="@color/colorGray"
+                android:textSize="14sp" />
+
+            <EditText
+                android:id="@+id/etLastName"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/register_margin_between"
+                android:layout_weight=".5"
+                android:ems="15"
+                android:hint="@string/last_name"
+                android:inputType="textShortMessage"
+                android:textColorHint="@color/colorGray"
+                android:textSize="14sp" />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/role"
+            android:textColor="@color/colorGray"
+            android:textSize="12sp" />
+
+        <EditText
+            android:id="@+id/etRole"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/register_margin_between"
+            android:ems="15"
+            android:hint="@string/role"
+            android:inputType="textShortMessage"
+            android:textColorHint="@color/colorGray"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/btnCreateAccount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_horizontal|bottom"
+            android:layout_marginTop="5dp"
+            android:background="@drawable/background_create_account"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:text="@string/create_account"
+            android:textAllCaps="false"
+            android:textColor="@color/colorPrimary"
+            android:textSize="14sp" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center_horizontal|bottom"
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
+            android:text="@string/terms_condition"
+            android:textColor="@color/colorGray"
+            android:textSize="12sp" />
+    </LinearLayout>
 </FrameLayout>
