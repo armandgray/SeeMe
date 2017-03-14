@@ -1,13 +1,18 @@
 package com.armandgray.seeme.controllers;
 
 import android.content.Context;
+import android.content.Intent;
+import android.util.Log;
 import android.widget.Toast;
 
+import com.armandgray.seeme.MainActivity;
 import com.armandgray.seeme.RegisterActivity;
+import com.armandgray.seeme.models.User;
 
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
+import static com.armandgray.seeme.LoginActivity.LOGIN_PAYLOAD;
 import static com.armandgray.seeme.RegisterActivity.FIRST_NAME;
 import static com.armandgray.seeme.RegisterActivity.LAST_NAME;
 import static com.armandgray.seeme.RegisterActivity.PASSWORD;
@@ -38,6 +43,18 @@ public class RegisterActivityController implements RegisterActivity.RegisterCont
                     + "&role=" + mapEditTextStrings.get(ROLE)
                     + "&discoverable=true";
             sendRequest(url, context);
+        }
+    }
+
+    @Override
+    public void getUserFromResponse(Context context, User[] userList) {
+        if (userList.length == 0) {
+            Log.e(TAG, "REGISTRATION ERROR ON RETURN");
+            Toast.makeText(context, "Registration Failed!", Toast.LENGTH_SHORT).show();
+        } else {
+            Intent loginIntent = new Intent(context, MainActivity.class);
+            loginIntent.putExtra(LOGIN_PAYLOAD, userList[0]);
+            context.startActivity(loginIntent);
         }
     }
 

@@ -7,14 +7,12 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.armandgray.seeme.controllers.RegisterActivityController;
 import com.armandgray.seeme.models.User;
@@ -22,7 +20,6 @@ import com.armandgray.seeme.services.HttpService;
 
 import java.util.HashMap;
 
-import static com.armandgray.seeme.LoginActivity.LOGIN_PAYLOAD;
 import static com.armandgray.seeme.MainActivity.API_URI;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -42,18 +39,8 @@ public class RegisterActivity extends AppCompatActivity {
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.e("BroadcastReceiver: ", "http Broadcast Received");
-            User[] userList = (User[]) intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_PAYLOAD);
-            if (userList.length == 0) {
-                Log.e(TAG, "REGISTRATION ERROR ON RETURN");
-                onBackPressed();
-                onBackPressed();
-                Toast.makeText(context, "Registration Failed!", Toast.LENGTH_SHORT).show();
-            } else {
-                Intent loginIntent = new Intent(context, MainActivity.class);
-                loginIntent.putExtra(LOGIN_PAYLOAD, userList[0]);
-                startActivity(loginIntent);
-            }
+            controller.getUserFromResponse(context,
+                    (User[]) intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_PAYLOAD));
         }
     };
 
@@ -109,6 +96,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     public interface RegisterController {
         void onAccountSubmit(HashMap<String, String> mapEditTextStrings);
+        void getUserFromResponse(Context context, User[] userList);
     }
 
     @Override
