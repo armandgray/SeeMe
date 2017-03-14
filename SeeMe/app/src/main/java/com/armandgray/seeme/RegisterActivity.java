@@ -11,10 +11,19 @@ import android.widget.TextView;
 
 import com.armandgray.seeme.controllers.RegisterActivityController;
 
+import java.util.HashMap;
+
 public class RegisterActivity extends AppCompatActivity {
 
+    public static final String USERNAME = "USERNAME";
+    public static final String PASSWORD = "PASSWORD";
+    public static final String FIRST_NAME = "FIRST_NAME";
+    public static final String LAST_NAME = "LAST_NAME";
+    public static final String ROLE = "ROLE";
+
+    private static final String TAG = "REGISTER_ACTIVITY";
+
     private RegisterActivityController controller;
-    private EditText[] editTexts;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,18 +32,7 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         controller = new RegisterActivityController(this);
-
-        assignArrayEditTexts();
         setupButtonClickListeners();
-    }
-
-    private void assignArrayEditTexts() {
-        editTexts = new EditText[5];
-        editTexts[0] = (EditText) findViewById(R.id.etUsername);
-        editTexts[1] = (EditText) findViewById(R.id.etPassword);
-        editTexts[2] = (EditText) findViewById(R.id.etFirstName);
-        editTexts[3] = (EditText) findViewById(R.id.etLastName);
-        editTexts[4] = (EditText) findViewById(R.id.etRole);
     }
 
     private void setupButtonClickListeners() {
@@ -42,7 +40,7 @@ public class RegisterActivity extends AppCompatActivity {
         btnCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                controller.onAccountSubmit(editTexts);
+                controller.onAccountSubmit(getMapEditTextStrings());
             }
         });
 
@@ -63,7 +61,21 @@ public class RegisterActivity extends AppCompatActivity {
         });
     }
 
+    private HashMap<String, String> getMapEditTextStrings() {
+        HashMap<String, String> mapEditTextStrings = new HashMap<>();
+        mapEditTextStrings.put(USERNAME, getTextFrom((EditText) findViewById(R.id.etUsername)));
+        mapEditTextStrings.put(PASSWORD, getTextFrom((EditText) findViewById(R.id.etPassword)));
+        mapEditTextStrings.put(FIRST_NAME, getTextFrom((EditText) findViewById(R.id.etFirstName)));
+        mapEditTextStrings.put(LAST_NAME, getTextFrom((EditText) findViewById(R.id.etLastName)));
+        mapEditTextStrings.put(ROLE, getTextFrom((EditText) findViewById(R.id.etRole)));
+        return mapEditTextStrings;
+    }
+
+    private String getTextFrom(EditText et) {
+        return et.getText().toString();
+    }
+
     public interface RegisterController {
-        void onAccountSubmit(EditText[] arrayEditTextFields);
+        void onAccountSubmit(HashMap<String, String> mapEditTextStrings);
     }
 }
