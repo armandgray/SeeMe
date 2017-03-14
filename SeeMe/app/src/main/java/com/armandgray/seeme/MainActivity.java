@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
         if (activeUser == null) {
             startActivity(new Intent(this, LoginActivity.class));
         }
+        Toast.makeText(this, "Welcome Back " + activeUser.getFirstName(), Toast.LENGTH_SHORT).show();
 
         LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getApplicationContext());
         broadcastManager.registerReceiver(httpBroadcastReceiver,

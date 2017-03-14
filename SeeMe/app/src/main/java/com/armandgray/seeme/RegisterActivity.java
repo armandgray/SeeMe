@@ -3,7 +3,9 @@ package com.armandgray.seeme;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
@@ -12,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.armandgray.seeme.controllers.RegisterActivityController;
 import com.armandgray.seeme.models.User;
@@ -19,6 +22,7 @@ import com.armandgray.seeme.services.HttpService;
 
 import java.util.HashMap;
 
+import static com.armandgray.seeme.LoginActivity.LOGIN_PAYLOAD;
 import static com.armandgray.seeme.MainActivity.API_URI;
 
 public class RegisterActivity extends AppCompatActivity {
@@ -42,11 +46,13 @@ public class RegisterActivity extends AppCompatActivity {
             User[] userList = (User[]) intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_PAYLOAD);
             if (userList.length == 0) {
                 Log.e(TAG, "REGISTRATION ERROR ON RETURN");
+                onBackPressed();
+                onBackPressed();
+                Toast.makeText(context, "Registration Failed!", Toast.LENGTH_SHORT).show();
             } else {
-                Log.i(TAG, userList[0].toString());
-//                Intent loginIntent = new Intent(context, MainActivity.class);
-//                loginIntent.putExtra(LOGIN_PAYLOAD, userList[0]);
-//                startActivity(loginIntent);
+                Intent loginIntent = new Intent(context, MainActivity.class);
+                loginIntent.putExtra(LOGIN_PAYLOAD, userList[0]);
+                startActivity(loginIntent);
             }
         }
     };
@@ -103,5 +109,20 @@ public class RegisterActivity extends AppCompatActivity {
 
     public interface RegisterController {
         void onAccountSubmit(HashMap<String, String> mapEditTextStrings);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getApplicationContext());
+        broadcastManager.registerReceiver(httpBroadcastReceiver,
+                new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(getApplicationContext())
+                .unregisterReceiver(httpBroadcastReceiver);
     }
 }

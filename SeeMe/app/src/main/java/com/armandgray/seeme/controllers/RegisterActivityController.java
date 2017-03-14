@@ -38,7 +38,6 @@ public class RegisterActivityController implements RegisterActivity.RegisterCont
                     + "&role=" + mapEditTextStrings.get(ROLE)
                     + "&discoverable=true";
             sendRequest(url, context);
-            Toast.makeText(context, "Welcome " + mapEditTextStrings.get(FIRST_NAME), Toast.LENGTH_SHORT).show();
         }
     }
 
