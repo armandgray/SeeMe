@@ -1,10 +1,12 @@
 package com.armandgray.seeme.controllers;
 
 import android.content.Context;
-import android.widget.Toast;
+import android.content.Intent;
 
 import com.armandgray.seeme.LoginActivity;
+import com.armandgray.seeme.RegisterActivity;
 
+import static com.armandgray.seeme.LoginActivity.LOGIN_PAYLOAD;
 import static com.armandgray.seeme.LoginActivity.LOGIN_URI;
 import static com.armandgray.seeme.utils.HttpHelper.sendRequest;
 
@@ -26,6 +28,8 @@ public class LoginActivityController implements LoginActivity.LoginController {
 
     @Override
     public void registerUser(String username, String password) {
-        Toast.makeText(context, "Register New User", Toast.LENGTH_SHORT).show();
+        String[] loginPayload = {username, password};
+        context.startActivity(new Intent(context, RegisterActivity.class)
+                .putExtra(LOGIN_PAYLOAD, loginPayload));
     }
 }
