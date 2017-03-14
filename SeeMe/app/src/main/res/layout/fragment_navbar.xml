@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/navbar_border"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:padding="5dp"
+    android:weightSum="1"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2">
+
+        <ImageView
+            android:id="@+id/home"
+            android:layout_width="@dimen/navbar_icon_size"
+            android:layout_height="@dimen/navbar_icon_size"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/navbar_icon"
+            app:srcCompat="@drawable/ic_bluetooth_transfer_white_48dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/home"
+            android:layout_centerHorizontal="true"
+            android:text="Home"
+            android:textSize="@dimen/navbar_text_size" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2">
+
+        <ImageView
+            android:id="@+id/calendar"
+            android:layout_width="@dimen/navbar_icon_size"
+            android:layout_height="@dimen/navbar_icon_size"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/navbar_icon"
+            app:srcCompat="@drawable/ic_bluetooth_transfer_white_48dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/calendar"
+            android:layout_centerHorizontal="true"
+            android:text="Cal"
+            android:textSize="@dimen/navbar_text_size" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2">
+
+        <ImageView
+            android:id="@+id/messages"
+            android:layout_width="@dimen/navbar_icon_size"
+            android:layout_height="@dimen/navbar_icon_size"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/navbar_icon"
+            app:srcCompat="@drawable/ic_bluetooth_transfer_white_48dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/messages"
+            android:layout_centerHorizontal="true"
+            android:text="Chat"
+            android:textSize="@dimen/navbar_text_size" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2">
+
+        <ImageView
+            android:id="@+id/blinds"
+            android:layout_width="@dimen/navbar_icon_size"
+            android:layout_height="@dimen/navbar_icon_size"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/navbar_icon"
+            app:srcCompat="@drawable/ic_bluetooth_transfer_white_48dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/blinds"
+            android:layout_centerHorizontal="true"
+            android:text="Noti"
+            android:textSize="@dimen/navbar_text_size" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2">
+
+        <ImageView
+            android:id="@+id/ic_bloc"
+            android:layout_width="@dimen/navbar_icon_size"
+            android:layout_height="@dimen/navbar_icon_size"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/navbar_icon"
+            app:srcCompat="@drawable/ic_bluetooth_transfer_white_48dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ic_bloc"
+            android:layout_centerHorizontal="true"
+            android:text="Bloc"
+            android:textSize="@dimen/navbar_text_size" />
+    </RelativeLayout>
+
+</LinearLayout>
