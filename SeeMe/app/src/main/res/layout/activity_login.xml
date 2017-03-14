@@ -8,6 +8,7 @@
     android:padding="@dimen/activity_horizontal_margin"
     android:background="@drawable/background_gradient"
     android:gravity="bottom|center_horizontal"
+    android:fitsSystemWindows="true"
     tools:context="com.armandgray.seeme.LoginActivity">
 
     <LinearLayout
