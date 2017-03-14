@@ -9,7 +9,7 @@ import android.widget.Toast;
 import com.armandgray.seeme.MainActivity;
 import com.armandgray.seeme.RegisterActivity;
 import com.armandgray.seeme.models.User;
-import com.armandgray.seeme.utils.DiscoverableDialog;
+import com.armandgray.seeme.views.DiscoverableDialog;
 
 import java.util.HashMap;
 import java.util.regex.Pattern;

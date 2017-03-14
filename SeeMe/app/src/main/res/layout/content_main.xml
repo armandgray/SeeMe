@@ -28,7 +28,7 @@
 
     <fragment
         android:id="@+id/navbar_container"
-        android:name="com.armandgray.seeme.NavBarFragment"
+        android:name="com.armandgray.seeme.views.NavBarFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" />

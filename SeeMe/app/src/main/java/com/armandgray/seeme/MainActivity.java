@@ -28,6 +28,7 @@ import com.armandgray.seeme.services.HttpService;
 import com.armandgray.seeme.utils.BroadcastObserver;
 import com.armandgray.seeme.utils.NetworkHelper;
 import com.armandgray.seeme.utils.UserRVAdapter;
+import com.armandgray.seeme.views.NavBarFragment;
 
 import java.util.Arrays;
 import java.util.List;

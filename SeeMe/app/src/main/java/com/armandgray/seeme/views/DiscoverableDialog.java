@@ -1,4 +1,4 @@
-package com.armandgray.seeme.utils;
+package com.armandgray.seeme.views;
 
 import android.app.Dialog;
 import android.content.Context;

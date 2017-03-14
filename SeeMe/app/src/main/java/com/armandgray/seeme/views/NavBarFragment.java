@@ -1,4 +1,4 @@
-package com.armandgray.seeme;
+package com.armandgray.seeme.views;
 
 
 import android.content.Context;
@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+
+import com.armandgray.seeme.R;
 
 
 /**

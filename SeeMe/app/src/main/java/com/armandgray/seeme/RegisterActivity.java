@@ -17,7 +17,7 @@ import android.widget.TextView;
 import com.armandgray.seeme.controllers.RegisterActivityController;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.services.HttpService;
-import com.armandgray.seeme.utils.DiscoverableDialog;
+import com.armandgray.seeme.views.DiscoverableDialog;
 
 import java.util.HashMap;
 
