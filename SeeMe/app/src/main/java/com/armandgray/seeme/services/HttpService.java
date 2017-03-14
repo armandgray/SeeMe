@@ -38,6 +38,7 @@ public class HttpService extends IntentService {
         User[] userArray = null;
 
         if (response != null) {
+            Log.i(TAG, response);
             Gson gson = new GsonBuilder()
                     .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
                     .create();

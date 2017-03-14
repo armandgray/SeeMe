@@ -1,7 +1,11 @@
 package com.armandgray.seeme;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
@@ -10,10 +14,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.armandgray.seeme.controllers.RegisterActivityController;
+import com.armandgray.seeme.models.User;
+import com.armandgray.seeme.services.HttpService;
 
 import java.util.HashMap;
 
+import static com.armandgray.seeme.MainActivity.API_URI;
+
 public class RegisterActivity extends AppCompatActivity {
+
+    public static final String REGISTER_URI = API_URI + "/register?register=Register&";
 
     public static final String USERNAME = "USERNAME";
     public static final String PASSWORD = "PASSWORD";
@@ -24,6 +34,22 @@ public class RegisterActivity extends AppCompatActivity {
     private static final String TAG = "REGISTER_ACTIVITY";
 
     private RegisterActivityController controller;
+
+    private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.e("BroadcastReceiver: ", "http Broadcast Received");
+            User[] userList = (User[]) intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_PAYLOAD);
+            if (userList.length == 0) {
+                Log.e(TAG, "REGISTRATION ERROR ON RETURN");
+            } else {
+                Log.i(TAG, userList[0].toString());
+//                Intent loginIntent = new Intent(context, MainActivity.class);
+//                loginIntent.putExtra(LOGIN_PAYLOAD, userList[0]);
+//                startActivity(loginIntent);
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

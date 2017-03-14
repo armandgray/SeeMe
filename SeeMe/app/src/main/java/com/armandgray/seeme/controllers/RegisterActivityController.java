@@ -1,10 +1,8 @@
 package com.armandgray.seeme.controllers;
 
 import android.content.Context;
-import android.content.Intent;
 import android.widget.Toast;
 
-import com.armandgray.seeme.MainActivity;
 import com.armandgray.seeme.RegisterActivity;
 
 import java.util.HashMap;
@@ -13,8 +11,10 @@ import java.util.regex.Pattern;
 import static com.armandgray.seeme.RegisterActivity.FIRST_NAME;
 import static com.armandgray.seeme.RegisterActivity.LAST_NAME;
 import static com.armandgray.seeme.RegisterActivity.PASSWORD;
+import static com.armandgray.seeme.RegisterActivity.REGISTER_URI;
 import static com.armandgray.seeme.RegisterActivity.ROLE;
 import static com.armandgray.seeme.RegisterActivity.USERNAME;
+import static com.armandgray.seeme.utils.HttpHelper.sendRequest;
 
 public class RegisterActivityController implements RegisterActivity.RegisterController {
 
@@ -30,9 +30,14 @@ public class RegisterActivityController implements RegisterActivity.RegisterCont
     @Override
     public void onAccountSubmit(HashMap<String, String> mapEditTextStrings) {
         if (areValidFieldValues(mapEditTextStrings)) {
-            Toast.makeText(context, "Welcome " + mapEditTextStrings.get(FIRST_NAME), Toast.LENGTH_SHORT).show();
             // TODO Add discoverable dialog && Add to server and user returned user obj to pass to MAIN
-            context.startActivity(new Intent(context, MainActivity.class));
+            String url = REGISTER_URI
+                    + "username=andrealawsonggray@hotmail.com"
+                    + "&password=234567890"
+                    + "&firstName=Andrea"
+                    + "&lastName=Gray&role=None&discoverable=true";
+            sendRequest(url, context);
+            Toast.makeText(context, "Welcome " + mapEditTextStrings.get(FIRST_NAME), Toast.LENGTH_SHORT).show();
         }
     }
 
