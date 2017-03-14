@@ -30,12 +30,13 @@ public class RegisterActivityController implements RegisterActivity.RegisterCont
     @Override
     public void onAccountSubmit(HashMap<String, String> mapEditTextStrings) {
         if (areValidFieldValues(mapEditTextStrings)) {
-            // TODO Add discoverable dialog && Add to server and user returned user obj to pass to MAIN
             String url = REGISTER_URI
-                    + "username=andrealawsonggray@hotmail.com"
-                    + "&password=234567890"
-                    + "&firstName=Andrea"
-                    + "&lastName=Gray&role=None&discoverable=true";
+                    + "username=" + mapEditTextStrings.get(USERNAME)
+                    + "&password=" + mapEditTextStrings.get(PASSWORD)
+                    + "&firstName=" + capitalizeString(mapEditTextStrings.get(FIRST_NAME))
+                    + "&lastName=" + capitalizeString(mapEditTextStrings.get(LAST_NAME))
+                    + "&role=" + mapEditTextStrings.get(ROLE)
+                    + "&discoverable=true";
             sendRequest(url, context);
             Toast.makeText(context, "Welcome " + mapEditTextStrings.get(FIRST_NAME), Toast.LENGTH_SHORT).show();
         }
@@ -53,15 +54,10 @@ public class RegisterActivityController implements RegisterActivity.RegisterCont
         if (mapEditTextStrings.get(FIRST_NAME).equals("") || mapEditTextStrings.get(LAST_NAME).equals("")) {
             Toast.makeText(context, "Please Enter First & Last", Toast.LENGTH_LONG).show();
             return false;
-        } else {
-            mapEditTextStrings.put(FIRST_NAME, capitalizeString(mapEditTextStrings.get(FIRST_NAME)));
-            mapEditTextStrings.put(LAST_NAME, capitalizeString(mapEditTextStrings.get(LAST_NAME)));
         }
         if (mapEditTextStrings.get(ROLE).equals("")) {
             Toast.makeText(context, "Please Enter Role", Toast.LENGTH_LONG).show();
             return false;
-        } else {
-            mapEditTextStrings.put(ROLE, capitalizeString(mapEditTextStrings.get(ROLE)));
         }
         return true;
     }
