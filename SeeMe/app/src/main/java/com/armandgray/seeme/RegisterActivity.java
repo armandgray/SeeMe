@@ -9,9 +9,11 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.armandgray.seeme.controllers.RegisterActivityController;
+
 public class RegisterActivity extends AppCompatActivity {
 
-    private RegisterController controller;
+    private RegisterActivityController controller;
     private EditText[] editTexts;
 
     @Override
@@ -20,7 +22,7 @@ public class RegisterActivity extends AppCompatActivity {
         this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_register);
 
-        controller = null;
+        controller = new RegisterActivityController(this);
 
         assignArrayEditTexts();
         setupButtonClickListeners();

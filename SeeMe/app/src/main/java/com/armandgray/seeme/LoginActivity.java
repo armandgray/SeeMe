@@ -57,7 +57,7 @@ public class LoginActivity extends AppCompatActivity {
         etUsername = (EditText) findViewById(R.id.etUsername);
         etPassword = (EditText) findViewById(R.id.etPassword);
 
-        controller = new com.armandgray.seeme.controllers.LoginActivityController(this);
+        controller = new LoginActivityController(this);
 
         Button btnLogin = (Button) findViewById(R.id.btnLogin);
         btnLogin.setOnClickListener(new View.OnClickListener() {
