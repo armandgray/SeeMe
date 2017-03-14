@@ -21,13 +21,21 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
 
         controller = null;
+
+        assignArrayEditTexts();
+        setupButtonClickListeners();
+    }
+
+    private void assignArrayEditTexts() {
         editTexts = new EditText[5];
         editTexts[0] = (EditText) findViewById(R.id.etUsername);
         editTexts[1] = (EditText) findViewById(R.id.etPassword);
         editTexts[2] = (EditText) findViewById(R.id.etFirstName);
         editTexts[3] = (EditText) findViewById(R.id.etLastName);
         editTexts[4] = (EditText) findViewById(R.id.etRole);
+    }
 
+    private void setupButtonClickListeners() {
         Button btnCreateAccount = (Button) findViewById(R.id.btnCreateAccount);
         btnCreateAccount.setOnClickListener(new View.OnClickListener() {
             @Override
