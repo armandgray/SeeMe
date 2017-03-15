@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity
 
     private User activeUser;
     private ViewPagerAdapter adapterViewPager;
+    private ViewPager viewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,7 +49,12 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(this, "Welcome Back " + activeUser.getFirstName(), Toast.LENGTH_SHORT).show();
         }
 
-        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.navContainer, new NavBarFragment())
+                .commit();
+
+        viewPager = (ViewPager) findViewById(R.id.viewPager);
         adapterViewPager = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapterViewPager);
         viewPager.setCurrentItem(2);
@@ -112,27 +118,27 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onNavDiscover() {
-
+        viewPager.setCurrentItem(0, true);
     }
 
     @Override
     public void onNavNetwork() {
-
+        viewPager.setCurrentItem(1, true);
     }
 
     @Override
     public void onNavSeeMe() {
-
+        viewPager.setCurrentItem(2, true);
     }
 
     @Override
     public void onNavNotes() {
-
+        viewPager.setCurrentItem(3, true);
     }
 
     @Override
     public void onNavProfile() {
-
+        viewPager.setCurrentItem(4, true);
     }
 
 }

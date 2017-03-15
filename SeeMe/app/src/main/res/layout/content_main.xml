@@ -9,9 +9,8 @@
     tools:context="com.armandgray.seeme.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <fragment
-        android:id="@+id/navbar"
-        android:name="com.armandgray.seeme.views.NavBarFragment"
+    <FrameLayout
+        android:id="@+id/navContainer"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" />
@@ -20,7 +19,7 @@
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/navbar"
+        android:layout_above="@id/navContainer"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
 

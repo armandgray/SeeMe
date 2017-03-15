@@ -91,4 +91,8 @@ public class DiscoverFragment extends Fragment {
         LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
                 .unregisterReceiver(httpBroadcastReceiver);
     }
+
+    public interface NavDiscoverListener {
+        void onNavDiscover();
+    }
 }
