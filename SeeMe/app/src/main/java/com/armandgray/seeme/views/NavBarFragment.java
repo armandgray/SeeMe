@@ -48,10 +48,12 @@ public class NavBarFragment extends Fragment {
 
         getViewReferences(rootView);
         assignArrayNavLayouts();
+        setIconColorStates(navSeeMe);
 
         navDiscover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setIconColorStates((RelativeLayout) view);
                 fragmentListener.onNavDiscover();
             }
         });
@@ -59,6 +61,7 @@ public class NavBarFragment extends Fragment {
         navNetwork.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setIconColorStates((RelativeLayout) view);
                 fragmentListener.onNavNetwork();
             }
         });
@@ -66,7 +69,7 @@ public class NavBarFragment extends Fragment {
         navSeeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                setIconColorStates(navSeeMe);
+                setIconColorStates((RelativeLayout) view);
                 fragmentListener.onNavSeeMe();
             }
         });
@@ -74,6 +77,7 @@ public class NavBarFragment extends Fragment {
         navNotes.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setIconColorStates((RelativeLayout) view);
                 fragmentListener.onNavNotes();
             }
         });
@@ -81,11 +85,10 @@ public class NavBarFragment extends Fragment {
         navProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setIconColorStates((RelativeLayout) view);
                 fragmentListener.onNavProfile();
             }
         });
-
-
 
         return rootView;
     }
@@ -108,20 +111,30 @@ public class NavBarFragment extends Fragment {
     }
 
     private void setIconColorStates(RelativeLayout activeLayout) {
-        for (int i = 0; i < arrayNavLayouts.length; i++) {
-            ImageView icon = (ImageView) arrayNavLayouts[i].getChildAt(0);
-            TextView text = (TextView) arrayNavLayouts[i].getChildAt(1);
+        ImageView icon;
+        TextView text;
 
-            if (arrayNavLayouts[i] != activeLayout) {
-                icon.setPressed(false);
+        for (int i = 0; i < arrayNavLayouts.length; i++) {
+            if (i != 2) {
+                icon = (ImageView) arrayNavLayouts[i].getChildAt(0);
                 icon.setColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorGray, null));
+
+                text = (TextView) arrayNavLayouts[i].getChildAt(1);
                 text.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGray, null));
-            } else {
-                icon.setPressed(true);
-                icon.setColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null));
-                text.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null));
             }
         }
+
+        if (activeLayout == arrayNavLayouts[2]){
+            arrayNavLayouts[2].getChildAt(0).setBackgroundResource(R.drawable.nav_logo_back_active);
+            return;
+        } else {
+            arrayNavLayouts[2].getChildAt(0).setBackgroundResource(R.drawable.nav_logo_background);
+        }
+
+        icon = (ImageView) activeLayout.getChildAt(0);
+        icon.setColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null));
+        text = (TextView) activeLayout.getChildAt(1);
+        text.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null));
     }
 
     public interface NavBarFragmentListener {

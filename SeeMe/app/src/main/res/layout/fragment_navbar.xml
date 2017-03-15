@@ -15,16 +15,15 @@
         android:id="@+id/navDiscover"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.2">
+        android:layout_weight="0.2"
+        android:clickable="true">
 
         <ImageView
             android:id="@+id/ivDiscover"
             android:layout_width="@dimen/navbar_icon_size"
             android:layout_height="@dimen/navbar_icon_size"
             android:layout_centerHorizontal="true"
-            android:clickable="true"
             android:contentDescription="@string/navbar_icon"
-            android:tint="@color/colorGray"
             app:srcCompat="@drawable/ic_compass_white_48dp" />
 
         <TextView
@@ -40,16 +39,15 @@
         android:id="@+id/navNetwork"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.2">
+        android:layout_weight="0.2"
+        android:clickable="true">
 
         <ImageView
             android:id="@+id/ivNetwork"
             android:layout_width="@dimen/navbar_icon_size"
             android:layout_height="@dimen/navbar_icon_size"
             android:layout_centerHorizontal="true"
-            android:clickable="true"
             android:contentDescription="@string/navbar_icon"
-            android:tint="@color/colorGray"
             app:srcCompat="@drawable/ic_contacts_white_48dp" />
 
         <TextView
@@ -65,7 +63,8 @@
         android:id="@+id/navSeeMe"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.2">
+        android:layout_weight="0.2"
+        android:clickable="true">
 
         <ImageView
             android:id="@+id/ivSeeMe"
@@ -73,10 +72,9 @@
             android:layout_height="@dimen/nav_logo_size"
             android:layout_centerInParent="true"
             android:background="@drawable/nav_logo_background"
-            android:clickable="true"
-            android:paddingTop="6dp"
-            android:paddingBottom="2dp"
             android:contentDescription="@string/navbar_icon"
+            android:paddingBottom="2dp"
+            android:paddingTop="6dp"
             app:srcCompat="@drawable/seeme_sm_logo" />
 
         <TextView
@@ -89,16 +87,15 @@
         android:id="@+id/navNotes"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.2">
+        android:layout_weight="0.2"
+        android:clickable="true">
 
         <ImageView
             android:id="@+id/ivNotes"
             android:layout_width="@dimen/navbar_icon_size"
             android:layout_height="@dimen/navbar_icon_size"
             android:layout_centerHorizontal="true"
-            android:clickable="true"
             android:contentDescription="@string/navbar_icon"
-            android:tint="@color/colorGray"
             app:srcCompat="@drawable/ic_clipboard_text_white_48dp" />
 
         <TextView
@@ -114,16 +111,15 @@
         android:id="@+id/navProfile"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_weight="0.2">
+        android:layout_weight="0.2"
+        android:clickable="true">
 
         <ImageView
             android:id="@+id/ivProfile"
             android:layout_width="@dimen/navbar_icon_size"
             android:layout_height="@dimen/navbar_icon_size"
             android:layout_centerHorizontal="true"
-            android:clickable="true"
             android:contentDescription="@string/navbar_icon"
-            android:tint="@color/colorGray"
             app:srcCompat="@drawable/ic_account_circle_white_48dp" />
 
         <TextView
