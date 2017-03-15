@@ -23,6 +23,7 @@ public class MainActivity extends AppCompatActivity
 
     public static final String API_URI = "http://52.39.178.132:8080";
     private static final String DEBUG_TAG = "DEBUG_TAG";
+    private static final String TAG = "MAIN_ACTIVITY";
 
     private User activeUser;
 
@@ -75,6 +76,7 @@ public class MainActivity extends AppCompatActivity
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.main_container, DiscoverFragment.newInstance())
+                .addToBackStack(TAG)
                 .commit();
     }
 
@@ -83,6 +85,7 @@ public class MainActivity extends AppCompatActivity
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.main_container, NetworkFragment.newInstance())
+                .addToBackStack(TAG)
                 .commit();
     }
 
@@ -91,6 +94,7 @@ public class MainActivity extends AppCompatActivity
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.main_container, SeeMeFragment.newInstance())
+                .addToBackStack(TAG)
                 .commit();
     }
 
@@ -99,6 +103,7 @@ public class MainActivity extends AppCompatActivity
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.main_container, NotesFragment.newInstance())
+                .addToBackStack(TAG)
                 .commit();
     }
 
@@ -107,6 +112,7 @@ public class MainActivity extends AppCompatActivity
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.main_container, ProfileFragment.newInstance())
+                .addToBackStack(TAG)
                 .commit();
     }
 
