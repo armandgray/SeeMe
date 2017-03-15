@@ -4,11 +4,21 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@drawable/background_gradient"
+    android:fitsSystemWindows="true"
+    android:gravity="bottom|center_horizontal"
     android:orientation="vertical"
     android:padding="@dimen/activity_horizontal_margin"
-    android:background="@drawable/background_gradient"
-    android:gravity="bottom|center_horizontal"
+    android:weightSum="1"
     tools:context="com.armandgray.seeme.LoginActivity">
+
+    <ImageView
+        android:layout_width="@dimen/login_logo_size"
+        android:layout_height="0dp"
+        android:layout_gravity="center"
+        android:layout_weight=".9"
+        android:contentDescription="@string/launcher_icon_logo"
+        app:srcCompat="@drawable/seeme_sm_logo" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -20,8 +30,8 @@
             android:id="@+id/icUsername"
             android:layout_width="@dimen/navbar_icon_size"
             android:layout_height="@dimen/navbar_icon_size"
-            android:contentDescription="@string/username_icon"
             android:layout_gravity="center"
+            android:contentDescription="@string/username_icon"
             app:srcCompat="@drawable/ic_account_outline_white_48dp" />
 
         <EditText
@@ -45,8 +55,8 @@
             android:id="@+id/icPassword"
             android:layout_width="@dimen/navbar_icon_size"
             android:layout_height="@dimen/navbar_icon_size"
-            android:contentDescription="@string/username_icon"
             android:layout_gravity="center"
+            android:contentDescription="@string/username_icon"
             app:srcCompat="@drawable/ic_lock_open_outline_white_48dp" />
 
         <EditText
@@ -64,18 +74,16 @@
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="7dp"
         android:background="@drawable/login_button"
-        android:textColor="@android:color/white"
-        android:text="@string/login"/>
+        android:text="@string/login"
+        android:textColor="@android:color/white" />
 
     <Button
         android:id="@+id/btnRegister"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="7dp"
         android:background="@drawable/register_button"
-        android:textColor="@android:color/white"
-        android:text="@string/register"/>
+        android:text="@string/register"
+        android:textColor="@android:color/white" />
 
 </LinearLayout>

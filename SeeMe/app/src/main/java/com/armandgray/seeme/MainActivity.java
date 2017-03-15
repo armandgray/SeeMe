@@ -7,7 +7,6 @@ import android.content.IntentFilter;
 import android.content.res.ColorStateList;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
@@ -29,15 +28,21 @@ import com.armandgray.seeme.services.HttpService;
 import com.armandgray.seeme.utils.BroadcastObserver;
 import com.armandgray.seeme.utils.NetworkHelper;
 import com.armandgray.seeme.utils.UserRVAdapter;
+import com.armandgray.seeme.views.NavBarFragment;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-public class MainActivity extends AppCompatActivity implements Observer {
+import static com.armandgray.seeme.LoginActivity.LOGIN_PAYLOAD;
+import static com.armandgray.seeme.utils.HttpHelper.sendRequest;
 
-    public static final String JSON_URI = "http://52.39.178.132:8080/discoverable/localusers?networkId=";
+public class MainActivity extends AppCompatActivity
+        implements Observer, NavBarFragment.NavBarFragmentListener {
+
+    public static final String API_URI = "http://52.39.178.132:8080";
+    private static final String LOCAL_USERS_URI = API_URI + "/discoverable/localusers?networkId=";
     private static final String DEBUG_TAG = "DEBUG_TAG";
 
     private boolean networkOK;
@@ -70,8 +75,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
         setSupportActionBar(toolbar);
         setupFAB();
 
+        activeUser = getIntent().getParcelableExtra(LOGIN_PAYLOAD);
         if (activeUser == null) {
-            startActivity(new Intent(this, LoginActivity.class));
+//            startActivity(new Intent(this, LoginActivity.class));
+        } else {
+            Toast.makeText(this, "Welcome Back " + activeUser.getFirstName(), Toast.LENGTH_SHORT).show();
         }
 
         LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getApplicationContext());
@@ -99,11 +107,11 @@ public class MainActivity extends AppCompatActivity implements Observer {
             @Override
             public void onClick(View view) {
                 if (networkOK && isWifiConnected) {
-                    Intent intent = new Intent(MainActivity.this, HttpService.class);
-                    intent.setData(Uri.parse(JSON_URI + networkId
+                    String url = LOCAL_USERS_URI
+                            + networkId
                             + "&ssid="+ ssid.substring(1, ssid.length() - 1).replaceAll(" ", "%20")
-                            + "&username=knusbaum@uber.com"));
-                    startService(intent);
+                            + "&username=" + activeUser.getUsername();
+                    sendRequest(url, getApplicationContext());
                 } else {
                     Toast.makeText(MainActivity.this, "WiFi Connection Unsuccessful!", Toast.LENGTH_SHORT).show();
                 }
@@ -117,7 +125,7 @@ public class MainActivity extends AppCompatActivity implements Observer {
                     ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null)));
         } else {
             fab.setBackgroundTintList(ColorStateList.valueOf(
-                    ResourcesCompat.getColor(getResources(), R.color.fabNoWifiColor, null)));
+                    ResourcesCompat.getColor(getResources(), R.color.colorPrimaryDark, null)));
         }
     }
 
@@ -159,17 +167,16 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (item.getItemId()) {
+            case R.id.sign_out_menu:
+                activeUser = null;
+                startActivity(new Intent(this, LoginActivity.class));
+                return true;
+            case R.id.action_settings:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -178,5 +185,30 @@ public class MainActivity extends AppCompatActivity implements Observer {
 
         LocalBroadcastManager.getInstance(getApplicationContext())
                 .unregisterReceiver(httpBroadcastReceiver);
+    }
+
+    @Override
+    public void onNavDiscover() {
+
+    }
+
+    @Override
+    public void onNavNetwork() {
+
+    }
+
+    @Override
+    public void onNavSeeMe() {
+
+    }
+
+    @Override
+    public void onNavProfile() {
+
+    }
+
+    @Override
+    public void onNavNotes() {
+
     }
 }

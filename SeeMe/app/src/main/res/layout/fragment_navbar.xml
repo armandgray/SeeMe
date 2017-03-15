@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/navbar_border"
+    android:gravity="center"
+    android:orientation="horizontal"
+    android:padding="5dp"
+    android:weightSum="1"
+    tools:context=".MainActivity">
+
+    <RelativeLayout
+        android:id="@+id/navDiscover"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2"
+        android:clickable="true">
+
+        <ImageView
+            android:id="@+id/ivDiscover"
+            android:layout_width="@dimen/navbar_icon_size"
+            android:layout_height="@dimen/navbar_icon_size"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/navbar_icon"
+            app:srcCompat="@drawable/ic_compass_white_48dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivDiscover"
+            android:layout_centerHorizontal="true"
+            android:text="@string/discover"
+            android:textSize="@dimen/navbar_text_size" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/navNetwork"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2"
+        android:clickable="true">
+
+        <ImageView
+            android:id="@+id/ivNetwork"
+            android:layout_width="@dimen/navbar_icon_size"
+            android:layout_height="@dimen/navbar_icon_size"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/navbar_icon"
+            app:srcCompat="@drawable/ic_contacts_white_48dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivNetwork"
+            android:layout_centerHorizontal="true"
+            android:text="@string/network"
+            android:textSize="@dimen/navbar_text_size" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/navSeeMe"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2"
+        android:clickable="true">
+
+        <ImageView
+            android:id="@+id/ivSeeMe"
+            android:layout_width="@dimen/nav_logo_size"
+            android:layout_height="@dimen/nav_logo_size"
+            android:layout_centerInParent="true"
+            android:background="@drawable/nav_logo_background"
+            android:contentDescription="@string/navbar_icon"
+            android:paddingBottom="2dp"
+            android:paddingTop="6dp"
+            app:srcCompat="@drawable/seeme_sm_logo" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_below="@+id/ivSeeMe" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/navNotes"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2"
+        android:clickable="true">
+
+        <ImageView
+            android:id="@+id/ivNotes"
+            android:layout_width="@dimen/navbar_icon_size"
+            android:layout_height="@dimen/navbar_icon_size"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/navbar_icon"
+            app:srcCompat="@drawable/ic_clipboard_text_white_48dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivNotes"
+            android:layout_centerHorizontal="true"
+            android:text="@string/notes"
+            android:textSize="@dimen/navbar_text_size" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/navProfile"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2"
+        android:clickable="true">
+
+        <ImageView
+            android:id="@+id/ivProfile"
+            android:layout_width="@dimen/navbar_icon_size"
+            android:layout_height="@dimen/navbar_icon_size"
+            android:layout_centerHorizontal="true"
+            android:contentDescription="@string/navbar_icon"
+            app:srcCompat="@drawable/ic_account_circle_white_48dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/ivProfile"
+            android:layout_centerHorizontal="true"
+            android:text="@string/profile"
+            android:textSize="@dimen/navbar_text_size" />
+    </RelativeLayout>
+
+</LinearLayout>

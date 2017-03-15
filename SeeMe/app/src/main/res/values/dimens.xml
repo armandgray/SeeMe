@@ -6,4 +6,10 @@
 
     <dimen name="navbar_icon_size">25dp</dimen>
     <dimen name="userImgSize">40dp</dimen>
+    <dimen name="login_logo_size">100dp</dimen>
+    <dimen name="register_logo_size">75dp</dimen>
+    <dimen name="register_margin_between">5dp</dimen>
+    <dimen name="navbar_text_size">10sp</dimen>
+    <dimen name="nav_logo_size">40dp</dimen>
+    <dimen name="nav_logo_margin">5dp</dimen>
 </resources>
