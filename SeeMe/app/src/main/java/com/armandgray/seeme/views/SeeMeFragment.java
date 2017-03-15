@@ -28,7 +28,7 @@ import java.util.Observer;
 public class SeeMeFragment extends Fragment
         implements Observer {
 
-
+    private static final String TAG = "TAG";
     private boolean isWifiConnected;
     private String ssid;
     private String networkId;
@@ -69,7 +69,11 @@ public class SeeMeFragment extends Fragment
 //                            + "&ssid="+ ssid.substring(1, ssid.length() - 1).replaceAll(" ", "%20")
 //                            + "&username=" + activeUser.getUsername();
 //                    sendRequest(url, getApplicationContext());
-                    Toast.makeText(getContext(), "WiFi Connection Good!", Toast.LENGTH_SHORT).show();
+                    getActivity().getSupportFragmentManager()
+                            .beginTransaction()
+                            .replace(R.id.main_container, new DiscoverFragment())
+                            .addToBackStack(TAG)
+                            .commit();
                 } else {
                     Toast.makeText(getContext(), "WiFi Connection Unsuccessful!", Toast.LENGTH_SHORT).show();
                 }
@@ -80,9 +84,8 @@ public class SeeMeFragment extends Fragment
 
     @Override
     public void update(Observable o, Object data) {
-        NetworkInfo info = (NetworkInfo) data;
-        isWifiConnected = info != null;
-        if (info != null) {
+        isWifiConnected = data != null;
+        if (data != null) {
             getWifiNetworkId();
         }
     }
