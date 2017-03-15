@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.armandgray.seeme.MainActivity;
 import com.armandgray.seeme.R;
@@ -29,11 +30,16 @@ public class SeeMeFragment extends Fragment
     public static final String LOCAL_USERS_URI = MainActivity.API_URI + "/discoverable/localusers?networkId=";
     private static final String TAG = "TAG";
 
-    private boolean isWifiConnected;
     private ImageView ivWifi;
+    private TextView tvAuto;
+    private ImageView ivSeeMe;
+
+    private boolean isWifiConnected;
     private boolean networkOK;
-    private SeeMeTouchListener seeMeTouchListener;
+    private boolean autoUpdate;
+
     private User activeUser;
+    private SeeMeTouchListener seeMeTouchListener;
     private SeeMeFragmentController controller;
 
     public SeeMeFragment() {
@@ -64,23 +70,42 @@ public class SeeMeFragment extends Fragment
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_see_me, container, false);
 
-        ivWifi = (ImageView) rootView.findViewById(R.id.ivWifi);
-        activeUser = getArguments().getParcelable(ACTIVE_USER);
-
-        controller = new SeeMeFragmentController(activeUser, seeMeTouchListener, getContext());
+        assignFeilds(rootView);
         updateIcWifi(controller.getWifiState());
+        setupClickListeners();
+        BroadcastObserver.getInstance().addObserver(this);
 
-        ImageView ivSeeMe = (ImageView) rootView.findViewById(R.id.ivSeeMe);
+        return rootView;
+    }
+
+    private void setupClickListeners() {
+        tvAuto.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                autoUpdate = !autoUpdate;
+                if (autoUpdate) {
+                    tvAuto.setBackgroundResource(R.drawable.main_auto_back_active);
+                    controller.startAutoRequests();
+                } else {
+                    tvAuto.setBackgroundResource(R.drawable.main_auto_back);
+                    controller.stopAutoRequests();
+                }
+            }
+        });
         ivSeeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 controller.requestLocalUsers();
             }
         });
+    }
 
-        BroadcastObserver.getInstance().addObserver(this);
-        
-        return rootView;
+    private void assignFeilds(View rootView) {
+        ivWifi = (ImageView) rootView.findViewById(R.id.ivWifi);
+        ivSeeMe = (ImageView) rootView.findViewById(R.id.ivSeeMe);
+        tvAuto = (TextView) rootView.findViewById(R.id.tvAuto);
+        activeUser = getArguments().getParcelable(ACTIVE_USER);
+        controller = new SeeMeFragmentController(activeUser, seeMeTouchListener, getContext());
     }
 
     private void updateIcWifi(boolean isWifiConnected) {
@@ -105,5 +130,7 @@ public class SeeMeFragment extends Fragment
 
     public interface SeeMeController {
         void requestLocalUsers();
+        void startAutoRequests();
+        void stopAutoRequests();
     }
 }

@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -27,11 +28,14 @@ public class SeeMeFragmentController implements SeeMeFragment.SeeMeController {
     private String ssid = "";
     private String networkId = "";
 
+    private int requestInterval = 5000;
+    private Handler handler;
 
     public SeeMeFragmentController(User activeUser, SeeMeTouchListener seeMeTouchListener, Context context) {
         this.activeUser = activeUser;
         this.seeMeTouchListener = seeMeTouchListener;
         this.context = context;
+        this.handler = new Handler();
     }
 
     public boolean getWifiState() {
@@ -50,6 +54,19 @@ public class SeeMeFragmentController implements SeeMeFragment.SeeMeController {
                      && networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
     }
 
+    private void getWifiNetworkId() {
+        WifiManager wifiManager = (WifiManager) context.getApplicationContext()
+                .getSystemService (Context.WIFI_SERVICE);
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        ssid  = wifiInfo.getSSID();
+        networkId = wifiInfo.getBSSID();
+        if (ssid.equals("<unknown ssid>")) {
+            Log.i("ActiveNetInfo", "Wifi Network Not Found: " + String.valueOf(ssid));
+        } else {
+            Log.i("ActiveNetInfo", "Wifi Network " + String.valueOf(ssid) + ": " + networkId);
+        }
+    }
+
     @Override
     public void requestLocalUsers() {
         if (networkOK && isWifiConnected) {
@@ -64,16 +81,27 @@ public class SeeMeFragmentController implements SeeMeFragment.SeeMeController {
         }
     }
 
-    private void getWifiNetworkId() {
-        WifiManager wifiManager = (WifiManager) context.getApplicationContext()
-                .getSystemService (Context.WIFI_SERVICE);
-        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
-        ssid  = wifiInfo.getSSID();
-        networkId = wifiInfo.getBSSID();
-        if (ssid.equals("<unknown ssid>")) {
-            Log.i("ActiveNetInfo", "Wifi Network Not Found: " + String.valueOf(ssid));
-        } else {
-            Log.i("ActiveNetInfo", "Wifi Network " + String.valueOf(ssid) + ": " + networkId);
-        }
+    @Override
+    public void startAutoRequests() {
+        statusChecker.run();
     }
+
+    @Override
+    public void stopAutoRequests() {
+        handler.removeCallbacks(statusChecker);
+    }
+
+    private Runnable statusChecker = new Runnable() {
+        @Override
+        public void run() {
+            try {
+                Toast.makeText(context, "Running...", Toast.LENGTH_SHORT).show();
+                updateStatusOrRequestInterval();
+            } finally {
+                handler.postDelayed(statusChecker, requestInterval);
+            }
+        }
+    };
+
+    private void updateStatusOrRequestInterval() {}
 }
