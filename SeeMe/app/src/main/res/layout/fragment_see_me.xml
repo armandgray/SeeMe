@@ -13,8 +13,14 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end"
         android:background="@drawable/main_auto_back"
-        android:paddingLeft="5dp"
-        android:paddingRight="5dp"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:textAllCaps="true"
+        android:clickable="true"
+        android:textColor="@color/colorPrimary"
         android:text="@string/auto" />
 
     <ImageView
