@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.armandgray.seeme.R;
 import com.armandgray.seeme.models.User;
@@ -22,6 +23,8 @@ import com.armandgray.seeme.utils.UserRVAdapter;
 
 import java.util.Arrays;
 import java.util.List;
+
+import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -49,8 +52,9 @@ public class DiscoverFragment extends Fragment {
     }
 
     public static DiscoverFragment newInstance(User activeUser) {
-
         Bundle args = new Bundle();
+        args.putParcelable(ACTIVE_USER, activeUser);
+
         DiscoverFragment fragment = new DiscoverFragment();
         fragment.setArguments(args);
         return fragment;
@@ -62,6 +66,11 @@ public class DiscoverFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_discover, container, false);
 
         rvUsers = (RecyclerView) rootView.findViewById(R.id.rvUsers);
+
+        User activeUser = getArguments().getParcelable(ACTIVE_USER);
+        if (activeUser != null) {
+            Toast.makeText(getContext(), activeUser.getFirstName(), Toast.LENGTH_SHORT).show();
+        }
 
         LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(
                 getActivity().getApplicationContext());

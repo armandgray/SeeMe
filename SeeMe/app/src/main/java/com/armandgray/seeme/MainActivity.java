@@ -28,11 +28,11 @@ public class MainActivity extends AppCompatActivity
     public static final String API_URI = "http://52.39.178.132:8080";
     private static final String DEBUG_TAG = "DEBUG_TAG";
     private static final String TAG = "MAIN_ACTIVITY";
-    private FragmentManager fragmentManager;
+    public static final String ACTIVE_USER = "ACTIVE_USER";
 
     private User activeUser;
-    private ViewPagerAdapter adapterViewPager;
     private ViewPager viewPager;
+    private NavBarFragment navbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,23 +49,23 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(this, "Welcome Back " + activeUser.getFirstName(), Toast.LENGTH_SHORT).show();
         }
 
+        navbar = new NavBarFragment();
         getSupportFragmentManager()
                 .beginTransaction()
-                .add(R.id.navContainer, new NavBarFragment())
+                .add(R.id.navContainer, navbar)
                 .commit();
 
         viewPager = (ViewPager) findViewById(R.id.viewPager);
-        adapterViewPager = new ViewPagerAdapter(getSupportFragmentManager());
+        ViewPagerAdapter adapterViewPager = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapterViewPager);
         viewPager.setCurrentItem(2);
     }
 
-    public class ViewPagerAdapter extends FragmentPagerAdapter {
+    private class ViewPagerAdapter extends FragmentPagerAdapter {
         private static final int NUM_PAGES = 5;
 
-        public ViewPagerAdapter(FragmentManager manager) {
+        ViewPagerAdapter(FragmentManager manager) {
             super(manager);
-            fragmentManager = manager;
         }
 
         // Returns total number of pages

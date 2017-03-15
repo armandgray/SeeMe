@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 import com.armandgray.seeme.R;
 import com.armandgray.seeme.models.User;
 
+import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
+
 /**
  * A simple {@link Fragment} subclass.
  */
@@ -22,6 +24,8 @@ public class ProfileFragment extends Fragment {
 
     public static ProfileFragment newInstance(User activeUser) {
         Bundle args = new Bundle();
+        args.putParcelable(ACTIVE_USER, activeUser);
+
         ProfileFragment fragment = new ProfileFragment();
         fragment.setArguments(args);
         return fragment;

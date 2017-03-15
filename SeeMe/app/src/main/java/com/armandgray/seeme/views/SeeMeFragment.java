@@ -24,6 +24,7 @@ import com.armandgray.seeme.utils.NetworkHelper;
 import java.util.Observable;
 import java.util.Observer;
 
+import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
 import static com.armandgray.seeme.utils.HttpHelper.sendRequest;
 
 /**
@@ -46,6 +47,8 @@ public class SeeMeFragment extends Fragment
 
     public static SeeMeFragment newInstance(User activeUser) {
         Bundle args = new Bundle();
+        args.putParcelable(ACTIVE_USER, activeUser);
+
         SeeMeFragment fragment = new SeeMeFragment();
         fragment.setArguments(args);
         return fragment;
