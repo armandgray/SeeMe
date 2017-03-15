@@ -81,11 +81,7 @@ public class SeeMeFragment extends Fragment
                             // TODO Replace dummy user with Active User
                             + "&username=danimeza@gmail.com";
 
-                    getActivity().getSupportFragmentManager()
-                            .beginTransaction()
-                            .replace(R.id.main_container, new DiscoverFragment())
-                            .addToBackStack(TAG)
-                            .commit();
+
 
                     sendRequest(url, getContext());
                 } else {

@@ -2,6 +2,10 @@ package com.armandgray.seeme;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -11,9 +15,6 @@ import android.widget.Toast;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.views.DiscoverFragment;
 import com.armandgray.seeme.views.NavBarFragment;
-import com.armandgray.seeme.views.NetworkFragment;
-import com.armandgray.seeme.views.NotesFragment;
-import com.armandgray.seeme.views.ProfileFragment;
 import com.armandgray.seeme.views.SeeMeFragment;
 
 import static com.armandgray.seeme.LoginActivity.LOGIN_PAYLOAD;
@@ -24,8 +25,10 @@ public class MainActivity extends AppCompatActivity
     public static final String API_URI = "http://52.39.178.132:8080";
     private static final String DEBUG_TAG = "DEBUG_TAG";
     private static final String TAG = "MAIN_ACTIVITY";
+    private FragmentManager fragmentManager;
 
     private User activeUser;
+    private ViewPagerAdapter adapterViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,12 +44,38 @@ public class MainActivity extends AppCompatActivity
             Toast.makeText(this, "Welcome Back " + activeUser.getFirstName(), Toast.LENGTH_SHORT).show();
         }
 
-        getSupportFragmentManager()
-                .beginTransaction()
-                .add(R.id.main_container, new SeeMeFragment())
-                .commit();
+        ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
+        adapterViewPager = new ViewPagerAdapter(getSupportFragmentManager());
+        viewPager.setAdapter(adapterViewPager);
     }
 
+    public class ViewPagerAdapter extends FragmentPagerAdapter {
+        private static final int NUM_PAGES = 2;
+
+        public ViewPagerAdapter(FragmentManager manager) {
+            super(manager);
+            fragmentManager = manager;
+        }
+
+        // Returns total number of pages
+        @Override
+        public int getCount() {
+            return NUM_PAGES;
+        }
+
+        // Returns the fragment to display for that page
+        @Override
+        public Fragment getItem(int position) {
+            switch (position) {
+                case 0:
+                    return DiscoverFragment.newInstance();
+                case 1:
+                    return SeeMeFragment.newInstance();
+                default:
+                    return null;
+            }
+        }
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -73,47 +102,27 @@ public class MainActivity extends AppCompatActivity
     // TODO pass Active User to each fragment
     @Override
     public void onNavDiscover() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.main_container, DiscoverFragment.newInstance())
-                .addToBackStack(TAG)
-                .commit();
+
     }
 
     @Override
     public void onNavNetwork() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.main_container, NetworkFragment.newInstance())
-                .addToBackStack(TAG)
-                .commit();
+
     }
 
     @Override
     public void onNavSeeMe() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.main_container, SeeMeFragment.newInstance())
-                .addToBackStack(TAG)
-                .commit();
+
     }
 
     @Override
     public void onNavNotes() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.main_container, NotesFragment.newInstance())
-                .addToBackStack(TAG)
-                .commit();
+
     }
 
     @Override
     public void onNavProfile() {
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.main_container, ProfileFragment.newInstance())
-                .addToBackStack(TAG)
-                .commit();
+
     }
 
 }
