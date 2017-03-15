@@ -4,10 +4,13 @@ package com.armandgray.seeme.views;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.res.ResourcesCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.armandgray.seeme.R;
 
@@ -23,7 +26,7 @@ public class NavBarFragment extends Fragment {
     private RelativeLayout navSeeMe;
     private RelativeLayout navNotes;
     private RelativeLayout navProfile;
-    private View[] arrayNavViews;
+    private RelativeLayout[] arrayNavLayouts;
 
     public NavBarFragment() {}
 
@@ -44,7 +47,7 @@ public class NavBarFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_navbar, container, false);
 
         getViewReferences(rootView);
-        assignArrayNavViews(rootView);
+        assignArrayNavLayouts();
 
         navDiscover.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,17 +98,29 @@ public class NavBarFragment extends Fragment {
         navProfile = (RelativeLayout) rootView.findViewById(R.id.navProfile);
     }
 
-    private void assignArrayNavViews(View rootView) {
-        arrayNavViews = new View[5];
-        arrayNavViews[0] = navDiscover;
-        arrayNavViews[1] = navNetwork;
-        arrayNavViews[2] = navSeeMe;
-        arrayNavViews[3] = navNotes;
-        arrayNavViews[4] = navProfile;
+    private void assignArrayNavLayouts() {
+        arrayNavLayouts = new RelativeLayout[5];
+        arrayNavLayouts[0] = navDiscover;
+        arrayNavLayouts[1] = navNetwork;
+        arrayNavLayouts[2] = navSeeMe;
+        arrayNavLayouts[3] = navNotes;
+        arrayNavLayouts[4] = navProfile;
     }
 
-    private void setIconColorStates(View activeView) {
-        for (int i = 0; i < arrayNavViews.length; i++) {
+    private void setIconColorStates(RelativeLayout activeLayout) {
+        for (int i = 0; i < arrayNavLayouts.length; i++) {
+            ImageView icon = (ImageView) arrayNavLayouts[i].getChildAt(0);
+            TextView text = (TextView) arrayNavLayouts[i].getChildAt(1);
+
+            if (arrayNavLayouts[i] != activeLayout) {
+                icon.setPressed(false);
+                icon.setColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorGray, null));
+                text.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGray, null));
+            } else {
+                icon.setPressed(true);
+                icon.setColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null));
+                text.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null));
+            }
         }
     }
 
