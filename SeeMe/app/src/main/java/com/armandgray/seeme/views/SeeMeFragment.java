@@ -24,7 +24,6 @@ import com.armandgray.seeme.utils.NetworkHelper;
 import java.util.Observable;
 import java.util.Observer;
 
-import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
 import static com.armandgray.seeme.utils.HttpHelper.sendRequest;
 
 /**
@@ -41,17 +40,27 @@ public class SeeMeFragment extends Fragment
     private String networkId;
     private ImageView ivWifi;
     private boolean networkOK;
+    private SeeMeListener listener;
 
     public SeeMeFragment() {
     }
 
     public static SeeMeFragment newInstance(User activeUser) {
         Bundle args = new Bundle();
-        args.putParcelable(ACTIVE_USER, activeUser);
-
         SeeMeFragment fragment = new SeeMeFragment();
         fragment.setArguments(args);
         return fragment;
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            listener = (SeeMeListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement SeeMeListener");
+        }
     }
 
     @Override
@@ -84,10 +93,8 @@ public class SeeMeFragment extends Fragment
                             + "&ssid="+ ssid.substring(1, ssid.length() - 1).replaceAll(" ", "%20")
                             // TODO Replace dummy user with Active User
                             + "&username=danimeza@gmail.com";
-
-
-
                     sendRequest(url, getContext());
+                    listener.onTouchSeeMe();
                 } else {
                     Toast.makeText(getContext(), "WiFi Connection Unsuccessful!", Toast.LENGTH_SHORT).show();
                 }
@@ -117,5 +124,9 @@ public class SeeMeFragment extends Fragment
             Log.i("ActiveNetInfo", "Wifi Network " + String.valueOf(ssid) + ": " + networkId);
             ivWifi.setImageResource(R.drawable.ic_wifi_white_48dp);
         }
+    }
+
+    public interface SeeMeListener {
+        void onTouchSeeMe();
     }
 }

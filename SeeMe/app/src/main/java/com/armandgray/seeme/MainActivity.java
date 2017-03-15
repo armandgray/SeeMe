@@ -23,7 +23,8 @@ import com.armandgray.seeme.views.SeeMeFragment;
 import static com.armandgray.seeme.LoginActivity.LOGIN_PAYLOAD;
 
 public class MainActivity extends AppCompatActivity
-        implements NavBarFragment.NavBarFragmentListener {
+        implements NavBarFragment.NavBarFragmentListener,
+            SeeMeFragment.SeeMeListener {
 
     public static final String API_URI = "http://52.39.178.132:8080";
     private static final String DEBUG_TAG = "DEBUG_TAG";
@@ -43,8 +44,8 @@ public class MainActivity extends AppCompatActivity
 
         activeUser = getIntent().getParcelableExtra(LOGIN_PAYLOAD);
         if (activeUser == null) {
-//            startActivity(new Intent(this, LoginActivity.class));
-            activeUser = new User("Armand", "Gray", "Creator", "armand@test.com", "1234567890", true, "");
+            startActivity(new Intent(this, LoginActivity.class));
+//            activeUser = new User("Armand", "Gray", "Creator", "armand@test.com", "1234567890", true, "");
         } else {
             Toast.makeText(this, "Welcome Back " + activeUser.getFirstName(), Toast.LENGTH_SHORT).show();
         }
@@ -128,6 +129,11 @@ public class MainActivity extends AppCompatActivity
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onTouchSeeMe() {
+        viewPager.setCurrentItem(0);
     }
 
     @Override
