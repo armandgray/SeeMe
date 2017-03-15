@@ -144,8 +144,8 @@ public class NavBarFragment extends Fragment {
         void onNavDiscover();
         void onNavNetwork();
         void onNavSeeMe();
-        void onNavProfile();
         void onNavNotes();
+        void onNavProfile();
     }
 
 }

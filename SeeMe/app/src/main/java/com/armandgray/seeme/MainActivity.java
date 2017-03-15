@@ -11,6 +11,9 @@ import android.widget.Toast;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.views.DiscoverFragment;
 import com.armandgray.seeme.views.NavBarFragment;
+import com.armandgray.seeme.views.NetworkFragment;
+import com.armandgray.seeme.views.NotesFragment;
+import com.armandgray.seeme.views.ProfileFragment;
 import com.armandgray.seeme.views.SeeMeFragment;
 
 import static com.armandgray.seeme.LoginActivity.LOGIN_PAYLOAD;
@@ -65,6 +68,8 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+
+    // TODO pass Active User to each fragment
     @Override
     public void onNavDiscover() {
         getSupportFragmentManager()
@@ -75,24 +80,34 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onNavNetwork() {
-
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_container, NetworkFragment.newInstance())
+                .commit();
     }
 
     @Override
     public void onNavSeeMe() {
         getSupportFragmentManager()
                 .beginTransaction()
-                .replace(R.id.main_container, DiscoverFragment.newInstance())
+                .replace(R.id.main_container, SeeMeFragment.newInstance())
+                .commit();
+    }
+
+    @Override
+    public void onNavNotes() {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_container, NotesFragment.newInstance())
                 .commit();
     }
 
     @Override
     public void onNavProfile() {
-
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_container, ProfileFragment.newInstance())
+                .commit();
     }
 
-    @Override
-    public void onNavNotes() {
-
-    }
 }
