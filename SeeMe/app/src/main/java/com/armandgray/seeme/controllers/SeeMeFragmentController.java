@@ -10,7 +10,6 @@ import android.util.Log;
 import android.widget.Toast;
 
 import com.armandgray.seeme.models.User;
-import com.armandgray.seeme.utils.NetworkHelper;
 import com.armandgray.seeme.views.SeeMeFragment;
 import com.armandgray.seeme.views.SeeMeFragment.SeeMeTouchListener;
 
@@ -19,16 +18,15 @@ import static com.armandgray.seeme.views.SeeMeFragment.LOCAL_USERS_URI;
 
 public class SeeMeFragmentController implements SeeMeFragment.SeeMeController {
 
+    private static final String TAG = "SEEME_CONTROLLER";
     private User activeUser;
     private SeeMeTouchListener seeMeTouchListener;
     private Context context;
 
-    private boolean isWifiConnected;
-    private boolean networkOK;
     private String ssid = "";
     private String networkId = "";
 
-    private int requestInterval = 5000;
+    private int requestInterval = 3000;
     private Handler handler;
 
     public SeeMeFragmentController(User activeUser, SeeMeTouchListener seeMeTouchListener, Context context) {
@@ -39,10 +37,11 @@ public class SeeMeFragmentController implements SeeMeFragment.SeeMeController {
     }
 
     public boolean getWifiState() {
-        isWifiConnected = getWifiConnectionState();
-        if (isWifiConnected) { getWifiNetworkId(); }
-        networkOK = NetworkHelper.hasNetworkAccess(context);
-        return isWifiConnected;
+        if (getWifiConnectionState()) {
+            getWifiNetworkId();
+            return true;
+        }
+        return false;
     }
 
     private boolean getWifiConnectionState() {
@@ -69,20 +68,28 @@ public class SeeMeFragmentController implements SeeMeFragment.SeeMeController {
 
     @Override
     public void requestLocalUsers() {
-        if (networkOK && isWifiConnected) {
-            String url = LOCAL_USERS_URI
-                    + networkId
-                    + "&ssid="+ ssid.substring(1, ssid.length() - 1).replaceAll(" ", "%20")
-                    + "&username=" + activeUser.getUsername();
-            sendRequest(url, context);
-            seeMeTouchListener.onTouchSeeMe();
-        } else {
-            Toast.makeText(context, "WiFi Connection Unsuccessful!", Toast.LENGTH_SHORT).show();
+        if (!getWifiConnectionState()) {
+            Toast.makeText(context, "Wifi Connection Unsuccessful!", Toast.LENGTH_SHORT).show();
+            return;
         }
+        sendLocalUsersRequest();
+        seeMeTouchListener.onTouchSeeMe();
+    }
+
+    private void sendLocalUsersRequest() {
+        String url = LOCAL_USERS_URI
+                + networkId
+                + "&ssid="+ ssid.substring(1, ssid.length() - 1).replaceAll(" ", "%20")
+                + "&username=" + activeUser.getUsername();
+        sendRequest(url, context);
     }
 
     @Override
     public void startAutoRequests() {
+        if (!getWifiConnectionState()) {
+            Toast.makeText(context, "Wifi Connection Unsuccessful!", Toast.LENGTH_SHORT).show();
+            return;
+        }
         statusChecker.run();
     }
 
@@ -95,7 +102,10 @@ public class SeeMeFragmentController implements SeeMeFragment.SeeMeController {
         @Override
         public void run() {
             try {
-                Toast.makeText(context, "Running...", Toast.LENGTH_SHORT).show();
+                Log.i(TAG, "Requesting...");
+                if (getWifiConnectionState()) {
+                    sendLocalUsersRequest();
+                }
                 updateStatusOrRequestInterval();
             } finally {
                 handler.postDelayed(statusChecker, requestInterval);
