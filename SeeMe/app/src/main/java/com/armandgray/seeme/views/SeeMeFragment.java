@@ -15,12 +15,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.Toast;
 
+import com.armandgray.seeme.MainActivity;
 import com.armandgray.seeme.R;
 import com.armandgray.seeme.utils.BroadcastObserver;
 import com.armandgray.seeme.utils.NetworkHelper;
 
 import java.util.Observable;
 import java.util.Observer;
+
+import static com.armandgray.seeme.utils.HttpHelper.sendRequest;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +32,8 @@ public class SeeMeFragment extends Fragment
         implements Observer {
 
     private static final String TAG = "TAG";
+    private static final String LOCAL_USERS_URI = MainActivity.API_URI + "/discoverable/localusers?networkId=";
+
     private boolean isWifiConnected;
     private String ssid;
     private String networkId;
@@ -64,16 +69,18 @@ public class SeeMeFragment extends Fragment
             @Override
             public void onClick(View v) {
                 if (networkOK && isWifiConnected) {
-//                    String url = LOCAL_USERS_URI
-//                            + networkId
-//                            + "&ssid="+ ssid.substring(1, ssid.length() - 1).replaceAll(" ", "%20")
-//                            + "&username=" + activeUser.getUsername();
-//                    sendRequest(url, getApplicationContext());
+                    String url = LOCAL_USERS_URI
+                            + networkId
+                            + "&ssid="+ ssid.substring(1, ssid.length() - 1).replaceAll(" ", "%20")
+                            + "&username=danimeza@gmail.com";
+
                     getActivity().getSupportFragmentManager()
                             .beginTransaction()
                             .replace(R.id.main_container, new DiscoverFragment())
                             .addToBackStack(TAG)
                             .commit();
+
+                    sendRequest(url, getContext());
                 } else {
                     Toast.makeText(getContext(), "WiFi Connection Unsuccessful!", Toast.LENGTH_SHORT).show();
                 }

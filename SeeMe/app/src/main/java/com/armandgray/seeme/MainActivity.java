@@ -30,7 +30,6 @@ public class MainActivity extends AppCompatActivity
         implements NavBarFragment.NavBarFragmentListener {
 
     public static final String API_URI = "http://52.39.178.132:8080";
-    private static final String LOCAL_USERS_URI = API_URI + "/discoverable/localusers?networkId=";
     private static final String DEBUG_TAG = "DEBUG_TAG";
 
     private User activeUser;
