@@ -20,6 +20,7 @@ import com.armandgray.seeme.views.SeeMeFragment;
 public class ViewPagerFragment extends Fragment {
 
     private FragmentManager fragmentManager;
+    private ViewPagerAdapter adapterViewPager;
 
     public ViewPagerFragment() {
         // Required empty public constructor
@@ -33,6 +34,10 @@ public class ViewPagerFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_view_pager, container, false);
 
         ViewPager viewPager = (ViewPager) rootView.findViewById(R.id.viewPager);
+        // TODO Fix Error Here
+        adapterViewPager = new ViewPagerAdapter(getChildFragmentManager());
+        viewPager.setAdapter(adapterViewPager);
+        viewPager.setCurrentItem(1);
 
         return rootView;
     }

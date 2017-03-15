@@ -9,6 +9,7 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.armandgray.seeme.models.User;
+import com.armandgray.seeme.views.DiscoverFragment;
 import com.armandgray.seeme.views.NavBarFragment;
 import com.armandgray.seeme.views.SeeMeFragment;
 
@@ -40,7 +41,6 @@ public class MainActivity extends AppCompatActivity
                 .beginTransaction()
                 .add(R.id.main_container, new SeeMeFragment())
                 .commit();
-
     }
 
 
@@ -67,7 +67,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onNavDiscover() {
-
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_container, DiscoverFragment.newInstance())
+                .commit();
     }
 
     @Override
@@ -77,7 +80,10 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public void onNavSeeMe() {
-
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(R.id.main_container, DiscoverFragment.newInstance())
+                .commit();
     }
 
     @Override
