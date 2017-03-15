@@ -61,19 +61,29 @@
             android:textSize="@dimen/navbar_text_size" />
     </RelativeLayout>
 
-    <ImageView
+    <RelativeLayout
         android:id="@+id/navSeeMe"
         android:layout_width="0dp"
-        android:layout_height="@dimen/nav_logo_size"
-        android:layout_gravity="center"
-        android:layout_marginLeft="@dimen/nav_logo_margin"
-        android:layout_marginRight="@dimen/nav_logo_margin"
-        android:layout_weight="0.16"
-        android:background="@drawable/nav_logo_background"
-        android:clickable="true"
-        android:contentDescription="@string/navbar_icon"
-        android:paddingTop="4dp"
-        app:srcCompat="@drawable/seeme_sm_logo" />
+        android:layout_height="wrap_content"
+        android:layout_weight="0.2">
+
+        <ImageView
+            android:id="@+id/ivSeeMe"
+            android:layout_width="@dimen/nav_logo_size"
+            android:layout_height="@dimen/nav_logo_size"
+            android:layout_centerInParent="true"
+            android:background="@drawable/nav_logo_background"
+            android:clickable="true"
+            android:paddingTop="6dp"
+            android:paddingBottom="2dp"
+            android:contentDescription="@string/navbar_icon"
+            app:srcCompat="@drawable/seeme_sm_logo" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_below="@+id/ivSeeMe" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/navNotes"

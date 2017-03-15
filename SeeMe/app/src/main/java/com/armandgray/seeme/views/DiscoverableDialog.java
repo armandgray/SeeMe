@@ -13,13 +13,13 @@ import android.text.style.StyleSpan;
 
 public class DiscoverableDialog extends DialogFragment {
 
-    private DiscoverableListener mListener;
+    private DiscoverableListener discoverableListener;
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            mListener = (DiscoverableListener) context;
+            discoverableListener = (DiscoverableListener) context;
         } catch (ClassCastException e) {
             // The activity doesn't implement the interface, throw exception
             throw new ClassCastException(context.toString()
@@ -35,12 +35,12 @@ public class DiscoverableDialog extends DialogFragment {
         builder.setMessage(getBoldStringBuilder())
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        mListener.onSubmitDiscoverable(true);
+                        discoverableListener.onSubmitDiscoverable(true);
                     }
                 })
                 .setNegativeButton("Hidden", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        mListener.onSubmitDiscoverable(false);
+                        discoverableListener.onSubmitDiscoverable(false);
                     }
                 });
         return builder.create();
