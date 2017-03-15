@@ -64,6 +64,11 @@ public class SeeMeFragment extends Fragment
             @Override
             public void onClick(View v) {
                 if (networkOK && isWifiConnected) {
+//                    String url = LOCAL_USERS_URI
+//                            + networkId
+//                            + "&ssid="+ ssid.substring(1, ssid.length() - 1).replaceAll(" ", "%20")
+//                            + "&username=" + activeUser.getUsername();
+//                    sendRequest(url, getApplicationContext());
                     Toast.makeText(getContext(), "WiFi Connection Good!", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getContext(), "WiFi Connection Unsuccessful!", Toast.LENGTH_SHORT).show();
