@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.armandgray.seeme.R;
+import com.armandgray.seeme.utils.NetworkHelper;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +28,7 @@ public class SeeMeFragment extends Fragment {
     private String ssid;
     private String networkId;
     private ImageView ivWifi;
+    private boolean networkOK;
 
     public SeeMeFragment() {
     }
@@ -49,11 +51,17 @@ public class SeeMeFragment extends Fragment {
             getWifiNetworkId();
         }
 
+        networkOK = NetworkHelper.hasNetworkAccess(getContext());
+
         ImageView ivSeeMe = (ImageView) rootView.findViewById(R.id.ivSeeMe);
         ivSeeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), ssid + ": " + networkId, Toast.LENGTH_SHORT).show();
+                if (networkOK && isWifiConnected) {
+                    Toast.makeText(getContext(), "WiFi Connection Good!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "WiFi Connection Unsuccessful!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
         return rootView;
