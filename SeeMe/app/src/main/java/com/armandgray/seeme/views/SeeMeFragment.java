@@ -72,6 +72,7 @@ public class SeeMeFragment extends Fragment
                     String url = LOCAL_USERS_URI
                             + networkId
                             + "&ssid="+ ssid.substring(1, ssid.length() - 1).replaceAll(" ", "%20")
+                            // TODO Replace dummy user with Active User
                             + "&username=danimeza@gmail.com";
 
                     getActivity().getSupportFragmentManager()
