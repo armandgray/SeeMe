@@ -18,8 +18,7 @@ import com.armandgray.seeme.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class NavBarFragment extends Fragment
-        implements DiscoverFragment.NavDiscoverListener {
+public class NavBarFragment extends Fragment {
 
     private NavBarFragmentListener fragmentListener;
     private RelativeLayout navDiscover;
@@ -141,9 +140,23 @@ public class NavBarFragment extends Fragment
         text.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null));
     }
 
-    @Override
-    public void onNavDiscover() {
-        setIconColorStates(navSeeMe);
+    public void onPageChange(int position) {
+        switch (position) {
+            case 0:
+                setIconColorStates(navDiscover);
+                return;
+            case 1:
+                setIconColorStates(navNetwork);
+                return;
+            case 2:
+                setIconColorStates(navSeeMe);
+                return;
+            case 3:
+                setIconColorStates(navNotes);
+                return;
+            case 4:
+                setIconColorStates(navProfile);
+        }
     }
 
     public interface NavBarFragmentListener {

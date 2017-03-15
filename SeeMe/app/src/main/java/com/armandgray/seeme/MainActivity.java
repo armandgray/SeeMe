@@ -59,6 +59,21 @@ public class MainActivity extends AppCompatActivity
         ViewPagerAdapter adapterViewPager = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapterViewPager);
         viewPager.setCurrentItem(2);
+
+        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                navbar.onPageChange(position);
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+            }
+        });
     }
 
     private class ViewPagerAdapter extends FragmentPagerAdapter {
@@ -114,7 +129,6 @@ public class MainActivity extends AppCompatActivity
                 return super.onOptionsItemSelected(item);
         }
     }
-
 
     @Override
     public void onNavDiscover() {

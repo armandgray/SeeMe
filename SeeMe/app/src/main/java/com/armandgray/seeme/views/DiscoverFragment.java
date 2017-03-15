@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.armandgray.seeme.R;
 import com.armandgray.seeme.models.User;
@@ -64,13 +63,7 @@ public class DiscoverFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_discover, container, false);
-
         rvUsers = (RecyclerView) rootView.findViewById(R.id.rvUsers);
-
-        User activeUser = getArguments().getParcelable(ACTIVE_USER);
-        if (activeUser != null) {
-            Toast.makeText(getContext(), activeUser.getFirstName(), Toast.LENGTH_SHORT).show();
-        }
 
         LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(
                 getActivity().getApplicationContext());
@@ -89,6 +82,7 @@ public class DiscoverFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
         LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
                 .registerReceiver(httpBroadcastReceiver,
                         new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
@@ -101,7 +95,4 @@ public class DiscoverFragment extends Fragment {
                 .unregisterReceiver(httpBroadcastReceiver);
     }
 
-    public interface NavDiscoverListener {
-        void onNavDiscover();
-    }
 }
