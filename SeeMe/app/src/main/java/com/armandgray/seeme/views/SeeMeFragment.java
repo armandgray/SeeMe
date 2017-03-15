@@ -16,12 +16,17 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.armandgray.seeme.R;
+import com.armandgray.seeme.utils.BroadcastObserver;
 import com.armandgray.seeme.utils.NetworkHelper;
+
+import java.util.Observable;
+import java.util.Observer;
 
 /**
  * A simple {@link Fragment} subclass.
  */
-public class SeeMeFragment extends Fragment {
+public class SeeMeFragment extends Fragment
+        implements Observer {
 
 
     private boolean isWifiConnected;
@@ -52,6 +57,7 @@ public class SeeMeFragment extends Fragment {
         }
 
         networkOK = NetworkHelper.hasNetworkAccess(getContext());
+        BroadcastObserver.getInstance().addObserver(this);
 
         ImageView ivSeeMe = (ImageView) rootView.findViewById(R.id.ivSeeMe);
         ivSeeMe.setOnClickListener(new View.OnClickListener() {
@@ -65,6 +71,15 @@ public class SeeMeFragment extends Fragment {
             }
         });
         return rootView;
+    }
+
+    @Override
+    public void update(Observable o, Object data) {
+        NetworkInfo info = (NetworkInfo) data;
+        isWifiConnected = info != null;
+        if (info != null) {
+            getWifiNetworkId();
+        }
     }
 
     private void getWifiNetworkId() {
@@ -81,5 +96,4 @@ public class SeeMeFragment extends Fragment {
             ivWifi.setImageResource(R.drawable.ic_wifi_white_48dp);
         }
     }
-
 }
