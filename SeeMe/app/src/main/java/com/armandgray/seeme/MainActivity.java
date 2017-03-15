@@ -18,10 +18,9 @@ import static com.armandgray.seeme.LoginActivity.LOGIN_PAYLOAD;
 
 public class MainActivity extends AppCompatActivity
         implements NavBarFragment.NavBarFragmentListener,
-            SeeMeFragment.SeeMeListener {
+        SeeMeFragment.SeeMeTouchListener {
 
     public static final String API_URI = "http://52.39.178.132:8080";
-    private static final String DEBUG_TAG = "DEBUG_TAG";
     private static final String TAG = "MAIN_ACTIVITY";
     public static final String ACTIVE_USER = "ACTIVE_USER";
 
@@ -36,6 +35,12 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        setActiveUser();
+        setUpNavBarFragment();
+        setupViewPager();
+    }
+
+    private void setActiveUser() {
         activeUser = getIntent().getParcelableExtra(LOGIN_PAYLOAD);
         if (activeUser == null) {
 //            startActivity(new Intent(this, LoginActivity.class));
@@ -43,53 +48,31 @@ public class MainActivity extends AppCompatActivity
         } else {
             Toast.makeText(this, "Welcome Back " + activeUser.getFirstName(), Toast.LENGTH_SHORT).show();
         }
+    }
 
+    private void setUpNavBarFragment() {
         navbar = new NavBarFragment();
         getSupportFragmentManager()
                 .beginTransaction()
                 .add(R.id.navContainer, navbar)
                 .commit();
+    }
 
+    private void setupViewPager() {
         viewPager = (ViewPager) findViewById(R.id.viewPager);
-        ViewPagerAdapter adapterViewPager = new ViewPagerAdapter(getSupportFragmentManager(), activeUser);
-        viewPager.setAdapter(adapterViewPager);
+        viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), activeUser));
         viewPager.setCurrentItem(2);
-
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
             @Override
             public void onPageSelected(int position) {
                 navbar.onPageChange(position);
             }
 
             @Override
-            public void onPageScrollStateChanged(int state) {
-            }
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
+            @Override
+            public void onPageScrollStateChanged(int state) {}
         });
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.sign_out_menu:
-                activeUser = null;
-                startActivity(new Intent(this, LoginActivity.class));
-                return true;
-            case R.id.action_settings:
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
     }
 
     @Override
@@ -120,6 +103,27 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onNavProfile() {
         viewPager.setCurrentItem(4, true);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.sign_out_menu:
+                activeUser = null;
+                startActivity(new Intent(this, LoginActivity.class));
+                return true;
+            case R.id.action_settings:
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 }

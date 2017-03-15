@@ -40,7 +40,7 @@ public class SeeMeFragment extends Fragment
     private String networkId;
     private ImageView ivWifi;
     private boolean networkOK;
-    private SeeMeListener listener;
+    private SeeMeTouchListener listener;
 
     public SeeMeFragment() {
     }
@@ -56,10 +56,10 @@ public class SeeMeFragment extends Fragment
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            listener = (SeeMeListener) context;
+            listener = (SeeMeTouchListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement SeeMeListener");
+                    + " must implement SeeMeTouchListener");
         }
     }
 
@@ -126,7 +126,7 @@ public class SeeMeFragment extends Fragment
         }
     }
 
-    public interface SeeMeListener {
+    public interface SeeMeTouchListener {
         void onTouchSeeMe();
     }
 }
