@@ -2,9 +2,6 @@ package com.armandgray.seeme;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -13,11 +10,8 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.armandgray.seeme.models.User;
-import com.armandgray.seeme.views.DiscoverFragment;
+import com.armandgray.seeme.utils.ViewPagerAdapter;
 import com.armandgray.seeme.views.NavBarFragment;
-import com.armandgray.seeme.views.NetworkFragment;
-import com.armandgray.seeme.views.NotesFragment;
-import com.armandgray.seeme.views.ProfileFragment;
 import com.armandgray.seeme.views.SeeMeFragment;
 
 import static com.armandgray.seeme.LoginActivity.LOGIN_PAYLOAD;
@@ -44,8 +38,8 @@ public class MainActivity extends AppCompatActivity
 
         activeUser = getIntent().getParcelableExtra(LOGIN_PAYLOAD);
         if (activeUser == null) {
-            startActivity(new Intent(this, LoginActivity.class));
-//            activeUser = new User("Armand", "Gray", "Creator", "armand@test.com", "1234567890", true, "");
+//            startActivity(new Intent(this, LoginActivity.class));
+            activeUser = new User("Armand", "Gray", "Creator", "armand@test.com", "1234567890", true, "");
         } else {
             Toast.makeText(this, "Welcome Back " + activeUser.getFirstName(), Toast.LENGTH_SHORT).show();
         }
@@ -57,7 +51,7 @@ public class MainActivity extends AppCompatActivity
                 .commit();
 
         viewPager = (ViewPager) findViewById(R.id.viewPager);
-        ViewPagerAdapter adapterViewPager = new ViewPagerAdapter(getSupportFragmentManager());
+        ViewPagerAdapter adapterViewPager = new ViewPagerAdapter(getSupportFragmentManager(), activeUser);
         viewPager.setAdapter(adapterViewPager);
         viewPager.setCurrentItem(2);
 
@@ -75,39 +69,6 @@ public class MainActivity extends AppCompatActivity
             public void onPageScrollStateChanged(int state) {
             }
         });
-    }
-
-    private class ViewPagerAdapter extends FragmentPagerAdapter {
-        private static final int NUM_PAGES = 5;
-
-        ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        // Returns total number of pages
-        @Override
-        public int getCount() {
-            return NUM_PAGES;
-        }
-
-        // Returns the fragment to display for that page
-        @Override
-        public Fragment getItem(int position) {
-            switch (position) {
-                case 0:
-                    return DiscoverFragment.newInstance(activeUser);
-                case 1:
-                    return NetworkFragment.newInstance(activeUser);
-                case 2:
-                    return SeeMeFragment.newInstance(activeUser);
-                case 3:
-                    return NotesFragment.newInstance(activeUser);
-                case 4:
-                    return ProfileFragment.newInstance(activeUser);
-                default:
-                    return null;
-            }
-        }
     }
 
     @Override
