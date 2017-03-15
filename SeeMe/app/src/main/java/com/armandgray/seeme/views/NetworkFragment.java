@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.armandgray.seeme.R;
+import com.armandgray.seeme.models.User;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -19,7 +20,7 @@ public class NetworkFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static NetworkFragment newInstance() {
+    public static NetworkFragment newInstance(User activeUser) {
         Bundle args = new Bundle();
         NetworkFragment fragment = new NetworkFragment();
         fragment.setArguments(args);

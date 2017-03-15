@@ -15,6 +15,9 @@ import android.widget.Toast;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.views.DiscoverFragment;
 import com.armandgray.seeme.views.NavBarFragment;
+import com.armandgray.seeme.views.NetworkFragment;
+import com.armandgray.seeme.views.NotesFragment;
+import com.armandgray.seeme.views.ProfileFragment;
 import com.armandgray.seeme.views.SeeMeFragment;
 
 import static com.armandgray.seeme.LoginActivity.LOGIN_PAYLOAD;
@@ -40,6 +43,7 @@ public class MainActivity extends AppCompatActivity
         activeUser = getIntent().getParcelableExtra(LOGIN_PAYLOAD);
         if (activeUser == null) {
 //            startActivity(new Intent(this, LoginActivity.class));
+            activeUser = new User("Armand", "Gray", "Creator", "armand@test.com", "1234567890", true, "");
         } else {
             Toast.makeText(this, "Welcome Back " + activeUser.getFirstName(), Toast.LENGTH_SHORT).show();
         }
@@ -47,10 +51,11 @@ public class MainActivity extends AppCompatActivity
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewPager);
         adapterViewPager = new ViewPagerAdapter(getSupportFragmentManager());
         viewPager.setAdapter(adapterViewPager);
+        viewPager.setCurrentItem(2);
     }
 
     public class ViewPagerAdapter extends FragmentPagerAdapter {
-        private static final int NUM_PAGES = 2;
+        private static final int NUM_PAGES = 5;
 
         public ViewPagerAdapter(FragmentManager manager) {
             super(manager);
@@ -68,9 +73,15 @@ public class MainActivity extends AppCompatActivity
         public Fragment getItem(int position) {
             switch (position) {
                 case 0:
-                    return DiscoverFragment.newInstance();
+                    return DiscoverFragment.newInstance(activeUser);
                 case 1:
-                    return SeeMeFragment.newInstance();
+                    return NetworkFragment.newInstance(activeUser);
+                case 2:
+                    return SeeMeFragment.newInstance(activeUser);
+                case 3:
+                    return NotesFragment.newInstance(activeUser);
+                case 4:
+                    return ProfileFragment.newInstance(activeUser);
                 default:
                     return null;
             }
@@ -99,7 +110,6 @@ public class MainActivity extends AppCompatActivity
     }
 
 
-    // TODO pass Active User to each fragment
     @Override
     public void onNavDiscover() {
 

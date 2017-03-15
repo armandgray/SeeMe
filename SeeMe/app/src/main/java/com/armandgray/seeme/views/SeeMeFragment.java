@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 import com.armandgray.seeme.MainActivity;
 import com.armandgray.seeme.R;
+import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.utils.BroadcastObserver;
 import com.armandgray.seeme.utils.NetworkHelper;
 
@@ -43,7 +44,7 @@ public class SeeMeFragment extends Fragment
     public SeeMeFragment() {
     }
 
-    public static SeeMeFragment newInstance() {
+    public static SeeMeFragment newInstance(User activeUser) {
         Bundle args = new Bundle();
         SeeMeFragment fragment = new SeeMeFragment();
         fragment.setArguments(args);

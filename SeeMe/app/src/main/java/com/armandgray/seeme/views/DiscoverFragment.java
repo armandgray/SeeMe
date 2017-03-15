@@ -48,7 +48,7 @@ public class DiscoverFragment extends Fragment {
         // Required empty public constructor
     }
 
-    public static DiscoverFragment newInstance() {
+    public static DiscoverFragment newInstance(User activeUser) {
 
         Bundle args = new Bundle();
         DiscoverFragment fragment = new DiscoverFragment();
