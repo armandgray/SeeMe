@@ -48,6 +48,13 @@ public class DiscoverFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public static DiscoverFragment newInstance() {
+
+        Bundle args = new Bundle();
+        DiscoverFragment fragment = new DiscoverFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,

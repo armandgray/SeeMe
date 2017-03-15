@@ -43,6 +43,12 @@ public class SeeMeFragment extends Fragment
     public SeeMeFragment() {
     }
 
+    public static SeeMeFragment newInstance() {
+        Bundle args = new Bundle();
+        SeeMeFragment fragment = new SeeMeFragment();
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
