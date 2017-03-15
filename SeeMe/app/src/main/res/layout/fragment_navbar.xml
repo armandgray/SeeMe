@@ -24,7 +24,7 @@
             android:layout_centerHorizontal="true"
             android:contentDescription="@string/navbar_icon"
             android:tint="@color/colorGray"
-            app:srcCompat="@drawable/ic_bluetooth_transfer_white_48dp" />
+            app:srcCompat="@drawable/ic_compass_white_48dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -48,7 +48,7 @@
             android:layout_centerHorizontal="true"
             android:contentDescription="@string/navbar_icon"
             android:tint="@color/colorGray"
-            app:srcCompat="@drawable/ic_bluetooth_transfer_white_48dp" />
+            app:srcCompat="@drawable/ic_contacts_white_48dp" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -62,11 +62,14 @@
     <ImageView
         android:id="@+id/navSeeMe"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/nav_logo_size"
+        android:paddingTop="4dp"
+        android:layout_marginLeft="@dimen/nav_logo_margin"
+        android:layout_marginRight="@dimen/nav_logo_margin"
+        android:background="@drawable/nav_logo_background"
         android:layout_gravity="center"
-        android:layout_weight="0.2"
+        android:layout_weight="0.16"
         android:contentDescription="@string/navbar_icon"
-        android:tint="@color/colorGray"
         app:srcCompat="@drawable/seeme_sm_logo" />
 
     <RelativeLayout
@@ -82,14 +85,14 @@
             android:layout_centerHorizontal="true"
             android:contentDescription="@string/navbar_icon"
             android:tint="@color/colorGray"
-            app:srcCompat="@drawable/ic_bluetooth_transfer_white_48dp" />
+            app:srcCompat="@drawable/ic_clipboard_text_white_48dp" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/ivNotes"
             android:layout_centerHorizontal="true"
-            android:text="Notes"
+            android:text="@string/notes"
             android:textSize="@dimen/navbar_text_size" />
     </RelativeLayout>
 
@@ -106,7 +109,7 @@
             android:layout_centerHorizontal="true"
             android:contentDescription="@string/navbar_icon"
             android:tint="@color/colorGray"
-            app:srcCompat="@drawable/ic_bluetooth_transfer_white_48dp" />
+            app:srcCompat="@drawable/ic_account_circle_white_48dp" />
 
         <TextView
             android:layout_width="wrap_content"
