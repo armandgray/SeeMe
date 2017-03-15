@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import com.armandgray.seeme.MainActivity;
 import com.armandgray.seeme.R;
@@ -23,7 +22,6 @@ import java.util.Observable;
 import java.util.Observer;
 
 import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
-import static com.armandgray.seeme.utils.HttpHelper.sendRequest;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -31,12 +29,10 @@ import static com.armandgray.seeme.utils.HttpHelper.sendRequest;
 public class SeeMeFragment extends Fragment
         implements Observer {
 
+    public static final String LOCAL_USERS_URI = MainActivity.API_URI + "/discoverable/localusers?networkId=";
     private static final String TAG = "TAG";
-    private static final String LOCAL_USERS_URI = MainActivity.API_URI + "/discoverable/localusers?networkId=";
 
     private boolean isWifiConnected;
-    private String ssid;
-    private String networkId;
     private ImageView ivWifi;
     private boolean networkOK;
     private SeeMeTouchListener seeMeTouchListener;
@@ -94,16 +90,7 @@ public class SeeMeFragment extends Fragment
         ivSeeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (networkOK && isWifiConnected) {
-                    String url = LOCAL_USERS_URI
-                            + networkId
-                            + "&ssid="+ ssid.substring(1, ssid.length() - 1).replaceAll(" ", "%20")
-                            + "&username=" + activeUser.getUsername();
-                    sendRequest(url, getContext());
-                    seeMeTouchListener.onTouchSeeMe();
-                } else {
-                    Toast.makeText(getContext(), "WiFi Connection Unsuccessful!", Toast.LENGTH_SHORT).show();
-                }
+                controller.requestLocalUsers();
             }
         });
         return rootView;
@@ -123,5 +110,6 @@ public class SeeMeFragment extends Fragment
 
     public interface SeeMeContoller {
         void getWifiNetworkId(ImageView ivWifi);
+        void requestLocalUsers();
     }
 }
