@@ -1,16 +1,39 @@
-<?xml version="1.0" encoding="utf-8"?>
-<shape xmlns:android="http://schemas.android.com/apk/res/android"
-    android:shape="oval">
+<selector xmlns:android="http://schemas.android.com/apk/res/android" >
+<item android:state_pressed="true" >
+    <shape android:shape="oval"  >
+        <stroke
+            android:width=".5dp"
+            android:color="#40CCCCCC" />
 
-    <stroke
-        android:width=".5dp"
-        android:color="#40CCCCCC" />
+        <gradient
+            android:angle="90"
+            android:centerColor="@color/colorPrimary"
+            android:endColor="@color/colorPrimary"
+            android:startColor="@color/colorAccent"
+            android:type="linear" />
+    </shape>
+</item>
+<item android:state_focused="true">
+    <shape android:shape="oval"  >
+        <stroke
+            android:width=".5dp"
+            android:color="#40CCCCCC" />
 
-    <gradient
-        android:angle="90"
-        android:centerColor="@color/colorPrimary"
-        android:endColor="@color/colorPrimary"
-        android:startColor="@color/colorAccent"
-        android:type="linear" />
+        <solid
+            android:angle="90"
+            android:centerColor="@color/colorPrimary"
+            android:endColor="@color/colorPrimary"
+            android:startColor="@color/colorAccent"
+            android:type="linear" />
+    </shape>
+</item>
+<item >
+    <shape android:shape="oval"  >
+        <stroke
+            android:width=".5dp"
+            android:color="#40CCCCCC" />
 
-</shape>
+        <solid android:color="@color/colorGray" />
+    </shape>
+</item>
+</selector>

@@ -22,6 +22,7 @@
             android:layout_width="@dimen/navbar_icon_size"
             android:layout_height="@dimen/navbar_icon_size"
             android:layout_centerHorizontal="true"
+            android:clickable="true"
             android:contentDescription="@string/navbar_icon"
             android:tint="@color/colorGray"
             app:srcCompat="@drawable/ic_compass_white_48dp" />
@@ -46,6 +47,7 @@
             android:layout_width="@dimen/navbar_icon_size"
             android:layout_height="@dimen/navbar_icon_size"
             android:layout_centerHorizontal="true"
+            android:clickable="true"
             android:contentDescription="@string/navbar_icon"
             android:tint="@color/colorGray"
             app:srcCompat="@drawable/ic_contacts_white_48dp" />
@@ -63,13 +65,14 @@
         android:id="@+id/navSeeMe"
         android:layout_width="0dp"
         android:layout_height="@dimen/nav_logo_size"
-        android:paddingTop="4dp"
+        android:layout_gravity="center"
         android:layout_marginLeft="@dimen/nav_logo_margin"
         android:layout_marginRight="@dimen/nav_logo_margin"
-        android:background="@drawable/nav_logo_background"
-        android:layout_gravity="center"
         android:layout_weight="0.16"
+        android:background="@drawable/nav_logo_background"
+        android:clickable="true"
         android:contentDescription="@string/navbar_icon"
+        android:paddingTop="4dp"
         app:srcCompat="@drawable/seeme_sm_logo" />
 
     <RelativeLayout
@@ -83,6 +86,7 @@
             android:layout_width="@dimen/navbar_icon_size"
             android:layout_height="@dimen/navbar_icon_size"
             android:layout_centerHorizontal="true"
+            android:clickable="true"
             android:contentDescription="@string/navbar_icon"
             android:tint="@color/colorGray"
             app:srcCompat="@drawable/ic_clipboard_text_white_48dp" />
@@ -107,6 +111,7 @@
             android:layout_width="@dimen/navbar_icon_size"
             android:layout_height="@dimen/navbar_icon_size"
             android:layout_centerHorizontal="true"
+            android:clickable="true"
             android:contentDescription="@string/navbar_icon"
             android:tint="@color/colorGray"
             app:srcCompat="@drawable/ic_account_circle_white_48dp" />

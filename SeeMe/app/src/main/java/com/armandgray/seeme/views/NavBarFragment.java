@@ -19,6 +19,12 @@ import com.armandgray.seeme.R;
 public class NavBarFragment extends Fragment {
 
     private NavBarFragmentListener mListener;
+    private RelativeLayout navDiscover;
+    private RelativeLayout navNetwork;
+    private ImageView navSeeMe;
+    private RelativeLayout navNotes;
+    private RelativeLayout navProfile;
+    private View[] arrayNavViews;
 
     public NavBarFragment() {}
 
@@ -36,9 +42,11 @@ public class NavBarFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_navbar, container, false);
-        RelativeLayout navDiscover = (RelativeLayout) rootView.findViewById(R.id.navDiscover);
+
+        getViewReferences(rootView);
+        assignArrayNavViews(rootView);
+
         navDiscover.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -46,7 +54,6 @@ public class NavBarFragment extends Fragment {
             }
         });
 
-        RelativeLayout navNetwork = (RelativeLayout) rootView.findViewById(R.id.navNetwork);
         navNetwork.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -54,29 +61,53 @@ public class NavBarFragment extends Fragment {
             }
         });
 
-        ImageView messages = (ImageView) rootView.findViewById(R.id.navSeeMe);
-        messages.setOnClickListener(new View.OnClickListener() {
+        navSeeMe.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setIconColorStates(navSeeMe);
                 mListener.onNavSeeMe();
             }
         });
 
-        RelativeLayout navNotes = (RelativeLayout) rootView.findViewById(R.id.navNotes);
         navNotes.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {mListener.onNavNotes();
+            public void onClick(View view) {
+                mListener.onNavNotes();
             }
         });
 
-        RelativeLayout navProfile = (RelativeLayout) rootView.findViewById(R.id.navProfile);
         navProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 mListener.onNavProfile();
             }
         });
+
+
+
         return rootView;
+    }
+
+    private void getViewReferences(View rootView) {
+        navDiscover = (RelativeLayout) rootView.findViewById(R.id.navDiscover);
+        navNetwork = (RelativeLayout) rootView.findViewById(R.id.navNetwork);
+        navSeeMe = (ImageView) rootView.findViewById(R.id.navSeeMe);
+        navNotes = (RelativeLayout) rootView.findViewById(R.id.navNotes);
+        navProfile = (RelativeLayout) rootView.findViewById(R.id.navProfile);
+    }
+
+    private void assignArrayNavViews(View rootView) {
+        arrayNavViews = new View[5];
+        arrayNavViews[0] = navDiscover;
+        arrayNavViews[1] = navNetwork;
+        arrayNavViews[2] = navSeeMe;
+        arrayNavViews[3] = navNotes;
+        arrayNavViews[4] = navProfile;
+    }
+
+    private void setIconColorStates(View activeView) {
+        for (int i = 0; i < arrayNavViews.length; i++) {
+        }
     }
 
     public interface NavBarFragmentListener {
