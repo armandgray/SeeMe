@@ -1,21 +1,22 @@
 package com.armandgray.seeme.controllers;
 
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
-import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.armandgray.seeme.R;
 import com.armandgray.seeme.models.User;
+import com.armandgray.seeme.utils.NetworkHelper;
 import com.armandgray.seeme.views.SeeMeFragment;
 import com.armandgray.seeme.views.SeeMeFragment.SeeMeTouchListener;
 
 import static com.armandgray.seeme.utils.HttpHelper.sendRequest;
 import static com.armandgray.seeme.views.SeeMeFragment.LOCAL_USERS_URI;
 
-public class SeeMeFragmentController implements SeeMeFragment.SeeMeContoller {
+public class SeeMeFragmentController implements SeeMeFragment.SeeMeController {
 
     private User activeUser;
     private SeeMeTouchListener seeMeTouchListener;
@@ -23,16 +24,30 @@ public class SeeMeFragmentController implements SeeMeFragment.SeeMeContoller {
 
     private boolean isWifiConnected;
     private boolean networkOK;
-    private String ssid;
-    private String networkId;
+    private String ssid = "";
+    private String networkId = "";
 
 
     public SeeMeFragmentController(User activeUser, SeeMeTouchListener seeMeTouchListener, Context context) {
         this.activeUser = activeUser;
         this.seeMeTouchListener = seeMeTouchListener;
         this.context = context;
-        this.ssid = "";
-        this.networkId = "";
+    }
+
+    public boolean getWifiState() {
+        isWifiConnected = getWifiConnectionState();
+        if (isWifiConnected) { getWifiNetworkId(); }
+        networkOK = NetworkHelper.hasNetworkAccess(context);
+        return isWifiConnected;
+    }
+
+    private boolean getWifiConnectionState() {
+        ConnectivityManager connMgr = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+             return networkInfo != null
+                     && networkInfo.isConnected()
+                     && networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
     }
 
     @Override
@@ -49,8 +64,7 @@ public class SeeMeFragmentController implements SeeMeFragment.SeeMeContoller {
         }
     }
 
-    @Override
-    public void getWifiNetworkId(ImageView ivWifi) {
+    private void getWifiNetworkId() {
         WifiManager wifiManager = (WifiManager) context.getApplicationContext()
                 .getSystemService (Context.WIFI_SERVICE);
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
@@ -58,10 +72,8 @@ public class SeeMeFragmentController implements SeeMeFragment.SeeMeContoller {
         networkId = wifiInfo.getBSSID();
         if (ssid.equals("<unknown ssid>")) {
             Log.i("ActiveNetInfo", "Wifi Network Not Found: " + String.valueOf(ssid));
-            ivWifi.setImageResource(R.drawable.ic_wifi_off_white_48dp);
         } else {
             Log.i("ActiveNetInfo", "Wifi Network " + String.valueOf(ssid) + ": " + networkId);
-            ivWifi.setImageResource(R.drawable.ic_wifi_white_48dp);
         }
     }
 }

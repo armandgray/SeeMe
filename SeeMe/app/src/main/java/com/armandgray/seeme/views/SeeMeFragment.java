@@ -2,8 +2,6 @@ package com.armandgray.seeme.views;
 
 
 import android.content.Context;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -16,7 +14,6 @@ import com.armandgray.seeme.R;
 import com.armandgray.seeme.controllers.SeeMeFragmentController;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.utils.BroadcastObserver;
-import com.armandgray.seeme.utils.NetworkHelper;
 
 import java.util.Observable;
 import java.util.Observer;
@@ -71,20 +68,7 @@ public class SeeMeFragment extends Fragment
         activeUser = getArguments().getParcelable(ACTIVE_USER);
 
         controller = new SeeMeFragmentController(activeUser, seeMeTouchListener, getContext());
-
-        ConnectivityManager connMgr = (ConnectivityManager) getActivity()
-                .getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
-        if (networkInfo != null) {
-            isWifiConnected = networkInfo.isConnected() && networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
-        }
-        if (isWifiConnected) {
-            controller.getWifiNetworkId(ivWifi);
-        }
-
-
-        networkOK = NetworkHelper.hasNetworkAccess(getContext());
-        BroadcastObserver.getInstance().addObserver(this);
+        updateIcWifi(controller.getWifiState());
 
         ImageView ivSeeMe = (ImageView) rootView.findViewById(R.id.ivSeeMe);
         ivSeeMe.setOnClickListener(new View.OnClickListener() {
@@ -93,14 +77,25 @@ public class SeeMeFragment extends Fragment
                 controller.requestLocalUsers();
             }
         });
+
+        BroadcastObserver.getInstance().addObserver(this);
+        
         return rootView;
+    }
+
+    private void updateIcWifi(boolean isWifiConnected) {
+        if (isWifiConnected) {
+            ivWifi.setImageResource(R.drawable.ic_wifi_white_48dp);
+            return;
+        }
+        ivWifi.setImageResource(R.drawable.ic_wifi_off_white_48dp);
     }
 
     @Override
     public void update(Observable o, Object data) {
         isWifiConnected = data != null;
         if (data != null) {
-            controller.getWifiNetworkId(ivWifi);
+            updateIcWifi(controller.getWifiState());
         }
     }
 
@@ -108,8 +103,7 @@ public class SeeMeFragment extends Fragment
         void onTouchSeeMe();
     }
 
-    public interface SeeMeContoller {
-        void getWifiNetworkId(ImageView ivWifi);
+    public interface SeeMeController {
         void requestLocalUsers();
     }
 }
