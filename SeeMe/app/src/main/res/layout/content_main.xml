@@ -10,28 +10,24 @@
     tools:showIn="@layout/activity_main">
 
     <fragment
-        android:id="@+id/navbar_container"
+        android:id="@+id/navbar"
         android:name="com.armandgray.seeme.views.NavBarFragment"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" />
 
-    <FrameLayout
-        android:id="@+id/main_fragment_container"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/mainPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/navbar_container"
-        android:layout_alignParentTop="true" />
-
-    <!--<android.support.v4.view.ViewPager-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:id="@+id/main_pager"-->
-        <!--android:layout_height="match_parent" />-->
+        android:layout_above="@id/navbar"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
 
     <TextView
+        android:id="@+id/tv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/tv"
         android:layout_marginBottom="20dp"
         android:text="Available Users" />
 
