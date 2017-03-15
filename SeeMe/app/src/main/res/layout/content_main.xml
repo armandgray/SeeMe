@@ -16,24 +16,16 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" />
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/mainPager"
+    <FrameLayout
+        android:id="@+id/main_container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_above="@id/navbar"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"/>
 
-    <TextView
-        android:id="@+id/tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:text="Available Users" />
-
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rvUsers"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
 </RelativeLayout>

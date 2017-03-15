@@ -28,6 +28,7 @@ import com.armandgray.seeme.services.HttpService;
 import com.armandgray.seeme.utils.BroadcastObserver;
 import com.armandgray.seeme.utils.NetworkHelper;
 import com.armandgray.seeme.utils.UserRVAdapter;
+import com.armandgray.seeme.views.DiscoverFragment;
 import com.armandgray.seeme.views.NavBarFragment;
 
 import java.util.Arrays;
@@ -81,6 +82,11 @@ public class MainActivity extends AppCompatActivity
         } else {
             Toast.makeText(this, "Welcome Back " + activeUser.getFirstName(), Toast.LENGTH_SHORT).show();
         }
+
+        getSupportFragmentManager()
+                .beginTransaction()
+                .add(R.id.main_container, new DiscoverFragment())
+                .commit();
 
         LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(getApplicationContext());
         broadcastManager.registerReceiver(httpBroadcastReceiver,

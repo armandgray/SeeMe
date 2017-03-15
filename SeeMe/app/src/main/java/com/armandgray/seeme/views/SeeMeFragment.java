@@ -12,18 +12,18 @@ import com.armandgray.seeme.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class DiscoverFragment extends Fragment {
+public class SeeMeFragment extends Fragment {
 
 
-    public DiscoverFragment() {
-        // Required empty public constructor
+    public SeeMeFragment() {
     }
 
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_discover, container, false);
+        // Inflate the layout for this fragment
+        return inflater.inflate(R.layout.fragment_see_me, container, false);
     }
 
 }
