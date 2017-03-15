@@ -111,29 +111,32 @@ public class NavBarFragment extends Fragment {
     }
 
     private void setIconColorStates(RelativeLayout activeLayout) {
-        ImageView icon;
-        TextView text;
+        setLayoutsColorInactive();
+        setActiveLayoutColorState(activeLayout);
+    }
 
+    private void setLayoutsColorInactive() {
         for (int i = 0; i < arrayNavLayouts.length; i++) {
             if (i != 2) {
-                icon = (ImageView) arrayNavLayouts[i].getChildAt(0);
+                ImageView icon = (ImageView) arrayNavLayouts[i].getChildAt(0);
                 icon.setColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorGray, null));
 
-                text = (TextView) arrayNavLayouts[i].getChildAt(1);
+                TextView text = (TextView) arrayNavLayouts[i].getChildAt(1);
                 text.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGray, null));
             }
         }
+        arrayNavLayouts[2].getChildAt(0).setBackgroundResource(R.drawable.nav_logo_background);
+    }
 
-        if (activeLayout == arrayNavLayouts[2]){
+    private void setActiveLayoutColorState(RelativeLayout activeLayout) {
+        if (activeLayout == arrayNavLayouts[2]) {
             arrayNavLayouts[2].getChildAt(0).setBackgroundResource(R.drawable.nav_logo_back_active);
             return;
-        } else {
-            arrayNavLayouts[2].getChildAt(0).setBackgroundResource(R.drawable.nav_logo_background);
         }
 
-        icon = (ImageView) activeLayout.getChildAt(0);
+        ImageView icon = (ImageView) activeLayout.getChildAt(0);
         icon.setColorFilter(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null));
-        text = (TextView) activeLayout.getChildAt(1);
+        TextView text = (TextView) activeLayout.getChildAt(1);
         text.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null));
     }
 
