@@ -29,4 +29,8 @@
     <string name="network">Network</string>
     <string name="profile">Profile</string>
     <string name="notes">Notes</string>
+    <string name="auto">Auto</string>
+    <string name="main_logo_desc">Main Logo Button SeeMe</string>
+    <string name="touch_to_seeme">Touch to SeeMe</string>
+    <string name="wifi_icon">Wifi Icon</string>
 </resources>

@@ -1,0 +1,55 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorPrimary"
+    android:orientation="vertical"
+    android:padding="@dimen/activity_horizontal_margin"
+    tools:context="com.armandgray.seeme.views.SeeMeFragment">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="end"
+        android:background="@drawable/main_auto_back"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:paddingTop="3dp"
+        android:paddingBottom="3dp"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:textAllCaps="true"
+        android:clickable="true"
+        android:textColor="@color/colorPrimary"
+        android:text="@string/auto" />
+
+    <ImageView
+        android:id="@+id/ivSeeMe"
+        android:layout_width="@dimen/main_logo_size"
+        android:layout_height="@dimen/main_logo_size"
+        android:layout_gravity="center"
+        android:layout_marginTop="30dp"
+        android:background="@drawable/seeme_button_back"
+        android:clickable="true"
+        android:contentDescription="@string/main_logo_desc"
+        android:paddingTop="20dp"
+        app:srcCompat="@drawable/seeme_sm_logo" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="30dp"
+        android:gravity="center_horizontal"
+        android:text="@string/touch_to_seeme"
+        android:textColor="@android:color/white"
+        android:textSize="18sp" />
+
+    <ImageView
+        android:id="@+id/ivWifi"
+        android:layout_width="@dimen/main_icwifi_size"
+        android:layout_height="@dimen/main_icwifi_size"
+        android:layout_marginTop="20dp"
+        android:layout_gravity="center_horizontal"
+        android:contentDescription="@string/wifi_icon"
+        app:srcCompat="@drawable/ic_wifi_off_white_48dp" />
+</LinearLayout>

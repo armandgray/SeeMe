@@ -12,4 +12,6 @@
     <dimen name="navbar_text_size">10sp</dimen>
     <dimen name="nav_logo_size">40dp</dimen>
     <dimen name="nav_logo_margin">5dp</dimen>
+    <dimen name="main_logo_size">125dp</dimen>
+    <dimen name="main_icwifi_size">35dp</dimen>
 </resources>

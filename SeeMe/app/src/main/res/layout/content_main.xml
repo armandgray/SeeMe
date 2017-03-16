@@ -9,35 +9,18 @@
     tools:context="com.armandgray.seeme.MainActivity"
     tools:showIn="@layout/activity_main">
 
-    <fragment
-        android:id="@+id/navbar_container"
-        android:name="com.armandgray.seeme.views.NavBarFragment"
+    <FrameLayout
+        android:id="@+id/navContainer"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true" />
 
-    <FrameLayout
-        android:id="@+id/main_fragment_container"
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/navbar_container"
-        android:layout_alignParentTop="true" />
-
-    <!--<android.support.v4.view.ViewPager-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:id="@+id/main_pager"-->
-        <!--android:layout_height="match_parent" />-->
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/tv"
-        android:layout_marginBottom="20dp"
-        android:text="Available Users" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvUsers"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_above="@id/navContainer"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"/>
 
 </RelativeLayout>

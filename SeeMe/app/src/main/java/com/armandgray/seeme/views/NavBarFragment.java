@@ -112,7 +112,7 @@ public class NavBarFragment extends Fragment {
 
     private void setIconColorStates(RelativeLayout activeLayout) {
         setLayoutsColorInactive();
-        setActiveLayoutColorState(activeLayout);
+        setColorState(activeLayout);
     }
 
     private void setLayoutsColorInactive() {
@@ -128,7 +128,7 @@ public class NavBarFragment extends Fragment {
         arrayNavLayouts[2].getChildAt(0).setBackgroundResource(R.drawable.nav_logo_background);
     }
 
-    private void setActiveLayoutColorState(RelativeLayout activeLayout) {
+    private void setColorState(RelativeLayout activeLayout) {
         if (activeLayout == arrayNavLayouts[2]) {
             arrayNavLayouts[2].getChildAt(0).setBackgroundResource(R.drawable.nav_logo_back_active);
             return;
@@ -140,12 +140,31 @@ public class NavBarFragment extends Fragment {
         text.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorPrimary, null));
     }
 
+    public void onPageChange(int position) {
+        switch (position) {
+            case 0:
+                setIconColorStates(navDiscover);
+                return;
+            case 1:
+                setIconColorStates(navNetwork);
+                return;
+            case 2:
+                setIconColorStates(navSeeMe);
+                return;
+            case 3:
+                setIconColorStates(navNotes);
+                return;
+            case 4:
+                setIconColorStates(navProfile);
+        }
+    }
+
     public interface NavBarFragmentListener {
         void onNavDiscover();
         void onNavNetwork();
         void onNavSeeMe();
-        void onNavProfile();
         void onNavNotes();
+        void onNavProfile();
     }
 
 }
