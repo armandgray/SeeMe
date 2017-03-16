@@ -13,7 +13,7 @@ import (
 var db *sql.DB
 
 func InitMySQLConnection() {
-  db, _ = sql.Open("mysql", "root:#54nFr4nc15c0@/seeme_db")
+  db, _ = sql.Open("mysql", "root:#54nFr4nc15c0@/seeme_prod")
 }
 
 func VerifyMySQLConnection(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
