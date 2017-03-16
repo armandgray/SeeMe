@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.armandgray.seeme.MainActivity;
 import com.armandgray.seeme.R;
@@ -82,7 +83,11 @@ public class SeeMeFragment extends Fragment
         tvAuto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                autoUpdate = !autoUpdate;
+                if (controller.getWifiState()) {
+                    autoUpdate = !autoUpdate;
+                } else {
+                    Toast.makeText(getContext(), "Wifi Connection Unsuccessful!", Toast.LENGTH_SHORT).show();
+                }
                 toggleAutoRequests();
             }
         });
