@@ -46,7 +46,7 @@ func GetDiscoverableUsersFromDB(w http.ResponseWriter) ([]User) {
   var userList []User
   var user User
 
-  rows, err := db.Query("select * from users where discoverable = ?", 1)
+  rows, err := db.Query("select * from users where discoverable = ? AND !(network_id = NULL)", 1)
   if err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
   }
