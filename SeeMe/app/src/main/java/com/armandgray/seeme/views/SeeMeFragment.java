@@ -70,8 +70,8 @@ public class SeeMeFragment extends Fragment
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_see_me, container, false);
 
-        assignFeilds(rootView);
-        updateIcWifi(controller.getWifiState());
+        assignFields(rootView);
+        updateUI(controller.getWifiState());
         setupClickListeners();
         BroadcastObserver.getInstance().addObserver(this);
 
@@ -83,13 +83,7 @@ public class SeeMeFragment extends Fragment
             @Override
             public void onClick(View v) {
                 autoUpdate = !autoUpdate;
-                if (autoUpdate) {
-                    tvAuto.setBackgroundResource(R.drawable.main_auto_back_active);
-                    controller.startAutoRequests();
-                } else {
-                    tvAuto.setBackgroundResource(R.drawable.main_auto_back);
-                    controller.stopAutoRequests();
-                }
+                toggleAutoRequests();
             }
         });
         ivSeeMe.setOnClickListener(new View.OnClickListener() {
@@ -100,19 +94,32 @@ public class SeeMeFragment extends Fragment
         });
     }
 
-    private void assignFeilds(View rootView) {
+    private void toggleAutoRequests() {
+        if (autoUpdate) {
+            tvAuto.setBackgroundResource(R.drawable.main_auto_back_active);
+            controller.startAutoRequests();
+        } else {
+            tvAuto.setBackgroundResource(R.drawable.main_auto_back);
+            controller.stopAutoRequests();
+        }
+    }
+
+    private void assignFields(View rootView) {
         ivWifi = (ImageView) rootView.findViewById(R.id.ivWifi);
         ivSeeMe = (ImageView) rootView.findViewById(R.id.ivSeeMe);
         tvAuto = (TextView) rootView.findViewById(R.id.tvAuto);
         activeUser = getArguments().getParcelable(ACTIVE_USER);
         controller = new SeeMeFragmentController(activeUser, seeMeTouchListener, getContext());
+        autoUpdate = false;
     }
 
-    private void updateIcWifi(boolean isWifiConnected) {
+    private void updateUI(boolean isWifiConnected) {
         if (isWifiConnected) {
             ivWifi.setImageResource(R.drawable.ic_wifi_white_48dp);
             return;
         }
+        autoUpdate = false;
+        toggleAutoRequests();
         ivWifi.setImageResource(R.drawable.ic_wifi_off_white_48dp);
     }
 
@@ -120,7 +127,7 @@ public class SeeMeFragment extends Fragment
     public void update(Observable o, Object data) {
         isWifiConnected = data != null;
         if (data != null) {
-            updateIcWifi(controller.getWifiState());
+            updateUI(controller.getWifiState());
         }
     }
 

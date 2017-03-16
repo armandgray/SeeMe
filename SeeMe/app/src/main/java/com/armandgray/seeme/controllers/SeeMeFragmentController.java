@@ -102,9 +102,9 @@ public class SeeMeFragmentController implements SeeMeFragment.SeeMeController {
         @Override
         public void run() {
             try {
-                Log.i(TAG, "Requesting...");
                 if (getWifiConnectionState()) {
-                    sendLocalUsersRequest();
+//                    sendLocalUsersRequest();
+                    Log.i(TAG, "Requesting...");
                 }
                 updateStatusOrRequestInterval();
             } finally {
