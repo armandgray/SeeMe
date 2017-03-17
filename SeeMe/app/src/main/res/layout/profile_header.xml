@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:textColor="@color/colorPrimary"
-        android:textSize="14sp"
+        android:textSize="16sp"
         android:textStyle="bold" />
 
     <TextView
@@ -24,10 +24,11 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:textColor="@color/colorPrimary"
-        android:textSize="12sp" />
+        android:textSize="14sp" />
 
     <FrameLayout
         android:layout_width="wrap_content"
+        android:layout_marginTop="5dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center">
 
@@ -41,7 +42,7 @@
             app:srcCompat="@drawable/ic_account_circle_white_48dp" />
 
         <android.support.design.widget.FloatingActionButton
-            android:id="@+id/fab"
+            android:id="@+id/fabCamera"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
