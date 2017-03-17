@@ -14,6 +14,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.armandgray.seeme.R;
 import com.armandgray.seeme.models.User;
@@ -30,13 +32,18 @@ import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
  */
 public class DiscoverFragment extends Fragment {
 
+    private static final String TAG = "DISCOVER_FRAGMENT";
+
     private RecyclerView rvUsers;
+    private TextView tvNoUsers;
+    private LinearLayout usersContainer;
+    private User[] userList;
 
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.e("BroadcastReceiver: ", "http Broadcast Received");
-            User[] userList =
+            userList =
                     (User[]) intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_PAYLOAD);
             if (userList != null) {
                 setupRvUsers(Arrays.asList(userList));
@@ -64,6 +71,10 @@ public class DiscoverFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_discover, container, false);
         rvUsers = (RecyclerView) rootView.findViewById(R.id.rvUsers);
+        tvNoUsers = (TextView) rootView.findViewById(R.id.tvNoUsers);
+        tvNoUsers.setText("No Available Users");
+        usersContainer = (LinearLayout) rootView.findViewById(R.id.usersContainer);
+        toggleShowUsers();
 
         LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(
                 getActivity().getApplicationContext());
@@ -71,6 +82,17 @@ public class DiscoverFragment extends Fragment {
                 new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
 
         return rootView;
+    }
+
+    private void toggleShowUsers() {
+        if (userList == null || userList.length == 0) {
+            tvNoUsers.setVisibility(View.VISIBLE);
+            usersContainer.setVisibility(View.INVISIBLE);
+            return;
+        }
+        Log.i(TAG, userList[0].getFirstName());
+        tvNoUsers.setVisibility(View.INVISIBLE);
+        usersContainer.setVisibility(View.VISIBLE);
     }
 
     private void setupRvUsers(List<User> list) {
