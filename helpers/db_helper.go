@@ -13,7 +13,7 @@ import (
 var db *sql.DB
 
 func InitMySQLConnection() {
-  db, _ = sql.Open("mysql", "root:#54nFr4nc15c0@/seeme_db")
+  db, _ = sql.Open("mysql", "root:#54nFr4nc15c0@/seeme_prod")
 }
 
 func VerifyMySQLConnection(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
@@ -46,7 +46,7 @@ func GetDiscoverableUsersFromDB(w http.ResponseWriter) ([]User) {
   var userList []User
   var user User
 
-  rows, err := db.Query("select * from users where discoverable = ?", 1)
+  rows, err := db.Query("select * from users where discoverable = 1 AND !(network_id = 'NULL')")
   if err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
   }

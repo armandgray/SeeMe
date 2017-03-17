@@ -21,7 +21,7 @@ func HandlerRegisterUser(w http.ResponseWriter, r *http.Request) {
       page.Alert = err.Error()
       fmt.Println("Database Insert Failure: " + err.Error())
     } else {
-      http.Redirect(w, r, "/login/user?username=" + r.FormValue("username"), http.StatusFound)
+      http.Redirect(w, r, "/seeme/api/login/user?username=" + r.FormValue("username"), http.StatusFound)
       return
     }
   }
@@ -36,7 +36,7 @@ func HandlerLogin(w http.ResponseWriter, r *http.Request) {
   var page Page
 
   if r.FormValue("register") != "" {
-    http.Redirect(w, r, "/register", http.StatusFound)
+    http.Redirect(w, r, "/seeme/api/register", http.StatusFound)
     return
   } else if r.FormValue("login") != "" {
     user, err := GetUserFromDB(r.FormValue("username")); 
@@ -44,14 +44,14 @@ func HandlerLogin(w http.ResponseWriter, r *http.Request) {
       page.Alert = err.Error()
     }
     if user.Username == "" {
-      http.Redirect(w, r, "/login/user?username=", http.StatusFound)
+      http.Redirect(w, r, "/seeme/api/login/user?username=", http.StatusFound)
       return
     } else {
       if err := bcrypt.CompareHashAndPassword(user.Secret, []byte(r.FormValue("password"))); err != nil {
-        http.Redirect(w, r, "/login/user?username=", http.StatusFound)
+        http.Redirect(w, r, "/seeme/api/login/user?username=", http.StatusFound)
         return
       } else {
-        http.Redirect(w, r, "/login/user?username=" + user.Username, http.StatusFound)
+        http.Redirect(w, r, "/seeme/api/login/user?username=" + user.Username, http.StatusFound)
         return
       }
     }
