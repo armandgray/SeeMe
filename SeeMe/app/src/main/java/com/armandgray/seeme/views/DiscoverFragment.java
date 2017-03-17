@@ -47,7 +47,6 @@ public class DiscoverFragment extends Fragment {
     private User[] userArray;
 
     private DiscoverCycleListener discoverCycleListener;
-    private DiscoverController controller;
 
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -61,9 +60,7 @@ public class DiscoverFragment extends Fragment {
         }
     };
 
-    public DiscoverFragment() {
-        // Required empty public constructor
-    }
+    public DiscoverFragment() {}
 
     public static DiscoverFragment newInstance(User activeUser) {
         Bundle args = new Bundle();
@@ -92,13 +89,8 @@ public class DiscoverFragment extends Fragment {
 
         assignFields(rootView);
         tvNoUsers.setText(getBoldStringBuilder(NO_USERS_HEADER, NO_USERS_CONTENT));
-        ivCycle.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                discoverCycleListener.onTouchCycle();
-            }
-        });
         toggleShowUsers();
+        setupIvClickListener();
 
         return rootView;
     }
@@ -119,6 +111,15 @@ public class DiscoverFragment extends Fragment {
         }
         noUsersContainer.setVisibility(View.INVISIBLE);
         usersContainer.setVisibility(View.VISIBLE);
+    }
+
+    private void setupIvClickListener() {
+        ivCycle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                discoverCycleListener.onTouchCycle();
+            }
+        });
     }
 
     private void setupRvUsers(List<User> list) {
@@ -146,6 +147,4 @@ public class DiscoverFragment extends Fragment {
         void onTouchCycle();
     }
 
-    public interface DiscoverController {
-    }
 }
