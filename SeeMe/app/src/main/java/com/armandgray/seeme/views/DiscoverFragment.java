@@ -10,9 +10,6 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -30,6 +27,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
+import static com.armandgray.seeme.utils.StringHelper.getBoldStringBuilder;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -37,6 +35,8 @@ import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
 public class DiscoverFragment extends Fragment {
 
     private static final String TAG = "DISCOVER_FRAGMENT";
+    private static final String NO_USERS_HEADER = "No Current Available Users";
+    private static final String NO_USERS_CONTENT = "Users are discoverable through SeeMe Touch. On the main screen, press the touch button or set SeeMe Touch to auto.";
 
     private TextView tvNoUsers;
     private ImageView ivCycle;
@@ -47,6 +47,7 @@ public class DiscoverFragment extends Fragment {
     private User[] userArray;
 
     private DiscoverCycleListener discoverCycleListener;
+    private DiscoverController controller;
 
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -90,7 +91,7 @@ public class DiscoverFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_discover, container, false);
 
         assignFields(rootView);
-        tvNoUsers.setText(getBoldStringBuilder());
+        tvNoUsers.setText(getBoldStringBuilder(NO_USERS_HEADER, NO_USERS_CONTENT));
         ivCycle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -108,15 +109,6 @@ public class DiscoverFragment extends Fragment {
         ivCycle = (ImageView) rootView.findViewById(R.id.ivCycle);
         noUsersContainer = (LinearLayout) rootView.findViewById(R.id.noUsersContainer);
         usersContainer = (LinearLayout) rootView.findViewById(R.id.usersContainer);
-    }
-
-    private SpannableStringBuilder getBoldStringBuilder() {
-        final String dialogTextHeader = "No Current Available Users\n\n";
-        String dialogTextContent = "Users are discoverable through SeeMe Touch. On the main screen, press the touch button or set SeeMe Touch to auto.";
-        final SpannableStringBuilder stringBuilder = new SpannableStringBuilder(dialogTextHeader + dialogTextContent);
-        final StyleSpan boldStyleSpan = new StyleSpan(android.graphics.Typeface.BOLD);
-        stringBuilder.setSpan(boldStyleSpan, 0, dialogTextHeader.length() - 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        return stringBuilder;
     }
 
     private void toggleShowUsers() {
@@ -152,5 +144,8 @@ public class DiscoverFragment extends Fragment {
 
     public interface DiscoverCycleListener {
         void onTouchCycle();
+    }
+
+    public interface DiscoverController {
     }
 }
