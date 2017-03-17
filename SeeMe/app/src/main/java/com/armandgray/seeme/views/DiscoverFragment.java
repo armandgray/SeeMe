@@ -10,6 +10,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.Spannable;
+import android.text.SpannableStringBuilder;
+import android.text.style.StyleSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,7 +41,6 @@ public class DiscoverFragment extends Fragment {
     private TextView tvNoUsers;
     private LinearLayout usersContainer;
     private User[] userList;
-    private User activeUser;
 
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -48,8 +50,6 @@ public class DiscoverFragment extends Fragment {
             if (userList != null) {
                 setupRvUsers(Arrays.asList(userList));
                 toggleShowUsers();
-            } else {
-                Log.i("USER_LIST", "LIST IS NULL");
             }
         }
     };
@@ -72,11 +72,9 @@ public class DiscoverFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_discover, container, false);
 
-        activeUser = getArguments().getParcelable(ACTIVE_USER);
-
         rvUsers = (RecyclerView) rootView.findViewById(R.id.rvUsers);
         tvNoUsers = (TextView) rootView.findViewById(R.id.tvNoUsers);
-        tvNoUsers.setText("No Available Users");
+        tvNoUsers.setText(getBoldStringBuilder());
         usersContainer = (LinearLayout) rootView.findViewById(R.id.usersContainer);
         toggleShowUsers();
 
@@ -86,6 +84,15 @@ public class DiscoverFragment extends Fragment {
                 new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
 
         return rootView;
+    }
+
+    private SpannableStringBuilder getBoldStringBuilder() {
+        final String dialogTextHeader = "No Current Available Users\n\n";
+        String dialogTextContent = "Users are discoverable through SeeMe Touch. On the main screen, press the touch button or set SeeMe Touch to auto.";
+        final SpannableStringBuilder stringBuilder = new SpannableStringBuilder(dialogTextHeader + dialogTextContent);
+        final StyleSpan boldStyleSpan = new StyleSpan(android.graphics.Typeface.BOLD);
+        stringBuilder.setSpan(boldStyleSpan, 0, dialogTextHeader.length() - 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
+        return stringBuilder;
     }
 
     private void toggleShowUsers() {
@@ -102,7 +109,6 @@ public class DiscoverFragment extends Fragment {
     private void setupRvUsers(List<User> list) {
         rvUsers.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         rvUsers.setAdapter(new UserRVAdapter(getActivity(), list));
-
     }
 
     @Override
