@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center_vertical"
+    android:layout_marginLeft="@dimen/activity_horizontal_margin"
+    android:layout_marginRight="@dimen/activity_horizontal_margin"
+    android:background="@drawable/profile_item_border"
+    android:gravity="center_vertical"
+    android:orientation="horizontal"
+    android:paddingBottom="8dp"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="8dp"
+    tools:showIn="@layout/fragment_profile">
+
+    <ImageView
+        android:layout_width="@dimen/menu_icon_size"
+        android:layout_height="@dimen/menu_icon_size"
+        android:layout_marginRight="@dimen/btn_padding"
+        android:contentDescription="@string/profile_item_icon"
+        app:srcCompat="@drawable/ic_lock_open_outline_white_48dp" />
+
+    <TextView
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="0.9"
+        android:background="@android:color/transparent"
+        android:popupBackground="#333333" />
+
+    <ImageView
+        android:layout_width="0dp"
+        android:layout_height="17dp"
+        android:layout_gravity="center_vertical|end"
+        android:layout_weight="0.1"
+        app:srcCompat="@drawable/ic_pencil_white_48dp" />
+</LinearLayout>
