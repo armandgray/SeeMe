@@ -1,6 +1,5 @@
 package com.armandgray.seeme.controllers;
 
-import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -95,14 +94,14 @@ public class RegisterActivityController implements RegisterActivity.RegisterCont
     }
 
     @Override
-    public void getUserFromResponse(Context context, User[] userList) {
+    public void getUserFromResponse(User[] userList) {
         if (userList.length == 0) {
             Log.e(TAG, "REGISTRATION ERROR ON RETURN");
-            Toast.makeText(context, "Registration Failed!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, "Registration Failed!", Toast.LENGTH_SHORT).show();
         } else {
-            Intent loginIntent = new Intent(context, MainActivity.class);
+            Intent loginIntent = new Intent(activity, MainActivity.class);
             loginIntent.putExtra(LOGIN_PAYLOAD, userList[0]);
-            context.startActivity(loginIntent);
+            activity.startActivity(loginIntent);
         }
     }
 }
