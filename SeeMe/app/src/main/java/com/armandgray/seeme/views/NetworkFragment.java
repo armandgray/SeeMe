@@ -5,9 +5,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.style.StyleSpan;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +18,7 @@ import com.armandgray.seeme.utils.UserRVAdapter;
 import java.util.List;
 
 import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
+import static com.armandgray.seeme.utils.StringHelper.getBoldStringBuilder;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -28,6 +26,8 @@ import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
 public class NetworkFragment extends Fragment {
 
 
+    private static final String NO_NETWORK_HEADER = "No Network Found";
+    private static final String NO_NETWORK_CONTENT = "New SeeMe Users can build their network using SeeMe Touch. On the Discover screen, press connect on available users to build your network.";
     private RecyclerView rvNetwork;
     private TextView tvNoNetwork;
     private LinearLayout networkContainer;
@@ -51,7 +51,7 @@ public class NetworkFragment extends Fragment {
         View rootView = inflater.inflate(R.layout.fragment_network, container, false);
 
         assignFields(rootView);
-        tvNoNetwork.setText(getBoldStringBuilder());
+        tvNoNetwork.setText(getBoldStringBuilder(NO_NETWORK_HEADER, NO_NETWORK_CONTENT));
         toggleShowNetwork();
 
         return rootView;
@@ -61,15 +61,6 @@ public class NetworkFragment extends Fragment {
         rvNetwork = (RecyclerView) rootView.findViewById(R.id.rvNetwork);
         tvNoNetwork = (TextView) rootView.findViewById(R.id.tvNoNetwork);
         networkContainer = (LinearLayout) rootView.findViewById(R.id.networkContainer);
-    }
-
-    private SpannableStringBuilder getBoldStringBuilder() {
-        final String dialogTextHeader = "No Network Found\n\n";
-        String dialogTextContent = "New SeeMe Users can build their network using SeeMe Touch. On the Discover screen, press connect on available users to build your network.";
-        final SpannableStringBuilder stringBuilder = new SpannableStringBuilder(dialogTextHeader + dialogTextContent);
-        final StyleSpan boldStyleSpan = new StyleSpan(android.graphics.Typeface.BOLD);
-        stringBuilder.setSpan(boldStyleSpan, 0, dialogTextHeader.length() - 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        return stringBuilder;
     }
 
     private void toggleShowNetwork() {
