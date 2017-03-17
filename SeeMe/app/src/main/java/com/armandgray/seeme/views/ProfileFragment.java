@@ -4,6 +4,7 @@ package com.armandgray.seeme.views;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.text.InputType;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -82,7 +83,7 @@ public class ProfileFragment extends Fragment {
 
     private void setupHeaderContent() {
         tvFullName.setText(activeUser.getFirstName() + " " + activeUser.getLastName());
-        tvUsername.setText("@" + activeUser.getUsername());
+        tvUsername.setText("--> " + activeUser.getUsername() + " <--");
         ivProfile.setImageResource(R.drawable.ic_account_circle_white_48dp);
         fabCamera.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -94,9 +95,13 @@ public class ProfileFragment extends Fragment {
 
     private void setupItemContent() {
         setupItem(itemUsername, R.drawable.ic_account_outline_white_48dp, activeUser.getUsername());
-        setupItem(itemPassword, R.drawable.ic_lock_open_outline_white_48dp, "11111111");
+        setupItem(itemPassword, R.drawable.ic_lock_open_outline_white_48dp, "0000000");
         setupItem(itemRole, R.drawable.ic_tools_resources, activeUser.getRole());
-        setupItem(itemDiscoverable, R.drawable.ic_earth_white_48dp, DISCOVERABLE);
+        setupItem(itemDiscoverable, R.drawable.ic_earth_white_48dp,
+                activeUser.isDiscoverable() ? DISCOVERABLE : HIDDEN);
+
+        TextView tvPassword = (TextView) itemPassword.getChildAt(1);
+        tvPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
     }
 
     private void setupItem(LinearLayout item, int drawable, String title) {

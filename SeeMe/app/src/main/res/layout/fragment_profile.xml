@@ -2,62 +2,76 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context="com.armandgray.seeme.views.ProfileFragment">
 
-    <LinearLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
-        <include layout="@layout/profile_header" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorGray" />
-
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingBottom="@dimen/activity_vertical_margin"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:paddingTop="@dimen/header_text_top_padding"
-            android:popupBackground="#333333"
-            android:text="@string/my_account"
-            android:textAllCaps="true"
-            android:textSize="@dimen/header_text_size" />
+            android:orientation="vertical">
 
-        <include
-            android:id="@+id/itemUsername"
-            layout="@layout/profile_item" />
+            <include layout="@layout/profile_header" />
 
-        <include
-            android:id="@+id/itemPassword"
-            layout="@layout/profile_item" />
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/colorGray" />
 
-        <include
-            android:id="@+id/itemRole"
-            layout="@layout/profile_item" />
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingBottom="@dimen/activity_vertical_margin"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:paddingTop="@dimen/header_text_top_padding"
+                android:popupBackground="#333333"
+                android:text="@string/my_account"
+                android:textAllCaps="true"
+                android:textSize="@dimen/header_text_size" />
 
-        <include
-            android:id="@+id/itemDiscoverable"
-            layout="@layout/profile_item" />
+            <include
+                android:id="@+id/itemUsername"
+                layout="@layout/profile_item" />
 
-        <include layout="@layout/profile_app_info" />
+            <include
+                android:id="@+id/itemPassword"
+                layout="@layout/profile_item" />
 
-        <Button
-            android:id="@+id/btnDeleteAccount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal|bottom"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/background_delete_account"
-            android:paddingLeft="@dimen/activity_horizontal_margin"
-            android:paddingRight="@dimen/activity_horizontal_margin"
-            android:text="@string/delete_account"
-            android:textAllCaps="false"
-            android:textColor="@android:color/white"
-            android:textSize="16sp" />
-    </LinearLayout>
+            <include
+                android:id="@+id/itemRole"
+                layout="@layout/profile_item" />
+
+            <include
+                android:id="@+id/itemDiscoverable"
+                layout="@layout/profile_item" />
+
+            <include layout="@layout/profile_app_info" />
+
+            <Button
+                android:id="@+id/btnDeleteAccount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal|bottom"
+                android:layout_marginBottom="10dp"
+                android:background="@drawable/background_delete_account"
+                android:paddingLeft="@dimen/activity_horizontal_margin"
+                android:paddingRight="@dimen/activity_horizontal_margin"
+                android:text="@string/delete_account"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="16sp" />
+        </LinearLayout>
+
+        <ImageView
+            android:layout_width="@dimen/profile_pencil_size"
+            android:layout_height="@dimen/profile_pencil_size"
+            android:layout_gravity="end"
+            android:layout_margin="@dimen/activity_horizontal_margin"
+            android:tint="@color/colorPrimary"
+            app:srcCompat="@drawable/ic_pencil_white_48dp" />
+    </FrameLayout>
 </ScrollView>
