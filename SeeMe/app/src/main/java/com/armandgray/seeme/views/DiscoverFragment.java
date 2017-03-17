@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -38,11 +39,14 @@ public class DiscoverFragment extends Fragment {
     private static final String TAG = "DISCOVER_FRAGMENT";
 
     private TextView tvNoUsers;
+    private ImageView ivCycle;
     private LinearLayout usersContainer;
     private LinearLayout noUsersContainer;
 
     private RecyclerView rvUsers;
     private User[] userList;
+
+    private DiscoverCycleListener discoverCycleListener;
 
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -70,23 +74,40 @@ public class DiscoverFragment extends Fragment {
     }
 
     @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        try {
+            discoverCycleListener = (DiscoverCycleListener) context;
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString()
+                    + " must implement DiscoverCycleListener");
+        }
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_discover, container, false);
 
-        rvUsers = (RecyclerView) rootView.findViewById(R.id.rvUsers);
-        tvNoUsers = (TextView) rootView.findViewById(R.id.tvNoUsers);
+        assignFields(rootView);
         tvNoUsers.setText(getBoldStringBuilder());
-        noUsersContainer = (LinearLayout) rootView.findViewById(R.id.noUsersContainer);
-        usersContainer = (LinearLayout) rootView.findViewById(R.id.usersContainer);
+        ivCycle.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                discoverCycleListener.onTouchCycle();
+            }
+        });
         toggleShowUsers();
 
-        LocalBroadcastManager broadcastManager = LocalBroadcastManager.getInstance(
-                getActivity().getApplicationContext());
-        broadcastManager.registerReceiver(httpBroadcastReceiver,
-                new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
-
         return rootView;
+    }
+
+    private void assignFields(View rootView) {
+        rvUsers = (RecyclerView) rootView.findViewById(R.id.rvUsers);
+        tvNoUsers = (TextView) rootView.findViewById(R.id.tvNoUsers);
+        ivCycle = (ImageView) rootView.findViewById(R.id.ivCycle);
+        noUsersContainer = (LinearLayout) rootView.findViewById(R.id.noUsersContainer);
+        usersContainer = (LinearLayout) rootView.findViewById(R.id.usersContainer);
     }
 
     private SpannableStringBuilder getBoldStringBuilder() {
@@ -130,4 +151,7 @@ public class DiscoverFragment extends Fragment {
                 .unregisterReceiver(httpBroadcastReceiver);
     }
 
+    public interface DiscoverCycleListener {
+        void onTouchCycle();
+    }
 }

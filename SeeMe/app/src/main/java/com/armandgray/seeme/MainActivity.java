@@ -11,6 +11,7 @@ import android.widget.Toast;
 
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.utils.ViewPagerAdapter;
+import com.armandgray.seeme.views.DiscoverFragment;
 import com.armandgray.seeme.views.NavBarFragment;
 import com.armandgray.seeme.views.SeeMeFragment;
 
@@ -18,7 +19,8 @@ import static com.armandgray.seeme.LoginActivity.LOGIN_PAYLOAD;
 
 public class MainActivity extends AppCompatActivity
         implements NavBarFragment.NavBarFragmentListener,
-        SeeMeFragment.SeeMeTouchListener {
+        SeeMeFragment.SeeMeTouchListener,
+        DiscoverFragment.DiscoverCycleListener {
 
     public static final String API_URI = "http://armandgray.com/seeme/api";
     private static final String TAG = "MAIN_ACTIVITY";
@@ -81,6 +83,11 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void onTouchCycle() {
+        viewPager.setCurrentItem(2);
+    }
+
+    @Override
     public void onNavDiscover() {
         viewPager.setCurrentItem(0, true);
     }
@@ -125,5 +132,4 @@ public class MainActivity extends AppCompatActivity
                 return super.onOptionsItemSelected(item);
         }
     }
-
 }

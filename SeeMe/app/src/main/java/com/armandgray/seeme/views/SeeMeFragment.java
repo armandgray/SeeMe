@@ -79,6 +79,25 @@ public class SeeMeFragment extends Fragment
         return rootView;
     }
 
+    private void assignFields(View rootView) {
+        ivWifi = (ImageView) rootView.findViewById(R.id.ivWifi);
+        ivSeeMe = (ImageView) rootView.findViewById(R.id.ivSeeMe);
+        tvAuto = (TextView) rootView.findViewById(R.id.tvAuto);
+        activeUser = getArguments().getParcelable(ACTIVE_USER);
+        controller = new SeeMeFragmentController(activeUser, seeMeTouchListener, getContext());
+        autoUpdate = false;
+    }
+
+    private void updateUI(boolean isWifiConnected) {
+        if (isWifiConnected) {
+            ivWifi.setImageResource(R.drawable.ic_wifi_white_48dp);
+            return;
+        }
+        autoUpdate = false;
+        toggleAutoRequests();
+        ivWifi.setImageResource(R.drawable.ic_wifi_off_white_48dp);
+    }
+
     private void setupClickListeners() {
         tvAuto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,25 +126,6 @@ public class SeeMeFragment extends Fragment
             tvAuto.setBackgroundResource(R.drawable.main_auto_back);
             controller.stopAutoRequests();
         }
-    }
-
-    private void assignFields(View rootView) {
-        ivWifi = (ImageView) rootView.findViewById(R.id.ivWifi);
-        ivSeeMe = (ImageView) rootView.findViewById(R.id.ivSeeMe);
-        tvAuto = (TextView) rootView.findViewById(R.id.tvAuto);
-        activeUser = getArguments().getParcelable(ACTIVE_USER);
-        controller = new SeeMeFragmentController(activeUser, seeMeTouchListener, getContext());
-        autoUpdate = false;
-    }
-
-    private void updateUI(boolean isWifiConnected) {
-        if (isWifiConnected) {
-            ivWifi.setImageResource(R.drawable.ic_wifi_white_48dp);
-            return;
-        }
-        autoUpdate = false;
-        toggleAutoRequests();
-        ivWifi.setImageResource(R.drawable.ic_wifi_off_white_48dp);
     }
 
     @Override
