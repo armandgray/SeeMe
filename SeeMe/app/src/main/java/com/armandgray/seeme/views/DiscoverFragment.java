@@ -44,7 +44,7 @@ public class DiscoverFragment extends Fragment {
     private LinearLayout noUsersContainer;
 
     private RecyclerView rvUsers;
-    private User[] userList;
+    private User[] userArray;
 
     private DiscoverCycleListener discoverCycleListener;
 
@@ -52,9 +52,9 @@ public class DiscoverFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.e("BroadcastReceiver: ", "http Broadcast Received");
-            userList = (User[]) intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_PAYLOAD);
-            if (userList != null) {
-                setupRvUsers(Arrays.asList(userList));
+            userArray = (User[]) intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_PAYLOAD);
+            if (userArray != null) {
+                setupRvUsers(Arrays.asList(userArray));
                 toggleShowUsers();
             }
         }
@@ -120,12 +120,11 @@ public class DiscoverFragment extends Fragment {
     }
 
     private void toggleShowUsers() {
-        if (userList == null || userList.length == 0) {
+        if (userArray == null || userArray.length == 0) {
             noUsersContainer.setVisibility(View.VISIBLE);
             usersContainer.setVisibility(View.INVISIBLE);
             return;
         }
-        Log.i(TAG, userList[0].getFirstName());
         noUsersContainer.setVisibility(View.INVISIBLE);
         usersContainer.setVisibility(View.VISIBLE);
     }
