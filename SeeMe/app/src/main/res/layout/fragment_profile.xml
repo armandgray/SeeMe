@@ -34,7 +34,7 @@
                 android:textSize="@dimen/header_text_size" />
 
             <include
-                android:id="@+id/itemUsername"
+                android:id="@+id/itemFullName"
                 layout="@layout/profile_item" />
 
             <include
@@ -67,6 +67,7 @@
         </LinearLayout>
 
         <ImageView
+            android:id="@+id/ivEdit"
             android:layout_width="@dimen/profile_pencil_size"
             android:layout_height="@dimen/profile_pencil_size"
             android:layout_gravity="end"

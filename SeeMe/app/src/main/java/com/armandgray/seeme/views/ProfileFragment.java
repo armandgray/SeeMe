@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -26,6 +27,7 @@ public class ProfileFragment extends Fragment {
 
     private static final String DISCOVERABLE = "Discoverable";
     private static final String HIDDEN = "Hidden";
+    private static final String TAG = "PROFILE_FRAGMENT";
     private User activeUser;
 
     private TextView tvFullName;
@@ -33,10 +35,14 @@ public class ProfileFragment extends Fragment {
     private ImageView ivProfile;
     private FloatingActionButton fabCamera;
 
-    private LinearLayout itemUsername;
+    private ImageView ivEdit;
+    private boolean editable;
+
+    private LinearLayout itemFullName;
     private LinearLayout itemPassword;
     private LinearLayout itemRole;
     private LinearLayout itemDiscoverable;
+    private LinearLayout[] itemsArray;
 
     private LinearLayout feedbackContainer;
     private Button btnDeleteAccount;
@@ -60,6 +66,7 @@ public class ProfileFragment extends Fragment {
         assignFields(rootView);
         setupHeaderContent();
         setupItemContent();
+        setupEditClickListener();
 
         return rootView;
     }
@@ -71,11 +78,13 @@ public class ProfileFragment extends Fragment {
         tvUsername = (TextView) rootView.findViewById(R.id.tvUsername);
         ivProfile = (ImageView) rootView.findViewById(R.id.ivProfile);
         fabCamera = (FloatingActionButton) rootView.findViewById(R.id.fabCamera);
+        ivEdit = (ImageView) rootView.findViewById(R.id.ivEdit);
 
-        itemUsername = (LinearLayout) rootView.findViewById(R.id.itemUsername);
-        itemPassword = (LinearLayout) rootView.findViewById(R.id.itemPassword);
-        itemRole = (LinearLayout) rootView.findViewById(R.id.itemRole);
-        itemDiscoverable = (LinearLayout) rootView.findViewById(R.id.itemDiscoverable);
+        itemsArray = new LinearLayout[4];
+        itemsArray[0] = itemFullName = (LinearLayout) rootView.findViewById(R.id.itemFullName);
+        itemsArray[1] = itemPassword = (LinearLayout) rootView.findViewById(R.id.itemPassword);
+        itemsArray[2] = itemRole = (LinearLayout) rootView.findViewById(R.id.itemRole);
+        itemsArray[3] = itemDiscoverable = (LinearLayout) rootView.findViewById(R.id.itemDiscoverable);
 
         feedbackContainer = (LinearLayout) rootView.findViewById(R.id.feedbackContainer);
         btnDeleteAccount = (Button) rootView.findViewById(R.id.btnDeleteAccount);
@@ -94,7 +103,8 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setupItemContent() {
-        setupItem(itemUsername, R.drawable.ic_account_outline_white_48dp, activeUser.getUsername());
+        setupItem(itemFullName, R.drawable.ic_account_outline_white_48dp,
+                activeUser.getFirstName() + " " + activeUser.getLastName());
         setupItem(itemPassword, R.drawable.ic_lock_open_outline_white_48dp, "0000000");
         setupItem(itemRole, R.drawable.ic_tools_resources, activeUser.getRole());
         setupItem(itemDiscoverable, R.drawable.ic_earth_white_48dp,
@@ -109,6 +119,37 @@ public class ProfileFragment extends Fragment {
         itemImageView.setImageResource(drawable);
         TextView itemTextView = (TextView) item.getChildAt(1);
         itemTextView.setText(title);
+    }
+
+    private void setupEditClickListener() {
+        toggleEditable();
+        ivEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                editable = !editable;
+                toggleEditable();
+            }
+        });
+    }
+
+        private void toggleEditable() {
+        ivEdit.setImageResource(editable ? R.drawable.ic_cloud_check_white_48dp : R.drawable.ic_pencil_white_48dp);
+
+        TextView tvItemTitle;
+        EditText etItemEdit;
+        for (LinearLayout item : itemsArray) {
+            tvItemTitle = (TextView) item.getChildAt(1);
+            etItemEdit = (EditText) item.getChildAt(2);
+
+            if (editable) {
+                tvItemTitle.setVisibility(View.GONE);
+                etItemEdit.setVisibility(View.VISIBLE);
+                continue;
+            }
+            tvItemTitle.setVisibility(View.VISIBLE);
+            etItemEdit.setVisibility(View.GONE);
+        }
+
     }
 
 }
