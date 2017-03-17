@@ -38,15 +38,16 @@ public class DiscoverFragment extends Fragment {
     private TextView tvNoUsers;
     private LinearLayout usersContainer;
     private User[] userList;
+    private User activeUser;
 
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.e("BroadcastReceiver: ", "http Broadcast Received");
-            userList =
-                    (User[]) intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_PAYLOAD);
+            userList = (User[]) intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_PAYLOAD);
             if (userList != null) {
                 setupRvUsers(Arrays.asList(userList));
+                toggleShowUsers();
             } else {
                 Log.i("USER_LIST", "LIST IS NULL");
             }
@@ -70,6 +71,9 @@ public class DiscoverFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_discover, container, false);
+
+        activeUser = getArguments().getParcelable(ACTIVE_USER);
+
         rvUsers = (RecyclerView) rootView.findViewById(R.id.rvUsers);
         tvNoUsers = (TextView) rootView.findViewById(R.id.tvNoUsers);
         tvNoUsers.setText("No Available Users");
