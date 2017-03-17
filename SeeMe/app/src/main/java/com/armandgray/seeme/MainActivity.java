@@ -20,7 +20,7 @@ public class MainActivity extends AppCompatActivity
         implements NavBarFragment.NavBarFragmentListener,
         SeeMeFragment.SeeMeTouchListener {
 
-    public static final String API_URI = "http://52.39.178.132:8080";
+    public static final String API_URI = "http://armandgray.com/seeme/api";
     private static final String TAG = "MAIN_ACTIVITY";
     public static final String ACTIVE_USER = "ACTIVE_USER";
 
