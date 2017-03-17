@@ -18,9 +18,7 @@ import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
 public class NetworkFragment extends Fragment {
 
 
-    public NetworkFragment() {
-        // Required empty public constructor
-    }
+    public NetworkFragment() {}
 
     public static NetworkFragment newInstance(User activeUser) {
         Bundle args = new Bundle();
@@ -35,7 +33,9 @@ public class NetworkFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_network, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_network, container, false);
+
+        return rootView;
     }
 
 }
