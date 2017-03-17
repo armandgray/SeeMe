@@ -37,9 +37,11 @@ public class DiscoverFragment extends Fragment {
 
     private static final String TAG = "DISCOVER_FRAGMENT";
 
-    private RecyclerView rvUsers;
     private TextView tvNoUsers;
     private LinearLayout usersContainer;
+    private LinearLayout noUsersContainer;
+
+    private RecyclerView rvUsers;
     private User[] userList;
 
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
@@ -75,6 +77,7 @@ public class DiscoverFragment extends Fragment {
         rvUsers = (RecyclerView) rootView.findViewById(R.id.rvUsers);
         tvNoUsers = (TextView) rootView.findViewById(R.id.tvNoUsers);
         tvNoUsers.setText(getBoldStringBuilder());
+        noUsersContainer = (LinearLayout) rootView.findViewById(R.id.noUsersContainer);
         usersContainer = (LinearLayout) rootView.findViewById(R.id.usersContainer);
         toggleShowUsers();
 
@@ -97,12 +100,12 @@ public class DiscoverFragment extends Fragment {
 
     private void toggleShowUsers() {
         if (userList == null || userList.length == 0) {
-            tvNoUsers.setVisibility(View.VISIBLE);
+            noUsersContainer.setVisibility(View.VISIBLE);
             usersContainer.setVisibility(View.INVISIBLE);
             return;
         }
         Log.i(TAG, userList[0].getFirstName());
-        tvNoUsers.setVisibility(View.INVISIBLE);
+        noUsersContainer.setVisibility(View.INVISIBLE);
         usersContainer.setVisibility(View.VISIBLE);
     }
 
