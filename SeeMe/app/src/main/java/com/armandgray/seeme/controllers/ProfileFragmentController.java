@@ -3,6 +3,7 @@ package com.armandgray.seeme.controllers;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.armandgray.seeme.models.User;
@@ -10,9 +11,18 @@ import com.armandgray.seeme.views.DeleteAccountDialog;
 import com.armandgray.seeme.views.ProfileFragment;
 
 import java.util.Arrays;
+import java.util.HashMap;
 
 import static com.armandgray.seeme.utils.HttpHelper.sendRequest;
 import static com.armandgray.seeme.views.ProfileFragment.DELETE_URL;
+import static com.armandgray.seeme.views.ProfileFragment.DISCOVERABLE;
+import static com.armandgray.seeme.views.ProfileFragment.ET_EDIT;
+import static com.armandgray.seeme.views.ProfileFragment.ITEM_DISCOVERABLE;
+import static com.armandgray.seeme.views.ProfileFragment.ITEM_FULL_NAME;
+import static com.armandgray.seeme.views.ProfileFragment.ITEM_PASSWORD;
+import static com.armandgray.seeme.views.ProfileFragment.ITEM_ROLE;
+import static com.armandgray.seeme.views.ProfileFragment.TV_CONTENT;
+import static com.armandgray.seeme.views.ProfileFragment.UDPATE_URL;
 
 public class ProfileFragmentController implements ProfileFragment.ProfileController {
 
@@ -35,8 +45,43 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
     }
 
     @Override
-    public void postUpdateRequest() {
-        Toast.makeText(fragment.getActivity(), "Update Profile!", Toast.LENGTH_SHORT).show();
+    public void postUpdateRequest(HashMap<String, HashMap> itemsMap) {
+        StringBuilder url = new StringBuilder();
+        url.append(UDPATE_URL);
+        url.append("username=").append(activeUser.getUsername());
+        url.append("&oldSecret=").append("111111");
+
+        for (String itemTitle : itemsMap.keySet()) {
+            EditText etEdit = (EditText) itemsMap.get(itemTitle).get(ET_EDIT);
+            String text = etEdit.getText().toString();
+            if (!text.equals("") && !itemTitle.equals(ITEM_DISCOVERABLE)) {
+                addUrlParameter(itemTitle, text, url);
+            }
+        }
+
+        if (itemsMap.get(ITEM_DISCOVERABLE).get(TV_CONTENT).equals(DISCOVERABLE)) {
+            addUrlParameter(ITEM_DISCOVERABLE, "true", url);
+        } else {
+            addUrlParameter(ITEM_DISCOVERABLE, "false", url);
+        }
+
+        sendRequest(url.toString(), fragment.getContext());
+    }
+
+    private void addUrlParameter(String itemTitle, String text, StringBuilder url) {
+        switch (itemTitle) {
+            case ITEM_FULL_NAME:
+                url.append("&firstName=").append(text);
+                return;
+            case ITEM_PASSWORD:
+                url.append("&password=").append(text);
+                return;
+            case ITEM_ROLE:
+                url.append("&role=").append(text);
+                return;
+            case ITEM_DISCOVERABLE:
+                url.append("&discoverable=").append(text);
+        }
     }
 
     @Override

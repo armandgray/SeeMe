@@ -42,18 +42,19 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
     public static final String UDPATE_URL = API_URI + "/profile/update?";
     public static final String DELETE_URL = API_URI + "/profile/delete?";
 
-    private static final String TAG = "PROFILE_FRAGMENT";
-    private static final String DISCOVERABLE = "Discoverable";
-    private static final String HIDDEN = "Hidden";
+    public static final String ITEM_FULL_NAME = "itemFullName";
+    public static final String ITEM_PASSWORD = "itemPassword";
+    public static final String ITEM_ROLE = "itemRole";
+    public static final String ITEM_DISCOVERABLE = "itemDiscoverable";
+    public static final String IV_ICON = "ivIcon";
+    public static final String TV_CONTENT = "tvContent";
+    public static final String ET_EDIT = "etEdit";
+    public static final String IV_CLOUD = "ivCloud";
 
-    private static final String ITEM_FULL_NAME = "itemFullName";
-    private static final String ITEM_PASSWORD = "itemPassword";
-    private static final String ITEM_ROLE = "itemRole";
-    private static final String ITEM_DISCOVERABLE = "itemDiscoverable";
-    private static final String IV_ICON = "ivIcon";
-    private static final String TV_CONTENT = "tvContent";
-    private static final String ET_EDIT = "etEdit";
-    private static final String IV_CLOUD = "ivCloud";
+    public static final String DISCOVERABLE = "Discoverable";
+    public static final String HIDDEN = "Hidden";
+
+    private static final String TAG = "PROFILE_FRAGMENT";
 
     private User activeUser;
     private ProfileController controller;
@@ -193,7 +194,7 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
             public void onClick(View v) {
                 editable = !editable;
                 if (profileEdited) {
-                    controller.postUpdateRequest();
+                    controller.postUpdateRequest(itemsMap);
                     profileEdited = false;
                 }
                 toggleEditable();
@@ -220,7 +221,7 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
         }
     }
 
-    private void setupEditTextChangeListener(HashMap item) {
+    private void setupEditTextChangeListener(final HashMap item) {
         EditText etEdit = (EditText) item.get(ET_EDIT);
         final ImageView ivCloud = (ImageView) item.get(IV_CLOUD);
         etEdit.addTextChangedListener(new TextWatcher() {
@@ -261,7 +262,7 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
         void postDeleteRequest();
         void postConfirmedDeleteRequest(String username, String password);
         void handleHttpResponse(String response, Parcelable[] parcelableArrayExtra);
-        void postUpdateRequest();
+        void postUpdateRequest(HashMap<String, HashMap> itemsMap);
         void postFeedBack();
     }
 }
