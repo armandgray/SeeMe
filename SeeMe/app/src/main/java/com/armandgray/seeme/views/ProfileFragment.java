@@ -163,12 +163,12 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
     }
 
     @Override
-    public void postConfirmedDeleteRequest() {
-        controller.postConfirmedDeleteRequest();
+    public void postConfirmedDeleteRequest(String username, String password) {
+        controller.postConfirmedDeleteRequest(username, password);
     }
 
     public interface ProfileController {
         void postDeleteRequest();
-        void postConfirmedDeleteRequest();
+        void postConfirmedDeleteRequest(String username, String password);
     }
 }

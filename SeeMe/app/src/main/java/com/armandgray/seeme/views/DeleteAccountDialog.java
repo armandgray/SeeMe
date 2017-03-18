@@ -7,6 +7,9 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
 
 import com.armandgray.seeme.R;
 
@@ -33,23 +36,30 @@ public class DeleteAccountDialog extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setView(R.layout.delete_dialog_layout);
+        final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        final View dialogLayout = LayoutInflater.from(getContext()).inflate(R.layout.delete_dialog_layout, null);
+        builder.setView(dialogLayout);
         builder.setMessage(getBoldStringBuilder(DELETE_HEADER, DELETE_CONTENT))
                 .setPositiveButton("Delete Account", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        deleteAccountListener.postConfirmedDeleteRequest();
+                        EditText etUsername = (EditText) dialogLayout.findViewById(R.id.etUsername);
+                        EditText etPassword = (EditText) dialogLayout.findViewById(R.id.etPassword);
+                        deleteAccountListener.postConfirmedDeleteRequest(
+                                etUsername.getText().toString(),
+                                etPassword.getText().toString()
+                        );
                     }
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        // DO NOTHING
+                        dialog.dismiss();
                     }
                 });
         return builder.create();
     }
 
+
     public interface DeleteAccountListener {
-        void postConfirmedDeleteRequest();
+        void postConfirmedDeleteRequest(String username, String password);
     }
 }

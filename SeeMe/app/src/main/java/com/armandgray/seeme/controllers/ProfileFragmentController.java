@@ -25,7 +25,7 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
     }
 
     @Override
-    public void postConfirmedDeleteRequest() {
-        Toast.makeText(fragment.getContext(), "Try Confirmed Delete User", Toast.LENGTH_SHORT).show();
+    public void postConfirmedDeleteRequest(String username, String password) {
+        Toast.makeText(fragment.getContext(), "Try Confirmed Delete" + username + ": " + password, Toast.LENGTH_SHORT).show();
     }
 }
