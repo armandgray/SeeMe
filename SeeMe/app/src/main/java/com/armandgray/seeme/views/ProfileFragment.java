@@ -20,6 +20,7 @@ import com.armandgray.seeme.controllers.ProfileFragmentController;
 import com.armandgray.seeme.models.User;
 
 import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
+import static com.armandgray.seeme.MainActivity.API_URI;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -29,6 +30,8 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
     private static final String DISCOVERABLE = "Discoverable";
     private static final String HIDDEN = "Hidden";
     private static final String TAG = "PROFILE_FRAGMENT";
+    public static final String UDPATE_URL = API_URI + "/profile/update?";
+    public static final String DELETE_URL = API_URI + "/profile/delete?";
 
     private User activeUser;
     private ProfileController controller;

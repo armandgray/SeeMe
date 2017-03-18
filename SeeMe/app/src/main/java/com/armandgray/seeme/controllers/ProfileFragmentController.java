@@ -7,6 +7,9 @@ import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.views.DeleteAccountDialog;
 import com.armandgray.seeme.views.ProfileFragment;
 
+import static com.armandgray.seeme.utils.HttpHelper.sendRequest;
+import static com.armandgray.seeme.views.ProfileFragment.DELETE_URL;
+
 public class ProfileFragmentController implements ProfileFragment.ProfileController {
 
     private static final String DIALOG = "DELETE_ACCOUNT_DIALOG";
@@ -26,6 +29,13 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
 
     @Override
     public void postConfirmedDeleteRequest(String username, String password) {
-        Toast.makeText(fragment.getContext(), "Try Confirmed Delete" + username + ": " + password, Toast.LENGTH_SHORT).show();
+        if (!username.equals(activeUser.getUsername())) {
+            Toast.makeText(fragment.getContext(), "Update Cancelled: Non Active User!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String url = DELETE_URL
+                + "username=" + username
+                + "&password=" + password;
+        sendRequest(url, fragment.getContext());
     }
 }
