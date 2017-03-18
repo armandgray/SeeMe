@@ -11,7 +11,10 @@ import (
 )
 
 func CreateUserFromRequest(r *http.Request) (User) {
-  secret, _ := bcrypt.GenerateFromPassword ([]byte(r.FormValue("password")), bcrypt.DefaultCost)
+  var secret []byte
+	if r.FormValue("password") != "" {
+	  secret, _ = bcrypt.GenerateFromPassword ([]byte(r.FormValue("password")), bcrypt.DefaultCost)		
+	}
 
 	user := User{r.FormValue("firstName"), r.FormValue("lastName"), r.FormValue("username"), secret, false, r.FormValue("role"), ""}
   discoverable := r.FormValue("discoverable")
@@ -23,14 +26,14 @@ func CreateUserFromRequest(r *http.Request) (User) {
 }
 
 func ReflectUsers(oldUser User, newUser User) (User) {
+	if newUser.Secret == nil {
+  	newUser.Secret = oldUser.Secret
+  }
 	oldUserAsFields := reflect.ValueOf(&oldUser).Elem()
   newUserAsFields := reflect.ValueOf(&newUser).Elem()
   typeOfUser := oldUserAsFields.Type()
-  fmt.Println("oldUser Fields: ", oldUserAsFields)
-  fmt.Println("newUser Fields: ", newUserAsFields)
 
   for i := 0; i < oldUserAsFields.NumField(); i++ {
-	fmt.Println("\n\n\n")
     oldField := oldUserAsFields.Field(i)
     newField:= newUserAsFields.Field(i)
     fmt.Printf("%d: %s %s = %v\n", i,
