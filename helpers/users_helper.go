@@ -23,15 +23,11 @@ func CreateUserFromRequest(r *http.Request) (User) {
 }
 
 func ReflectUsers(oldUser User, newUser User) (User) {
-	fmt.Println(oldUser)
-	fmt.Println(newUser)
-	fmt.Println("\n\n\n")
 	oldUserAsFields := reflect.ValueOf(&oldUser).Elem()
   newUserAsFields := reflect.ValueOf(&newUser).Elem()
   typeOfUser := oldUserAsFields.Type()
   fmt.Println("oldUser Fields: ", oldUserAsFields)
   fmt.Println("newUser Fields: ", newUserAsFields)
-  fmt.Println("typeOfUser: ", typeOfUser)
 
   for i := 0; i < oldUserAsFields.NumField(); i++ {
 	fmt.Println("\n\n\n")
@@ -41,7 +37,9 @@ func ReflectUsers(oldUser User, newUser User) (User) {
         typeOfUser.Field(i).Name, oldField.Type(), oldField.Interface())
     fmt.Printf("%d: %s %s = %v\n", i,
         typeOfUser.Field(i).Name, newField.Type(), newField.Interface())
-    newField.Set(reflect.Value(oldField))
+    if newField.Interface() == "" {
+    	newField.Set(reflect.Value(oldField))
+    }
     fmt.Printf("%d: %s %s = %v\n", i,
         typeOfUser.Field(i).Name, newField.Type(), newField.Interface())
   }
