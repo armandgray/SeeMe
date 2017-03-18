@@ -24,7 +24,7 @@ import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProfileFragment extends Fragment {
+public class ProfileFragment extends Fragment implements DeleteAccountDialog.DeleteAccountListener {
 
     private static final String DISCOVERABLE = "Discoverable";
     private static final String HIDDEN = "Hidden";
@@ -83,7 +83,7 @@ public class ProfileFragment extends Fragment {
 
     private void assignFields(View rootView) {
         activeUser = getArguments().getParcelable(ACTIVE_USER);
-        controller = new ProfileFragmentController(activeUser, getActivity());
+        controller = new ProfileFragmentController(activeUser, this);
 
         tvFullName = (TextView) rootView.findViewById(R.id.tvFullName);
         tvUsername = (TextView) rootView.findViewById(R.id.tvUsername);
@@ -162,7 +162,13 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    @Override
+    public void postConfirmedDeleteRequest() {
+        controller.postConfirmedDeleteRequest();
+    }
+
     public interface ProfileController {
         void postDeleteRequest();
+        void postConfirmedDeleteRequest();
     }
 }
