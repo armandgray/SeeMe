@@ -41,7 +41,7 @@ public class RegisterActivity extends AppCompatActivity
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            controller.getUserFromResponse(context,
+            controller.getUserFromResponse(
                     (User[]) intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_PAYLOAD));
         }
     };
@@ -118,7 +118,7 @@ public class RegisterActivity extends AppCompatActivity
 
     public interface RegisterController {
         void onAccountSubmit(HashMap<String, String> mapEditTextStrings);
-        void getUserFromResponse(Context context, User[] userList);
+        void getUserFromResponse(User[] userList);
         void onSubmitDiscoverable(boolean b);
     }
 }

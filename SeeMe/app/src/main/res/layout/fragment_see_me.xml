@@ -9,6 +9,7 @@
     tools:context="com.armandgray.seeme.views.SeeMeFragment">
 
     <TextView
+        android:id="@+id/tvAuto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="end"
@@ -46,8 +47,8 @@
 
     <ImageView
         android:id="@+id/ivWifi"
-        android:layout_width="@dimen/main_icwifi_size"
-        android:layout_height="@dimen/main_icwifi_size"
+        android:layout_width="@dimen/main_icindicator_size"
+        android:layout_height="@dimen/main_icindicator_size"
         android:layout_marginTop="20dp"
         android:layout_gravity="center_horizontal"
         android:contentDescription="@string/wifi_icon"

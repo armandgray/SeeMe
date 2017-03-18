@@ -1,21 +1,56 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="@dimen/activity_horizontal_margin"
     tools:context="com.armandgray.seeme.views.DiscoverFragment">
 
-    <TextView
-        android:id="@+id/tv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:text="Available Users" />
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rvUsers"
+    <LinearLayout
+        android:id="@+id/noUsersContainer"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginBottom="50dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        android:padding="@dimen/activity_horizontal_margin">
 
-</LinearLayout>
+        <TextView
+            android:id="@+id/tvNoUsers"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="@dimen/activity_horizontal_margin"
+            android:textColor="@color/colorPrimary"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/ivCycle"
+            android:layout_width="@dimen/main_icindicator_size"
+            android:layout_height="@dimen/main_icindicator_size"
+            android:layout_marginTop="30dp"
+            android:contentDescription="@string/wifi_icon"
+            android:tint="@color/colorPrimary"
+            app:srcCompat="@drawable/ic_account_convert_white_48dp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/usersContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="@string/available_users" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvUsers"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+</FrameLayout>

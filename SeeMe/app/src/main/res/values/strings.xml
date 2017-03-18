@@ -33,4 +33,5 @@
     <string name="main_logo_desc">Main Logo Button SeeMe</string>
     <string name="touch_to_seeme">Touch to SeeMe</string>
     <string name="wifi_icon">Wifi Icon</string>
+    <string name="available_users">Available Users</string>
 </resources>
