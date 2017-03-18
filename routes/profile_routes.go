@@ -51,6 +51,7 @@ func HandlerProfileUpdate(w http.ResponseWriter, r *http.Request) {
       newUser := ReflectUsers(oldUser, CreateUserFromRequest(r))
       if err := UpdateUser(newUser); err != nil {
         w.Write([]byte("Update Failed!"))
+        http.Error(w, err.Error(), http.StatusInternalServerError)
         return
       }
       http.Redirect(w, r, "/seeme/api/login/user?username=" + newUser.Username, http.StatusFound)
