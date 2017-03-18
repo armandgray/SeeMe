@@ -40,6 +40,11 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
     }
 
     @Override
+    public void postFeedBack() {
+        Toast.makeText(fragment.getActivity(), "Post Feedback", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void postDeleteRequest() {
         new DeleteAccountDialog().show(
                 fragment.getChildFragmentManager(), DIALOG);

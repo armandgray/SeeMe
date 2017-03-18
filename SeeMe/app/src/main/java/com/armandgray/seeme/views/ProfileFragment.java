@@ -39,11 +39,13 @@ import static com.armandgray.seeme.MainActivity.API_URI;
  */
 public class ProfileFragment extends Fragment implements DeleteAccountDialog.DeleteAccountListener {
 
-    private static final String DISCOVERABLE = "Discoverable";
-    private static final String HIDDEN = "Hidden";
-    private static final String TAG = "PROFILE_FRAGMENT";
     public static final String UDPATE_URL = API_URI + "/profile/update?";
     public static final String DELETE_URL = API_URI + "/profile/delete?";
+
+    private static final String TAG = "PROFILE_FRAGMENT";
+    private static final String DISCOVERABLE = "Discoverable";
+    private static final String HIDDEN = "Hidden";
+
     private static final String ITEM_FULL_NAME = "itemFullName";
     private static final String ITEM_PASSWORD = "itemPassword";
     private static final String ITEM_ROLE = "itemRole";
@@ -100,14 +102,7 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
         assignFields(rootView);
         setupHeaderContent();
         setupItemContent();
-        setupEditClickListener();
-
-        btnDeleteAccount.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                controller.postDeleteRequest();
-            }
-        });
+        setupClickListeners();
 
         return rootView;
     }
@@ -146,12 +141,6 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
         tvFullName.setText(activeUser.getFirstName() + " " + activeUser.getLastName());
         tvUsername.setText("--> " + activeUser.getUsername() + " <--");
         ivProfile.setImageResource(R.drawable.ic_account_circle_white_48dp);
-        fabCamera.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(getContext(), "Take or Select Photo From Gallery", Toast.LENGTH_SHORT).show();
-            }
-        });
     }
 
     private void setupItemContent() {
@@ -171,6 +160,28 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
         ivIcon.setImageResource(drawable);
         TextView tvContent = (TextView) item.get(TV_CONTENT);
         tvContent.setText(content);
+    }
+
+    private void setupClickListeners() {
+        setupEditClickListener();
+        fabCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(getContext(), "Take or Select Photo From Gallery", Toast.LENGTH_SHORT).show();
+            }
+        });
+        feedbackContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                controller.postFeedBack();
+            }
+        });
+        btnDeleteAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                controller.postDeleteRequest();
+            }
+        });
     }
 
     private void setupEditClickListener() {
@@ -251,5 +262,6 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
         void postConfirmedDeleteRequest(String username, String password);
         void handleHttpResponse(String response, Parcelable[] parcelableArrayExtra);
         void postUpdateRequest();
+        void postFeedBack();
     }
 }
