@@ -35,24 +35,25 @@ func HandlerProfileDelete(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandlerProfileUpdate(w http.ResponseWriter, r *http.Request) {
-  user, err := GetUserFromDB(r.FormValue("username"))
+  oldUser, err := GetUserFromDB(r.FormValue("username"))
   if err != nil {
     w.Write([]byte("User " + r.FormValue("username") + " Not Found!"))
     return
   }
-  if user.Username == "" {
+  if oldUser.Username == "" {
     http.Error(w, err.Error(), http.StatusInternalServerError)
     return
   } else {
-    if err := bcrypt.CompareHashAndPassword(user.Secret, []byte(r.FormValue("oldSecret"))); err != nil {
+    if err := bcrypt.CompareHashAndPassword(oldUser.Secret, []byte(r.FormValue("oldSecret"))); err != nil {
       w.Write([]byte("Password Incorrect!"))
       return
     } else {
-      if err := UpdateUser(CreateUserFromRequest(r)); err != nil {
+      newUser := ReflectUsers(oldUser, CreateUserFromRequest(r))
+      if err := UpdateUser(newUser); err != nil {
         w.Write([]byte("Update Failed!"))
         return
       }
-      http.Redirect(w, r, "/seeme/api/login/user?username=" + user.Username, http.StatusFound)
+      http.Redirect(w, r, "/seeme/api/login/user?username=" + newUser.Username, http.StatusFound)
     }
   }
 }

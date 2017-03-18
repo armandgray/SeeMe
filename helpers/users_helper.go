@@ -4,6 +4,8 @@ import (
 	. "seeme/models"
 
   "net/http"
+  "fmt"
+
   "golang.org/x/crypto/bcrypt"
 )
 
@@ -17,4 +19,9 @@ func CreateUserFromRequest(r *http.Request) (User) {
   }
 
   return user
+}
+
+func ReflectUsers(oldUser User, newUser User) (User) {
+	fmt.Println(oldUser)
+	return newUser
 }
