@@ -10,7 +10,9 @@ import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.text.Editable;
 import android.text.InputType;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,6 +54,8 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
     private ImageView ivEdit;
 
     private boolean editable;
+    private boolean profileEdited;
+
     private LinearLayout itemFullName;
     private LinearLayout itemPassword;
     private LinearLayout itemRole;
@@ -157,16 +161,22 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
 
     private void setupEditClickListener() {
         toggleEditable();
+        for (LinearLayout item : itemsArray) { setupEditTextChangeListener(item); }
+
         ivEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 editable = !editable;
+                if (profileEdited) {
+                    controller.postUpdateRequest();
+                    profileEdited = false;
+                }
                 toggleEditable();
             }
         });
     }
 
-        private void toggleEditable() {
+    private void toggleEditable() {
         ivEdit.setImageResource(editable ? R.drawable.ic_cloud_check_white_48dp : R.drawable.ic_pencil_white_48dp);
 
         TextView tvItemTitle;
@@ -183,6 +193,23 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
             tvItemTitle.setVisibility(View.VISIBLE);
             etItemEdit.setVisibility(View.GONE);
         }
+    }
+
+    private void setupEditTextChangeListener(LinearLayout item) {
+        EditText editText = (EditText) item.getChildAt(2);
+        final ImageView ivCloud = (ImageView) item.getChildAt(3);
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                ivCloud.setImageResource(R.drawable.ic_cloud_white_48dp);
+                profileEdited = true;
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            @Override
+            public void afterTextChanged(Editable s) {}
+        });
     }
 
     @Override
@@ -210,5 +237,6 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
         void postDeleteRequest();
         void postConfirmedDeleteRequest(String username, String password);
         void handleHttpResponse(String response, Parcelable[] parcelableArrayExtra);
+        void postUpdateRequest();
     }
 }

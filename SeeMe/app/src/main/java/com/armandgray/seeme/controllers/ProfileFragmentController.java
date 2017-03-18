@@ -35,6 +35,11 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
     }
 
     @Override
+    public void postUpdateRequest() {
+        Toast.makeText(fragment.getActivity(), "Update Profile!", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
     public void postDeleteRequest() {
         new DeleteAccountDialog().show(
                 fragment.getChildFragmentManager(), DIALOG);
