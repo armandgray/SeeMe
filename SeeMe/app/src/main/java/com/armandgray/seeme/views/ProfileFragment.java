@@ -16,6 +16,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.armandgray.seeme.R;
+import com.armandgray.seeme.controllers.ProfileFragmentController;
 import com.armandgray.seeme.models.User;
 
 import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
@@ -73,7 +74,7 @@ public class ProfileFragment extends Fragment {
         btnDeleteAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                controller.postDeleteRequest(activeUser.getUsername());
+                controller.postDeleteRequest();
             }
         });
 
@@ -82,7 +83,7 @@ public class ProfileFragment extends Fragment {
 
     private void assignFields(View rootView) {
         activeUser = getArguments().getParcelable(ACTIVE_USER);
-        controller = null;
+        controller = new ProfileFragmentController(activeUser, getActivity());
 
         tvFullName = (TextView) rootView.findViewById(R.id.tvFullName);
         tvUsername = (TextView) rootView.findViewById(R.id.tvUsername);
@@ -162,6 +163,6 @@ public class ProfileFragment extends Fragment {
     }
 
     public interface ProfileController {
-        void postDeleteRequest(String username);
+        void postDeleteRequest();
     }
 }
