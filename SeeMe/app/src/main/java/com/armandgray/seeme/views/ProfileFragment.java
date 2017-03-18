@@ -105,7 +105,8 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
 
     private void assignFields(View rootView) {
         activeUser = getArguments().getParcelable(ACTIVE_USER);
-        controller = new ProfileFragmentController(activeUser, this);
+        controller = new ProfileFragmentController(activeUser, this,
+                (ProfileFragmentController.ProfileUpdateListener) getActivity());
 
         tvFullName = (TextView) rootView.findViewById(R.id.tvFullName);
         tvUsername = (TextView) rootView.findViewById(R.id.tvUsername);

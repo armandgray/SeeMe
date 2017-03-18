@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.armandgray.seeme.controllers.ProfileFragmentController;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.utils.ViewPagerAdapter;
 import com.armandgray.seeme.views.DiscoverFragment;
@@ -20,7 +21,8 @@ import static com.armandgray.seeme.LoginActivity.LOGIN_PAYLOAD;
 public class MainActivity extends AppCompatActivity
         implements NavBarFragment.NavBarFragmentListener,
         SeeMeFragment.SeeMeTouchListener,
-        DiscoverFragment.DiscoverCycleListener {
+        DiscoverFragment.DiscoverCycleListener,
+        ProfileFragmentController.ProfileUpdateListener {
 
     public static final String API_URI = "http://armandgray.com/seeme/api";
     private static final String TAG = "MAIN_ACTIVITY";
@@ -78,13 +80,24 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    public void onTouchCycle() {
+        viewPager.setCurrentItem(2);
+    }
+
+    @Override
     public void onTouchSeeMe() {
         viewPager.setCurrentItem(0);
     }
 
     @Override
-    public void onTouchCycle() {
-        viewPager.setCurrentItem(2);
+    public void onAccountUpdate(User updatedUser) {
+        activeUser = updatedUser;
+    }
+
+    @Override
+    public void onAccountDelete() {
+        activeUser = null;
+        startActivity(new Intent(this, LoginActivity.class));
     }
 
     @Override
