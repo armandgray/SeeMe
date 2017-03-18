@@ -5,6 +5,7 @@ import (
 
   "net/http"
   "fmt"
+  "reflect"
 
   "golang.org/x/crypto/bcrypt"
 )
@@ -23,5 +24,14 @@ func CreateUserFromRequest(r *http.Request) (User) {
 
 func ReflectUsers(oldUser User, newUser User) (User) {
 	fmt.Println(oldUser)
+	fmt.Println(oldUser)
+	fmt.Println("\n\n\n")
+	oldUserAsFields := reflect.ValueOf(&oldUser).Elem()
+  newUserAsFields := reflect.ValueOf(&newUser).Elem()
+  typeOfUser := oldUserAsFields.Type()
+  fmt.Println("oldUser Fields: ", oldUserAsFields)
+  fmt.Println("newUser Fields: ", newUserAsFields)
+  fmt.Println("typeOfUser: ", typeOfUser)
+
 	return newUser
 }
