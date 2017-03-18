@@ -29,6 +29,8 @@ import com.armandgray.seeme.controllers.ProfileFragmentController;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.services.HttpService;
 
+import java.util.HashMap;
+
 import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
 import static com.armandgray.seeme.MainActivity.API_URI;
 
@@ -42,6 +44,14 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
     private static final String TAG = "PROFILE_FRAGMENT";
     public static final String UDPATE_URL = API_URI + "/profile/update?";
     public static final String DELETE_URL = API_URI + "/profile/delete?";
+    private static final String ITEM_FULL_NAME = "itemFullName";
+    private static final String ITEM_PASSWORD = "itemPassword";
+    private static final String ITEM_ROLE = "itemRole";
+    private static final String ITEM_DISCOVERABLE = "itemDiscoverable";
+    private static final String IV_ICON = "ivIcon";
+    private static final String TV_CONTENT = "tvContent";
+    private static final String ET_EDIT = "etEdit";
+    private static final String IV_CLOUD = "ivCloud";
 
     private User activeUser;
     private ProfileController controller;
@@ -56,12 +66,7 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
     private boolean editable;
     private boolean profileEdited;
 
-    private LinearLayout itemFullName;
-    private LinearLayout itemPassword;
-    private LinearLayout itemRole;
-    private LinearLayout itemDiscoverable;
-
-    private LinearLayout[] itemsArray;
+    private HashMap<String, HashMap> itemsMap;
     private LinearLayout feedbackContainer;
     private Button btnDeleteAccount;
 
@@ -118,14 +123,23 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
         fabCamera = (FloatingActionButton) rootView.findViewById(R.id.fabCamera);
         ivEdit = (ImageView) rootView.findViewById(R.id.ivEdit);
 
-        itemsArray = new LinearLayout[4];
-        itemsArray[0] = itemFullName = (LinearLayout) rootView.findViewById(R.id.itemFullName);
-        itemsArray[1] = itemPassword = (LinearLayout) rootView.findViewById(R.id.itemPassword);
-        itemsArray[2] = itemRole = (LinearLayout) rootView.findViewById(R.id.itemRole);
-        itemsArray[3] = itemDiscoverable = (LinearLayout) rootView.findViewById(R.id.itemDiscoverable);
+        itemsMap = new HashMap<>();
+        itemsMap.put(ITEM_FULL_NAME, getMapFromLayout((LinearLayout) rootView.findViewById(R.id.itemFullName)));
+        itemsMap.put(ITEM_PASSWORD, getMapFromLayout((LinearLayout) rootView.findViewById(R.id.itemPassword)));
+        itemsMap.put(ITEM_ROLE, getMapFromLayout((LinearLayout) rootView.findViewById(R.id.itemRole)));
+        itemsMap.put(ITEM_DISCOVERABLE, getMapFromLayout((LinearLayout) rootView.findViewById(R.id.itemDiscoverable)));
 
         feedbackContainer = (LinearLayout) rootView.findViewById(R.id.feedbackContainer);
         btnDeleteAccount = (Button) rootView.findViewById(R.id.btnDeleteAccount);
+    }
+
+    private HashMap<String, View> getMapFromLayout(LinearLayout layout) {
+        HashMap<String, View> map = new HashMap<>();
+        map.put(IV_ICON, layout.getChildAt(0));
+        map.put(TV_CONTENT, layout.getChildAt(1));
+        map.put(ET_EDIT, layout.getChildAt(2));
+        map.put(IV_CLOUD, layout.getChildAt(3));
+        return map;
     }
 
     private void setupHeaderContent() {
@@ -141,27 +155,27 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
     }
 
     private void setupItemContent() {
-        setupItem(itemFullName, R.drawable.ic_account_outline_white_48dp,
+        setupItem(itemsMap.get(ITEM_FULL_NAME), R.drawable.ic_account_outline_white_48dp,
                 activeUser.getFirstName() + " " + activeUser.getLastName());
-        setupItem(itemPassword, R.drawable.ic_lock_open_outline_white_48dp, "0000000");
-        setupItem(itemRole, R.drawable.ic_tools_resources, activeUser.getRole());
-        setupItem(itemDiscoverable, R.drawable.ic_earth_white_48dp,
+        setupItem(itemsMap.get(ITEM_PASSWORD), R.drawable.ic_lock_open_outline_white_48dp, "0000000");
+        setupItem(itemsMap.get(ITEM_ROLE), R.drawable.ic_tools_resources, activeUser.getRole());
+        setupItem(itemsMap.get(ITEM_DISCOVERABLE), R.drawable.ic_earth_white_48dp,
                 activeUser.isDiscoverable() ? DISCOVERABLE : HIDDEN);
 
-        TextView tvPassword = (TextView) itemPassword.getChildAt(1);
+        TextView tvPassword = (TextView) itemsMap.get(ITEM_PASSWORD).get(TV_CONTENT);
         tvPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
     }
 
-    private void setupItem(LinearLayout item, int drawable, String title) {
-        ImageView itemImageView = (ImageView) item.getChildAt(0);
-        itemImageView.setImageResource(drawable);
-        TextView itemTextView = (TextView) item.getChildAt(1);
-        itemTextView.setText(title);
+    private void setupItem(HashMap item, int drawable, String content) {
+        ImageView ivIcon = (ImageView) item.get(IV_ICON);
+        ivIcon.setImageResource(drawable);
+        TextView tvContent = (TextView) item.get(TV_CONTENT);
+        tvContent.setText(content);
     }
 
     private void setupEditClickListener() {
         toggleEditable();
-        for (LinearLayout item : itemsArray) { setupEditTextChangeListener(item); }
+        for (HashMap item : itemsMap.values()) { setupEditTextChangeListener(item); }
 
         ivEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -179,26 +193,26 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
     private void toggleEditable() {
         ivEdit.setImageResource(editable ? R.drawable.ic_cloud_check_white_48dp : R.drawable.ic_pencil_white_48dp);
 
-        TextView tvItemTitle;
-        EditText etItemEdit;
-        for (LinearLayout item : itemsArray) {
-            tvItemTitle = (TextView) item.getChildAt(1);
-            etItemEdit = (EditText) item.getChildAt(2);
+        TextView tvContent;
+        EditText etEdit;
+        for (HashMap item : itemsMap.values()) {
+            tvContent = (TextView) item.get(TV_CONTENT);
+            etEdit = (EditText) item.get(ET_EDIT);
 
             if (editable) {
-                tvItemTitle.setVisibility(View.GONE);
-                etItemEdit.setVisibility(View.VISIBLE);
+                tvContent.setVisibility(View.GONE);
+                etEdit.setVisibility(View.VISIBLE);
                 continue;
             }
-            tvItemTitle.setVisibility(View.VISIBLE);
-            etItemEdit.setVisibility(View.GONE);
+            tvContent.setVisibility(View.VISIBLE);
+            etEdit.setVisibility(View.GONE);
         }
     }
 
-    private void setupEditTextChangeListener(LinearLayout item) {
-        EditText editText = (EditText) item.getChildAt(2);
-        final ImageView ivCloud = (ImageView) item.getChildAt(3);
-        editText.addTextChangedListener(new TextWatcher() {
+    private void setupEditTextChangeListener(HashMap item) {
+        EditText etEdit = (EditText) item.get(ET_EDIT);
+        final ImageView ivCloud = (ImageView) item.get(IV_CLOUD);
+        etEdit.addTextChangedListener(new TextWatcher() {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 ivCloud.setImageResource(R.drawable.ic_cloud_white_48dp);
@@ -215,7 +229,6 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
     @Override
     public void onResume() {
         super.onResume();
-
         LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
                 .registerReceiver(httpBroadcastReceiver,
                         new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
