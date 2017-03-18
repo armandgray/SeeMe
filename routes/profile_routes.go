@@ -12,7 +12,6 @@ func HandlerProfileDelete(w http.ResponseWriter, r *http.Request) {
   user, err := GetUserFromDB(r.FormValue("username"))
   if err != nil {
     w.Write([]byte("User " + r.FormValue("username") + " Not Found!"))
-    http.Error(w, err.Error(), http.StatusInternalServerError)
     return
   }
   if user.Username == "" {
@@ -23,12 +22,14 @@ func HandlerProfileDelete(w http.ResponseWriter, r *http.Request) {
       w.Write([]byte("Password Incorrect!"))
       return
     } else {
-      // _, err := DeleteUserFromDB(r.FormValue("username")); 
-      // if err != nil {
-      //   w.Write([]byte("Update Failed!"))
-      // }
+      affect, err := DeleteUserFromDB(r.FormValue("username")); 
+      if err != nil || affect < 1 {
+        w.Write([]byte("Update Failed!"))
+        return
+      }
+
       w.Write([]byte("Account Deleted!"))
-      return
+    
     }
   }
 
