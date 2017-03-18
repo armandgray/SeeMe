@@ -11,7 +11,7 @@ import (
 func HandlerProfileDelete(w http.ResponseWriter, r *http.Request) {
   user, err := GetUserFromDB(r.FormValue("username"))
   if err != nil {
-    w.Write([]byte("User " + r.FormValue("username") + " Not Found!"))
+    w.Write([]byte("User Not Found!"))
     return
   }
   if user.Username == "" {
@@ -37,7 +37,7 @@ func HandlerProfileDelete(w http.ResponseWriter, r *http.Request) {
 func HandlerProfileUpdate(w http.ResponseWriter, r *http.Request) {
   oldUser, err := GetUserFromDB(r.FormValue("username"))
   if err != nil {
-    w.Write([]byte("User " + r.FormValue("username") + " Not Found!"))
+    w.Write([]byte("User Not Found!"))
     return
   }
   if oldUser.Username == "" {
