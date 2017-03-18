@@ -1,10 +1,17 @@
 package com.armandgray.seeme.views;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.InputType;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +25,7 @@ import android.widget.Toast;
 import com.armandgray.seeme.R;
 import com.armandgray.seeme.controllers.ProfileFragmentController;
 import com.armandgray.seeme.models.User;
+import com.armandgray.seeme.services.HttpService;
 
 import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
 import static com.armandgray.seeme.MainActivity.API_URI;
@@ -52,6 +60,17 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
     private LinearLayout[] itemsArray;
     private LinearLayout feedbackContainer;
     private Button btnDeleteAccount;
+
+
+    private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.e(TAG, "http Broadcast Received");
+            controller.handleHttpResponse(
+                    intent.getStringExtra(HttpService.HTTP_SERVICE_STRING_PAYLOAD),
+                    intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_JSON_PAYLOAD));
+        }
+    };
 
     public ProfileFragment() {}
 
@@ -166,6 +185,22 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
+                .registerReceiver(httpBroadcastReceiver,
+                        new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
+                .unregisterReceiver(httpBroadcastReceiver);
+    }
+
+    @Override
     public void postConfirmedDeleteRequest(String username, String password) {
         controller.postConfirmedDeleteRequest(username, password);
     }
@@ -173,5 +208,6 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
     public interface ProfileController {
         void postDeleteRequest();
         void postConfirmedDeleteRequest(String username, String password);
+        void handleHttpResponse(String response, Parcelable[] parcelableArrayExtra);
     }
 }
