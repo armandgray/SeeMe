@@ -28,22 +28,24 @@ public class ProfileFragment extends Fragment {
     private static final String DISCOVERABLE = "Discoverable";
     private static final String HIDDEN = "Hidden";
     private static final String TAG = "PROFILE_FRAGMENT";
+
     private User activeUser;
+    private ProfileController controller;
 
     private TextView tvFullName;
     private TextView tvUsername;
     private ImageView ivProfile;
+
     private FloatingActionButton fabCamera;
-
     private ImageView ivEdit;
-    private boolean editable;
 
+    private boolean editable;
     private LinearLayout itemFullName;
     private LinearLayout itemPassword;
     private LinearLayout itemRole;
     private LinearLayout itemDiscoverable;
-    private LinearLayout[] itemsArray;
 
+    private LinearLayout[] itemsArray;
     private LinearLayout feedbackContainer;
     private Button btnDeleteAccount;
 
@@ -68,11 +70,19 @@ public class ProfileFragment extends Fragment {
         setupItemContent();
         setupEditClickListener();
 
+        btnDeleteAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                controller.postDeleteRequest(activeUser.getUsername());
+            }
+        });
+
         return rootView;
     }
 
     private void assignFields(View rootView) {
         activeUser = getArguments().getParcelable(ACTIVE_USER);
+        controller = null;
 
         tvFullName = (TextView) rootView.findViewById(R.id.tvFullName);
         tvUsername = (TextView) rootView.findViewById(R.id.tvUsername);
@@ -149,7 +159,9 @@ public class ProfileFragment extends Fragment {
             tvItemTitle.setVisibility(View.VISIBLE);
             etItemEdit.setVisibility(View.GONE);
         }
-
     }
 
+    public interface ProfileController {
+        void postDeleteRequest(String username);
+    }
 }
