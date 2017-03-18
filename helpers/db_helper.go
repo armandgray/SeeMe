@@ -74,6 +74,13 @@ func DeleteUserFromDB(username string) (int64, error) {
   return affect, err
 }
 
+func UpdateUser(user User) (error) {
+  _, err := db.Exec("UPDATE users SET first_name=?, last_name=?, role=?, secret=?, discoverable=? WHERE username = ?", 
+                  user.FirstName, user.LastName, user.Role, 
+                  user.Secret, user.Discoverable, user.Username)
+  return err
+}
+
 func GetDiscoverableUsersFromDB(w http.ResponseWriter) ([]User) {
   var userList []User
   var user User
