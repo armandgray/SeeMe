@@ -13,7 +13,7 @@ import (
 var db *sql.DB
 
 func InitMySQLConnection() {
-  db, _ = sql.Open("mysql", "root:#54nFr4nc15c0@/seeme_prod")
+  db, _ = sql.Open("mysql", "root:#54nFr4nc15c0@/seeme_db")
 }
 
 func VerifyMySQLConnection(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
@@ -36,10 +36,42 @@ func InsertNewUser(user User) (error) {
 
 func GetUserFromDB(username string) (User, error) {
   var user User
+  var network sql.NullString
+  var role sql.NullString
   row := db.QueryRow("select * from users where username = ?", username)
-  err := row.Scan(&user.FirstName, &user.LastName, &user.Role, &user.Username, &user.Secret, &user.Discoverable, &user.Network)
+  err := row.Scan(&user.FirstName, &user.LastName, &role, &user.Username, &user.Secret, &user.Discoverable, &network)
+  if role.Valid {
+    if val, err := role.Value(); err == nil {
+      user.Role = val.(string)
+    }
+  }
+  if network.Valid {
+    if val, err := network.Value(); err == nil {
+      user.Network = val.(string)
+    }
+  }
 
   return user, err
+}
+
+func DeleteUserFromDB(username string) (int64, error) {
+  var affect int64
+  qry, err := db.Prepare("DELETE FROM users WHERE username = ?")
+  if err != nil {
+    return affect, err
+  }
+
+  res, err := qry.Exec(username)
+  if err != nil {
+    return affect, err
+  }
+
+  affect, err = res.RowsAffected()
+  if err != nil {
+    return affect, err
+  }
+
+  return affect, err
 }
 
 func GetDiscoverableUsersFromDB(w http.ResponseWriter) ([]User) {
