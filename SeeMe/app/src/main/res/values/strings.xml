@@ -34,4 +34,13 @@
     <string name="touch_to_seeme">Touch to SeeMe</string>
     <string name="wifi_icon">Wifi Icon</string>
     <string name="available_users">Available Users</string>
+    <string name="current_network">Current Network</string>
+    <string name="active_user_profile_picture">active user profile picture</string>
+    <string name="my_account">My Account</string>
+    <string name="app_info">App Info</string>
+    <string name="version">Version</string>
+    <string name="version_number">1.0.1 (101)</string>
+    <string name="feedback">Feedback</string>
+    <string name="delete_account">Delete Account</string>
+    <string name="profile_item_icon">profile item icon</string>
 </resources>

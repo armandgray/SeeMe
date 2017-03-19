@@ -42,7 +42,7 @@ public class RegisterActivity extends AppCompatActivity
         @Override
         public void onReceive(Context context, Intent intent) {
             controller.getUserFromResponse(
-                    (User[]) intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_PAYLOAD));
+                    (User[]) intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_JSON_PAYLOAD));
         }
     };
 

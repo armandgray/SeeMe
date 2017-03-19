@@ -7,12 +7,13 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AlertDialog;
-import android.text.Spannable;
-import android.text.SpannableStringBuilder;
-import android.text.style.StyleSpan;
+
+import static com.armandgray.seeme.utils.StringHelper.getBoldStringBuilder;
 
 public class DiscoverableDialog extends DialogFragment {
 
+    private static final String DISCOVERABLE_HEADER = "Discoverable is Turned On for \"See Me\"";
+    private static final String DISCOVERABLE_CONTENT = "Users are discoverable by default. You can hide your account by clicking below, but this may restrict your experience.";
     private DiscoverableListener discoverableListener;
 
     @Override
@@ -32,7 +33,7 @@ public class DiscoverableDialog extends DialogFragment {
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setMessage(getBoldStringBuilder())
+        builder.setMessage(getBoldStringBuilder(DISCOVERABLE_HEADER, DISCOVERABLE_CONTENT))
                 .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         discoverableListener.onSubmitDiscoverable(true);
@@ -44,16 +45,6 @@ public class DiscoverableDialog extends DialogFragment {
                     }
                 });
         return builder.create();
-    }
-
-    @NonNull
-    private SpannableStringBuilder getBoldStringBuilder() {
-        final String dialogTextHeader = "Discoverable is Turned On for \"See Me\"\n\n";
-        String dialogTextContent = "Users are discoverable by default. You can hide your account by clicking below, but this may restrict your experience.";
-        final SpannableStringBuilder stringBuilder = new SpannableStringBuilder(dialogTextHeader + dialogTextContent);
-        final StyleSpan boldStyleSpan = new StyleSpan(android.graphics.Typeface.BOLD);
-        stringBuilder.setSpan(boldStyleSpan, 0, dialogTextHeader.length() - 1, Spannable.SPAN_INCLUSIVE_INCLUSIVE);
-        return stringBuilder;
     }
 
     public interface DiscoverableListener {

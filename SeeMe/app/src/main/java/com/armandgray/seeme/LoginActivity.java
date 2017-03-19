@@ -35,7 +35,7 @@ public class LoginActivity extends AppCompatActivity {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.e("BroadcastReceiver: ", "http Broadcast Received");
-            User[] userList = (User[]) intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_PAYLOAD);
+            User[] userList = (User[]) intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_JSON_PAYLOAD);
             if (userList.length == 0) {
                 Toast.makeText(LoginActivity.this,
                         "Username or Password Incorrect",
