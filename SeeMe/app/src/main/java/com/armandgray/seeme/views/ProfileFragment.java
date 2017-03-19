@@ -295,6 +295,5 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
         void postDeleteRequest();
         void postConfirmedDeleteRequest(String username, String password);
         void handleHttpResponse(String response, Parcelable[] parcelableArrayExtra);
-        void updateUI();
     }
 }
