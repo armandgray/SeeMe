@@ -4,9 +4,11 @@ import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.armandgray.seeme.R;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.views.ConfirmPasswordDialog;
 import com.armandgray.seeme.views.DeleteAccountDialog;
@@ -26,6 +28,7 @@ import static com.armandgray.seeme.views.ProfileFragment.ITEM_DISCOVERABLE;
 import static com.armandgray.seeme.views.ProfileFragment.ITEM_FULL_NAME;
 import static com.armandgray.seeme.views.ProfileFragment.ITEM_PASSWORD;
 import static com.armandgray.seeme.views.ProfileFragment.ITEM_ROLE;
+import static com.armandgray.seeme.views.ProfileFragment.IV_CLOUD;
 import static com.armandgray.seeme.views.ProfileFragment.TV_CONTENT;
 import static com.armandgray.seeme.views.ProfileFragment.UDPATE_URL;
 
@@ -42,17 +45,20 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
     private User activeUser;
     private Fragment fragment;
     private ProfileUpdateListener updateListener;
+    private HashMap<String, HashMap> itemsMap;
     private String url;
 
     public ProfileFragmentController(User activeUser, Fragment fragment, ProfileUpdateListener listener) {
         this.activeUser = activeUser;
         this.fragment = fragment;
         this.updateListener = listener;
+        this.itemsMap = new HashMap<>();
         this.url = "";
     }
 
     @Override
     public void postUpdateRequest(HashMap<String, HashMap> itemsMap) {
+        this.itemsMap = itemsMap;
         String defaultUrl = UDPATE_URL + "username=" + activeUser.getUsername();
         StringBuilder urlBuilder = new StringBuilder(defaultUrl);
 
@@ -171,6 +177,16 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
             updateListener.onAccountUpdate((User) parcelableArrayExtra[0]);
         } else {
             Log.i(TAG, response);
+        }
+    }
+
+    @Override
+    public void updateUI() {
+        for (String itemTitle : itemsMap.keySet()) {
+            EditText etEdit = (EditText) itemsMap.get(itemTitle).get(ET_EDIT);
+            etEdit.setText("");
+            ImageView ivCloud = (ImageView) itemsMap.get(itemTitle).get(IV_CLOUD);
+            ivCloud.setImageResource(R.drawable.ic_cloud_check_white_48dp);
         }
     }
 

@@ -75,14 +75,19 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
     private LinearLayout feedbackContainer;
     private Button btnDeleteAccount;
 
-
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.e(TAG, "http Broadcast Received");
+            Parcelable[] arrayExtra = intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_JSON_PAYLOAD);
             controller.handleHttpResponse(
-                    intent.getStringExtra(HttpService.HTTP_SERVICE_STRING_PAYLOAD),
-                    intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_JSON_PAYLOAD));
+                    intent.getStringExtra(HttpService.HTTP_SERVICE_STRING_PAYLOAD), arrayExtra);
+            if (arrayExtra != null && arrayExtra.length != 0) {
+                profileEdited = false;
+                controller.updateUI();
+            } else {
+                profileEdited = true;
+            }
         }
     };
 
@@ -295,5 +300,6 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
         void postDeleteRequest();
         void postConfirmedDeleteRequest(String username, String password);
         void handleHttpResponse(String response, Parcelable[] parcelableArrayExtra);
+        void updateUI();
     }
 }
