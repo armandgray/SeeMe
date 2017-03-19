@@ -4,6 +4,7 @@ import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.armandgray.seeme.models.User;
@@ -59,7 +60,8 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
             }
         }
 
-        if (itemsMap.get(ITEM_DISCOVERABLE).get(TV_CONTENT).equals(DISCOVERABLE)) {
+        TextView tvDiscoverable = (TextView) itemsMap.get(ITEM_DISCOVERABLE).get(TV_CONTENT);
+        if (tvDiscoverable.getText().equals(DISCOVERABLE)) {
             addUrlParameter(ITEM_DISCOVERABLE, "true", url);
         } else {
             addUrlParameter(ITEM_DISCOVERABLE, "false", url);

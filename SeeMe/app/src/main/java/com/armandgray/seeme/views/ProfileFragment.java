@@ -179,6 +179,7 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
             public void onClick(View v) {
                 ImageView ivDiscCloud = (ImageView) itemsMap.get(ITEM_DISCOVERABLE).get(IV_CLOUD);
                 ivDiscCloud.setImageResource(R.drawable.ic_cloud_white_48dp);
+                profileEdited = true;
                 if (editable && tvDiscoverable.getText().equals(DISCOVERABLE)) {
                     tvDiscoverable.setText(HIDDEN);
                 } else if (editable) {
