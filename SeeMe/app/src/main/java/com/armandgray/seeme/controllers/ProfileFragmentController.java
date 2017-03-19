@@ -175,13 +175,14 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
             }
         } else if (parcelableArrayExtra != null && parcelableArrayExtra.length != 0) {
             updateListener.onAccountUpdate((User) parcelableArrayExtra[0]);
+            Toast.makeText(fragment.getContext(), "Account Updated!", Toast.LENGTH_SHORT).show();
+            resetUI();
         } else {
             Log.i(TAG, response);
         }
     }
 
-    @Override
-    public void updateUI() {
+    private void resetUI() {
         for (String itemTitle : itemsMap.keySet()) {
             EditText etEdit = (EditText) itemsMap.get(itemTitle).get(ET_EDIT);
             etEdit.setText("");

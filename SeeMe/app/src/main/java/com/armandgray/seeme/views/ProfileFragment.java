@@ -80,14 +80,9 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
         public void onReceive(Context context, Intent intent) {
             Log.e(TAG, "http Broadcast Received");
             Parcelable[] arrayExtra = intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_JSON_PAYLOAD);
+            profileEdited = arrayExtra == null || arrayExtra.length == 0;
             controller.handleHttpResponse(
                     intent.getStringExtra(HttpService.HTTP_SERVICE_STRING_PAYLOAD), arrayExtra);
-            if (arrayExtra != null && arrayExtra.length != 0) {
-                profileEdited = false;
-                controller.updateUI();
-            } else {
-                profileEdited = true;
-            }
         }
     };
 
