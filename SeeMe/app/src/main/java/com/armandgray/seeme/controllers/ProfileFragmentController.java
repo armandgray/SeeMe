@@ -15,6 +15,9 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import static com.armandgray.seeme.utils.HttpHelper.sendRequest;
+import static com.armandgray.seeme.utils.StringHelper.PASSWORD_PTR;
+import static com.armandgray.seeme.utils.StringHelper.capitalizeString;
+import static com.armandgray.seeme.utils.StringHelper.urlify;
 import static com.armandgray.seeme.views.ProfileFragment.DELETE_URL;
 import static com.armandgray.seeme.views.ProfileFragment.DISCOVERABLE;
 import static com.armandgray.seeme.views.ProfileFragment.ET_EDIT;
@@ -47,24 +50,36 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
 
     @Override
     public void postUpdateRequest(HashMap<String, HashMap> itemsMap) {
-        EditText etEdit = (EditText) itemsMap.get(ITEM_FULL_NAME).get(ET_EDIT);
-        if (!verifyFullName(etEdit.getText().toString())) { return; }
-
         StringBuilder url = new StringBuilder();
-        url.append(UDPATE_URL);
-        url.append("username=").append(activeUser.getUsername());
-        url.append("&oldSecret=").append("111111");
+        String defaultUrl = UDPATE_URL
+                + "username=" + activeUser.getUsername()
+                + "&oldSecret=111111";
+        url.append(defaultUrl);
 
         for (String itemTitle : itemsMap.keySet()) {
-            etEdit = (EditText) itemsMap.get(itemTitle).get(ET_EDIT);
+            EditText etEdit = (EditText) itemsMap.get(itemTitle).get(ET_EDIT);
             if (!itemTitle.equals(ITEM_DISCOVERABLE)) {
-                addUrlParameter(itemTitle,
-                    etEdit.getText().toString(), url);
+                if (!verifyFields(itemTitle, etEdit.getText().toString())) { return; }
+                addUrlParameter(itemTitle,etEdit.getText().toString(), url);
             }
         }
         addUrlDiscoverableParam(itemsMap, url);
 
         sendRequest(url.toString(), fragment.getContext());
+    }
+
+    private boolean verifyFields(String itemTitle, String text) {
+        switch (itemTitle) {
+            case ITEM_FULL_NAME:
+                return verifyFullName(text);
+            case ITEM_PASSWORD:
+                if (!text.matches(PASSWORD_PTR)) {
+                    Toast.makeText(fragment.getContext(), "Password Must Contain: \n- At least 1 number\n- No whitespace\n- At least 6 characters", Toast.LENGTH_LONG).show();
+                    return false;
+                }
+                return true;
+        }
+        return true;
     }
 
     private boolean verifyFullName(String text) {
@@ -87,14 +102,14 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
                 String firstName = text.substring(0, indexOfSpaceDelimeter);
                 String lastName = text.substring(indexOfSpaceDelimeter + 1, text.length());
 
-                url.append("&firstName=").append(firstName);
-                url.append("&lastName=").append(lastName);
+                url.append("&firstName=").append(capitalizeString(firstName));
+                url.append("&lastName=").append(capitalizeString(lastName));
                 return;
             case ITEM_PASSWORD:
                 url.append("&password=").append(text);
                 return;
             case ITEM_ROLE:
-                url.append("&role=").append(text);
+                url.append("&role=").append(urlify(capitalizeString(text)));
                 return;
             case ITEM_DISCOVERABLE:
                 url.append("&discoverable=").append(text);
