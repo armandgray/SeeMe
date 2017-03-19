@@ -47,33 +47,48 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
 
     @Override
     public void postUpdateRequest(HashMap<String, HashMap> itemsMap) {
+        EditText etEdit = (EditText) itemsMap.get(ITEM_FULL_NAME).get(ET_EDIT);
+        if (!verifyFullName(etEdit.getText().toString())) { return; }
+
         StringBuilder url = new StringBuilder();
         url.append(UDPATE_URL);
         url.append("username=").append(activeUser.getUsername());
         url.append("&oldSecret=").append("111111");
 
         for (String itemTitle : itemsMap.keySet()) {
-            EditText etEdit = (EditText) itemsMap.get(itemTitle).get(ET_EDIT);
-            String text = etEdit.getText().toString();
-            if (!text.equals("") && !itemTitle.equals(ITEM_DISCOVERABLE)) {
-                addUrlParameter(itemTitle, text, url);
+            etEdit = (EditText) itemsMap.get(itemTitle).get(ET_EDIT);
+            if (!itemTitle.equals(ITEM_DISCOVERABLE)) {
+                addUrlParameter(itemTitle,
+                    etEdit.getText().toString(), url);
             }
         }
-
-        TextView tvDiscoverable = (TextView) itemsMap.get(ITEM_DISCOVERABLE).get(TV_CONTENT);
-        if (tvDiscoverable.getText().equals(DISCOVERABLE)) {
-            addUrlParameter(ITEM_DISCOVERABLE, "true", url);
-        } else {
-            addUrlParameter(ITEM_DISCOVERABLE, "false", url);
-        }
+        addUrlDiscoverableParam(itemsMap, url);
 
         sendRequest(url.toString(), fragment.getContext());
+    }
+
+    private boolean verifyFullName(String text) {
+        int indexOfSpaceDelimeter = text.indexOf(' ');
+        if (indexOfSpaceDelimeter == -1) {
+            Toast.makeText(fragment.getContext(), "Please Enter Full Name", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (text.substring(indexOfSpaceDelimeter + 1, text.length()).indexOf(' ') != -1) {
+            Toast.makeText(fragment.getContext(), "Please Hyphenate Additional Names", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
     private void addUrlParameter(String itemTitle, String text, StringBuilder url) {
         switch (itemTitle) {
             case ITEM_FULL_NAME:
-                url.append("&firstName=").append(text);
+                int indexOfSpaceDelimeter = text.indexOf(' ');
+                String firstName = text.substring(0, indexOfSpaceDelimeter);
+                String lastName = text.substring(indexOfSpaceDelimeter + 1, text.length());
+
+                url.append("&firstName=").append(firstName);
+                url.append("&lastName=").append(lastName);
                 return;
             case ITEM_PASSWORD:
                 url.append("&password=").append(text);
@@ -83,6 +98,15 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
                 return;
             case ITEM_DISCOVERABLE:
                 url.append("&discoverable=").append(text);
+        }
+    }
+
+    private void addUrlDiscoverableParam(HashMap<String, HashMap> itemsMap, StringBuilder url) {
+        TextView tvDiscoverable = (TextView) itemsMap.get(ITEM_DISCOVERABLE).get(TV_CONTENT);
+        if (tvDiscoverable.getText().equals(DISCOVERABLE)) {
+            addUrlParameter(ITEM_DISCOVERABLE, "true", url);
+        } else {
+            addUrlParameter(ITEM_DISCOVERABLE, "false", url);
         }
     }
 
