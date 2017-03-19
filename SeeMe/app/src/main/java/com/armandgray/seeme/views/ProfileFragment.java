@@ -10,6 +10,7 @@ import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
+import android.support.v4.content.res.ResourcesCompat;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -164,11 +165,25 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
     }
 
     private void setupClickListeners() {
-        setupEditClickListener();
         fabCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(getContext(), "Take or Select Photo From Gallery", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        setupEditClickListener();
+        final TextView tvDiscoverable = (TextView) itemsMap.get(ITEM_DISCOVERABLE).get(TV_CONTENT);
+        tvDiscoverable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ImageView ivDiscCloud = (ImageView) itemsMap.get(ITEM_DISCOVERABLE).get(IV_CLOUD);
+                ivDiscCloud.setImageResource(R.drawable.ic_cloud_white_48dp);
+                if (editable && tvDiscoverable.getText().equals(DISCOVERABLE)) {
+                    tvDiscoverable.setText(HIDDEN);
+                } else if (editable) {
+                    tvDiscoverable.setText(DISCOVERABLE);
+                }
             }
         });
         feedbackContainer.setOnClickListener(new View.OnClickListener() {
@@ -207,17 +222,23 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
 
         TextView tvContent;
         EditText etEdit;
-        for (HashMap item : itemsMap.values()) {
-            tvContent = (TextView) item.get(TV_CONTENT);
-            etEdit = (EditText) item.get(ET_EDIT);
+        for (String itemTitle : itemsMap.keySet()) {
+            tvContent = (TextView) itemsMap.get(itemTitle).get(TV_CONTENT);
+            etEdit = (EditText) itemsMap.get(itemTitle).get(ET_EDIT);
 
-            if (editable) {
+            if (editable && !itemTitle.equals(ITEM_DISCOVERABLE)) {
                 tvContent.setVisibility(View.GONE);
                 etEdit.setVisibility(View.VISIBLE);
                 continue;
             }
             tvContent.setVisibility(View.VISIBLE);
             etEdit.setVisibility(View.GONE);
+        }
+        tvContent = (TextView) itemsMap.get(ITEM_DISCOVERABLE).get(TV_CONTENT);
+        if (editable) {
+            tvContent.setTextColor(ResourcesCompat.getColor(getResources(), R.color.colorGray, null));
+        } else {
+            tvContent.setTextColor(ResourcesCompat.getColor(getResources(), android.R.color.white, null));
         }
     }
 
