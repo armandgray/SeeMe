@@ -38,7 +38,8 @@ import static com.armandgray.seeme.MainActivity.API_URI;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProfileFragment extends Fragment implements DeleteAccountDialog.DeleteAccountListener {
+public class ProfileFragment extends Fragment implements DeleteAccountDialog.DeleteAccountListener
+        , ConfirmPasswordDialog.ConfirmPasswordListener {
 
     public static final String UDPATE_URL = API_URI + "/profile/update?";
     public static final String DELETE_URL = API_URI + "/profile/delete?";
@@ -282,11 +283,17 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
         controller.postConfirmedDeleteRequest(username, password);
     }
 
+    @Override
+    public void onConfirmPassword(String password) {
+        controller.onConfirmPassword(password);
+    }
+
     public interface ProfileController {
+        void onConfirmPassword(String password);
+        void postUpdateRequest(HashMap<String, HashMap> itemsMap);
+        void postFeedBack();
         void postDeleteRequest();
         void postConfirmedDeleteRequest(String username, String password);
         void handleHttpResponse(String response, Parcelable[] parcelableArrayExtra);
-        void postUpdateRequest(HashMap<String, HashMap> itemsMap);
-        void postFeedBack();
     }
 }

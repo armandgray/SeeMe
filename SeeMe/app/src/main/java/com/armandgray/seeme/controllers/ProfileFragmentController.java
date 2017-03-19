@@ -8,6 +8,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.armandgray.seeme.models.User;
+import com.armandgray.seeme.views.ConfirmPasswordDialog;
 import com.armandgray.seeme.views.DeleteAccountDialog;
 import com.armandgray.seeme.views.ProfileFragment;
 
@@ -41,31 +42,32 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
     private User activeUser;
     private Fragment fragment;
     private ProfileUpdateListener updateListener;
+    private String url;
 
     public ProfileFragmentController(User activeUser, Fragment fragment, ProfileUpdateListener listener) {
         this.activeUser = activeUser;
         this.fragment = fragment;
         this.updateListener = listener;
+        this.url = "";
     }
 
     @Override
     public void postUpdateRequest(HashMap<String, HashMap> itemsMap) {
-        String defaultUrl = UDPATE_URL
-                + "username=" + activeUser.getUsername()
-                + "&oldSecret=111111";
-        StringBuilder url = new StringBuilder(defaultUrl);
+        String defaultUrl = UDPATE_URL + "username=" + activeUser.getUsername();
+        StringBuilder urlBuilder = new StringBuilder(defaultUrl);
 
         for (String itemTitle : itemsMap.keySet()) {
             EditText etEdit = (EditText) itemsMap.get(itemTitle).get(ET_EDIT);
             if (!itemTitle.equals(ITEM_DISCOVERABLE)) {
                 String text = etEdit.getText().toString();
                 if (!verifyFields(itemTitle, text)) { return; }
-                if (!text.equals("")) { addUrlParameter(itemTitle, text, url); }
+                if (!text.equals("")) { addUrlParameter(itemTitle, text, urlBuilder); }
             }
         }
-        addUrlDiscoverableParam(itemsMap, url);
-
-        sendRequest(url.toString(), fragment.getContext());
+        addUrlDiscoverableParam(itemsMap, urlBuilder);
+        url = urlBuilder.toString();
+        new ConfirmPasswordDialog().show(
+                fragment.getChildFragmentManager(), DIALOG);
     }
 
     private boolean verifyFields(String itemTitle, String text) {
@@ -133,6 +135,12 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
     }
 
     @Override
+    public void onConfirmPassword(String password) {
+        url += "&oldSecret=" + password;
+        sendRequest(url, fragment.getContext());
+    }
+
+    @Override
     public void postDeleteRequest() {
         new DeleteAccountDialog().show(
                 fragment.getChildFragmentManager(), DIALOG);
@@ -144,7 +152,7 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
             Toast.makeText(fragment.getContext(), "Update Cancelled: Non Active User!", Toast.LENGTH_SHORT).show();
             return;
         }
-        String url = DELETE_URL
+        url = DELETE_URL
                 + "username=" + username
                 + "&password=" + password;
         sendRequest(url, fragment.getContext());

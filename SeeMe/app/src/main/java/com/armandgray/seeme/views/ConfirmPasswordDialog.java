@@ -17,8 +17,8 @@ import static com.armandgray.seeme.utils.StringHelper.getBoldStringBuilder;
 
 public class ConfirmPasswordDialog extends DialogFragment {
 
-    private static final String CONFIRM_HEADER = "Warning: Delete \"See Me\" Account";
-    private static final String CONFIRM_CONTENT = "Deleting your account is permanent. After this step, all account information and data will be irretrievable. Please enter your username and password below to confirm.";
+    private static final String CONFIRM_HEADER = "Confirm Account Update";
+    private static final String CONFIRM_CONTENT = "Please enter your password below.";
     private ConfirmPasswordListener confirmPasswordListener;
 
     @Override
