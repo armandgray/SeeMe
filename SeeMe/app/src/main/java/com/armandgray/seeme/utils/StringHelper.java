@@ -3,7 +3,6 @@ package com.armandgray.seeme.utils;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
-import android.util.Log;
 
 import java.util.regex.Pattern;
 
@@ -34,26 +33,15 @@ public class StringHelper {
         return String.valueOf(chars);
     }
 
-    public static String urlify(String s) {
-        char[] toReturn = new char[s.length() * 2];
-        int usedSpace = 0;
-        for (int i = 0; i < s.length(); i++) {
-            if (s.charAt(i) == ' ') {
-                toReturn[i + usedSpace] = '%';
-                usedSpace++;
-                toReturn[i + usedSpace] = '2';
-                usedSpace++;
-                toReturn[i + usedSpace] = '0';
-                while (s.charAt(i + 1) == ' ') {
-                    i++;
-                    usedSpace--;
-                }
-                continue;
-            }
-            toReturn[i + usedSpace] = s.charAt(i);
+    public static String urlify(String str) {
+        String[] words = str.split(" ");
+        StringBuilder sentence = new StringBuilder(words[0]);
+
+        for (int i = 1; i < words.length; ++i) {
+            sentence.append("%20");
+            sentence.append(words[i]);
         }
-        String url = String.valueOf(toReturn);
-        Log.i(TAG, url);
-        return url.substring(0, url.indexOf(' ') - 1);
+
+        return sentence.toString();
     }
 }

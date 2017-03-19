@@ -155,6 +155,8 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
 
         TextView tvPassword = (TextView) itemsMap.get(ITEM_PASSWORD).get(TV_CONTENT);
         tvPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        EditText etPassword = (EditText) itemsMap.get(ITEM_PASSWORD).get(ET_EDIT);
+        etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
     }
 
     private void setupItem(HashMap item, int drawable, String content) {

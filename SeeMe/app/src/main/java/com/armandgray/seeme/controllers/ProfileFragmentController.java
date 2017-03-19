@@ -50,17 +50,17 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
 
     @Override
     public void postUpdateRequest(HashMap<String, HashMap> itemsMap) {
-        StringBuilder url = new StringBuilder();
         String defaultUrl = UDPATE_URL
                 + "username=" + activeUser.getUsername()
                 + "&oldSecret=111111";
-        url.append(defaultUrl);
+        StringBuilder url = new StringBuilder(defaultUrl);
 
         for (String itemTitle : itemsMap.keySet()) {
             EditText etEdit = (EditText) itemsMap.get(itemTitle).get(ET_EDIT);
             if (!itemTitle.equals(ITEM_DISCOVERABLE)) {
-                if (!verifyFields(itemTitle, etEdit.getText().toString())) { return; }
-                addUrlParameter(itemTitle,etEdit.getText().toString(), url);
+                String text = etEdit.getText().toString();
+                if (!verifyFields(itemTitle, text)) { return; }
+                if (!text.equals("")) { addUrlParameter(itemTitle, text, url); }
             }
         }
         addUrlDiscoverableParam(itemsMap, url);
@@ -69,6 +69,8 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
     }
 
     private boolean verifyFields(String itemTitle, String text) {
+        if (text.equals("")) { return true; }
+
         switch (itemTitle) {
             case ITEM_FULL_NAME:
                 return verifyFullName(text);
