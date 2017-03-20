@@ -79,10 +79,9 @@ public class ProfileFragment extends Fragment
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.e(TAG, "http Broadcast Received");
+            Log.i(TAG, "http Broadcast Received");
             Parcelable[] arrayExtra = intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_JSON_PAYLOAD);
             profileEdited = arrayExtra == null && arrayExtra.length == 0;
-            Log.i(TAG, "ProfileEdited on Return: " + profileEdited);
             controller.handleHttpResponse(
                     intent.getStringExtra(HttpService.HTTP_SERVICE_STRING_PAYLOAD), arrayExtra);
         }
@@ -103,13 +102,11 @@ public class ProfileFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
-        Log.i(TAG, "ProfileEdited onCreateView: " + profileEdited);
 
         assignFields(rootView);
         setupHeaderContent();
         controller.setupItemContent(activeUser);
         setupClickListeners();
-        Log.i(TAG, "ProfileEdited onCreateView after: " + profileEdited);
 
         return rootView;
     }
@@ -157,7 +154,6 @@ public class ProfileFragment extends Fragment
     }
 
     private void setupClickListeners() {
-        Log.i(TAG, "ProfileEdited onSetupClick: " + profileEdited);
         fabCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -192,31 +188,25 @@ public class ProfileFragment extends Fragment
                 controller.postDeleteRequest();
             }
         });
-        Log.i(TAG, "ProfileEdited onSetupClick After: " + profileEdited);
     }
 
     private void setupEditClickListener() {
-        Log.i(TAG, "ProfileEdited onSetupEditClick: " + profileEdited);
         toggleEditable();
         for (HashMap item : itemsMap.values()) { setupEditTextChangeListener(item); }
 
         ivEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i(TAG, "Outside Check: " + profileEdited);
                 if (profileEdited && editable) {
                     controller.postUpdateRequest(itemsMap);
                 }
                 editable = !editable;
-                Log.i(TAG, "Editable: " + editable);
                 toggleEditable();
             }
         });
-        Log.i(TAG, "ProfileEdited onSetupEditClick after: " + profileEdited);
     }
 
     private void toggleEditable() {
-        Log.i(TAG, "ProfileEdited toggleEditable: " + profileEdited);
         ivEdit.setImageResource(editable ? R.drawable.ic_cloud_check_white_48dp : R.drawable.ic_pencil_white_48dp);
         TextView tvContent;
         EditText etEdit;
@@ -238,7 +228,6 @@ public class ProfileFragment extends Fragment
         } else {
             tvContent.setTextColor(ResourcesCompat.getColor(getResources(), android.R.color.white, null));
         }
-        Log.i(TAG, "ProfileEdited toggleEditable after: " + profileEdited);
     }
 
     private void setupEditTextChangeListener(final HashMap item) {
