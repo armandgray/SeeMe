@@ -48,7 +48,7 @@ public class ConfirmPasswordDialog extends DialogFragment {
                 })
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
-                        dialog.dismiss();
+                        confirmPasswordListener.onCancel();
                     }
                 });
         return builder.create();
@@ -57,5 +57,6 @@ public class ConfirmPasswordDialog extends DialogFragment {
 
     public interface ConfirmPasswordListener {
         void onConfirmPassword(String password);
+        void onCancel();
     }
 }

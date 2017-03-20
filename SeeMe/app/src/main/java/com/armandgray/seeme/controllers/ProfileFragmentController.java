@@ -2,7 +2,6 @@ package com.armandgray.seeme.controllers;
 
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -177,8 +176,6 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
             updateListener.onAccountUpdate((User) parcelableArrayExtra[0]);
             Toast.makeText(fragment.getContext(), "Account Updated!", Toast.LENGTH_SHORT).show();
             resetUI();
-        } else {
-            Log.i(TAG, response);
         }
     }
 
