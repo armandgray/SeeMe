@@ -38,7 +38,9 @@ import static com.armandgray.seeme.MainActivity.API_URI;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class ProfileFragment extends Fragment implements DeleteAccountDialog.DeleteAccountListener {
+public class ProfileFragment extends Fragment
+        implements DeleteAccountDialog.DeleteAccountListener,
+        ConfirmPasswordDialog.ConfirmPasswordListener {
 
     public static final String UDPATE_URL = API_URI + "/profile/update?";
     public static final String DELETE_URL = API_URI + "/profile/delete?";
@@ -74,14 +76,18 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
     private LinearLayout feedbackContainer;
     private Button btnDeleteAccount;
 
-
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.e(TAG, "http Broadcast Received");
+            Parcelable[] arrayExtra = intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_JSON_PAYLOAD);
+            if (arrayExtra != null && arrayExtra.length != 0) {
+                profileEdited = false;
+                setupEditClickListener();
+            }
+            Log.i(TAG, "ProfileEdited on Return: " + profileEdited);
             controller.handleHttpResponse(
-                    intent.getStringExtra(HttpService.HTTP_SERVICE_STRING_PAYLOAD),
-                    intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_JSON_PAYLOAD));
+                    intent.getStringExtra(HttpService.HTTP_SERVICE_STRING_PAYLOAD), arrayExtra);
         }
     };
 
@@ -100,11 +106,13 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+        Log.i(TAG, "ProfileEdited onCreateView: " + profileEdited);
 
         assignFields(rootView);
         setupHeaderContent();
         setupItemContent();
         setupClickListeners();
+        Log.i(TAG, "ProfileEdited onCreateView after: " + profileEdited);
 
         return rootView;
     }
@@ -167,6 +175,7 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
     }
 
     private void setupClickListeners() {
+        Log.i(TAG, "ProfileEdited onSetupClick: " + profileEdited);
         fabCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -201,28 +210,32 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
                 controller.postDeleteRequest();
             }
         });
+        Log.i(TAG, "ProfileEdited onSetupClick After: " + profileEdited);
     }
 
     private void setupEditClickListener() {
+        Log.i(TAG, "ProfileEdited onSetupEditClick: " + profileEdited);
         toggleEditable();
         for (HashMap item : itemsMap.values()) { setupEditTextChangeListener(item); }
 
         ivEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editable = !editable;
-                if (profileEdited) {
+                Log.i(TAG, "Outside Check: " + profileEdited);
+                if (profileEdited && editable) {
                     controller.postUpdateRequest(itemsMap);
-                    profileEdited = false;
                 }
+                editable = !editable;
+                Log.i(TAG, "Editable: " + editable);
                 toggleEditable();
             }
         });
+        Log.i(TAG, "ProfileEdited onSetupEditClick after: " + profileEdited);
     }
 
     private void toggleEditable() {
+        Log.i(TAG, "ProfileEdited toggleEditable: " + profileEdited);
         ivEdit.setImageResource(editable ? R.drawable.ic_cloud_check_white_48dp : R.drawable.ic_pencil_white_48dp);
-
         TextView tvContent;
         EditText etEdit;
         for (String itemTitle : itemsMap.keySet()) {
@@ -243,6 +256,7 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
         } else {
             tvContent.setTextColor(ResourcesCompat.getColor(getResources(), android.R.color.white, null));
         }
+        Log.i(TAG, "ProfileEdited toggleEditable after: " + profileEdited);
     }
 
     private void setupEditTextChangeListener(final HashMap item) {
@@ -282,11 +296,22 @@ public class ProfileFragment extends Fragment implements DeleteAccountDialog.Del
         controller.postConfirmedDeleteRequest(username, password);
     }
 
+    @Override
+    public void onConfirmPassword(String password) {
+        controller.onConfirmPassword(password);
+    }
+
+    @Override
+    public void onCancel() {
+        profileEdited = true;
+    }
+
     public interface ProfileController {
+        void onConfirmPassword(String password);
+        void postUpdateRequest(HashMap<String, HashMap> itemsMap);
+        void postFeedBack();
         void postDeleteRequest();
         void postConfirmedDeleteRequest(String username, String password);
         void handleHttpResponse(String response, Parcelable[] parcelableArrayExtra);
-        void postUpdateRequest(HashMap<String, HashMap> itemsMap);
-        void postFeedBack();
     }
 }
