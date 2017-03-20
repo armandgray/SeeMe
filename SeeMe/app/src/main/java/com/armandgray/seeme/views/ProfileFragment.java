@@ -59,20 +59,20 @@ public class ProfileFragment extends Fragment
 
     private static final String TAG = "PROFILE_FRAGMENT";
 
-    private User activeUser;
-    private ProfileController controller;
-
     private TextView tvFullName;
+
     private TextView tvUsername;
     private ImageView ivProfile;
-
     private FloatingActionButton fabCamera;
-    private ImageView ivEdit;
 
+    private ImageView ivEdit;
     private boolean editable;
     private boolean profileEdited;
 
+    private User activeUser;
     private HashMap<String, HashMap> itemsMap;
+    private ProfileController controller;
+
     private LinearLayout feedbackContainer;
     private Button btnDeleteAccount;
 
@@ -81,10 +81,7 @@ public class ProfileFragment extends Fragment
         public void onReceive(Context context, Intent intent) {
             Log.e(TAG, "http Broadcast Received");
             Parcelable[] arrayExtra = intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_JSON_PAYLOAD);
-            if (arrayExtra != null && arrayExtra.length != 0) {
-                profileEdited = false;
-                setupEditClickListener();
-            }
+            profileEdited = arrayExtra == null && arrayExtra.length == 0;
             Log.i(TAG, "ProfileEdited on Return: " + profileEdited);
             controller.handleHttpResponse(
                     intent.getStringExtra(HttpService.HTTP_SERVICE_STRING_PAYLOAD), arrayExtra);
@@ -110,7 +107,7 @@ public class ProfileFragment extends Fragment
 
         assignFields(rootView);
         setupHeaderContent();
-        setupItemContent();
+        controller.setupItemContent(activeUser);
         setupClickListeners();
         Log.i(TAG, "ProfileEdited onCreateView after: " + profileEdited);
 
@@ -118,9 +115,6 @@ public class ProfileFragment extends Fragment
     }
 
     private void assignFields(View rootView) {
-        activeUser = getArguments().getParcelable(ACTIVE_USER);
-        controller = new ProfileFragmentController(activeUser, this,
-                (ProfileFragmentController.ProfileUpdateListener) getActivity());
 
         tvFullName = (TextView) rootView.findViewById(R.id.tvFullName);
         tvUsername = (TextView) rootView.findViewById(R.id.tvUsername);
@@ -134,8 +128,17 @@ public class ProfileFragment extends Fragment
         itemsMap.put(ITEM_ROLE, getMapFromLayout((LinearLayout) rootView.findViewById(R.id.itemRole)));
         itemsMap.put(ITEM_DISCOVERABLE, getMapFromLayout((LinearLayout) rootView.findViewById(R.id.itemDiscoverable)));
 
+        activeUser = getArguments().getParcelable(ACTIVE_USER);
+        controller = new ProfileFragmentController(activeUser, this, itemsMap,
+                (ProfileFragmentController.ProfileUpdateListener) getActivity());
+
         feedbackContainer = (LinearLayout) rootView.findViewById(R.id.feedbackContainer);
         btnDeleteAccount = (Button) rootView.findViewById(R.id.btnDeleteAccount);
+
+        TextView tvPassword = (TextView) itemsMap.get(ITEM_PASSWORD).get(TV_CONTENT);
+        EditText etPassword = (EditText) itemsMap.get(ITEM_PASSWORD).get(ET_EDIT);
+        tvPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
     }
 
     private HashMap<String, View> getMapFromLayout(LinearLayout layout) {
@@ -151,27 +154,6 @@ public class ProfileFragment extends Fragment
         tvFullName.setText(activeUser.getFirstName() + " " + activeUser.getLastName());
         tvUsername.setText("--> " + activeUser.getUsername() + " <--");
         ivProfile.setImageResource(R.drawable.ic_account_circle_white_48dp);
-    }
-
-    private void setupItemContent() {
-        setupItem(itemsMap.get(ITEM_FULL_NAME), R.drawable.ic_account_outline_white_48dp,
-                activeUser.getFirstName() + " " + activeUser.getLastName());
-        setupItem(itemsMap.get(ITEM_PASSWORD), R.drawable.ic_lock_open_outline_white_48dp, "0000000");
-        setupItem(itemsMap.get(ITEM_ROLE), R.drawable.ic_tools_resources, activeUser.getRole());
-        setupItem(itemsMap.get(ITEM_DISCOVERABLE), R.drawable.ic_earth_white_48dp,
-                activeUser.isDiscoverable() ? DISCOVERABLE : HIDDEN);
-
-        TextView tvPassword = (TextView) itemsMap.get(ITEM_PASSWORD).get(TV_CONTENT);
-        tvPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-        EditText etPassword = (EditText) itemsMap.get(ITEM_PASSWORD).get(ET_EDIT);
-        etPassword.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-    }
-
-    private void setupItem(HashMap item, int drawable, String content) {
-        ImageView ivIcon = (ImageView) item.get(IV_ICON);
-        ivIcon.setImageResource(drawable);
-        TextView tvContent = (TextView) item.get(TV_CONTENT);
-        tvContent.setText(content);
     }
 
     private void setupClickListeners() {
@@ -307,6 +289,7 @@ public class ProfileFragment extends Fragment
     }
 
     public interface ProfileController {
+        void setupItemContent(User user);
         void onConfirmPassword(String password);
         void postUpdateRequest(HashMap<String, HashMap> itemsMap);
         void postFeedBack();

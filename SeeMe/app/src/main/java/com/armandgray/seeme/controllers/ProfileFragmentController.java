@@ -23,11 +23,13 @@ import static com.armandgray.seeme.utils.StringHelper.urlify;
 import static com.armandgray.seeme.views.ProfileFragment.DELETE_URL;
 import static com.armandgray.seeme.views.ProfileFragment.DISCOVERABLE;
 import static com.armandgray.seeme.views.ProfileFragment.ET_EDIT;
+import static com.armandgray.seeme.views.ProfileFragment.HIDDEN;
 import static com.armandgray.seeme.views.ProfileFragment.ITEM_DISCOVERABLE;
 import static com.armandgray.seeme.views.ProfileFragment.ITEM_FULL_NAME;
 import static com.armandgray.seeme.views.ProfileFragment.ITEM_PASSWORD;
 import static com.armandgray.seeme.views.ProfileFragment.ITEM_ROLE;
 import static com.armandgray.seeme.views.ProfileFragment.IV_CLOUD;
+import static com.armandgray.seeme.views.ProfileFragment.IV_ICON;
 import static com.armandgray.seeme.views.ProfileFragment.TV_CONTENT;
 import static com.armandgray.seeme.views.ProfileFragment.UDPATE_URL;
 
@@ -47,17 +49,37 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
     private HashMap<String, HashMap> itemsMap;
     private String url;
 
-    public ProfileFragmentController(User activeUser, Fragment fragment, ProfileUpdateListener listener) {
+    public ProfileFragmentController(User activeUser,
+                                     Fragment fragment,
+                                     HashMap<String, HashMap> itemsMap,
+                                     ProfileUpdateListener listener) {
         this.activeUser = activeUser;
         this.fragment = fragment;
+        this.itemsMap = itemsMap;
         this.updateListener = listener;
-        this.itemsMap = new HashMap<>();
         this.url = "";
     }
 
     @Override
+    public void setupItemContent(User user) {
+        setupItem(itemsMap.get(ITEM_FULL_NAME), R.drawable.ic_account_outline_white_48dp,
+                user.getFirstName() + " " + user.getLastName());
+        setupItem(itemsMap.get(ITEM_PASSWORD), R.drawable.ic_lock_open_outline_white_48dp, "0000000");
+        setupItem(itemsMap.get(ITEM_ROLE), R.drawable.ic_tools_resources, user.getRole());
+        setupItem(itemsMap.get(ITEM_DISCOVERABLE), R.drawable.ic_earth_white_48dp,
+                user.isDiscoverable() ? DISCOVERABLE : HIDDEN);
+
+    }
+
+    private void setupItem(HashMap item, int drawable, String content) {
+        ImageView ivIcon = (ImageView) item.get(IV_ICON);
+        ivIcon.setImageResource(drawable);
+        TextView tvContent = (TextView) item.get(TV_CONTENT);
+        tvContent.setText(content);
+    }
+
+    @Override
     public void postUpdateRequest(HashMap<String, HashMap> itemsMap) {
-        this.itemsMap = itemsMap;
         String defaultUrl = UDPATE_URL + "username=" + activeUser.getUsername();
         StringBuilder urlBuilder = new StringBuilder(defaultUrl);
 
@@ -173,13 +195,16 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
                 updateListener.onAccountDelete();
             }
         } else if (parcelableArrayExtra != null && parcelableArrayExtra.length != 0) {
-            updateListener.onAccountUpdate((User) parcelableArrayExtra[0]);
+            User newUser = (User) parcelableArrayExtra[0];
+            updateListener.onAccountUpdate(newUser);
             Toast.makeText(fragment.getContext(), "Account Updated!", Toast.LENGTH_SHORT).show();
-            resetUI();
+            resetUI(newUser);
         }
     }
 
-    private void resetUI() {
+    private void resetUI(User user) {
+        setupItemContent(user);
+
         for (String itemTitle : itemsMap.keySet()) {
             EditText etEdit = (EditText) itemsMap.get(itemTitle).get(ET_EDIT);
             etEdit.setText("");
