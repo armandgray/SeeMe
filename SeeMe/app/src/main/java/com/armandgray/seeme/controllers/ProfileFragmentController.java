@@ -11,8 +11,11 @@ import com.armandgray.seeme.R;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.views.ConfirmPasswordDialog;
 import com.armandgray.seeme.views.DeleteAccountDialog;
+import com.armandgray.seeme.views.PostFeedbackDialog;
 import com.armandgray.seeme.views.ProfileFragment;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -23,6 +26,7 @@ import static com.armandgray.seeme.utils.StringHelper.urlify;
 import static com.armandgray.seeme.views.ProfileFragment.DELETE_URL;
 import static com.armandgray.seeme.views.ProfileFragment.DISCOVERABLE;
 import static com.armandgray.seeme.views.ProfileFragment.ET_EDIT;
+import static com.armandgray.seeme.views.ProfileFragment.FEEDBACK_URL;
 import static com.armandgray.seeme.views.ProfileFragment.HIDDEN;
 import static com.armandgray.seeme.views.ProfileFragment.ITEM_DISCOVERABLE;
 import static com.armandgray.seeme.views.ProfileFragment.ITEM_FULL_NAME;
@@ -41,8 +45,11 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
     private static final String UPDATE_FAILED = "Update Failed!";
     private static final String ACCOUNT_DELETED = "Account Deleted!";
     private static final String TAG = "PROFILE_CONTROLLER";
+    private static final String MESSAGE_SENT = "Message Sent!";
+    private static final String MESSAGE_UPLOAD_FAILED = "Message Upload Failed!";
 
-    private String[] responseArray = {USER_NOT_FOUND, PASSWORD_INCORRECT, UPDATE_FAILED, ACCOUNT_DELETED};
+    private String[] responseArray = {USER_NOT_FOUND, PASSWORD_INCORRECT, UPDATE_FAILED, ACCOUNT_DELETED,
+            MESSAGE_UPLOAD_FAILED, MESSAGE_SENT};
     private User activeUser;
     private Fragment fragment;
     private ProfileUpdateListener updateListener;
@@ -158,7 +165,21 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
 
     @Override
     public void postFeedBack() {
-        Toast.makeText(fragment.getActivity(), "Post Feedback", Toast.LENGTH_SHORT).show();
+        new PostFeedbackDialog().show(
+                fragment.getChildFragmentManager(), DIALOG);
+    }
+
+    @Override
+    public void postFeedBackMessage(String message) {
+        String url = "";
+        try {
+            url = FEEDBACK_URL
+                    + "username=" + activeUser.getUsername()
+                    + "&message=" + URLEncoder.encode(message, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+        sendRequest(url, fragment.getContext());
     }
 
     @Override
