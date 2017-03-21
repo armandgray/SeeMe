@@ -1,13 +1,18 @@
 package com.armandgray.seeme.views;
 
 
+import android.content.ContentValues;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.armandgray.seeme.R;
+import com.armandgray.seeme.db.DatabaseHelper;
+import com.armandgray.seeme.db.NotesProvider;
 import com.armandgray.seeme.models.User;
 
 import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
@@ -17,6 +22,8 @@ import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
  */
 public class NotesFragment extends Fragment {
 
+
+    private static final String TAG = "NOTES_FRAGMENT";
 
     public NotesFragment() {
         // Required empty public constructor
@@ -34,8 +41,18 @@ public class NotesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_notes, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_notes, container, false);
+
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.NOTE_TEXT, "New Note");
+        Uri noteUri = getActivity().getContentResolver()
+                .insert(NotesProvider.CONTENT_URI, values);
+
+        if (noteUri != null) {
+            Log.d(TAG, "Inserted note: " + noteUri.getLastPathSegment());
+        }
+
+        return rootView;
     }
 
 }
