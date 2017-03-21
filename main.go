@@ -23,6 +23,7 @@ func main()  {
   mux.HandleFunc("/seeme/api/discoverable/localusers", HandlerLocalUser)
   mux.HandleFunc("/seeme/api/profile/delete", HandlerProfileDelete)
   mux.HandleFunc("/seeme/api/profile/update", HandlerProfileUpdate)
+  mux.HandleFunc("/seeme/api/feedback", HandlerFeedback)
 
   n := negroni.Classic()
   n.Use(negroni.HandlerFunc(VerifyMySQLConnection))

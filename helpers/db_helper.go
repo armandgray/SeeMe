@@ -5,6 +5,7 @@ import (
   "fmt"
 
   "net/http"
+  "errors"
 
 	"database/sql"
   _ "github.com/go-sql-driver/mysql"
@@ -32,6 +33,13 @@ func InsertNewUser(user User) (error) {
                   user.FirstName, user.LastName, user.Role, user.Username, 
                   user.Secret, user.Discoverable, nil)
 	return err
+}
+
+func InsertFeedback(username string, message string) (error) {
+  if message == "" { return errors.New("Message Empty") }
+  _, err := db.Exec("INSERT INTO feedback VALUES (?, ?, ?)", 
+                  username, nil, message)
+  return err
 }
 
 func GetUserFromDB(username string) (User, error) {
