@@ -44,6 +44,7 @@ public class ProfileFragment extends Fragment
 
     public static final String UDPATE_URL = API_URI + "/profile/update?";
     public static final String DELETE_URL = API_URI + "/profile/delete?";
+    public static final String FEEDBACK_URL = API_URI + "/feedback?";
 
     public static final String ITEM_FULL_NAME = "itemFullName";
     public static final String ITEM_PASSWORD = "itemPassword";
@@ -81,7 +82,7 @@ public class ProfileFragment extends Fragment
         public void onReceive(Context context, Intent intent) {
             Log.i(TAG, "http Broadcast Received");
             Parcelable[] arrayExtra = intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_JSON_PAYLOAD);
-            profileEdited = arrayExtra == null && arrayExtra.length == 0;
+            profileEdited = arrayExtra == null || arrayExtra.length == 0;
             controller.handleHttpResponse(
                     intent.getStringExtra(HttpService.HTTP_SERVICE_STRING_PAYLOAD), arrayExtra);
         }
@@ -157,7 +158,7 @@ public class ProfileFragment extends Fragment
         fabCamera.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(getContext(), "Take or Select Photo From Gallery", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "Feature Unavailable", Toast.LENGTH_SHORT).show();
             }
         });
 
