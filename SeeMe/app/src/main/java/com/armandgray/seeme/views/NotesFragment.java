@@ -50,8 +50,6 @@ public class NotesFragment extends Fragment
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_notes, container, false);
 
-        insertNewNote("New Passed Note");
-
         String[] from = {DatabaseHelper.NOTE_TEXT};
         int[] to = {android.R.id.text1};
         adapter = new SimpleCursorAdapter(getContext(),
@@ -62,7 +60,17 @@ public class NotesFragment extends Fragment
 
         getLoaderManager().initLoader(0, null, this);
 
+        insertDummyData();
+
         return rootView;
+    }
+
+    private void insertDummyData() {
+        insertNewNote("New Passed Note");
+        insertNewNote("New MultiLine Note\n More text");
+        insertNewNote("New Long Note Long Long Long Long Long Long Long Long Long Long Long Long Long Long Long Long Long Long");
+
+        restartLoader();
     }
 
     private void insertNewNote(String note) {
@@ -74,6 +82,10 @@ public class NotesFragment extends Fragment
         if (noteUri != null) {
             Log.d(TAG, "Inserted note: " + noteUri.getLastPathSegment());
         }
+    }
+
+    private Loader<Cursor> restartLoader() {
+        return getLoaderManager().restartLoader(0, null, this);
     }
 
     @Override
