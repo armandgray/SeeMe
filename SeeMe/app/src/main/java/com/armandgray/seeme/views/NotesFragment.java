@@ -2,20 +2,24 @@ package com.armandgray.seeme.views;
 
 
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
 import android.support.v4.widget.SimpleCursorAdapter;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.armandgray.seeme.R;
 import com.armandgray.seeme.db.DatabaseHelper;
@@ -61,6 +65,31 @@ public class NotesFragment extends Fragment
         getLoaderManager().initLoader(0, null, this);
 
         insertDummyData();
+
+        FloatingActionButton fabDelete = (FloatingActionButton) rootView.findViewById(R.id.fabDelete);
+        fabDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogInterface.OnClickListener dialogClickListener =
+                        new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int button) {
+                                if (button == DialogInterface.BUTTON_POSITIVE) {
+                                    getActivity().getContentResolver()
+                                            .delete(NotesProvider.CONTENT_URI, null, null);
+                                    restartLoader();
+                                    Toast.makeText(getContext(), "Notes Deleted", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                        };
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+                builder.setMessage("Are you sure?")
+                        .setPositiveButton(getString(android.R.string.yes), dialogClickListener)
+                        .setNegativeButton(getString(android.R.string.no), dialogClickListener)
+                        .show();
+            }
+        });
 
         return rootView;
     }
