@@ -11,6 +11,7 @@ import com.armandgray.seeme.R;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.views.ConfirmPasswordDialog;
 import com.armandgray.seeme.views.DeleteAccountDialog;
+import com.armandgray.seeme.views.PostFeedbackDialog;
 import com.armandgray.seeme.views.ProfileFragment;
 
 import java.util.Arrays;
@@ -162,7 +163,12 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
 
     @Override
     public void postFeedBack() {
-        String message = "testing";
+        new PostFeedbackDialog().show(
+                fragment.getChildFragmentManager(), DIALOG);
+    }
+
+    @Override
+    public void postFeedBackMessage(String message) {
         String url = FEEDBACK_URL
                 + "username=" + activeUser.getUsername()
                 + "&message=" + message;
