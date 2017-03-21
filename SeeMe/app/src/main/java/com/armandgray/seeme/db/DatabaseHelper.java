@@ -14,6 +14,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String NOTE_TEXT = "noteText";
     public static final String NOTE_CREATED = "noteCreated";
 
+    public static final String[] ALL_COLUMNS =
+            {NOTE_ID, NOTE_TEXT, NOTE_CREATED};
+
     private static final String TABLE_CREATE =
             "CREATE TABLE " + TABLE_NOTES + " (" +
                     NOTE_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
