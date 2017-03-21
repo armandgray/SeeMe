@@ -4,17 +4,18 @@ import (
   . "seeme/helpers"
 
   "net/http"
-
-  "encoding/json"
 )
 
 func HandlerFeedback(w http.ResponseWriter, r *http.Request) {
-  js, err := json.Marshal(GetDiscoverableUsersFromDB(w))
+  _, err := GetUserFromDB(r.FormValue("username"))
   if err != nil {
-    http.Error(w, err.Error(), http.StatusInternalServerError)
+    w.Write([]byte("User Not Found!"))
     return
   }
-
-  w.Header().Set("Content-Type", "application/json")
-  w.Write(js)
+  if err := InsertFeedback(r); err != nil { 
+    w.Write([]byte("Message Upload Failed!"))
+    return
+  }
+    
+  w.Write([]byte("Message Sent!"))
 }

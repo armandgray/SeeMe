@@ -34,6 +34,12 @@ func InsertNewUser(user User) (error) {
 	return err
 }
 
+func InsertFeedback(r *http.Request) (error) {
+  _, err := db.Exec("INSERT INTO feedback VALUES (?, ?, ?)", 
+                  r.FormValue("username"), nil, r.FormValue("message"))
+  return err
+}
+
 func GetUserFromDB(username string) (User, error) {
   var user User
   var network sql.NullString
