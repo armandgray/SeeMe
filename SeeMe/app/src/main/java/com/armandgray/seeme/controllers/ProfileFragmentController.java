@@ -14,6 +14,8 @@ import com.armandgray.seeme.views.DeleteAccountDialog;
 import com.armandgray.seeme.views.PostFeedbackDialog;
 import com.armandgray.seeme.views.ProfileFragment;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.HashMap;
 
@@ -169,9 +171,14 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
 
     @Override
     public void postFeedBackMessage(String message) {
-        String url = FEEDBACK_URL
-                + "username=" + activeUser.getUsername()
-                + "&message=" + message;
+        String url = "";
+        try {
+            url = FEEDBACK_URL
+                    + "username=" + activeUser.getUsername()
+                    + "&message=" + URLEncoder.encode(message, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         sendRequest(url, fragment.getContext());
     }
 
