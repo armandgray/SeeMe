@@ -4,6 +4,7 @@ import android.content.ContentProvider;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -24,9 +25,12 @@ public class NotesProvider extends ContentProvider {
         uriMatcher.addURI(AUTHORITY, BASE_PATH + "/#", NOTES_ID);
     }
 
+    private SQLiteDatabase database;
+
     @Override
     public boolean onCreate() {
-        return false;
+        database = new DatabaseHelper(getContext()).getWritableDatabase();
+        return true;
     }
 
     @Nullable

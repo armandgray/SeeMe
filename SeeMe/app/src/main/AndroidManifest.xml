@@ -23,6 +23,13 @@
             </intent-filter>
         </activity>
 
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".RegisterActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+
         <service
             android:name=".services.HttpService"
             android:exported="false" />
@@ -36,12 +43,11 @@
             </intent-filter>
         </receiver>
 
-        <activity
-            android:name=".LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".RegisterActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <provider
+            android:name=".db.NotesProvider"
+            android:authorities="com.armandgray.seeme.db.notesprovider"
+            android:exported="false" />
+
     </application>
 
 </manifest>
