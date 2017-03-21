@@ -43,16 +43,20 @@ public class NotesFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_notes, container, false);
 
+        insertNewNote("New Passed Note");
+
+        return rootView;
+    }
+
+    private void insertNewNote(String note) {
         ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.NOTE_TEXT, "New Note");
+        values.put(DatabaseHelper.NOTE_TEXT, note);
         Uri noteUri = getActivity().getContentResolver()
                 .insert(NotesProvider.CONTENT_URI, values);
 
         if (noteUri != null) {
             Log.d(TAG, "Inserted note: " + noteUri.getLastPathSegment());
         }
-
-        return rootView;
     }
 
 }
