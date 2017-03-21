@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@color/colorPrimaryDark"
+    android:padding="@dimen/activity_horizontal_margin"
+    tools:showIn="@layout/fragment_profile">
+
+    <TextView
+        android:id="@+id/tvFullName"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvUsername"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_horizontal"
+        android:textColor="@color/colorPrimary"
+        android:textSize="14sp" />
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_marginTop="5dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center">
+
+        <ImageView
+            android:id="@+id/ivProfile"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_gravity="bottom"
+            android:contentDescription="@string/active_user_profile_picture"
+            android:tint="@color/colorPrimary"
+            app:srcCompat="@drawable/ic_account_circle_white_48dp" />
+
+        <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fabCamera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom|end"
+            android:layout_marginTop="@dimen/fab_margin_top_left"
+            android:layout_marginLeft="@dimen/fab_margin_top_left"
+            android:layout_marginStart="@dimen/fab_margin_top_left"
+            android:layout_marginBottom="@dimen/fab_margin_bot_r"
+            android:layout_marginEnd="@dimen/fab_margin_bot_r"
+            android:layout_marginRight="@dimen/fab_margin_bot_r"
+            app:backgroundTint="@color/colorPrimary"
+            app:srcCompat="@drawable/ic_camera_white_48dp" />
+    </FrameLayout>
+</LinearLayout>

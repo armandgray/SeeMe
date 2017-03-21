@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- lower rectangle (shadow color) -->
+    <item>
+        <shape
+            android:shape="rectangle">
+            <solid android:color="@color/colorGray" />
+        </shape>
+    </item>
+
+    <!-- upper rectangle (background color) -->
+    <item
+        android:top="0.5dp"
+        android:bottom="0.5dp">
+        <shape android:shape="rectangle">
+            <solid android:color="@color/colorPrimary" />
+        </shape>
+    </item>
+</layer-list>

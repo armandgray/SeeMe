@@ -18,7 +18,8 @@ public class HttpService extends IntentService {
 
     public static final String TAG = "HttpService";
     public static final String HTTP_SERVICE_MESSAGE = "HTTP Service Message";
-    public static final String HTTP_SERVICE_PAYLOAD = "HTTP Service Payload";
+    public static final String HTTP_SERVICE_JSON_PAYLOAD = "HTTP Service JSON Payload";
+    public static final String HTTP_SERVICE_STRING_PAYLOAD = "HTTP Service STRING Payload";
 
     public HttpService() { super("HttpService"); }
 
@@ -36,16 +37,19 @@ public class HttpService extends IntentService {
         }
 
         User[] userArray = null;
-
+        Intent messageIntent = new Intent(HTTP_SERVICE_MESSAGE);
         if (response != null) {
-            Gson gson = new GsonBuilder()
-                    .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
-                    .create();
-            userArray = gson.fromJson(response, User[].class);
+            if (response.charAt(0) != '[') {
+                messageIntent.putExtra(HTTP_SERVICE_STRING_PAYLOAD, response);
+            } else {
+                Gson gson = new GsonBuilder()
+                        .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                        .create();
+                userArray = gson.fromJson(response, User[].class);
+                messageIntent.putExtra(HTTP_SERVICE_JSON_PAYLOAD, userArray);
+            }
         }
 
-        Intent messageIntent = new Intent(HTTP_SERVICE_MESSAGE);
-        messageIntent.putExtra(HTTP_SERVICE_PAYLOAD, userArray);
         LocalBroadcastManager broadcastManager =
                 LocalBroadcastManager.getInstance(getApplicationContext());
         broadcastManager.sendBroadcast(messageIntent);

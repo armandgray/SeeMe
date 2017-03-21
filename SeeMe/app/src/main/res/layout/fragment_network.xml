@@ -2,12 +2,35 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="@dimen/activity_horizontal_margin"
     tools:context="com.armandgray.seeme.views.NetworkFragment">
 
-    <!-- TODO: Update blank fragment layout -->
     <TextView
+        android:id="@+id/tvNoNetwork"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:gravity="center"
+        android:padding="40dp"
+        android:layout_marginBottom="150dp"
+        android:textColor="@color/colorPrimary"
+        android:textSize="16sp" />
 
+    <LinearLayout
+        android:id="@+id/networkContainer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
+            android:text="@string/current_network" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvNetwork"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
 </FrameLayout>
