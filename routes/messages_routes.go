@@ -12,7 +12,7 @@ func HandlerFeedback(w http.ResponseWriter, r *http.Request) {
     w.Write([]byte("User Not Found!"))
     return
   }
-  if err := InsertFeedback(r); err != nil { 
+  if err := InsertFeedback(r.FormValue("username"), r.FormValue("message")); err != nil { 
     w.Write([]byte("Message Upload Failed!"))
     return
   }
