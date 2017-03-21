@@ -2,6 +2,7 @@ package com.armandgray.seeme.db;
 
 import android.content.ContentProvider;
 import android.content.ContentValues;
+import android.content.UriMatcher;
 import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
@@ -13,9 +14,15 @@ public class NotesProvider extends ContentProvider {
     private static final String BASE_PATH = "notes";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + BASE_PATH );
 
-    private static final int NOTES = 1;
+    private static final int ALL_NOTES = 1;
     private static final int NOTES_ID = 2;
 
+    private static final UriMatcher uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
+
+    static {
+        uriMatcher.addURI(AUTHORITY, BASE_PATH, ALL_NOTES);
+        uriMatcher.addURI(AUTHORITY, BASE_PATH + "/#", NOTES_ID);
+    }
 
     @Override
     public boolean onCreate() {
