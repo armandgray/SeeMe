@@ -55,9 +55,9 @@ public class NotesFragment extends Fragment
         View rootView = inflater.inflate(R.layout.fragment_notes, container, false);
 
         String[] from = {DatabaseHelper.NOTE_TEXT};
-        int[] to = {android.R.id.text1};
+        int[] to = {R.id.tvText};
         adapter = new SimpleCursorAdapter(getContext(),
-                android.R.layout.simple_list_item_1, null, from, to, 0);
+                R.layout.note_listitem, null, from, to, 0);
 
         ListView lvNotes = (ListView) rootView.findViewById(R.id.lvNotes);
         lvNotes.setAdapter(adapter);
