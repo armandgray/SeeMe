@@ -77,20 +77,11 @@ public class NotesFragment extends Fragment
             }
         });
 
-        deleteAllNotes();
-
         return rootView;
     }
 
     private Loader<Cursor> restartLoader() {
         return getLoaderManager().restartLoader(0, null, this);
-    }
-
-    private void deleteAllNotes() {
-        getActivity().getContentResolver()
-                .delete(NotesProvider.CONTENT_URI, null, null);
-        restartLoader();
-        Toast.makeText(getContext(), "Notes Deleted", Toast.LENGTH_SHORT).show();
     }
 
     @Override

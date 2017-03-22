@@ -65,13 +65,19 @@ public class NoteEditorActivity extends AppCompatActivity {
                 return;
             case Intent.ACTION_EDIT:
                 if (newText.length() == 0) {
-//                    deleteNote();
+                    deleteNote();
                 } else if (oldText.equals(newText)) {
                     setResult(RESULT_CANCELED);
                 } else {
                     updateNote(newText);
                 }
         }
+    }
+
+    private void deleteNote() {
+        getContentResolver().delete(NotesProvider.CONTENT_URI, noteFilter, null);
+        Toast.makeText(this, R.string.note_deleted, Toast.LENGTH_SHORT).show();
+        setResult(RESULT_OK);
     }
 
     private void insertNote(String note) {
@@ -99,6 +105,7 @@ public class NoteEditorActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_delete:
+                etEditor.setText("");
                 onBackPressed();
                 break;
             case android.R.id.home:

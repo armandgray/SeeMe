@@ -10,6 +10,7 @@
         android:id="@+id/ivDocIcon"
         android:layout_width="36dp"
         android:layout_height="36dp"
+        android:tint="@color/colorPrimary"
         app:srcCompat="@drawable/ic_file_document_box_white_48dp" />
 
     <TextView
