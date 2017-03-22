@@ -2,7 +2,7 @@ package com.armandgray.seeme.views;
 
 
 import android.content.ContentValues;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -12,7 +12,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
-import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +19,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.armandgray.seeme.NoteEditorActivity;
 import com.armandgray.seeme.R;
 import com.armandgray.seeme.db.DatabaseHelper;
 import com.armandgray.seeme.db.NotesProvider;
@@ -36,6 +36,7 @@ public class NotesFragment extends Fragment
 
 
     private static final String TAG = "NOTES_FRAGMENT";
+    private static final int EDITOR_REQUEST_CODE = 1001;
     private CursorAdapter adapter;
 
     public NotesFragment() {}
@@ -67,24 +68,7 @@ public class NotesFragment extends Fragment
         fabDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogInterface.OnClickListener dialogClickListener =
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int button) {
-                                if (button == DialogInterface.BUTTON_POSITIVE) {
-                                    getActivity().getContentResolver()
-                                            .delete(NotesProvider.CONTENT_URI, null, null);
-                                    restartLoader();
-                                    Toast.makeText(getContext(), "Notes Deleted", Toast.LENGTH_SHORT).show();
-                                }
-                            }
-                        };
-
-                AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-                builder.setMessage("Are you sure?")
-                        .setPositiveButton(getString(android.R.string.yes), dialogClickListener)
-                        .setNegativeButton(getString(android.R.string.no), dialogClickListener)
-                        .show();
+                startActivityForResult(new Intent(getContext(), NoteEditorActivity.class), EDITOR_REQUEST_CODE);
             }
         });
 
@@ -112,6 +96,13 @@ public class NotesFragment extends Fragment
 
     private Loader<Cursor> restartLoader() {
         return getLoaderManager().restartLoader(0, null, this);
+    }
+
+    private void deleteAllNotes() {
+        getActivity().getContentResolver()
+                .delete(NotesProvider.CONTENT_URI, null, null);
+        restartLoader();
+        Toast.makeText(getContext(), "Notes Deleted", Toast.LENGTH_SHORT).show();
     }
 
     @Override

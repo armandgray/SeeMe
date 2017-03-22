@@ -44,4 +44,5 @@
     <string name="delete_account">Delete Account</string>
     <string name="profile_item_icon">profile item icon</string>
     <string name="please_enter_message">Please Enter Message</string>
+    <string name="please_enter_text">Please Enter Text</string>
 </resources>
