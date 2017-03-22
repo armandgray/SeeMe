@@ -4,6 +4,7 @@ import (
   . "seeme/helpers"
 
   "net/http"
+  "fmt"
 
   "encoding/json"
 )
@@ -28,4 +29,10 @@ func HandlerLocalUser(w http.ResponseWriter, r *http.Request) {
 
   w.Header().Set("Content-Type", "application/json")
   w.Write(js)
+}
+
+func HandlerUpdateUserNetwork(w http.ResponseWriter, r *http.Request) {
+  if err := UpdateUserNetwork(r); err != nil {
+    fmt.Println("Network Update Error")
+  }
 }
