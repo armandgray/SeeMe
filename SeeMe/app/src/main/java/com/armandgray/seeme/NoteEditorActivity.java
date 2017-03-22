@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -41,10 +42,14 @@ public class NoteEditorActivity extends AppCompatActivity {
 
             Cursor cursor = getContentResolver().query(uri,
                     DatabaseHelper.ALL_COLUMNS, noteFilter, null, null);
-            cursor.moveToFirst();
-            oldText = cursor.getString(cursor.getColumnIndex(DatabaseHelper.NOTE_TEXT));
+            if (cursor != null) {
+                cursor.moveToFirst();
+                oldText = cursor.getString(cursor.getColumnIndex(DatabaseHelper.NOTE_TEXT));
+                cursor.close();
+            }
             etEditor.setText(oldText);
             etEditor.requestFocus();
+            setTitle(getString(R.string.edit_note));
         }
     }
 
@@ -93,11 +98,21 @@ public class NoteEditorActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_delete:
+                onBackPressed();
+                break;
             case android.R.id.home:
                 onBackPressed();
-                return true;
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (action.equals(Intent.ACTION_EDIT)) {
+            getMenuInflater().inflate(R.menu.menu_editor, menu);
+        }
+        return true;
     }
 }

@@ -46,4 +46,6 @@
     <string name="please_enter_message">Please Enter Message</string>
     <string name="please_enter_text">Please Enter Text</string>
     <string name="new_note">New Note</string>
+    <string name="edit_note">Edit Note</string>
+    <string name="action_delete">Delete</string>
 </resources>
