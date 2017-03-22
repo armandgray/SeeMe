@@ -2,6 +2,7 @@ package com.armandgray.seeme;
 
 import android.content.ContentValues;
 import android.content.Intent;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
@@ -16,6 +17,8 @@ public class NoteEditorActivity extends AppCompatActivity {
 
     private String action;
     private EditText etEditor;
+    private String noteFilter;
+    private String oldText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +34,16 @@ public class NoteEditorActivity extends AppCompatActivity {
         if (uri == null) {
             action = Intent.ACTION_INSERT;
             setTitle(getString(R.string.new_note));
+        } else {
+            action = Intent.ACTION_EDIT;
+            noteFilter = DatabaseHelper.NOTE_ID + " = " + uri.getLastPathSegment();
+
+            Cursor cursor = getContentResolver().query(uri,
+                    DatabaseHelper.ALL_COLUMNS, noteFilter, null, null);
+            cursor.moveToFirst();
+            oldText = cursor.getString(cursor.getColumnIndex(DatabaseHelper.NOTE_TEXT));
+            etEditor.setText(oldText);
+            etEditor.requestFocus();
         }
     }
 
