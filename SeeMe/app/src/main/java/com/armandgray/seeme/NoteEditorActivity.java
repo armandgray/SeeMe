@@ -9,6 +9,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.armandgray.seeme.db.DatabaseHelper;
 import com.armandgray.seeme.db.NotesProvider;
@@ -56,6 +57,7 @@ public class NoteEditorActivity extends AppCompatActivity {
                     return;
                 }
                 insertNote(newText);
+                return;
             case Intent.ACTION_EDIT:
                 if (newText.length() == 0) {
 //                    deleteNote();
@@ -71,6 +73,14 @@ public class NoteEditorActivity extends AppCompatActivity {
         ContentValues values = new ContentValues();
         values.put(DatabaseHelper.NOTE_TEXT, note);
         getContentResolver().insert(NotesProvider.CONTENT_URI, values);
+        setResult(RESULT_OK);
+    }
+
+    private void updateNote(String note) {
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.NOTE_TEXT, note);
+        getContentResolver().update(NotesProvider.CONTENT_URI, values, noteFilter, null);
+        Toast.makeText(this, "Note Updated!", Toast.LENGTH_SHORT).show();
         setResult(RESULT_OK);
     }
 
