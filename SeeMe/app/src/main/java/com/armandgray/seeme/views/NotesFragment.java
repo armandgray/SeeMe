@@ -1,10 +1,8 @@
 package com.armandgray.seeme.views;
 
 
-import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
-import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -12,7 +10,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,11 +18,11 @@ import android.widget.Toast;
 
 import com.armandgray.seeme.NoteEditorActivity;
 import com.armandgray.seeme.R;
-import com.armandgray.seeme.db.DatabaseHelper;
 import com.armandgray.seeme.db.NotesProvider;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.utils.NotesLvAdapter;
 
+import static android.app.Activity.RESULT_OK;
 import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
 
 /**
@@ -70,6 +67,8 @@ public class NotesFragment extends Fragment
             }
         });
 
+        deleteAllNotes();
+
         return rootView;
     }
 
@@ -98,5 +97,12 @@ public class NotesFragment extends Fragment
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
         adapter.swapCursor(null);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK) {
+            restartLoader();
+        }
     }
 }

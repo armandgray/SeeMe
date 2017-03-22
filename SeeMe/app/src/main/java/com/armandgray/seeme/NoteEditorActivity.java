@@ -35,7 +35,6 @@ public class NoteEditorActivity extends AppCompatActivity {
 
     private void finishedEditing() {
         String newText = etEditor.getText().toString().trim();
-
         switch (action) {
             case Intent.ACTION_INSERT:
                 if (newText.length() == 0) {
@@ -44,7 +43,6 @@ public class NoteEditorActivity extends AppCompatActivity {
                 }
                 insertNote(newText);
         }
-        finish();
     }
 
     private void insertNote(String note) {
@@ -57,13 +55,14 @@ public class NoteEditorActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         finishedEditing();
+        super.onBackPressed();
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finishedEditing();
+                onBackPressed();
                 return true;
         }
 
