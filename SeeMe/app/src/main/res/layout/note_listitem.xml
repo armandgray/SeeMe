@@ -21,8 +21,9 @@
         android:layout_margin="4dp"
         android:layout_toEndOf="@+id/ivDocIcon"
         android:layout_toRightOf="@+id/ivDocIcon"
+        android:ellipsize="end"
         android:maxLines="1"
         android:textColor="@color/colorPrimary"
-        android:textSize="18sp"/>
+        android:textSize="18sp" />
 
 </RelativeLayout>

@@ -12,7 +12,6 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
-import android.support.v4.widget.SimpleCursorAdapter;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -25,6 +24,7 @@ import com.armandgray.seeme.R;
 import com.armandgray.seeme.db.DatabaseHelper;
 import com.armandgray.seeme.db.NotesProvider;
 import com.armandgray.seeme.models.User;
+import com.armandgray.seeme.utils.NotesLvAdapter;
 
 import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
 
@@ -54,10 +54,7 @@ public class NotesFragment extends Fragment
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_notes, container, false);
 
-        String[] from = {DatabaseHelper.NOTE_TEXT};
-        int[] to = {R.id.tvText};
-        adapter = new SimpleCursorAdapter(getContext(),
-                R.layout.note_listitem, null, from, to, 0);
+        adapter = new NotesLvAdapter(getContext(), null, 0);
 
         ListView lvNotes = (ListView) rootView.findViewById(R.id.lvNotes);
         lvNotes.setAdapter(adapter);
