@@ -2,9 +2,11 @@ package com.armandgray.seeme.controllers;
 
 import android.content.Context;
 import android.content.Intent;
+import android.widget.Toast;
 
 import com.armandgray.seeme.LoginActivity;
 import com.armandgray.seeme.RegisterActivity;
+import com.armandgray.seeme.utils.NetworkHelper;
 
 import static com.armandgray.seeme.LoginActivity.LOGIN_PAYLOAD;
 import static com.armandgray.seeme.LoginActivity.LOGIN_URI;
@@ -20,6 +22,10 @@ public class LoginActivityController implements LoginActivity.LoginController {
 
     @Override
     public void authenticateUser(String username, String password) {
+        if (!NetworkHelper.hasNetworkAccess(context)) {
+            Toast.makeText(context, "No Network Access!", Toast.LENGTH_SHORT).show();
+            return;
+        }
         String url = LOGIN_URI
                 + "&username=" + username
                 + "&password=" + password;
