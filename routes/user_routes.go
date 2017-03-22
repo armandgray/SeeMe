@@ -21,9 +21,14 @@ func HandlerDiscoverableUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandlerLocalUser(w http.ResponseWriter, r *http.Request) {
-  js, err := json.Marshal(GetLocalUsersForNetwork(w, r))
+  userList, err := GetLocalUsersForNetwork(w, r)
   if err != nil {
-    w.Write([]byte("Internal Network Error!"))
+    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
+  js, err := json.Marshal(userList)
+  if err != nil {
+    w.Write([]byte("Network Process Error!"))
     return
   }
 
@@ -32,7 +37,5 @@ func HandlerLocalUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandlerUpdateUserNetwork(w http.ResponseWriter, r *http.Request) {
-  if err := UpdateUserNetwork(r); err != nil {
     fmt.Println("Network Update Error")
-  }
 }
