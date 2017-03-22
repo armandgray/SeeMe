@@ -22,7 +22,7 @@ func HandlerDiscoverableUser(w http.ResponseWriter, r *http.Request) {
 func HandlerLocalUser(w http.ResponseWriter, r *http.Request) {
   js, err := json.Marshal(GetLocalUsersForNetwork(w, r))
   if err != nil {
-    http.Error(w, err.Error(), http.StatusInternalServerError)
+    w.Write([]byte("Internal Network Error!"))
     return
   }
 

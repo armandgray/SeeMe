@@ -117,17 +117,17 @@ func GetLocalUsersForNetwork(w http.ResponseWriter, r *http.Request) ([]User) {
   var networkId string
   row := db.QueryRow("select network_id from networks where network_id = ?", r.FormValue("networkId"))
   if err := row.Scan(&networkId); err != nil {
-    http.Error(w, err.Error(), http.StatusInternalServerError)
+    w.Write([]byte("No Users Found!"))
   }
   fmt.Println(networkId)
   if networkId == "" {
     if err := insertNewNetwork(r); err != nil {
-      http.Error(w, err.Error(), http.StatusInternalServerError)
+    w.Write([]byte("Network ID Error!"))
     }
   }
 
   if err := updateUserNetwork(r); err != nil {
-    http.Error(w, err.Error(), http.StatusInternalServerError)
+    w.Write([]byte("Network Update Error!"))
   }
   return getExistingUsersForNetwork(w, r)
 }
