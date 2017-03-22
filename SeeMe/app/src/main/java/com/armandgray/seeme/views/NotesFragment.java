@@ -84,10 +84,7 @@ public class NotesFragment extends Fragment
     }
 
     private void insertNewNote(String note) {
-        ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.NOTE_TEXT, note);
-        Uri noteUri = getActivity().getContentResolver()
-                .insert(NotesProvider.CONTENT_URI, values);
+
 
         if (noteUri != null) {
             Log.d(TAG, "Inserted note: " + noteUri.getLastPathSegment());

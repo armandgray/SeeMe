@@ -11,6 +11,8 @@ import android.support.annotation.Nullable;
 
 public class NotesProvider extends ContentProvider {
 
+    public static final String CONTENT_ITEM_TYPE = "Note";
+
     private static final String AUTHORITY = "com.armandgray.seeme.db.notesprovider";
     private static final String BASE_PATH = "notes";
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + BASE_PATH );
