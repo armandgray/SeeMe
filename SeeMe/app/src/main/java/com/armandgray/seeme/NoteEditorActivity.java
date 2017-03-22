@@ -56,6 +56,14 @@ public class NoteEditorActivity extends AppCompatActivity {
                     return;
                 }
                 insertNote(newText);
+            case Intent.ACTION_EDIT:
+                if (newText.length() == 0) {
+//                    deleteNote();
+                } else if (oldText.equals(newText)) {
+                    setResult(RESULT_CANCELED);
+                } else {
+                    updateNote(newText);
+                }
         }
     }
 
