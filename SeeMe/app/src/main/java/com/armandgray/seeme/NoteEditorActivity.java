@@ -25,6 +25,7 @@ public class NoteEditorActivity extends AppCompatActivity {
         if (actionBar != null) { actionBar.setDisplayHomeAsUpEnabled(true); }
 
         etEditor = (EditText) findViewById(R.id.etEditor);
+        action = Intent.ACTION_DEFAULT;
 
         Uri uri = getIntent().getParcelableExtra(NotesProvider.CONTENT_ITEM_TYPE);
         if (uri == null) {

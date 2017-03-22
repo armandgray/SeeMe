@@ -3,6 +3,7 @@ package com.armandgray.seeme.views;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import android.support.v4.widget.CursorAdapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -56,8 +58,16 @@ public class NotesFragment extends Fragment
 
         ListView lvNotes = (ListView) rootView.findViewById(R.id.lvNotes);
         lvNotes.setAdapter(adapter);
-
         getLoaderManager().initLoader(0, null, this);
+        lvNotes.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getContext(), NoteEditorActivity.class);
+                Uri uri = Uri.parse(NotesProvider.CONTENT_URI + "/" + id);
+                intent.putExtra(NotesProvider.CONTENT_ITEM_TYPE, uri);
+                startActivityForResult(intent, EDITOR_REQUEST_CODE);
+            }
+        });
 
         FloatingActionButton fabDelete = (FloatingActionButton) rootView.findViewById(R.id.fabDelete);
         fabDelete.setOnClickListener(new View.OnClickListener() {
