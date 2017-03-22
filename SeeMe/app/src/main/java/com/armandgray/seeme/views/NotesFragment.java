@@ -62,8 +62,6 @@ public class NotesFragment extends Fragment
 
         getLoaderManager().initLoader(0, null, this);
 
-        insertDummyData();
-
         FloatingActionButton fabDelete = (FloatingActionButton) rootView.findViewById(R.id.fabDelete);
         fabDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,22 +71,6 @@ public class NotesFragment extends Fragment
         });
 
         return rootView;
-    }
-
-    private void insertDummyData() {
-        insertNewNote("New Passed Note");
-        insertNewNote("New MultiLine Note\n More text");
-        insertNewNote("New Long Note Long Long Long Long Long Long Long Long Long Long Long Long Long Long Long Long Long Long");
-
-        restartLoader();
-    }
-
-    private void insertNewNote(String note) {
-
-
-        if (noteUri != null) {
-            Log.d(TAG, "Inserted note: " + noteUri.getLastPathSegment());
-        }
     }
 
     private Loader<Cursor> restartLoader() {
