@@ -52,11 +52,12 @@ public class DiscoverFragment extends Fragment {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.e("BroadcastReceiver: ", "http Broadcast Received");
+            userArray = null;
             userArray = (User[]) intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_JSON_PAYLOAD);
             if (userArray != null && userArray.length != 0) {
                 setupRvUsers(Arrays.asList(userArray));
-                toggleShowUsers();
             }
+            toggleShowUsers();
         }
     };
 
