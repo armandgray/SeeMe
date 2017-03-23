@@ -19,14 +19,6 @@ func InsertNewUser(user User) (error) {
 	return err
 }
 
-func InsertFeedback(username string, message string) (error) {
-	db := GetDatabaseInstance()
-  if message == "" { return errors.New("Message Empty") }
-  _, err := db.Exec("INSERT INTO feedback VALUES (?, ?, ?)", 
-                  username, nil, message)
-  return err
-}
-
 func GetUserFromDB(username string) (User, error) {
 	db := GetDatabaseInstance()
   var user User
