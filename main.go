@@ -22,6 +22,7 @@ func main()  {
   mux.HandleFunc("/seeme/api/discoverable/allusers", HandlerDiscoverableUser)
   mux.HandleFunc("/seeme/api/discoverable/localusers", HandlerLocalUser)
   mux.HandleFunc("/seeme/api/discoverable/update-network", HandlerUpdateUserNetwork)
+  mux.HandleFunc("/seeme/api/connection/new", HandlerNewConnection)
   mux.HandleFunc("/seeme/api/profile/delete", HandlerProfileDelete)
   mux.HandleFunc("/seeme/api/profile/update", HandlerProfileUpdate)
   mux.HandleFunc("/seeme/api/feedback", HandlerFeedback)
