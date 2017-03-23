@@ -5,12 +5,14 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.armandgray.seeme.models.Network;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.views.SeeMeFragment;
 import com.armandgray.seeme.views.SeeMeFragment.SeeMeTouchListener;
 
 import static com.armandgray.seeme.utils.HttpHelper.sendRequest;
 import static com.armandgray.seeme.utils.NetworkHelper.getWifiConnectionState;
+import static com.armandgray.seeme.utils.NetworkHelper.getWifiNetwork;
 import static com.armandgray.seeme.views.SeeMeFragment.LOCAL_USERS_URI;
 
 public class SeeMeFragmentController implements SeeMeFragment.SeeMeController {
@@ -44,6 +46,9 @@ public class SeeMeFragmentController implements SeeMeFragment.SeeMeController {
     }
 
     private void sendLocalUsersRequest() {
+        Network network = getWifiNetwork(context);
+        ssid = network.getSsid();
+        networkId = network.getNetworkId();
         String url = LOCAL_USERS_URI
                 + networkId
                 + "&ssid="+ ssid.substring(1, ssid.length() - 1).replaceAll(" ", "%20")
