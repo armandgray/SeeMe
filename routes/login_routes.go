@@ -3,6 +3,7 @@ package routes
 import (
   . "seeme/models"
   . "seeme/helpers"
+  . "seeme/controllers"
 
   "fmt"
   "net/http"
