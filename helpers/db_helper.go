@@ -123,9 +123,7 @@ func GetLocalUsersForNetwork(w http.ResponseWriter, r *http.Request) ([]User, er
 func RenewUserNetwork(r *http.Request) (error) {
   var networkId string
   row := db.QueryRow("select network_id from networks where network_id = ?", r.FormValue("networkId"))
-  if err := row.Scan(&networkId); err != nil {
-    return errors.New("Internal Network Error!")
-  }
+  _ = row.Scan(&networkId)
 
   if networkId == "" {
     if err := insertNewNetwork(r); err != nil {
