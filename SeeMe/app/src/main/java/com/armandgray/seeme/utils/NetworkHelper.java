@@ -3,6 +3,11 @@ package com.armandgray.seeme.utils;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.wifi.WifiInfo;
+import android.net.wifi.WifiManager;
+import android.util.Log;
+
+import com.armandgray.seeme.models.Network;
 
 public class NetworkHelper {
 
@@ -13,7 +18,7 @@ public class NetworkHelper {
         return networkInfo != null && networkInfo.isConnectedOrConnecting();
     };
 
-    public static NetworkInfo getNetworkInfo(Context context) {
+    private static NetworkInfo getNetworkInfo(Context context) {
         try {
             ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
             return cm.getActiveNetworkInfo();
@@ -21,5 +26,29 @@ public class NetworkHelper {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public static boolean getWifiConnectionState(Context context) {
+        ConnectivityManager connMgr = (ConnectivityManager) context
+                .getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
+        return networkInfo != null
+                && networkInfo.isConnected()
+                && networkInfo.getType() == ConnectivityManager.TYPE_WIFI;
+    }
+
+    public static Network getWifiNetwork(Context context) {
+        WifiManager wifiManager = (WifiManager) context.getApplicationContext()
+                .getSystemService (Context.WIFI_SERVICE);
+        WifiInfo wifiInfo = wifiManager.getConnectionInfo();
+        String ssid = wifiInfo.getSSID();
+        String networkId = wifiInfo.getBSSID();
+        if (ssid.equals("<unknown ssid>")) {
+            Log.i("ActiveNetInfo", "Wifi Network Not Found: " + String.valueOf(ssid));
+        } else {
+            Log.i("ActiveNetInfo", "Wifi Network " + String.valueOf(ssid) + ": " + networkId);
+        }
+
+        return new Network(ssid, networkId);
     }
 }

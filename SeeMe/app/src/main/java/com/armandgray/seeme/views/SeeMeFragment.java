@@ -21,6 +21,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
+import static com.armandgray.seeme.utils.NetworkHelper.getWifiConnectionState;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -72,7 +73,7 @@ public class SeeMeFragment extends Fragment
         View rootView = inflater.inflate(R.layout.fragment_see_me, container, false);
 
         assignFields(rootView);
-        updateUI(controller.getWifiState());
+        updateUI(getWifiConnectionState(getContext()));
         setupClickListeners();
         BroadcastObserver.getInstance().addObserver(this);
 
@@ -102,7 +103,7 @@ public class SeeMeFragment extends Fragment
         tvAuto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (controller.getWifiState()) {
+                if (getWifiConnectionState(getContext())) {
                     autoUpdate = !autoUpdate;
                 } else {
                     Toast.makeText(getContext(), "Wifi Connection Unsuccessful!", Toast.LENGTH_SHORT).show();
@@ -132,7 +133,7 @@ public class SeeMeFragment extends Fragment
     public void update(Observable o, Object data) {
         isWifiConnected = data != null;
         if (data != null) {
-            updateUI(controller.getWifiState());
+            updateUI(getWifiConnectionState(getContext()));
         }
     }
 

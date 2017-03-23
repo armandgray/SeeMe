@@ -25,6 +25,7 @@ public class MainActivity extends AppCompatActivity
         ProfileFragmentController.ProfileUpdateListener {
 
     public static final String API_URI = "http://armandgray.com/seeme/api";
+    public static final String UPDATE_NETWORK_URI = API_URI + "/discoverable/update-network?networkId=";
     private static final String TAG = "MAIN_ACTIVITY";
     public static final String ACTIVE_USER = "ACTIVE_USER";
 
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity
     private void setActiveUser() {
         activeUser = getIntent().getParcelableExtra(LOGIN_PAYLOAD);
         if (activeUser == null) {
-            startActivity(new Intent(this, LoginActivity.class));
+//            startActivity(new Intent(this, LoginActivity.class));
             activeUser = new User("Armand", "Gray", "Creator", "danimeza@gmail.com", "1234567890", true, "");
         } else {
             Toast.makeText(this, "Welcome Back " + activeUser.getFirstName(), Toast.LENGTH_SHORT).show();
