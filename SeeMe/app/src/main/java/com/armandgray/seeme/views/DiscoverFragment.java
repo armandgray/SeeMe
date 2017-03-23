@@ -150,7 +150,12 @@ public class DiscoverFragment extends Fragment {
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        Toast.makeText(getContext(), "Click", Toast.LENGTH_SHORT).show();
+                        if (userArray != null && userArray.length >= position) {
+                            User user = userArray[position];
+                            Toast.makeText(getContext(),
+                                    "Request Sent to " + user.getFirstName() + " " + user.getLastName(),
+                                    Toast.LENGTH_SHORT).show();
+                        }
                     }
                 }));
     }
