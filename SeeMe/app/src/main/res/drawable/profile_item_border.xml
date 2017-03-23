@@ -10,8 +10,7 @@
 
     <!-- upper rectangle (background color) -->
     <item
-        android:top="0.5dp"
-        android:bottom="0.5dp">
+        android:bottom="1dp">
         <shape android:shape="rectangle">
             <solid android:color="@color/colorPrimary" />
         </shape>

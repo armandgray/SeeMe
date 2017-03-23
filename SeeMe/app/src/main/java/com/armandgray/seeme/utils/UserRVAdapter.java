@@ -39,7 +39,7 @@ public class UserRVAdapter extends
         TextView tvRole = viewHolder.tvRole;
 
         tvUserName.setText(user.getFirstName() + " " + user.getLastName());
-        tvRole.setText("Occupation: " + user.getOccupation());
+        tvRole.setText("Work: " + user.getOccupation());
     }
 
     @Override

@@ -39,13 +39,12 @@
         android:id="@+id/usersContainer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_margin="@dimen/activity_horizontal_margin"
         android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="20dp"
+            android:layout_margin="@dimen/activity_horizontal_margin"
             android:text="@string/available_users" />
 
         <android.support.v7.widget.RecyclerView
