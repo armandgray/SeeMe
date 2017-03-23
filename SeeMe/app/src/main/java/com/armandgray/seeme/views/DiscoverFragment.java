@@ -17,10 +17,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.armandgray.seeme.R;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.services.HttpService;
+import com.armandgray.seeme.utils.RecyclerItemClickListener;
 import com.armandgray.seeme.utils.UserRVAdapter;
 
 import java.util.Arrays;
@@ -144,6 +146,13 @@ public class DiscoverFragment extends Fragment {
                 toggleShowUsers();
             }
         });
+        rvUsers.addOnItemTouchListener(new RecyclerItemClickListener(getContext(),
+                new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        Toast.makeText(getContext(), "Click", Toast.LENGTH_SHORT).show();
+                    }
+                }));
     }
 
     @Override
