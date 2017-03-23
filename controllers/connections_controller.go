@@ -2,10 +2,24 @@ package controllers
 
 import (
   . "seeme/helpers"
+  "errors"
 )
 
-func InsertNewConnection(username string, connection string) (error) {
-	db := GetDatabaseInstance()
-	_, err := db.Exec("INSERT INTO connections VALUES (?, ?)", username, connection)
-	return err
+func NewConnectionController(username string, connection string) (error) {
+	if username == "" || connection == "" || username == connection {
+    return errors.New("Invalid Connection!")
+  }
+  if _, err := GetUserFromDB(username); err != nil {
+    return errors.New("User Not Found!")
+  }
+
+  if _, err := GetUserFromDB(connection); err != nil {
+    return errors.New("Requested User Not Found!")
+  }
+
+  if err := InsertNewConnection(username, connection); err != nil { 
+    return errors.New("Internal Connection Error")
+  }
+
+  return nil
 }
