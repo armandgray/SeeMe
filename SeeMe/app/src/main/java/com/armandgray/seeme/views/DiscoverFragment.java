@@ -48,7 +48,7 @@ public class DiscoverFragment extends Fragment {
     private RecyclerView rvUsers;
     private User[] userArray;
 
-    private DiscoverCycleListener discoverCycleListener;
+    private DiscoverClickListener discoverClickListener;
     private DiscoverFragmentController controller;
 
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
@@ -78,10 +78,10 @@ public class DiscoverFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            discoverCycleListener = (DiscoverCycleListener) context;
+            discoverClickListener = (DiscoverClickListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement DiscoverCycleListener");
+                    + " must implement DiscoverClickListener");
         }
     }
 
@@ -106,7 +106,7 @@ public class DiscoverFragment extends Fragment {
         ivCycle = (ImageView) rootView.findViewById(R.id.ivCycle);
         noUsersContainer = (LinearLayout) rootView.findViewById(R.id.noUsersContainer);
         usersContainer = (LinearLayout) rootView.findViewById(R.id.usersContainer);
-        controller = new DiscoverFragmentController(getContext());
+        controller = new DiscoverFragmentController(getContext(), discoverClickListener);
     }
 
     private void toggleShowUsers() {
@@ -123,7 +123,7 @@ public class DiscoverFragment extends Fragment {
         ivCycle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                discoverCycleListener.onTouchCycle();
+                discoverClickListener.onTouchCycle();
             }
         });
     }
@@ -173,8 +173,9 @@ public class DiscoverFragment extends Fragment {
                 .unregisterReceiver(httpBroadcastReceiver);
     }
 
-    public interface DiscoverCycleListener {
+    public interface DiscoverClickListener {
         void onTouchCycle();
+        void onUserClick(User user);
     }
 
     public interface DiscoverController {

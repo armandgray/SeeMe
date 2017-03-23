@@ -4,14 +4,16 @@ import android.content.Context;
 import android.widget.Toast;
 
 import com.armandgray.seeme.models.User;
-import com.armandgray.seeme.views.DiscoverFragment;
+import com.armandgray.seeme.views.DiscoverFragment.*;
 
-public class DiscoverFragmentController implements DiscoverFragment.DiscoverController {
+public class DiscoverFragmentController implements DiscoverController {
 
     private Context context;
+    private DiscoverClickListener listener;
 
-    public DiscoverFragmentController(Context context) {
+    public DiscoverFragmentController(Context context, DiscoverClickListener listener) {
         this.context = context;
+        this.listener = listener;
     }
 
     @Override
@@ -20,6 +22,7 @@ public class DiscoverFragmentController implements DiscoverFragment.DiscoverCont
             Toast.makeText(context,
                     "Request Sent to " + user.getFirstName() + " " + user.getLastName(),
                     Toast.LENGTH_SHORT).show();
+            listener.onUserClick(user);
         }
     }
 }

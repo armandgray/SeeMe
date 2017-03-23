@@ -28,7 +28,7 @@ import static com.armandgray.seeme.network.NetworkHelper.getWifiNetwork;
 public class MainActivity extends AppCompatActivity
         implements NavBarFragment.NavBarFragmentListener,
         SeeMeFragment.SeeMeTouchListener,
-        DiscoverFragment.DiscoverCycleListener,
+        DiscoverFragment.DiscoverClickListener,
         ProfileFragmentController.ProfileUpdateListener,
         Observer {
 
@@ -91,6 +91,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onTouchCycle() {
         viewPager.setCurrentItem(2);
+    }
+
+    @Override
+    public void onUserClick(User user) {
+        viewPager.setCurrentItem(1);
     }
 
     @Override
