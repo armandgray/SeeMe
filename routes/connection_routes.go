@@ -22,6 +22,11 @@ func HandlerNewConnection(w http.ResponseWriter, r *http.Request) {
     w.Write([]byte("Requested User Not Found!"))
     return
   }
+
+  if err := InsertNewConnection(username, connection); err != nil { 
+    w.Write([]byte("Internal Connection Error"))
+    return
+  }
     
   w.Write([]byte("Request Sent"))
 }
