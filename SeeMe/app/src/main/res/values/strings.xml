@@ -43,4 +43,10 @@
     <string name="feedback">Feedback</string>
     <string name="delete_account">Delete Account</string>
     <string name="profile_item_icon">profile item icon</string>
+    <string name="please_enter_message">Please Enter Message</string>
+    <string name="please_enter_text">Please Enter Text</string>
+    <string name="new_note">New Note</string>
+    <string name="edit_note">Edit Note</string>
+    <string name="action_delete">Delete</string>
+    <string name="note_deleted">Note Deleted</string>
 </resources>

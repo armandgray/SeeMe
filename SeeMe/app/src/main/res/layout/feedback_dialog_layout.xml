@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<EditText android:id="@+id/etMessage"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:ems="25"
+    android:layout_margin="@dimen/activity_horizontal_margin"
+    android:hint="@string/please_enter_message"
+    android:inputType="textMultiLine"
+    android:textColor="@color/colorPrimary"
+    android:textColorHint="@color/colorPrimaryDark"
+    android:textSize="14sp"
+    xmlns:android="http://schemas.android.com/apk/res/android" />

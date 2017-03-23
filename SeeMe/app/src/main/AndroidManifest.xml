@@ -22,6 +22,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".RegisterActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <service
             android:name=".services.HttpService"
@@ -36,12 +42,12 @@
             </intent-filter>
         </receiver>
 
-        <activity
-            android:name=".LoginActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".RegisterActivity"
-            android:theme="@style/AppTheme.NoActionBar" />
+        <provider
+            android:name=".db.NotesProvider"
+            android:authorities="com.armandgray.seeme.db.notesprovider"
+            android:exported="false" />
+
+        <activity android:name=".NoteEditorActivity"></activity>
     </application>
 
 </manifest>
