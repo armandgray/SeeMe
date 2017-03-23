@@ -44,8 +44,7 @@ public class SeeMeFragment extends Fragment
     private SeeMeTouchListener seeMeTouchListener;
     private SeeMeFragmentController controller;
 
-    public SeeMeFragment() {
-    }
+    public SeeMeFragment() {}
 
     public static SeeMeFragment newInstance(User activeUser) {
         Bundle args = new Bundle();

@@ -5,15 +5,12 @@ import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.armandgray.seeme.models.Network;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.views.SeeMeFragment;
 import com.armandgray.seeme.views.SeeMeFragment.SeeMeTouchListener;
 
-import static com.armandgray.seeme.MainActivity.UPDATE_NETWORK_URI;
 import static com.armandgray.seeme.utils.HttpHelper.sendRequest;
 import static com.armandgray.seeme.utils.NetworkHelper.getWifiConnectionState;
-import static com.armandgray.seeme.utils.NetworkHelper.getWifiNetwork;
 import static com.armandgray.seeme.views.SeeMeFragment.LOCAL_USERS_URI;
 
 public class SeeMeFragmentController implements SeeMeFragment.SeeMeController {
@@ -42,16 +39,8 @@ public class SeeMeFragmentController implements SeeMeFragment.SeeMeController {
             Toast.makeText(context, "Wifi Connection Unsuccessful!", Toast.LENGTH_SHORT).show();
             return;
         }
-        updateUserNetwork();
         sendLocalUsersRequest();
         seeMeTouchListener.onTouchSeeMe();
-    }
-
-    private void updateUserNetwork() {
-        Network network = getWifiNetwork(context);
-        ssid = network.getSsid();
-        networkId = network.getNetworkId();
-        sendRequest(UPDATE_NETWORK_URI + networkId, context);
     }
 
     private void sendLocalUsersRequest() {

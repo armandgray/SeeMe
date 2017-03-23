@@ -10,19 +10,27 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.armandgray.seeme.controllers.ProfileFragmentController;
+import com.armandgray.seeme.models.Network;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.utils.ViewPagerAdapter;
 import com.armandgray.seeme.views.DiscoverFragment;
 import com.armandgray.seeme.views.NavBarFragment;
 import com.armandgray.seeme.views.SeeMeFragment;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import static com.armandgray.seeme.LoginActivity.LOGIN_PAYLOAD;
+import static com.armandgray.seeme.utils.HttpHelper.sendRequest;
+import static com.armandgray.seeme.utils.NetworkHelper.getWifiConnectionState;
+import static com.armandgray.seeme.utils.NetworkHelper.getWifiNetwork;
 
 public class MainActivity extends AppCompatActivity
         implements NavBarFragment.NavBarFragmentListener,
         SeeMeFragment.SeeMeTouchListener,
         DiscoverFragment.DiscoverCycleListener,
-        ProfileFragmentController.ProfileUpdateListener {
+        ProfileFragmentController.ProfileUpdateListener,
+        Observer {
 
     public static final String API_URI = "http://armandgray.com/seeme/api";
     public static final String UPDATE_NETWORK_URI = API_URI + "/discoverable/update-network?networkId=";
@@ -124,6 +132,18 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onNavProfile() {
         viewPager.setCurrentItem(4, true);
+    }
+
+    @Override
+    public void update(Observable o, Object data) {
+        if (data != null && getWifiConnectionState(this)) {
+            Network network = getWifiNetwork(this);
+            String url = UPDATE_NETWORK_URI
+                    + network.getNetworkId()
+                    + "&ssid=" + network.getSsid()
+                    + "&username=" + activeUser.getUsername();
+            sendRequest(url, this);
+        }
     }
 
     @Override
