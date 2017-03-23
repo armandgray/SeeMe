@@ -1,4 +1,4 @@
-package com.armandgray.seeme.network;
+package com.armandgray.seeme.observers;
 
 import android.net.NetworkInfo;
 

@@ -15,7 +15,7 @@ import com.armandgray.seeme.MainActivity;
 import com.armandgray.seeme.R;
 import com.armandgray.seeme.controllers.SeeMeFragmentController;
 import com.armandgray.seeme.models.User;
-import com.armandgray.seeme.network.BroadcastObserver;
+import com.armandgray.seeme.observers.BroadcastObserver;
 
 import java.util.Observable;
 import java.util.Observer;
