@@ -92,6 +92,8 @@ public class DiscoverFragment extends Fragment {
         toggleShowUsers();
         setupIvClickListener();
 
+        setupDummyUsers();
+
         return rootView;
     }
 
@@ -125,6 +127,22 @@ public class DiscoverFragment extends Fragment {
     private void setupRvUsers(List<User> list) {
         rvUsers.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         rvUsers.setAdapter(new UserRVAdapter(getActivity(), list));
+    }
+
+    private void setupDummyUsers() {
+        tvNoUsers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userArray = new User[5];
+                userArray[0] = new User("Armand", "Gray", "Creator", "danimeza@gmail.com", "1234567890", true, "");
+                userArray[1] = new User("Michael", "Mei", "Unemployed", "test@gmail.com", "1234567890", true, "");
+                userArray[2] = new User("Dylan", "Goodman", "Contract Reader", "genius@gmail.com", "1234567890", true, "");
+                userArray[3] = new User("Amazing", "Gray", "Creator", "amazing@gmail.com", "1234567890", true, "");
+                userArray[4] = new User("Blue", "Gray", "Creator", "blue@gmail.com", "1234567890", true, "");
+                setupRvUsers(Arrays.asList(userArray));
+                toggleShowUsers();
+            }
+        });
     }
 
     @Override

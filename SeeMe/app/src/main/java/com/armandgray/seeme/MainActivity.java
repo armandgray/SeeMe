@@ -34,8 +34,8 @@ public class MainActivity extends AppCompatActivity
 
     public static final String API_URI = "http://armandgray.com/seeme/api";
     public static final String UPDATE_NETWORK_URI = API_URI + "/discoverable/update-network?networkId=";
-    private static final String TAG = "MAIN_ACTIVITY";
     public static final String ACTIVE_USER = "ACTIVE_USER";
+    private static final String TAG = "MAIN_ACTIVITY";
 
     private User activeUser;
     private ViewPager viewPager;
