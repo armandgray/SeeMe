@@ -17,9 +17,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.armandgray.seeme.R;
+import com.armandgray.seeme.controllers.DiscoverFragmentController;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.services.HttpService;
 import com.armandgray.seeme.utils.RecyclerItemClickListener;
@@ -49,6 +49,7 @@ public class DiscoverFragment extends Fragment {
     private User[] userArray;
 
     private DiscoverCycleListener discoverCycleListener;
+    private DiscoverFragmentController controller;
 
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -106,6 +107,7 @@ public class DiscoverFragment extends Fragment {
         ivCycle = (ImageView) rootView.findViewById(R.id.ivCycle);
         noUsersContainer = (LinearLayout) rootView.findViewById(R.id.noUsersContainer);
         usersContainer = (LinearLayout) rootView.findViewById(R.id.usersContainer);
+        controller = new DiscoverFragmentController(getContext());
     }
 
     private void toggleShowUsers() {
@@ -130,6 +132,15 @@ public class DiscoverFragment extends Fragment {
     private void setupRvUsers(List<User> list) {
         rvUsers.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         rvUsers.setAdapter(new UserRVAdapter(getActivity(), list));
+        rvUsers.addOnItemTouchListener(new RecyclerItemClickListener(getContext(),
+                new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        if (userArray != null && userArray.length >= position) {
+                            controller.onRecyclerItemClick(userArray[position]);
+                        }
+                    }
+                }));
     }
 
     private void setupDummyUsers() {
@@ -146,18 +157,6 @@ public class DiscoverFragment extends Fragment {
                 toggleShowUsers();
             }
         });
-        rvUsers.addOnItemTouchListener(new RecyclerItemClickListener(getContext(),
-                new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        if (userArray != null && userArray.length >= position) {
-                            User user = userArray[position];
-                            Toast.makeText(getContext(),
-                                    "Request Sent to " + user.getFirstName() + " " + user.getLastName(),
-                                    Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }));
     }
 
     @Override
@@ -178,6 +177,10 @@ public class DiscoverFragment extends Fragment {
 
     public interface DiscoverCycleListener {
         void onTouchCycle();
+    }
+
+    public interface DiscoverController {
+        void onRecyclerItemClick(User user);
     }
 
 }
