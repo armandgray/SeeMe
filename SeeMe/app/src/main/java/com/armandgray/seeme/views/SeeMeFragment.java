@@ -15,13 +15,13 @@ import com.armandgray.seeme.MainActivity;
 import com.armandgray.seeme.R;
 import com.armandgray.seeme.controllers.SeeMeFragmentController;
 import com.armandgray.seeme.models.User;
-import com.armandgray.seeme.utils.BroadcastObserver;
+import com.armandgray.seeme.network.BroadcastObserver;
 
 import java.util.Observable;
 import java.util.Observer;
 
 import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
-import static com.armandgray.seeme.utils.NetworkHelper.getWifiConnectionState;
+import static com.armandgray.seeme.network.NetworkHelper.getWifiConnectionState;
 
 /**
  * A simple {@link Fragment} subclass.

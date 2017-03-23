@@ -6,11 +6,11 @@ import android.widget.Toast;
 
 import com.armandgray.seeme.LoginActivity;
 import com.armandgray.seeme.RegisterActivity;
-import com.armandgray.seeme.utils.NetworkHelper;
+import com.armandgray.seeme.network.NetworkHelper;
 
 import static com.armandgray.seeme.LoginActivity.LOGIN_PAYLOAD;
 import static com.armandgray.seeme.LoginActivity.LOGIN_URI;
-import static com.armandgray.seeme.utils.HttpHelper.sendRequest;
+import static com.armandgray.seeme.network.HttpHelper.sendRequest;
 
 public class LoginActivityController implements LoginActivity.LoginController {
 

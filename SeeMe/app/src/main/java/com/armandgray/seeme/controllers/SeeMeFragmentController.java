@@ -10,9 +10,9 @@ import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.views.SeeMeFragment;
 import com.armandgray.seeme.views.SeeMeFragment.SeeMeTouchListener;
 
-import static com.armandgray.seeme.utils.HttpHelper.sendRequest;
-import static com.armandgray.seeme.utils.NetworkHelper.getWifiConnectionState;
-import static com.armandgray.seeme.utils.NetworkHelper.getWifiNetwork;
+import static com.armandgray.seeme.network.HttpHelper.sendRequest;
+import static com.armandgray.seeme.network.NetworkHelper.getWifiConnectionState;
+import static com.armandgray.seeme.network.NetworkHelper.getWifiNetwork;
 import static com.armandgray.seeme.views.SeeMeFragment.LOCAL_USERS_URI;
 
 public class SeeMeFragmentController implements SeeMeFragment.SeeMeController {

@@ -14,7 +14,7 @@ import java.util.HashMap;
 
 import static com.armandgray.seeme.LoginActivity.LOGIN_PAYLOAD;
 import static com.armandgray.seeme.RegisterActivity.*;
-import static com.armandgray.seeme.utils.HttpHelper.sendRequest;
+import static com.armandgray.seeme.network.HttpHelper.sendRequest;
 import static com.armandgray.seeme.utils.StringHelper.*;
 
 public class RegisterActivityController implements RegisterActivity.RegisterController {

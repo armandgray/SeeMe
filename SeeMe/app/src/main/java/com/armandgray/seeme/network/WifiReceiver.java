@@ -1,4 +1,4 @@
-package com.armandgray.seeme.utils;
+package com.armandgray.seeme.network;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

@@ -21,9 +21,9 @@ import java.util.Observable;
 import java.util.Observer;
 
 import static com.armandgray.seeme.LoginActivity.LOGIN_PAYLOAD;
-import static com.armandgray.seeme.utils.HttpHelper.sendRequest;
-import static com.armandgray.seeme.utils.NetworkHelper.getWifiConnectionState;
-import static com.armandgray.seeme.utils.NetworkHelper.getWifiNetwork;
+import static com.armandgray.seeme.network.HttpHelper.sendRequest;
+import static com.armandgray.seeme.network.NetworkHelper.getWifiConnectionState;
+import static com.armandgray.seeme.network.NetworkHelper.getWifiNetwork;
 
 public class MainActivity extends AppCompatActivity
         implements NavBarFragment.NavBarFragmentListener,
