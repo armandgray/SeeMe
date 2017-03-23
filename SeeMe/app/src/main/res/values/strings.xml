@@ -18,7 +18,7 @@
     <string name="last_name">Last Name</string>
     <string name="first_name">First Name</string>
     <string name="password">Password</string>
-    <string name="role">Role</string>
+    <string name="occupation">Occupation</string>
     <string name="terms_condition">By continuing, you agree to our Terms &amp; Privacy Policy</string>
     <string name="sign_out">Sign Out</string>
     <string name="navbar_icon">navbar icon</string>

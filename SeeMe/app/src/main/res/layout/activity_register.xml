@@ -132,17 +132,17 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/role"
+            android:text="@string/occupation"
             android:textColor="@color/colorGray"
             android:textSize="12sp" />
 
         <EditText
-            android:id="@+id/etRole"
+            android:id="@+id/etOccupation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="@dimen/register_margin_between"
             android:ems="15"
-            android:hint="@string/role"
+            android:hint="@string/occupation"
             android:inputType="textShortMessage"
             android:textColorHint="@color/colorGray"
             android:textSize="14sp" />

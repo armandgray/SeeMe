@@ -55,7 +55,7 @@ public class RegisterActivityController implements RegisterActivity.RegisterCont
             Toast.makeText(activity, "Please Enter First & Last", Toast.LENGTH_LONG).show();
             return false;
         }
-        if (mapEditTextStrings.get(ROLE).equals("")) {
+        if (mapEditTextStrings.get(OCCUPATION).equals("")) {
             Toast.makeText(activity, "Please Enter Role", Toast.LENGTH_LONG).show();
             return false;
         }
@@ -69,7 +69,7 @@ public class RegisterActivityController implements RegisterActivity.RegisterCont
                 + "&password=" + mapEditTextStrings.get(PASSWORD)
                 + "&firstName=" + capitalizeString(mapEditTextStrings.get(FIRST_NAME))
                 + "&lastName=" + capitalizeString(mapEditTextStrings.get(LAST_NAME))
-                + "&role=" + urlify(mapEditTextStrings.get(ROLE))
+                + "&role=" + urlify(mapEditTextStrings.get(OCCUPATION))
                 + "&discoverable=" + discoverable;
             sendRequest(url, activity);
     }
