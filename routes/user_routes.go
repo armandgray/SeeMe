@@ -37,5 +37,7 @@ func HandlerLocalUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandlerUpdateUserNetwork(w http.ResponseWriter, r *http.Request) {
+  if err := RenewUserNetwork(r); err != nil {
     fmt.Println("Network Update Error")
+  }
 }
