@@ -2,7 +2,6 @@ package helpers
 
 import (
 	. "seeme/models"
-  "fmt"
 
   "net/http"
   "errors"
@@ -113,23 +112,32 @@ func GetDiscoverableUsersFromDB(w http.ResponseWriter) ([]User) {
   return userList
 }
 
-func GetLocalUsersForNetwork(w http.ResponseWriter, r *http.Request) ([]User) {
+func GetLocalUsersForNetwork(w http.ResponseWriter, r *http.Request) ([]User, error) {
+  if err := RenewUserNetwork(r); err != nil {
+    var userList []User
+    return userList, err
+  }
+  return getExistingUsersForNetwork(w, r), nil
+}
+
+func RenewUserNetwork(r *http.Request) (error) {
   var networkId string
   row := db.QueryRow("select network_id from networks where network_id = ?", r.FormValue("networkId"))
   if err := row.Scan(&networkId); err != nil {
-    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return errors.New("Internal Network Error!")
   }
-  fmt.Println(networkId)
+
   if networkId == "" {
     if err := insertNewNetwork(r); err != nil {
-      http.Error(w, err.Error(), http.StatusInternalServerError)
+    return errors.New("Network ID Error!")
     }
   }
 
   if err := updateUserNetwork(r); err != nil {
-    http.Error(w, err.Error(), http.StatusInternalServerError)
+    return errors.New("Network Update Error!")
   }
-  return getExistingUsersForNetwork(w, r)
+  
+  return nil
 }
 
 func insertNewNetwork(r *http.Request) (error) {

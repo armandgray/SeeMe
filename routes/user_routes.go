@@ -4,6 +4,7 @@ import (
   . "seeme/helpers"
 
   "net/http"
+  "fmt"
 
   "encoding/json"
 )
@@ -20,12 +21,23 @@ func HandlerDiscoverableUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandlerLocalUser(w http.ResponseWriter, r *http.Request) {
-  js, err := json.Marshal(GetLocalUsersForNetwork(w, r))
+  userList, err := GetLocalUsersForNetwork(w, r)
   if err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
+    return
+  }
+  js, err := json.Marshal(userList)
+  if err != nil {
+    w.Write([]byte("Network Process Error!"))
     return
   }
 
   w.Header().Set("Content-Type", "application/json")
   w.Write(js)
+}
+
+func HandlerUpdateUserNetwork(w http.ResponseWriter, r *http.Request) {
+  if err := RenewUserNetwork(r); err != nil {
+    fmt.Println("Network Update Error")
+  }
 }
