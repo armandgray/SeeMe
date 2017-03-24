@@ -2,13 +2,13 @@ package controllers
 
 import (
 	. "seeme/models"
-  . "seeme/helpers"
+  "seeme/db"
 
   "net/http"
 )
 
 func GetDiscoverableUsersFromDB(w http.ResponseWriter) ([]User) {
-	db := GetDatabaseInstance()
+	db := db.GetDatabaseInstance()
   var userList []User
   var user User
 
@@ -41,7 +41,7 @@ func GetLocalUsersForNetwork(w http.ResponseWriter, r *http.Request) ([]User, er
 }
 
 func getExistingUsersForNetwork(w http.ResponseWriter, r *http.Request) ([]User) {
-  db := GetDatabaseInstance()
+  db := db.GetDatabaseInstance()
   var userList []User
   var user User
 

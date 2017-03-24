@@ -3,7 +3,7 @@ package main
 import (
   . "seeme/routes"
   "seeme/controllers"
-  . "seeme/helpers"
+  "seeme/db"
 
   "fmt"
   "net/http"
@@ -14,7 +14,7 @@ import (
 
 
 func main()  {
-  InitMySQLConnection()
+  db.InitMySQLConnection()
 
   mux := http.NewServeMux()
   mux.HandleFunc("/seeme/api/login", HandlerLogin)
@@ -29,7 +29,7 @@ func main()  {
   mux.HandleFunc("/seeme/api/feedback", HandlerFeedback)
 
   n := negroni.Classic()
-  n.Use(negroni.HandlerFunc(VerifyMySQLConnection))
+  n.Use(negroni.HandlerFunc(db.VerifyMySQLConnection))
   n.UseHandler(mux)
   fmt.Println("Running...")
   n.Run(":8080")

@@ -1,7 +1,7 @@
 package controllers
 
 import (
-  "seeme/helpers"
+  "seeme/db"
   "errors"
 
   "net/http"
@@ -30,7 +30,7 @@ func NewConnectionController(username string, connection string) (error) {
     return errors.New("Requested User Not Found!")
   }
 
-  if err := helpers.InsertNewConnection(username, connection); err != nil { 
+  if err := db.InsertNewConnection(username, connection); err != nil { 
     return errors.New("Internal Connection Error")
   }
 
