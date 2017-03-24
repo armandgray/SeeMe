@@ -1,7 +1,6 @@
 package main
 
 import (
-  . "seeme/routes"
   "seeme/controllers"
   "seeme/db"
 
@@ -15,17 +14,18 @@ import (
 
 func main()  {
   db.InitMySQLConnection()
+  apiUrl := "/seeme/api"
 
   mux := http.NewServeMux()
-  mux.HandleFunc("/seeme/api/login/user", controllers.LoginUserController)
-  mux.HandleFunc("/seeme/api/register", controllers.RegisterUserController)
-  mux.HandleFunc("/seeme/api/discoverable/allusers", HandlerDiscoverableUser)
-  mux.HandleFunc("/seeme/api/discoverable/localusers", HandlerLocalUser)
-  mux.HandleFunc("/seeme/api/discoverable/update-network", HandlerUpdateUserNetwork)
-  mux.HandleFunc("/seeme/api/connection/new", controllers.HandlerNewConnection)
-  mux.HandleFunc("/seeme/api/profile/delete", HandlerProfileDelete)
-  mux.HandleFunc("/seeme/api/profile/update", HandlerProfileUpdate)
-  mux.HandleFunc("/seeme/api/feedback", HandlerFeedback)
+  mux.HandleFunc(apiUrl + "/login/user", controllers.LoginUserController)
+  mux.HandleFunc(apiUrl + "/register", controllers.RegisterUserController)
+  mux.HandleFunc(apiUrl + "/discoverable/allusers", controllers.AllUsersController)
+  mux.HandleFunc(apiUrl + "/discoverable/localusers", controllers.LocalUsersController)
+  mux.HandleFunc(apiUrl + "/discoverable/update-network", controllers.UpdateUserNetworkController)
+  mux.HandleFunc(apiUrl + "/connection/new", controllers.HandlerNewConnection)
+  mux.HandleFunc(apiUrl + "/profile/delete", controllers.ProfileDeleteController)
+  mux.HandleFunc(apiUrl + "/profile/update", controllers.ProfileUpdateController)
+  mux.HandleFunc(apiUrl + "/feedback", controllers.FeedbackController)
 
   n := negroni.Classic()
   n.Use(negroni.HandlerFunc(db.VerifyMySQLConnection))
