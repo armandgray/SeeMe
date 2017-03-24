@@ -1,9 +1,22 @@
 package controllers
 
 import (
-  . "seeme/helpers"
+  "seeme/helpers"
   "errors"
+
+  "net/http"
 )
+
+func HandlerNewConnection(w http.ResponseWriter, r *http.Request) {
+  username := r.FormValue("username")
+  connection := r.FormValue("connection")
+  if err := NewConnectionController(username, connection); err != nil {
+    w.Write([]byte(err.Error()))
+    return
+  }
+
+  w.Write([]byte("Request Sent"))
+}
 
 func NewConnectionController(username string, connection string) (error) {
 	if username == "" || connection == "" || username == connection {
@@ -17,7 +30,7 @@ func NewConnectionController(username string, connection string) (error) {
     return errors.New("Requested User Not Found!")
   }
 
-  if err := InsertNewConnection(username, connection); err != nil { 
+  if err := helpers.InsertNewConnection(username, connection); err != nil { 
     return errors.New("Internal Connection Error")
   }
 
