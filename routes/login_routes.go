@@ -3,7 +3,7 @@ package routes
 import (
   . "seeme/models"
   . "seeme/helpers"
-  . "seeme/controllers"
+  "seeme/db"
 
   "fmt"
   "net/http"
@@ -18,7 +18,7 @@ func HandlerRegisterUser(w http.ResponseWriter, r *http.Request) {
   var page Page
 
   if r.FormValue("register") != "" {
-    if err := InsertNewUser(CreateUserFromRequest(r)); err != nil { 
+    if err := db.InsertNewUser(CreateUserFromRequest(r)); err != nil { 
       page.Alert = err.Error()
       fmt.Println("Database Insert Failure: " + err.Error())
     } else {
@@ -40,7 +40,7 @@ func HandlerLogin(w http.ResponseWriter, r *http.Request) {
     http.Redirect(w, r, "/seeme/api/register", http.StatusFound)
     return
   } else if r.FormValue("login") != "" {
-    user, err := GetUserFromDB(r.FormValue("username")); 
+    user, err := db.GetUserFromDB(r.FormValue("username")); 
     if err != nil {
       page.Alert = err.Error()
     }
@@ -66,7 +66,7 @@ func HandlerLogin(w http.ResponseWriter, r *http.Request) {
 func HandlerLoginUser(w http.ResponseWriter, r *http.Request) {
   var userSlice = []User{}
   if r.FormValue("username") != "" {
-    user, _ := GetUserFromDB(r.FormValue("username"))
+    user, _ := db.GetUserFromDB(r.FormValue("username"))
     userSlice = []User{user}
   }
 

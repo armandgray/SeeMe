@@ -1,15 +1,14 @@
-package controllers
+package db
 
 import (
 	. "seeme/models"
-  "seeme/db"
 
 	"database/sql"
   _ "github.com/go-sql-driver/mysql"
 )
 
 func InsertNewUser(user User) (error) {
-	db := db.GetDatabaseInstance()
+	db := GetDatabaseInstance()
 	_, err := db.Exec("INSERT INTO users (first_name, last_name, role, username, secret, discoverable, network_id) VALUES (?, ?, ?, ?, ?, ?, ?)", 
                   user.FirstName, user.LastName, user.Role, user.Username, 
                   user.Secret, user.Discoverable, nil)
@@ -17,7 +16,7 @@ func InsertNewUser(user User) (error) {
 }
 
 func GetUserFromDB(username string) (User, error) {
-	db := db.GetDatabaseInstance()
+	db := GetDatabaseInstance()
   var user User
   var network sql.NullString
   var role sql.NullString
@@ -38,7 +37,7 @@ func GetUserFromDB(username string) (User, error) {
 }
 
 func DeleteUserFromDB(username string) (int64, error) {
-	db := db.GetDatabaseInstance()
+	db := GetDatabaseInstance()
   var affect int64
   qry, err := db.Prepare("DELETE FROM users WHERE username = ?")
   if err != nil {
@@ -59,7 +58,7 @@ func DeleteUserFromDB(username string) (int64, error) {
 }
 
 func UpdateUser(user User) (error) {
-	db := db.GetDatabaseInstance()
+	db := GetDatabaseInstance()
   _, err := db.Exec("UPDATE users SET first_name=?, last_name=?, role=?, secret=?, discoverable=? WHERE username = ?", 
                   user.FirstName, user.LastName, user.Role, 
                   user.Secret, user.Discoverable, user.Username)
