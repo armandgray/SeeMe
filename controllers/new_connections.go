@@ -2,6 +2,7 @@ package controllers
 
 import (
   "seeme/helpers"
+  "seeme/db"
 
   "net/http"
 )
@@ -9,7 +10,11 @@ import (
 func HandlerNewConnection(w http.ResponseWriter, r *http.Request) {
   username := r.FormValue("username")
   connection := r.FormValue("connection")
-  if err := helpers.InsertNewConnection(username, connection); err != nil {
+  if err := helpers.VerifyConnection(username, connection); err != nil {
+    w.Write([]byte(err.Error()))
+    return
+  }
+  if err := db.InsertNewConnection(username, connection); err != nil {
     w.Write([]byte(err.Error()))
     return
   }

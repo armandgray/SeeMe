@@ -5,7 +5,7 @@ import (
   "errors"
 )
 
-func InsertNewConnection(username string, connection string) (error) {
+func VerifyConnection(username string, connection string) (error) {
 	if username == "" || connection == "" || username == connection {
     return errors.New("Invalid Connection!")
   }
@@ -15,10 +15,6 @@ func InsertNewConnection(username string, connection string) (error) {
 
   if _, err := db.GetUser(connection); err != nil {
     return errors.New("Requested User Not Found!")
-  }
-
-  if err := db.InsertNewConnection(username, connection); err != nil { 
-    return errors.New("Internal Connection Error")
   }
 
   return nil
