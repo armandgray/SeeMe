@@ -10,7 +10,7 @@ import (
 )
 
 func HandlerProfileDelete(w http.ResponseWriter, r *http.Request) {
-  user, err := db.GetUserFromDB(r.FormValue("username"))
+  user, err := db.GetUser(r.FormValue("username"))
   if err != nil {
     w.Write([]byte("User Not Found!"))
     return
@@ -19,7 +19,7 @@ func HandlerProfileDelete(w http.ResponseWriter, r *http.Request) {
     w.Write([]byte("Password Incorrect!"))
     return
   } else {
-    affect, err := db.DeleteUserFromDB(r.FormValue("username")); 
+    affect, err := db.DeleteUser(r.FormValue("username")); 
     if err != nil || affect < 1 {
       w.Write([]byte("Update Failed!"))
       return
@@ -31,7 +31,7 @@ func HandlerProfileDelete(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandlerProfileUpdate(w http.ResponseWriter, r *http.Request) {
-  oldUser, err := db.GetUserFromDB(r.FormValue("username"))
+  oldUser, err := db.GetUser(r.FormValue("username"))
   if err != nil {
     w.Write([]byte("User Not Found!"))
     return

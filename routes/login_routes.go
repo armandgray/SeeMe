@@ -40,7 +40,7 @@ func HandlerLogin(w http.ResponseWriter, r *http.Request) {
     http.Redirect(w, r, "/seeme/api/register", http.StatusFound)
     return
   } else if r.FormValue("login") != "" {
-    user, err := db.GetUserFromDB(r.FormValue("username")); 
+    user, err := db.GetUser(r.FormValue("username")); 
     if err != nil {
       page.Alert = err.Error()
     }
@@ -66,7 +66,7 @@ func HandlerLogin(w http.ResponseWriter, r *http.Request) {
 func HandlerLoginUser(w http.ResponseWriter, r *http.Request) {
   var userSlice = []User{}
   if r.FormValue("username") != "" {
-    user, _ := db.GetUserFromDB(r.FormValue("username"))
+    user, _ := db.GetUser(r.FormValue("username"))
     userSlice = []User{user}
   }
 

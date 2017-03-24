@@ -15,7 +15,7 @@ func InsertNewUser(user User) (error) {
 	return err
 }
 
-func GetUserFromDB(username string) (User, error) {
+func GetUser(username string) (User, error) {
 	db := GetDatabaseInstance()
   var user User
   var network sql.NullString
@@ -36,7 +36,7 @@ func GetUserFromDB(username string) (User, error) {
   return user, err
 }
 
-func DeleteUserFromDB(username string) (int64, error) {
+func DeleteUser(username string) (int64, error) {
 	db := GetDatabaseInstance()
   var affect int64
   qry, err := db.Prepare("DELETE FROM users WHERE username = ?")
