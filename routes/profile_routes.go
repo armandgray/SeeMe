@@ -2,6 +2,7 @@ package routes
 
 import (
   . "seeme/helpers"
+  "seeme/db"
 
   "net/http"
 
@@ -9,7 +10,7 @@ import (
 )
 
 func HandlerProfileDelete(w http.ResponseWriter, r *http.Request) {
-  user, err := GetUserFromDB(r.FormValue("username"))
+  user, err := db.GetUser(r.FormValue("username"))
   if err != nil {
     w.Write([]byte("User Not Found!"))
     return
@@ -18,7 +19,7 @@ func HandlerProfileDelete(w http.ResponseWriter, r *http.Request) {
     w.Write([]byte("Password Incorrect!"))
     return
   } else {
-    affect, err := DeleteUserFromDB(r.FormValue("username")); 
+    affect, err := db.DeleteUser(r.FormValue("username")); 
     if err != nil || affect < 1 {
       w.Write([]byte("Update Failed!"))
       return
@@ -30,7 +31,7 @@ func HandlerProfileDelete(w http.ResponseWriter, r *http.Request) {
 }
 
 func HandlerProfileUpdate(w http.ResponseWriter, r *http.Request) {
-  oldUser, err := GetUserFromDB(r.FormValue("username"))
+  oldUser, err := db.GetUser(r.FormValue("username"))
   if err != nil {
     w.Write([]byte("User Not Found!"))
     return
@@ -44,7 +45,7 @@ func HandlerProfileUpdate(w http.ResponseWriter, r *http.Request) {
       return
     } else {
       newUser := ReflectUsers(oldUser, CreateUserFromRequest(r))
-      if err := UpdateUser(newUser); err != nil {
+      if err := db.UpdateUser(newUser); err != nil {
         w.Write([]byte("Update Failed!"))
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return

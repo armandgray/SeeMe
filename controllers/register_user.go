@@ -1,8 +1,9 @@
-package routes
+package controllers
 
 import (
   . "seeme/models"
   . "seeme/helpers"
+  "seeme/db"
 
   "fmt"
   "net/http"
@@ -12,12 +13,12 @@ import (
   "golang.org/x/crypto/bcrypt"
 )
 
-func HandlerRegisterUser(w http.ResponseWriter, r *http.Request) {
+func RegisterUserController(w http.ResponseWriter, r *http.Request) {
   templLogin := template.Must(template.ParseFiles("views/register.html"))
   var page Page
 
   if r.FormValue("register") != "" {
-    if err := InsertNewUser(CreateUserFromRequest(r)); err != nil { 
+    if err := db.InsertUser(CreateUserFromRequest(r)); err != nil { 
       page.Alert = err.Error()
       fmt.Println("Database Insert Failure: " + err.Error())
     } else {
@@ -39,7 +40,7 @@ func HandlerLogin(w http.ResponseWriter, r *http.Request) {
     http.Redirect(w, r, "/seeme/api/register", http.StatusFound)
     return
   } else if r.FormValue("login") != "" {
-    user, err := GetUserFromDB(r.FormValue("username")); 
+    user, err := db.GetUser(r.FormValue("username")); 
     if err != nil {
       page.Alert = err.Error()
     }
@@ -65,7 +66,7 @@ func HandlerLogin(w http.ResponseWriter, r *http.Request) {
 func HandlerLoginUser(w http.ResponseWriter, r *http.Request) {
   var userSlice = []User{}
   if r.FormValue("username") != "" {
-    user, _ := GetUserFromDB(r.FormValue("username"))
+    user, _ := db.GetUser(r.FormValue("username"))
     userSlice = []User{user}
   }
 

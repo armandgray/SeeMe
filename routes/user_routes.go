@@ -1,7 +1,7 @@
 package routes
 
 import (
-  . "seeme/helpers"
+  . "seeme/controllers"
 
   "net/http"
   "fmt"
