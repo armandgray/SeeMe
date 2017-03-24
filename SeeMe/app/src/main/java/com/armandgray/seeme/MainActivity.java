@@ -10,23 +10,32 @@ import android.view.MenuItem;
 import android.widget.Toast;
 
 import com.armandgray.seeme.controllers.ProfileFragmentController;
+import com.armandgray.seeme.models.Network;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.utils.ViewPagerAdapter;
 import com.armandgray.seeme.views.DiscoverFragment;
 import com.armandgray.seeme.views.NavBarFragment;
 import com.armandgray.seeme.views.SeeMeFragment;
 
+import java.util.Observable;
+import java.util.Observer;
+
 import static com.armandgray.seeme.LoginActivity.LOGIN_PAYLOAD;
+import static com.armandgray.seeme.network.HttpHelper.sendRequest;
+import static com.armandgray.seeme.network.NetworkHelper.getWifiConnectionState;
+import static com.armandgray.seeme.network.NetworkHelper.getWifiNetwork;
 
 public class MainActivity extends AppCompatActivity
         implements NavBarFragment.NavBarFragmentListener,
         SeeMeFragment.SeeMeTouchListener,
-        DiscoverFragment.DiscoverCycleListener,
-        ProfileFragmentController.ProfileUpdateListener {
+        DiscoverFragment.DiscoverClickListener,
+        ProfileFragmentController.ProfileUpdateListener,
+        Observer {
 
     public static final String API_URI = "http://armandgray.com/seeme/api";
-    private static final String TAG = "MAIN_ACTIVITY";
+    public static final String UPDATE_NETWORK_URI = API_URI + "/discoverable/update-network?networkId=";
     public static final String ACTIVE_USER = "ACTIVE_USER";
+    private static final String TAG = "MAIN_ACTIVITY";
 
     private User activeUser;
     private ViewPager viewPager;
@@ -48,7 +57,7 @@ public class MainActivity extends AppCompatActivity
         activeUser = getIntent().getParcelableExtra(LOGIN_PAYLOAD);
         if (activeUser == null) {
 //            startActivity(new Intent(this, LoginActivity.class));
-            activeUser = new User("Armand", "Gray", "Creator", "armand@test.com", "1234567890", true, "");
+            activeUser = new User("Armand", "Gray", "Creator", "danimeza@gmail.com", "1234567890", true, "");
         } else {
             Toast.makeText(this, "Welcome Back " + activeUser.getFirstName(), Toast.LENGTH_SHORT).show();
         }
@@ -82,6 +91,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onTouchCycle() {
         viewPager.setCurrentItem(2);
+    }
+
+    @Override
+    public void onUserClick(User user) {
+        viewPager.setCurrentItem(1);
     }
 
     @Override
@@ -123,6 +137,18 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onNavProfile() {
         viewPager.setCurrentItem(4, true);
+    }
+
+    @Override
+    public void update(Observable o, Object data) {
+        if (data != null && getWifiConnectionState(this)) {
+            Network network = getWifiNetwork(this);
+            String url = UPDATE_NETWORK_URI
+                    + network.getNetworkId()
+                    + "&ssid=" + network.getSsid()
+                    + "&username=" + activeUser.getUsername();
+            sendRequest(url, this);
+        }
     }
 
     @Override

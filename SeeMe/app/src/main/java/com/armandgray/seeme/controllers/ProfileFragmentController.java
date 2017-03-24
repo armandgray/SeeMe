@@ -19,7 +19,7 @@ import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import static com.armandgray.seeme.utils.HttpHelper.sendRequest;
+import static com.armandgray.seeme.network.HttpHelper.sendRequest;
 import static com.armandgray.seeme.utils.StringHelper.PASSWORD_PTR;
 import static com.armandgray.seeme.utils.StringHelper.capitalizeString;
 import static com.armandgray.seeme.utils.StringHelper.urlify;
@@ -31,7 +31,7 @@ import static com.armandgray.seeme.views.ProfileFragment.HIDDEN;
 import static com.armandgray.seeme.views.ProfileFragment.ITEM_DISCOVERABLE;
 import static com.armandgray.seeme.views.ProfileFragment.ITEM_FULL_NAME;
 import static com.armandgray.seeme.views.ProfileFragment.ITEM_PASSWORD;
-import static com.armandgray.seeme.views.ProfileFragment.ITEM_ROLE;
+import static com.armandgray.seeme.views.ProfileFragment.ITEM_OCCUPATION;
 import static com.armandgray.seeme.views.ProfileFragment.IV_CLOUD;
 import static com.armandgray.seeme.views.ProfileFragment.IV_ICON;
 import static com.armandgray.seeme.views.ProfileFragment.TV_CONTENT;
@@ -72,7 +72,7 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
         setupItem(itemsMap.get(ITEM_FULL_NAME), R.drawable.ic_account_outline_white_48dp,
                 user.getFirstName() + " " + user.getLastName());
         setupItem(itemsMap.get(ITEM_PASSWORD), R.drawable.ic_lock_open_outline_white_48dp, "0000000");
-        setupItem(itemsMap.get(ITEM_ROLE), R.drawable.ic_tools_resources, user.getRole());
+        setupItem(itemsMap.get(ITEM_OCCUPATION), R.drawable.ic_tools_resources, user.getOccupation());
         setupItem(itemsMap.get(ITEM_DISCOVERABLE), R.drawable.ic_earth_white_48dp,
                 user.isDiscoverable() ? DISCOVERABLE : HIDDEN);
 
@@ -146,7 +146,7 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
             case ITEM_PASSWORD:
                 url.append("&password=").append(text);
                 return;
-            case ITEM_ROLE:
+            case ITEM_OCCUPATION:
                 url.append("&role=").append(urlify(capitalizeString(text)));
                 return;
             case ITEM_DISCOVERABLE:

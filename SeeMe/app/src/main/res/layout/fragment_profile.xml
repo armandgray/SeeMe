@@ -42,7 +42,7 @@
                 layout="@layout/profile_item" />
 
             <include
-                android:id="@+id/itemRole"
+                android:id="@+id/itemOccupation"
                 layout="@layout/profile_item" />
 
             <include

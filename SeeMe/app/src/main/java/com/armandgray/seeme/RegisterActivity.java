@@ -32,7 +32,7 @@ public class RegisterActivity extends AppCompatActivity
     public static final String PASSWORD = "PASSWORD";
     public static final String FIRST_NAME = "FIRST_NAME";
     public static final String LAST_NAME = "LAST_NAME";
-    public static final String ROLE = "ROLE";
+    public static final String OCCUPATION = "OCCUPATION";
 
     private static final String TAG = "REGISTER_ACTIVITY";
 
@@ -88,7 +88,7 @@ public class RegisterActivity extends AppCompatActivity
         mapEditTextStrings.put(PASSWORD, getTextFrom((EditText) findViewById(R.id.etPassword)));
         mapEditTextStrings.put(FIRST_NAME, getTextFrom((EditText) findViewById(R.id.etFirstName)));
         mapEditTextStrings.put(LAST_NAME, getTextFrom((EditText) findViewById(R.id.etLastName)));
-        mapEditTextStrings.put(ROLE, getTextFrom((EditText) findViewById(R.id.etRole)));
+        mapEditTextStrings.put(OCCUPATION, getTextFrom((EditText) findViewById(R.id.etOccupation)));
         return mapEditTextStrings;
     }
 

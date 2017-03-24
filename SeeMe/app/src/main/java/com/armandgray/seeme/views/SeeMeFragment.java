@@ -15,12 +15,13 @@ import com.armandgray.seeme.MainActivity;
 import com.armandgray.seeme.R;
 import com.armandgray.seeme.controllers.SeeMeFragmentController;
 import com.armandgray.seeme.models.User;
-import com.armandgray.seeme.utils.BroadcastObserver;
+import com.armandgray.seeme.observers.BroadcastObserver;
 
 import java.util.Observable;
 import java.util.Observer;
 
 import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
+import static com.armandgray.seeme.network.NetworkHelper.getWifiConnectionState;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -43,8 +44,7 @@ public class SeeMeFragment extends Fragment
     private SeeMeTouchListener seeMeTouchListener;
     private SeeMeFragmentController controller;
 
-    public SeeMeFragment() {
-    }
+    public SeeMeFragment() {}
 
     public static SeeMeFragment newInstance(User activeUser) {
         Bundle args = new Bundle();
@@ -72,7 +72,7 @@ public class SeeMeFragment extends Fragment
         View rootView = inflater.inflate(R.layout.fragment_see_me, container, false);
 
         assignFields(rootView);
-        updateUI(controller.getWifiState());
+        updateUI(getWifiConnectionState(getContext()));
         setupClickListeners();
         BroadcastObserver.getInstance().addObserver(this);
 
@@ -102,7 +102,7 @@ public class SeeMeFragment extends Fragment
         tvAuto.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (controller.getWifiState()) {
+                if (getWifiConnectionState(getContext())) {
                     autoUpdate = !autoUpdate;
                 } else {
                     Toast.makeText(getContext(), "Wifi Connection Unsuccessful!", Toast.LENGTH_SHORT).show();
@@ -132,7 +132,7 @@ public class SeeMeFragment extends Fragment
     public void update(Observable o, Object data) {
         isWifiConnected = data != null;
         if (data != null) {
-            updateUI(controller.getWifiState());
+            updateUI(getWifiConnectionState(getContext()));
         }
     }
 

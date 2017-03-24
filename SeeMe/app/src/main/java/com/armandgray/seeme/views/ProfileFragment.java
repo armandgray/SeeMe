@@ -49,7 +49,7 @@ public class ProfileFragment extends Fragment
 
     public static final String ITEM_FULL_NAME = "itemFullName";
     public static final String ITEM_PASSWORD = "itemPassword";
-    public static final String ITEM_ROLE = "itemRole";
+    public static final String ITEM_OCCUPATION = "itemOccupation";
     public static final String ITEM_DISCOVERABLE = "itemDiscoverable";
     public static final String IV_ICON = "ivIcon";
     public static final String TV_CONTENT = "tvContent";
@@ -124,7 +124,7 @@ public class ProfileFragment extends Fragment
         itemsMap = new HashMap<>();
         itemsMap.put(ITEM_FULL_NAME, getMapFromLayout((LinearLayout) rootView.findViewById(R.id.itemFullName)));
         itemsMap.put(ITEM_PASSWORD, getMapFromLayout((LinearLayout) rootView.findViewById(R.id.itemPassword)));
-        itemsMap.put(ITEM_ROLE, getMapFromLayout((LinearLayout) rootView.findViewById(R.id.itemRole)));
+        itemsMap.put(ITEM_OCCUPATION, getMapFromLayout((LinearLayout) rootView.findViewById(R.id.itemOccupation)));
         itemsMap.put(ITEM_DISCOVERABLE, getMapFromLayout((LinearLayout) rootView.findViewById(R.id.itemDiscoverable)));
 
         activeUser = getArguments().getParcelable(ACTIVE_USER);

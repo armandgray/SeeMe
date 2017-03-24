@@ -19,8 +19,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.armandgray.seeme.R;
+import com.armandgray.seeme.controllers.DiscoverFragmentController;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.services.HttpService;
+import com.armandgray.seeme.utils.RecyclerItemClickListener;
 import com.armandgray.seeme.utils.UserRVAdapter;
 
 import java.util.Arrays;
@@ -46,7 +48,8 @@ public class DiscoverFragment extends Fragment {
     private RecyclerView rvUsers;
     private User[] userArray;
 
-    private DiscoverCycleListener discoverCycleListener;
+    private DiscoverClickListener discoverClickListener;
+    private DiscoverFragmentController controller;
 
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -55,8 +58,8 @@ public class DiscoverFragment extends Fragment {
             userArray = (User[]) intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_JSON_PAYLOAD);
             if (userArray != null && userArray.length != 0) {
                 setupRvUsers(Arrays.asList(userArray));
-                toggleShowUsers();
             }
+            toggleShowUsers();
         }
     };
 
@@ -75,10 +78,10 @@ public class DiscoverFragment extends Fragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            discoverCycleListener = (DiscoverCycleListener) context;
+            discoverClickListener = (DiscoverClickListener) context;
         } catch (ClassCastException e) {
             throw new ClassCastException(context.toString()
-                    + " must implement DiscoverCycleListener");
+                    + " must implement DiscoverClickListener");
         }
     }
 
@@ -92,6 +95,8 @@ public class DiscoverFragment extends Fragment {
         toggleShowUsers();
         setupIvClickListener();
 
+        setupDummyUsers();
+
         return rootView;
     }
 
@@ -101,6 +106,7 @@ public class DiscoverFragment extends Fragment {
         ivCycle = (ImageView) rootView.findViewById(R.id.ivCycle);
         noUsersContainer = (LinearLayout) rootView.findViewById(R.id.noUsersContainer);
         usersContainer = (LinearLayout) rootView.findViewById(R.id.usersContainer);
+        controller = new DiscoverFragmentController(getContext(), discoverClickListener);
     }
 
     private void toggleShowUsers() {
@@ -117,7 +123,7 @@ public class DiscoverFragment extends Fragment {
         ivCycle.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                discoverCycleListener.onTouchCycle();
+                discoverClickListener.onTouchCycle();
             }
         });
     }
@@ -125,12 +131,36 @@ public class DiscoverFragment extends Fragment {
     private void setupRvUsers(List<User> list) {
         rvUsers.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         rvUsers.setAdapter(new UserRVAdapter(getActivity(), list));
+        rvUsers.addOnItemTouchListener(new RecyclerItemClickListener(getContext(),
+                new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        if (userArray != null && userArray.length >= position) {
+                            controller.onRecyclerItemClick(userArray[position]);
+                        }
+                    }
+                }));
+    }
+
+    private void setupDummyUsers() {
+        tvNoUsers.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                userArray = new User[5];
+                userArray[0] = new User("Armand", "Gray", "Creator", "danimeza@gmail.com", "1234567890", true, "");
+                userArray[1] = new User("Michael", "Mei", "Unemployed", "test@gmail.com", "1234567890", true, "");
+                userArray[2] = new User("Dylan", "Goodman", "Contract Reader", "genius@gmail.com", "1234567890", true, "");
+                userArray[3] = new User("Amazing", "Gray", "Creator", "amazing@gmail.com", "1234567890", true, "");
+                userArray[4] = new User("Blue", "Gray", "Creator", "blue@gmail.com", "1234567890", true, "");
+                setupRvUsers(Arrays.asList(userArray));
+                toggleShowUsers();
+            }
+        });
     }
 
     @Override
     public void onResume() {
         super.onResume();
-
         LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
                 .registerReceiver(httpBroadcastReceiver,
                         new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
@@ -143,8 +173,13 @@ public class DiscoverFragment extends Fragment {
                 .unregisterReceiver(httpBroadcastReceiver);
     }
 
-    public interface DiscoverCycleListener {
+    public interface DiscoverClickListener {
         void onTouchCycle();
+        void onUserClick(User user);
+    }
+
+    public interface DiscoverController {
+        void onRecyclerItemClick(User user);
     }
 
 }

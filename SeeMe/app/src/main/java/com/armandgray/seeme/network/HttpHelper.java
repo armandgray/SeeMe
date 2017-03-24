@@ -1,4 +1,4 @@
-package com.armandgray.seeme.utils;
+package com.armandgray.seeme.network;
 
 import android.content.Context;
 import android.content.Intent;

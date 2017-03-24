@@ -34,7 +34,7 @@
             android:exported="false" />
 
         <receiver
-            android:name=".utils.WifiReceiver"
+            android:name=".network.WifiReceiver"
             android:label="NetworkConnection">
             <intent-filter>
                 <action android:name="android.net.wifi.STATE_CHANGE" />
