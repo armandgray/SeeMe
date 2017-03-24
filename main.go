@@ -23,8 +23,8 @@ func main()  {
   mux.HandleFunc("/seeme/api/discoverable/localusers", HandlerLocalUser)
   mux.HandleFunc("/seeme/api/discoverable/update-network", HandlerUpdateUserNetwork)
   mux.HandleFunc("/seeme/api/connection/new", controllers.HandlerNewConnection)
-  mux.HandleFunc("/seeme/api/profile/delete", HandlerProfileDelete)
-  mux.HandleFunc("/seeme/api/profile/update", HandlerProfileUpdate)
+  mux.HandleFunc("/seeme/api/profile/delete", controllers.ProfileDeleteController)
+  mux.HandleFunc("/seeme/api/profile/update", controllers.ProfileUpdateController)
   mux.HandleFunc("/seeme/api/feedback", controllers.FeedbackController)
 
   n := negroni.Classic()
