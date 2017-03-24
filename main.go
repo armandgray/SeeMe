@@ -17,9 +17,8 @@ func main()  {
   db.InitMySQLConnection()
 
   mux := http.NewServeMux()
-  mux.HandleFunc("/seeme/api/login", controllers.HandlerLogin)
-  mux.HandleFunc("/seeme/api/login/user", controllers.HandlerLoginUser)
-  mux.HandleFunc("/seeme/api/register", controllers.HandlerRegisterUser)
+  mux.HandleFunc("/seeme/api/login/user", controllers.LoginUserController)
+  mux.HandleFunc("/seeme/api/register", controllers.RegisterUserController)
   mux.HandleFunc("/seeme/api/discoverable/allusers", HandlerDiscoverableUser)
   mux.HandleFunc("/seeme/api/discoverable/localusers", HandlerLocalUser)
   mux.HandleFunc("/seeme/api/discoverable/update-network", HandlerUpdateUserNetwork)

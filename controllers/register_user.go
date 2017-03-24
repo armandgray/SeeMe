@@ -13,7 +13,7 @@ import (
   "golang.org/x/crypto/bcrypt"
 )
 
-func HandlerRegisterUser(w http.ResponseWriter, r *http.Request) {
+func RegisterUserController(w http.ResponseWriter, r *http.Request) {
   templLogin := template.Must(template.ParseFiles("views/register.html"))
   var page Page
 
