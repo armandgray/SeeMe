@@ -14,9 +14,9 @@ import (
 
 func main()  {
   db.InitMySQLConnection()
+  apiUrl := "/seeme/api"
 
   mux := http.NewServeMux()
-  apiUrl := "/seeme/api"
   mux.HandleFunc(apiUrl + "/login/user", controllers.LoginUserController)
   mux.HandleFunc(apiUrl + "/register", controllers.RegisterUserController)
   mux.HandleFunc(apiUrl + "/discoverable/allusers", controllers.AllUsersController)
