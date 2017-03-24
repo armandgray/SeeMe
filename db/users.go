@@ -7,16 +7,8 @@ import (
   _ "github.com/go-sql-driver/mysql"
 )
 
-func InsertNewUser(user User) (error) {
-	db := GetDatabaseInstance()
-	_, err := db.Exec("INSERT INTO users (first_name, last_name, role, username, secret, discoverable, network_id) VALUES (?, ?, ?, ?, ?, ?, ?)", 
-                  user.FirstName, user.LastName, user.Role, user.Username, 
-                  user.Secret, user.Discoverable, nil)
-	return err
-}
-
 func GetUser(username string) (User, error) {
-	db := GetDatabaseInstance()
+  db := GetDatabaseInstance()
   var user User
   var network sql.NullString
   var role sql.NullString
@@ -34,6 +26,14 @@ func GetUser(username string) (User, error) {
   }
 
   return user, err
+}
+
+func InsertUser(user User) (error) {
+	db := GetDatabaseInstance()
+	_, err := db.Exec("INSERT INTO users (first_name, last_name, role, username, secret, discoverable, network_id) VALUES (?, ?, ?, ?, ?, ?, ?)", 
+                  user.FirstName, user.LastName, user.Role, user.Username, 
+                  user.Secret, user.Discoverable, nil)
+	return err
 }
 
 func DeleteUser(username string) (int64, error) {

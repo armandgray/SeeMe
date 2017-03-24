@@ -18,7 +18,7 @@ func HandlerRegisterUser(w http.ResponseWriter, r *http.Request) {
   var page Page
 
   if r.FormValue("register") != "" {
-    if err := db.InsertNewUser(CreateUserFromRequest(r)); err != nil { 
+    if err := db.InsertUser(CreateUserFromRequest(r)); err != nil { 
       page.Alert = err.Error()
       fmt.Println("Database Insert Failure: " + err.Error())
     } else {
