@@ -3,13 +3,19 @@ package controllers
 import (
   "seeme/db"
 
-  "errors"
+  "net/http"
 )
 
-func InsertFeedback(username string, message string) (error) {
-	db := db.GetDatabaseInstance()
-  if message == "" { return errors.New("Message Empty") }
-  _, err := db.Exec("INSERT INTO feedback VALUES (?, ?, ?)", 
-                  username, nil, message)
-  return err
+func FeedbackController(w http.ResponseWriter, r *http.Request) {
+  _, err := db.GetUser(r.FormValue("username"))
+  if err != nil {
+    w.Write([]byte("User Not Found!"))
+    return
+  }
+  if err := db.InsertFeedback(r.FormValue("username"), r.FormValue("message")); err != nil { 
+    w.Write([]byte("Message Upload Failed!"))
+    return
+  }
+    
+  w.Write([]byte("Message Sent!"))
 }
