@@ -1,15 +1,13 @@
-package routes
+package controllers
 
 import (
-  . "seeme/controllers"
-
   "net/http"
   "fmt"
 
   "encoding/json"
 )
 
-func HandlerDiscoverableUser(w http.ResponseWriter, r *http.Request) {
+func AllUsersController(w http.ResponseWriter, r *http.Request) {
   js, err := json.Marshal(GetDiscoverableUsersFromDB(w))
   if err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -20,7 +18,7 @@ func HandlerDiscoverableUser(w http.ResponseWriter, r *http.Request) {
   w.Write(js)
 }
 
-func HandlerLocalUser(w http.ResponseWriter, r *http.Request) {
+func LocalUsersController(w http.ResponseWriter, r *http.Request) {
   userList, err := GetLocalUsersForNetwork(w, r)
   if err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -36,7 +34,7 @@ func HandlerLocalUser(w http.ResponseWriter, r *http.Request) {
   w.Write(js)
 }
 
-func HandlerUpdateUserNetwork(w http.ResponseWriter, r *http.Request) {
+func UpdateUserNetworkController(w http.ResponseWriter, r *http.Request) {
   if err := RenewUserNetwork(r); err != nil {
     fmt.Println("Network Update Error")
   }

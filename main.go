@@ -1,7 +1,6 @@
 package main
 
 import (
-  . "seeme/routes"
   "seeme/controllers"
   "seeme/db"
 
@@ -19,9 +18,9 @@ func main()  {
   mux := http.NewServeMux()
   mux.HandleFunc("/seeme/api/login/user", controllers.LoginUserController)
   mux.HandleFunc("/seeme/api/register", controllers.RegisterUserController)
-  mux.HandleFunc("/seeme/api/discoverable/allusers", HandlerDiscoverableUser)
-  mux.HandleFunc("/seeme/api/discoverable/localusers", HandlerLocalUser)
-  mux.HandleFunc("/seeme/api/discoverable/update-network", HandlerUpdateUserNetwork)
+  mux.HandleFunc("/seeme/api/discoverable/allusers", controllers.AllUsersController)
+  mux.HandleFunc("/seeme/api/discoverable/localusers", controllers.LocalUsersController)
+  mux.HandleFunc("/seeme/api/discoverable/update-network", controllers.UpdateUserNetworkController)
   mux.HandleFunc("/seeme/api/connection/new", controllers.HandlerNewConnection)
   mux.HandleFunc("/seeme/api/profile/delete", controllers.ProfileDeleteController)
   mux.HandleFunc("/seeme/api/profile/update", controllers.ProfileUpdateController)
