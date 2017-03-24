@@ -3,8 +3,6 @@ package helpers
 import (
   "seeme/db"
   "errors"
-
-  "net/http"
 )
 
 func InsertNewConnection(username string, connection string) (error) {
