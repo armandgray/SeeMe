@@ -3,6 +3,7 @@ package main
 import (
   "seeme/controllers"
   "seeme/allusers"
+  "seeme/feedback"
   "seeme/db"
 
   "fmt"
@@ -26,7 +27,7 @@ func main()  {
   mux.HandleFunc(apiUrl + "/connection/new", controllers.HandlerNewConnection)
   mux.HandleFunc(apiUrl + "/profile/delete", controllers.ProfileDeleteController)
   mux.HandleFunc(apiUrl + "/profile/update", controllers.ProfileUpdateController)
-  mux.HandleFunc(apiUrl + "/feedback", controllers.FeedbackController)
+  mux.HandleFunc(apiUrl + "/feedback", feedback.FeedbackController)
 
   n := negroni.Classic()
   n.Use(negroni.HandlerFunc(db.VerifyMySQLConnection))
