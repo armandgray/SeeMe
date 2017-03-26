@@ -1,14 +1,12 @@
-package controllers
+package localusers
 
 import (
-  "seeme/db"
-
   "net/http"
   "encoding/json"
 )
 
 func LocalUsersController(w http.ResponseWriter, r *http.Request) {
-  userList, err := db.GetLocalUsersForNetwork(w, r)
+  userList, err := GetLocalUsersForNetwork(w, r)
   if err != nil {
     http.Error(w, err.Error(), http.StatusInternalServerError)
     return

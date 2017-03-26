@@ -1,13 +1,14 @@
-package db
+package localusers
 
 import (
-	"seeme/models"
+  "seeme/models"
+  "seeme/db"
 
   "net/http"
 )
 
 func GetLocalUsersForNetwork(w http.ResponseWriter, r *http.Request) ([]models.User, error) {
-  if err := RenewUserNetwork(r); err != nil {
+  if err := db.RenewUserNetwork(r); err != nil {
     var userList []models.User
     return userList, err
   }
@@ -15,7 +16,7 @@ func GetLocalUsersForNetwork(w http.ResponseWriter, r *http.Request) ([]models.U
 }
 
 func getExistingUsersForNetwork(w http.ResponseWriter, r *http.Request) ([]models.User) {
-  db := GetDatabaseInstance()
+  db := db.GetDatabaseInstance()
   var userList []models.User
   var user models.User
 
