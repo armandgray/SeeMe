@@ -1,13 +1,14 @@
-package db
+package allusers
 
 import (
   "seeme/models"
+  "seeme/db"
 
   "net/http"
 )
 
 func GetDiscoverableUsers(w http.ResponseWriter) ([]models.User) {
-	db := GetDatabaseInstance()
+	db := db.GetDatabaseInstance()
   var userList []models.User
   var user models.User
 
