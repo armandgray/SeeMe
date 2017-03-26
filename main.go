@@ -3,6 +3,7 @@ package main
 import (
   "seeme/controllers"
   "seeme/allusers"
+  "seeme/newconnections"
   "seeme/feedback"
   "seeme/db"
 
@@ -24,7 +25,7 @@ func main()  {
   mux.HandleFunc(apiUrl + "/discoverable/allusers", allusers.AllUsersController)
   mux.HandleFunc(apiUrl + "/discoverable/localusers", controllers.LocalUsersController)
   mux.HandleFunc(apiUrl + "/discoverable/update-network", controllers.UpdateUserNetworkController)
-  mux.HandleFunc(apiUrl + "/connection/new", controllers.HandlerNewConnection)
+  mux.HandleFunc(apiUrl + "/connection/new", newconnections.HandlerNewConnection)
   mux.HandleFunc(apiUrl + "/profile/delete", controllers.ProfileDeleteController)
   mux.HandleFunc(apiUrl + "/profile/update", controllers.ProfileUpdateController)
   mux.HandleFunc(apiUrl + "/feedback", feedback.FeedbackController)

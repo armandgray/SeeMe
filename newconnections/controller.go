@@ -1,20 +1,17 @@
-package controllers
+package newconnections
 
 import (
-  "seeme/helpers"
-  "seeme/db"
-
   "net/http"
 )
 
 func HandlerNewConnection(w http.ResponseWriter, r *http.Request) {
   username := r.FormValue("username")
   connection := r.FormValue("connection")
-  if err := helpers.VerifyConnection(username, connection); err != nil {
+  if err := VerifyConnection(username, connection); err != nil {
     w.Write([]byte(err.Error()))
     return
   }
-  if err := db.InsertNewConnection(username, connection); err != nil {
+  if err := InsertNewConnection(username, connection); err != nil {
     w.Write([]byte(err.Error()))
     return
   }
