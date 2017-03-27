@@ -1,7 +1,7 @@
-package controllers
+package profileupdate
 
 import (
-  . "seeme/helpers"
+  "seeme/helpers"
   "seeme/db"
 
   "net/http"
@@ -23,7 +23,7 @@ func ProfileUpdateController(w http.ResponseWriter, r *http.Request) {
       w.Write([]byte("Password Incorrect!"))
       return
     } else {
-      newUser := ReflectUsers(oldUser, CreateUserFromRequest(r))
+      newUser := helpers.ReflectUsers(oldUser, helpers.CreateUserFromRequest(r))
       if err := db.UpdateUser(newUser); err != nil {
         w.Write([]byte("Update Failed!"))
         http.Error(w, err.Error(), http.StatusInternalServerError)

@@ -8,6 +8,7 @@ import (
   "seeme/localusers"
   "seeme/newconnections"
   "seeme/profiledelete"
+  "seeme/profileupdate"
   "seeme/feedback"
   "seeme/db"
 
@@ -31,7 +32,7 @@ func main()  {
   mux.HandleFunc(apiUrl + "/discoverable/update-network", controllers.UpdateUserNetworkController)
   mux.HandleFunc(apiUrl + "/connection/new", newconnections.HandlerNewConnection)
   mux.HandleFunc(apiUrl + "/profile/delete", profiledelete.ProfileDeleteController)
-  mux.HandleFunc(apiUrl + "/profile/update", controllers.ProfileUpdateController)
+  mux.HandleFunc(apiUrl + "/profile/update", profileupdate.ProfileUpdateController)
   mux.HandleFunc(apiUrl + "/feedback", feedback.FeedbackController)
 
   n := negroni.Classic()
