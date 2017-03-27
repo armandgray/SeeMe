@@ -1,4 +1,4 @@
-package controllers
+package updatenetwork
 
 import (
 	"seeme/db"
