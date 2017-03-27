@@ -3,6 +3,7 @@ package newconnections
 import (
   "seeme/db"
   "errors"
+  "fmt"
 )
 
 func VerifyConnection(username string, connection string) (error) {
@@ -18,37 +19,38 @@ func VerifyConnection(username string, connection string) (error) {
     return errors.New("Requested User Not Found!")
   }
 
-  userList, err := getExistingConnectionsFor(connection)
+  userMap, err := getExistingConnectionsFor(connection)
   if err != nil {
     return errors.New("Connection Search Error!")
   }
-  if len(userList) != 0 {
+  fmt.Println(userMap)
+  if len(userMap) != 0 {
     return errors.New("Connection Already Exists")
   }
 
   return nil
 }
 
-func getExistingConnectionsFor(user string) ([]string, error) {
+func getExistingConnectionsFor(user string) (map[string]bool, error) {
   db := db.GetDatabaseInstance()
   var connection string
-  var connectionList []string
+  connectionMap := make(map[string]bool)
 
   rows, err := db.Query("SELECT connection FROM connections WHERE username = ?", user)
   if err != nil {
-    return connectionList, err
+    return connectionMap, err
   }
   defer rows.Close()
   for rows.Next() {
     if err = rows.Scan(&connection); err != nil {
-      return connectionList, err
+      return connectionMap, err
     } else {
-      connectionList = append(connectionList, connection)
+      connectionMap[connection] = true
     }
   }
   if err = rows.Err(); err != nil {
-    return connectionList, err
+    return connectionMap, err
   }
 
-  return connectionList, nil
+  return connectionMap, nil
 }
