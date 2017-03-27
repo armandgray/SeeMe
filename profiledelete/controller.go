@@ -1,4 +1,4 @@
-package controllers
+package profiledelete
 
 import (
   "seeme/db"
