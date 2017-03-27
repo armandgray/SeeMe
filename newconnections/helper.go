@@ -18,10 +18,18 @@ func VerifyConnection(username string, connection string) (error) {
     return errors.New("Requested User Not Found!")
   }
 
+  userList, err := getExistingConnectionsFor(connection)
+  if err != nil {
+    return errors.New("Connection Search Error!")
+  }
+  if len(userList) != 0 {
+    return errors.New("Connection Already Exists")
+  }
+
   return nil
 }
 
-func GetExistingConnectionsFor(user string) ([]string, error) {
+func getExistingConnectionsFor(user string) ([]string, error) {
   db := db.GetDatabaseInstance()
   var connection string
   var connectionList []string
