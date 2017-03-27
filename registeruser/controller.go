@@ -1,4 +1,4 @@
-package controllers
+package registeruser
 
 import (
   . "seeme/models"
