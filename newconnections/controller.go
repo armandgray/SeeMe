@@ -4,7 +4,7 @@ import (
   "net/http"
 )
 
-func HandlerNewConnection(w http.ResponseWriter, r *http.Request) {
+func NewConnectionController(w http.ResponseWriter, r *http.Request) {
   username := r.FormValue("username")
   connection := r.FormValue("connection")
   if err := VerifyConnection(username, connection); err != nil {
