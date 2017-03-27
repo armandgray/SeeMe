@@ -21,26 +21,26 @@ func VerifyConnection(username string, connection string) (error) {
   return nil
 }
 
-func getExistingConnectionsFor(user string) (error) {
+func GetExistingConnectionsFor(user string) ([]string, error) {
   db := db.GetDatabaseInstance()
   var connection string
   var connectionList []string
 
   rows, err := db.Query("SELECT connection FROM connections WHERE username = ?", user)
   if err != nil {
-      return err
+    return connectionList, err
   }
   defer rows.Close()
   for rows.Next() {
     if err = rows.Scan(&connection); err != nil {
-      return err
+      return connectionList, err
     } else {
       connectionList = append(connectionList, connection)
     }
   }
   if err = rows.Err(); err != nil {
-    return err;
+    return connectionList, err
   }
 
-  return nil
+  return connectionList, nil
 }
