@@ -3,7 +3,6 @@ package newconnections
 import (
   "seeme/db"
   "errors"
-  "fmt"
 )
 
 func VerifyConnection(username string, connection string) (error) {
@@ -23,7 +22,6 @@ func VerifyConnection(username string, connection string) (error) {
   if err != nil {
     return errors.New("Connection Search Error!")
   }
-  fmt.Println(userMap)
   if userMap[connection] {
     return errors.New("Connection Already Exists")
   }
