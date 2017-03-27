@@ -24,7 +24,7 @@ func VerifyConnection(username string, connection string) (error) {
     return errors.New("Connection Search Error!")
   }
   fmt.Println(userMap)
-  if len(userMap) != 0 {
+  if userMap[connection] {
     return errors.New("Connection Already Exists")
   }
 
