@@ -11,7 +11,7 @@ func DeleteConnectionController(w http.ResponseWriter, r *http.Request) {
   username := r.FormValue("username")
   connection := r.FormValue("connection")
   
-  if err := helpers.VerifyConnection(username, connection); err != nil {
+  if err := helpers.VerifyUsers(username, connection); err != nil {
     w.Write([]byte(err.Error()))
     return
   }
