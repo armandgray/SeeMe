@@ -19,3 +19,28 @@ func DeleteConnection(username string, connection string) (error) {
 												username, connection)
 	return err
 }
+
+func GetConnectionsMap(user string) (map[string]bool, error) {
+	db := GetDatabaseInstance()
+  var connection string
+  connectionMap := make(map[string]bool)
+
+  rows, err := db.Query("SELECT connection FROM connections WHERE username = ?", user)
+  if err != nil {
+    return connectionMap, err
+  }
+  defer rows.Close()
+  for rows.Next() {
+    if err = rows.Scan(&connection); err != nil {
+      return connectionMap, err
+    } else {
+      connectionMap[connection] = true
+    }
+  }
+  if err = rows.Err(); err != nil {
+    return connectionMap, err
+  }
+
+  return connectionMap, nil
+}
+
