@@ -23,27 +23,3 @@ func DeleteConnection(username string, connection string) (error) {
 func GetConnectionsMap(user string) (map[string]bool, error) {
   return GetQueryResultsMap("SELECT connection FROM connections WHERE username = ?", user)
 }
-
-func GetQueryResultsMap(query string, params ...interface{}) (map[string]bool, error) {
-	db := GetDatabaseInstance()
-	var data string
-  dataMap := make(map[string]bool)
-
-	rows, err := db.Query(query, params...)
-  if err != nil {
-    return dataMap, err
-  }
-  defer rows.Close()
-  for rows.Next() {
-    if err = rows.Scan(&data); err != nil {
-      return dataMap, err
-    } else {
-      dataMap[data] = true
-    }
-  }
-  if err = rows.Err(); err != nil {
-    return dataMap, err
-  }
-
-  return dataMap, nil
-}
