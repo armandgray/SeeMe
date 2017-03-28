@@ -47,28 +47,29 @@ func PostDeleteQuery(query string, params ...interface{}) (int64, error) {
   return affect, nil
 }
 
-func GetQueryUserList(query string, params ...interface{}) (map[string]bool, error) {
+func GetQueryUserList(query string, params ...interface{}) ([]User, error) {
   db := GetDatabaseInstance()
-  var data string
-  dataMap := make([map[string]bool])
+  var userList []User
+  var user User
 
-  rows, err := db.Query(query, params...)
+  rows, err := db.Query("select * from users where discoverable = 1 AND !(network_id = 'NULL')")
   if err != nil {
-    return dataMap, err
+    return []User{}, err
   }
   defer rows.Close()
   for rows.Next() {
-    if err = rows.Scan(&data); err != nil {
-      return dataMap, err
+    if err = rows.Scan(&user.FirstName, &user.LastName, &user.Role, &user.Username, 
+                        &user.Secret, &user.Discoverable, &user.Network); err != nil {
+      return []User{}, err
     } else {
-      dataMap[data] = true
+      userList = append(userList, user)
     }
   }
   if err = rows.Err(); err != nil {
-    return dataMap, err
+    return []User{}, err
   }
 
-  return dataMap, nil
+  return userList, nil
 }
 
 func GetQueryResultsMap(query string, params ...interface{}) (map[string]bool, error) {
