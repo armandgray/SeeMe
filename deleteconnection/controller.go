@@ -2,12 +2,20 @@ package deleteconnection
 
 import (
   "seeme/db"
+  "seeme/helpers"
 
   "net/http"
 )
 
 func DeleteConnectionController(w http.ResponseWriter, r *http.Request) {
-  if _, err := db.GetUser(r.FormValue("username")); err != nil {
+  username := r.FormValue("username")
+  connection := r.FormValue("connection")
+  
+  if err := helpers.VerifyConnection(username, connection); err != nil {
+    w.Write([]byte(err.Error()))
+    return
+  }
+  if err := VerifyNewConnection(username, connection); err != nil {
     w.Write([]byte(err.Error()))
     return
   }
