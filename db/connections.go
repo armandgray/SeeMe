@@ -13,11 +13,25 @@ func UpdateConnectionStatus(username string, connection string, status string) (
 	return err
 }
 
-func DeleteConnection(username string, connection string) (error) {
+func DeleteConnection(username string) (int64, error) {
 	db := GetDatabaseInstance()
-	_, err := db.Exec("DELETE FROM connections WHERE username = ? AND connection = ?", 
-												username, connection)
-	return err
+  var affect int64
+  qry, err := db.Prepare("DELETE FROM users WHERE username = ?")
+  if err != nil {
+    return affect, err
+  }
+
+  res, err := qry.Exec(username)
+  if err != nil {
+    return affect, err
+  }
+
+  affect, err = res.RowsAffected()
+  if err != nil {
+    return affect, err
+  }
+
+  return affect, err
 }
 
 func GetConnectionsMap(user string) (map[string]bool, error) {

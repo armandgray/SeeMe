@@ -11,8 +11,8 @@ func DeleteConnectionController(w http.ResponseWriter, r *http.Request) {
     w.Write([]byte(err.Error()))
     return
   }
-  err := db.DeleteConnection(r.FormValue("username"), r.FormValue("password")); 
-  if err != nil {
+  affect, err := db.DeleteConnection(r.FormValue("username")); 
+  if err != nil || affect < 1 {
     w.Write([]byte(err.Error()))
     return
   }
