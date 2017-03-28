@@ -1,5 +1,7 @@
 package db
 
+import ("fmt")
+
 func InsertNewConnection(username string, connection string) (error) {
 	db := GetDatabaseInstance()
 	_, err := db.Exec("INSERT INTO connections VALUES (?, ?, 'pending')", username, connection)
@@ -13,15 +15,18 @@ func UpdateConnectionStatus(username string, connection string, status string) (
 	return err
 }
 
-func DeleteConnection(username string) (int64, error) {
+func DeleteConnection(username string, connection string) (int64, error) {
 	db := GetDatabaseInstance()
+	fmt.Println("Username: " + username)
+	fmt.Println("Connection: " + connection)
+
   var affect int64
-  qry, err := db.Prepare("DELETE FROM connections WHERE username = ?")
+  qry, err := db.Prepare("DELETE FROM connections WHERE username = ? AND connection = ?")
   if err != nil {
     return affect, err
   }
 
-  res, err := qry.Exec(username)
+  res, err := qry.Exec(username, connection)
   if err != nil {
     return affect, err
   }
