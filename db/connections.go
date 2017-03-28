@@ -12,3 +12,10 @@ func UpdateConnectionStatus(username string, connection string, status string) (
 												status, username, connection)
 	return err
 }
+
+func DeleteConnection(username string, connection string) (error) {
+	db := GetDatabaseInstance()
+	_, err := db.Exec("DELETE FROM connections WHERE username = ? AND connection = ?", 
+												username, connection)
+	return err
+}
