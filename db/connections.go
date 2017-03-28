@@ -1,11 +1,17 @@
 package db
 
 import (
+  . "seeme/models"
+
 	"errors"
 )
 
 func GetConnectionsMap(user string) (map[string]bool, error) {
   return GetQueryResultsMap("SELECT connection FROM connections WHERE username = ?", user)
+}
+
+func GetNetworkList(user string) ([]User, error) {
+  return []User{}, nil
 }
 
 func InsertNewConnection(username string, connection string) (error) {

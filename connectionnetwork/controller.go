@@ -8,7 +8,7 @@ import (
 )
 
 func ConnectionNetworkController(w http.ResponseWriter, r *http.Request) {
-  userMap, err := db.GetConnectionsMap(r.FormValue("username"))
+  userMap, err := db.GetNetworkList(r.FormValue("username"))
   if err != nil {
     w.Write([]byte("Network Search Error!"))
   }
