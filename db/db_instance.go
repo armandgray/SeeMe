@@ -27,7 +27,7 @@ func GetDatabaseInstance() (*sql.DB) {
 
 func PostDeleteQuery(query string, params ...interface{}) (int64, error) {
   db := GetDatabaseInstance()
-  qry, err := db.Prepare("DELETE FROM connections WHERE username = ? AND connection = ?")
+  qry, err := db.Prepare(query)
   if err != nil {
     return 0, errors.New("Prepare Update Error!")
   }

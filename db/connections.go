@@ -30,7 +30,8 @@ func DeleteConnection(username string, connection string) (int64, error) {
     connectUser = username
   }
 
-  return PostDeleteQuery("", primaryUser, connectUser)
+  return PostDeleteQuery("DELETE FROM connections WHERE username = ? AND connection = ?", 
+                              primaryUser, connectUser)
 }
 
 func GetConnectionsMap(user string) (map[string]bool, error) {
