@@ -11,7 +11,8 @@ func GetConnectionsMap(user string) (map[string]bool, error) {
 }
 
 func GetNetworkList(user string) ([]User, error) {
-  return GetQueryUserList("SELECT * FROM users WHERE discoverable = 1 AND !(network_id = 'NULL')")
+  query := "SELECT users.* FROM connections JOIN users ON users.username = connections.connection WHERE connections.username = ?"
+  return GetQueryUserList(query, user)
 }
 
 func InsertNewConnection(username string, connection string) (error) {
