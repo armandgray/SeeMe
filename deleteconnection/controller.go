@@ -7,8 +7,7 @@ import (
 )
 
 func DeleteConnectionController(w http.ResponseWriter, r *http.Request) {
-  _, err := db.GetUser(r.FormValue("username"))
-  if err != nil {
+  if _, err := db.GetUser(r.FormValue("username")); err != nil {
     w.Write([]byte(err.Error()))
     return
   }
