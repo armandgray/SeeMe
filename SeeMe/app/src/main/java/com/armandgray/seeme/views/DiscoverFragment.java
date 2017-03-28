@@ -29,12 +29,18 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
+import static com.armandgray.seeme.MainActivity.API_URI;
 import static com.armandgray.seeme.utils.StringHelper.getBoldStringBuilder;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class DiscoverFragment extends Fragment {
+
+    public static final String UPDATE_CONNECTION_URI = API_URI + "/connection/update-status?";
+    public static final String NEW_CONNECTION_URI = API_URI + "/connection/new?";
+    public static final String DELETE_CONNECTION_URI = API_URI + "/connection/delete?";
+    public static final String NETWORK_CONNECTION_URI = API_URI + "/connection/network?";
 
     private static final String TAG = "DISCOVER_FRAGMENT";
     private static final String NO_USERS_HEADER = "No Current Available Users";
@@ -47,6 +53,7 @@ public class DiscoverFragment extends Fragment {
 
     private RecyclerView rvUsers;
     private User[] userArray;
+    private User activeUser;
 
     private DiscoverClickListener discoverClickListener;
     private DiscoverFragmentController controller;
@@ -106,7 +113,8 @@ public class DiscoverFragment extends Fragment {
         ivCycle = (ImageView) rootView.findViewById(R.id.ivCycle);
         noUsersContainer = (LinearLayout) rootView.findViewById(R.id.noUsersContainer);
         usersContainer = (LinearLayout) rootView.findViewById(R.id.usersContainer);
-        controller = new DiscoverFragmentController(getContext(), discoverClickListener);
+        activeUser = getArguments().getParcelable(ACTIVE_USER);
+        controller = new DiscoverFragmentController(getContext(), discoverClickListener, activeUser);
     }
 
     private void toggleShowUsers() {
