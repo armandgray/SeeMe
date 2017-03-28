@@ -1,11 +1,7 @@
-package newconnections
-
-import (
-	"seeme/db"
-)
+package db
 
 func InsertNewConnection(username string, connection string) (error) {
-	db := db.GetDatabaseInstance()
+	db := GetDatabaseInstance()
 	_, err := db.Exec("INSERT INTO connections VALUES (?, ?)", username, connection)
 	return err
 }
