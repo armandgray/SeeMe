@@ -1,11 +1,11 @@
-package deleteconnection
+package helpers
 
 import (
   "seeme/db"
   "errors"
 )
 
-func VerifyNewConnection(username string, connection string) (error) {
+func VerifyConnection(username string, connection string) (error) {
   userMap, err := db.GetConnectionsMap(connection)
   if err != nil {
     return errors.New("Connection Search Error!")

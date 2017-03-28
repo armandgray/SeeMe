@@ -15,7 +15,7 @@ func UpdateConnectionStatusController(w http.ResponseWriter, r *http.Request) {
     return
   }
 
-  if err := VerifyOldConnection(username, connection); err != nil {
+  if err := helpers.VerifyConnection(username, connection); err != nil {
     w.Write([]byte(err.Error()))
     return
   }
