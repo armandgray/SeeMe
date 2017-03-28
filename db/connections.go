@@ -11,8 +11,19 @@ func GetConnectionsMap(user string) (map[string]bool, error) {
 }
 
 func GetNetworkList(user string) ([]User, error) {
-  query := "SELECT users.* FROM connections JOIN users ON users.username = connections.connection WHERE connections.username = ?"
-  return GetQueryUserList(query, user)
+  query := "SELECT users.* FROM connections JOIN users ON users.username = connections.connection WHERE connections.username = ?"  
+  connectionList, err := GetQueryUserList(query, user)
+  if err != nil {
+    return []User{}, err
+  }
+
+  query = "SELECT users.* FROM connections JOIN users ON users.username = connections.username WHERE connections.connection = ?"
+  userList, err := GetQueryUserList(query, user)
+  if err != nil {
+    return []User{}, err
+  }
+
+  return append(connectionList, userList...), nil
 }
 
 func InsertNewConnection(username string, connection string) (error) {
