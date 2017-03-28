@@ -16,7 +16,7 @@ func UpdateConnectionStatus(username string, connection string, status string) (
 func DeleteConnection(username string) (int64, error) {
 	db := GetDatabaseInstance()
   var affect int64
-  qry, err := db.Prepare("DELETE FROM users WHERE username = ?")
+  qry, err := db.Prepare("DELETE FROM connections WHERE username = ?")
   if err != nil {
     return affect, err
   }
