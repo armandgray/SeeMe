@@ -21,12 +21,24 @@ func DeleteConnection(username string, connection string) (int64, error) {
 	db := GetDatabaseInstance()
 
   var affect int64
+  primaryUser := username
+  connectUser := connection
+
+  userMap, err := GetConnectionsMap(connection)
+  if err != nil {
+    return affect, errors.New("Connection Search Error!")
+  }
+  if userMap[username] {
+    primaryUser = connection
+    connectUser = username
+  }
+
   qry, err := db.Prepare("DELETE FROM connections WHERE username = ? AND connection = ?")
   if err != nil {
     return affect, errors.New("Prepare Update Error!")
   }
 
-  res, err := qry.Exec(username, connection)
+  res, err := qry.Exec(primaryUser, connectUser)
   if err != nil {
     return affect, errors.New("Update Query Error!")
   }
