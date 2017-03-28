@@ -23,3 +23,27 @@ func VerifyMySQLConnection(w http.ResponseWriter, r *http.Request, next http.Han
 func GetDatabaseInstance() (*sql.DB) {
 	return db
 }
+
+func GetQueryResultsMap(query string, params ...interface{}) (map[string]bool, error) {
+	db := GetDatabaseInstance()
+	var data string
+  dataMap := make(map[string]bool)
+
+	rows, err := db.Query(query, params...)
+  if err != nil {
+    return dataMap, err
+  }
+  defer rows.Close()
+  for rows.Next() {
+    if err = rows.Scan(&data); err != nil {
+      return dataMap, err
+    } else {
+      dataMap[data] = true
+    }
+  }
+  if err = rows.Err(); err != nil {
+    return dataMap, err
+  }
+
+  return dataMap, nil
+}
