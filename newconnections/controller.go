@@ -8,7 +8,7 @@ import (
 func NewConnectionController(w http.ResponseWriter, r *http.Request) {
   username := r.FormValue("username")
   connection := r.FormValue("connection")
-  if err := VerifyConnection(username, connection); err != nil {
+  if err := VerifyNewConnection(username, connection); err != nil {
     w.Write([]byte(err.Error()))
     return
   }

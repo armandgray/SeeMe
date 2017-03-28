@@ -1,11 +1,11 @@
-package newconnections
+package helpers
 
 import (
   "seeme/db"
   "errors"
 )
 
-func VerifyNewConnection(username string, connection string) (error) {
+func VerifyConnection(username string, connection string) (error) {
 	if username == "" || connection == "" || username == connection {
     return errors.New("Invalid Connection!")
   }
