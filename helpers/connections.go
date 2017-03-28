@@ -16,21 +16,6 @@ func VerifyConnection(username string, connection string) (error) {
   if _, err := db.GetUser(connection); err != nil {
     return errors.New("Requested User Not Found!")
   }
-  userMap, err := db.GetConnectionsMap(connection)
-  if err != nil {
-    return errors.New("Connection Search Error!")
-  }
-  if userMap[username] {
-    return errors.New("Connection Already Exists")
-  }
-
-  userMap, err = db.GetConnectionsMap(username)
-  if err != nil {
-    return errors.New("Connection Search Error!")
-  }
-  if userMap[connection] {
-    return errors.New("Connection Already Exists")
-  }
 
   return nil
 }
