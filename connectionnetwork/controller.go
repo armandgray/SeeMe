@@ -1,12 +1,18 @@
 package connectionnetwork
 
 import (
+  "seeme/db"
+
   "net/http"
   "encoding/json"
 )
 
 func ConnectionNetworkController(w http.ResponseWriter, r *http.Request) {
-  js, err := json.Marshal([]string{})
+  userMap, err := db.GetConnectionsMap(r.FormValue("username"))
+  if err != nil {
+    w.Write([]byte("Network Search Error!"))
+  }
+  js, err := json.Marshal(userMap)
   if err != nil {
     w.Write([]byte("Network Process Error!"))
     return
