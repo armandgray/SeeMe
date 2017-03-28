@@ -13,33 +13,23 @@ func VerifyConnection(username string, connection string) (error) {
   if _, err := db.GetUser(username); err != nil {
     return errors.New("User Not Found!")
   }
-
   if _, err := db.GetUser(connection); err != nil {
     return errors.New("Requested User Not Found!")
   }
-
-  return nil
-}
-
-func getExistingConnectionsFor(user string) (error) {
-  db := db.GetDatabaseInstance()
-  var connection string
-  var connectionList []string
-
-  rows, err := db.Query("SELECT connection FROM connections WHERE username = ?", user)
+  userMap, err := db.GetConnectionsMap(connection)
   if err != nil {
-      return err
+    return errors.New("Connection Search Error!")
   }
-  defer rows.Close()
-  for rows.Next() {
-    if err = rows.Scan(&connection); err != nil {
-      return err
-    } else {
-      connectionList = append(connectionList, connection)
-    }
+  if userMap[username] {
+    return errors.New("Connection Already Exists")
   }
-  if err = rows.Err(); err != nil {
-    return err;
+
+  userMap, err = db.GetConnectionsMap(username)
+  if err != nil {
+    return errors.New("Connection Search Error!")
+  }
+  if userMap[connection] {
+    return errors.New("Connection Already Exists")
   }
 
   return nil

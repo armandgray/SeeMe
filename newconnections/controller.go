@@ -1,6 +1,7 @@
 package newconnections
 
 import (
+  "seeme/db"
   "net/http"
 )
 
@@ -11,7 +12,8 @@ func NewConnectionController(w http.ResponseWriter, r *http.Request) {
     w.Write([]byte(err.Error()))
     return
   }
-  if err := InsertNewConnection(username, connection); err != nil {
+
+  if err := db.InsertNewConnection(username, connection); err != nil {
     w.Write([]byte(err.Error()))
     return
   }
