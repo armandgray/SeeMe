@@ -37,24 +37,7 @@ func InsertUser(user User) (error) {
 }
 
 func DeleteUser(username string) (int64, error) {
-	db := GetDatabaseInstance()
-  var affect int64
-  qry, err := db.Prepare("DELETE FROM users WHERE username = ?")
-  if err != nil {
-    return affect, err
-  }
-
-  res, err := qry.Exec(username)
-  if err != nil {
-    return affect, err
-  }
-
-  affect, err = res.RowsAffected()
-  if err != nil {
-    return affect, err
-  }
-
-  return affect, err
+	return PostDeleteQuery("DELETE FROM users WHERE username = ?", username)
 }
 
 func UpdateUser(user User) (error) {

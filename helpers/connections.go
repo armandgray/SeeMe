@@ -6,16 +6,21 @@ import (
 )
 
 func VerifyConnection(username string, connection string) (error) {
-	if username == "" || connection == "" || username == connection {
-    return errors.New("Invalid Connection!")
+  userMap, err := db.GetConnectionsMap(connection)
+  if err != nil {
+    return errors.New("Connection Search Error!")
+  }
+  if userMap[username] {
+    return nil
   }
 
-  if _, err := db.GetUser(username); err != nil {
-    return errors.New("User Not Found!")
+  userMap, err = db.GetConnectionsMap(username)
+  if err != nil {
+    return errors.New("Connection Search Error!")
   }
-  if _, err := db.GetUser(connection); err != nil {
-    return errors.New("Requested User Not Found!")
+  if userMap[connection] {
+    return nil
   }
 
-  return nil
+  return errors.New("Connection Not Found")
 }

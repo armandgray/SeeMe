@@ -1,13 +1,13 @@
-package deleteconnection
+package updateconnection
 
 import (
-  "seeme/db"
   "seeme/helpers"
+  "seeme/db"
 
   "net/http"
 )
 
-func DeleteConnectionController(w http.ResponseWriter, r *http.Request) {
+func UpdateConnectionStatusController(w http.ResponseWriter, r *http.Request) {
   username := r.FormValue("username")
   connection := r.FormValue("connection")
   
@@ -15,17 +15,18 @@ func DeleteConnectionController(w http.ResponseWriter, r *http.Request) {
     w.Write([]byte(err.Error()))
     return
   }
+
   if err := helpers.VerifyConnection(username, connection); err != nil {
     w.Write([]byte(err.Error()))
     return
   }
-  affect, err := db.DeleteConnection(username, connection); 
-  if err != nil || affect < 1 {
+
+  if err := db.UpdateConnectionStatus(username, connection); err != nil {
     w.Write([]byte(err.Error()))
     return
   }
 
-  w.Write([]byte("Connection Deleted!"))
+  w.Write([]byte("Connection Confirmed"))
 
 }
 
