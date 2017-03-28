@@ -24,12 +24,12 @@ func GetConnectionsMap(user string) (map[string]bool, error) {
   return GetQueryResultsMap("SELECT connection FROM connections WHERE username = ?", user)
 }
 
-func GetQueryResultsMap(query string, param string) (map[string]bool, error) {
+func GetQueryResultsMap(query string, params ...interface{}) (map[string]bool, error) {
 	db := GetDatabaseInstance()
 	var data string
   dataMap := make(map[string]bool)
 
-	rows, err := db.Query(query, param)
+	rows, err := db.Query(query, params...)
   if err != nil {
     return dataMap, err
   }
