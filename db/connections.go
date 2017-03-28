@@ -44,3 +44,25 @@ func GetConnectionsMap(user string) (map[string]bool, error) {
   return connectionMap, nil
 }
 
+func GetQueryResultsMap(query string) (map[string]bool, error) {
+	var data string
+  dataMap := make(map[string]bool)
+
+	rows, err := db.Query("SELECT connection FROM connections WHERE username = ?", query)
+  if err != nil {
+    return dataMap, err
+  }
+  defer rows.Close()
+  for rows.Next() {
+    if err = rows.Scan(&data); err != nil {
+      return dataMap, err
+    } else {
+      dataMap[data] = true
+    }
+  }
+  if err = rows.Err(); err != nil {
+    return dataMap, err
+  }
+
+  return dataMap, nil
+}
