@@ -29,7 +29,7 @@ public class DiscoverFragmentController implements DiscoverController {
                     Toast.LENGTH_SHORT).show();
             String url = NEW_CONNECTION_URI
                     + "username=" + activeUser.getUsername()
-                    + "connection=" + user.getUsername();
+                    + "&connection=" + user.getUsername();
             sendRequest(url, context);
             listener.onUserClick(user);
         }
