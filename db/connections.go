@@ -1,6 +1,8 @@
 package db
 
-import ("fmt")
+import (
+	"errors"
+)
 
 func InsertNewConnection(username string, connection string) (error) {
 	db := GetDatabaseInstance()
@@ -17,26 +19,24 @@ func UpdateConnectionStatus(username string, connection string, status string) (
 
 func DeleteConnection(username string, connection string) (int64, error) {
 	db := GetDatabaseInstance()
-	fmt.Println("Username: " + username)
-	fmt.Println("Connection: " + connection)
 
   var affect int64
   qry, err := db.Prepare("DELETE FROM connections WHERE username = ? AND connection = ?")
   if err != nil {
-    return affect, err
+    return affect, errors.New("Prepare Update Error!")
   }
 
   res, err := qry.Exec(username, connection)
   if err != nil {
-    return affect, err
+    return affect, errors.New("Update Query Error!")
   }
 
   affect, err = res.RowsAffected()
   if err != nil {
-    return affect, err
+    return affect, errors.New("Internal Update Error!")
   }
 
-  return affect, err
+  return affect, nil
 }
 
 func GetConnectionsMap(user string) (map[string]bool, error) {
