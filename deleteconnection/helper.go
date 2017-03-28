@@ -1,4 +1,4 @@
-package newconnections
+package deleteconnection
 
 import (
   "seeme/db"
@@ -11,7 +11,7 @@ func VerifyNewConnection(username string, connection string) (error) {
     return errors.New("Connection Search Error!")
   }
   if userMap[username] {
-    return errors.New("Connection Already Exists")
+    return nil
   }
 
   userMap, err = db.GetConnectionsMap(username)
@@ -19,8 +19,8 @@ func VerifyNewConnection(username string, connection string) (error) {
     return errors.New("Connection Search Error!")
   }
   if userMap[connection] {
-    return errors.New("Connection Already Exists")
+    return nil
   }
 
-  return nil
+  return errors.New("Connection Not Found")
 }
