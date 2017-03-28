@@ -11,6 +11,7 @@ func ConnectionNetworkController(w http.ResponseWriter, r *http.Request) {
   userMap, err := db.GetNetworkList(r.FormValue("username"))
   if err != nil {
     w.Write([]byte("Network Search Error!"))
+    return
   }
   js, err := json.Marshal(userMap)
   if err != nil {
