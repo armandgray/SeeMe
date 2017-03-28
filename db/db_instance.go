@@ -2,6 +2,7 @@ package db
 
 import (
   "net/http"
+  "errors"
 
 	"database/sql"
   _ "github.com/go-sql-driver/mysql"
@@ -22,6 +23,26 @@ func VerifyMySQLConnection(w http.ResponseWriter, r *http.Request, next http.Han
 
 func GetDatabaseInstance() (*sql.DB) {
 	return db
+}
+
+func PostDeleteQuery(query string, params ...interface{}) (int64, error) {
+  db := GetDatabaseInstance()
+  qry, err := db.Prepare("DELETE FROM connections WHERE username = ? AND connection = ?")
+  if err != nil {
+    return 0, errors.New("Prepare Update Error!")
+  }
+
+  res, err := qry.Exec(params...)
+  if err != nil {
+    return 0, errors.New("Update Query Error!")
+  }
+
+  affect, err := res.RowsAffected()
+  if err != nil {
+    return affect, errors.New("Internal Update Error!")
+  }
+
+  return affect, nil
 }
 
 func GetQueryResultsMap(query string, params ...interface{}) (map[string]bool, error) {
