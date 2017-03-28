@@ -14,10 +14,10 @@ func InsertNewConnection(username string, connection string) (error) {
 	return err
 }
 
-func UpdateConnectionStatus(username string, connection string, status string) (error) {
+func UpdateConnectionStatus(username string, connection string) (error) {
 	db := GetDatabaseInstance()
-	_, err := db.Exec("UPDATE connections SET status = ? WHERE username = ? AND connection = ?",
-												status, username, connection)
+	_, err := db.Exec("UPDATE connections SET status = 'connected' WHERE username = ? AND connection = ?",
+												username, connection)
 	return err
 }
 

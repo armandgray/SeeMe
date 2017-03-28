@@ -2,6 +2,7 @@ package updateconnection
 
 import (
   "seeme/helpers"
+  "seeme/db"
 
   "net/http"
 )
@@ -16,6 +17,11 @@ func UpdateConnectionStatusController(w http.ResponseWriter, r *http.Request) {
   }
 
   if err := helpers.VerifyConnection(username, connection); err != nil {
+    w.Write([]byte(err.Error()))
+    return
+  }
+
+  if err := db.UpdateConnectionStatus(username, connection); err != nil {
     w.Write([]byte(err.Error()))
     return
   }
