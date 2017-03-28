@@ -4,6 +4,10 @@ import (
 	"errors"
 )
 
+func GetConnectionsMap(user string) (map[string]bool, error) {
+  return GetQueryResultsMap("SELECT connection FROM connections WHERE username = ?", user)
+}
+
 func InsertNewConnection(username string, connection string) (error) {
 	db := GetDatabaseInstance()
 	_, err := db.Exec("INSERT INTO connections VALUES (?, ?, 'pending')", username, connection)
@@ -18,22 +22,24 @@ func UpdateConnectionStatus(username string, connection string, status string) (
 }
 
 func DeleteConnection(username string, connection string) (int64, error) {
-  primaryUser := username
-  connectUser := connection
-
-  userMap, err := GetConnectionsMap(connection)
+  primaryUser, connectUser, err := getUserRelationship(username, connection)
   if err != nil {
     return 0, errors.New("Connection Search Error!")
   }
-  if userMap[username] {
-    primaryUser = connection
-    connectUser = username
-  }
-
   return PostDeleteQuery("DELETE FROM connections WHERE username = ? AND connection = ?", 
                               primaryUser, connectUser)
 }
 
-func GetConnectionsMap(user string) (map[string]bool, error) {
-  return GetQueryResultsMap("SELECT connection FROM connections WHERE username = ?", user)
+func getUserRelationship(username string, connection string) (string, string, error) {
+  userMap, err := GetConnectionsMap(connection)
+  if err != nil {
+    return username, connection, err
+  }
+  if userMap[username] {
+    primaryUser := connection
+    connectUser := username
+    return primaryUser, connectUser, nil
+  }
+
+  return username, connection, nil
 }
