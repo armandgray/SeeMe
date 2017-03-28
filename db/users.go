@@ -3,29 +3,15 @@ package db
 import (
 	. "seeme/models"
 
-	"database/sql"
-  _ "github.com/go-sql-driver/mysql"
+  "errors"
 )
 
 func GetUser(username string) (User, error) {
-  db := GetDatabaseInstance()
-  var user User
-  var network sql.NullString
-  var role sql.NullString
-  row := db.QueryRow("select * from users where username = ?", username)
-  err := row.Scan(&user.FirstName, &user.LastName, &role, &user.Username, &user.Secret, &user.Discoverable, &network)
-  if role.Valid {
-    if val, err := role.Value(); err == nil {
-      user.Role = val.(string)
-    }
+  userList, err := GetQueryUserList("SELECT * FROM users WHERE username = ?", username)
+  if err != nil || len(userList) == 0 {
+    return User{}, errors.New("User Not Found")
   }
-  if network.Valid {
-    if val, err := network.Value(); err == nil {
-      user.Network = val.(string)
-    }
-  }
-
-  return user, err
+  return userList[0], nil
 }
 
 func InsertUser(user User) (error) {
