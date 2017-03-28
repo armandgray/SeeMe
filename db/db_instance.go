@@ -1,6 +1,8 @@
 package db
 
 import (
+  . "seeme/models"
+
   "net/http"
   "errors"
 
@@ -43,6 +45,30 @@ func PostDeleteQuery(query string, params ...interface{}) (int64, error) {
   }
 
   return affect, nil
+}
+
+func GetQueryUserList(query string, params ...interface{}) (map[string]bool, error) {
+  db := GetDatabaseInstance()
+  var data string
+  dataMap := make([map[string]bool])
+
+  rows, err := db.Query(query, params...)
+  if err != nil {
+    return dataMap, err
+  }
+  defer rows.Close()
+  for rows.Next() {
+    if err = rows.Scan(&data); err != nil {
+      return dataMap, err
+    } else {
+      dataMap[data] = true
+    }
+  }
+  if err = rows.Err(); err != nil {
+    return dataMap, err
+  }
+
+  return dataMap, nil
 }
 
 func GetQueryResultsMap(query string, params ...interface{}) (map[string]bool, error) {
