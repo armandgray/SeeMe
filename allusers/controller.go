@@ -9,7 +9,7 @@ import (
 )
 
 func AllUsersController(w http.ResponseWriter, r *http.Request) {
-	userList, err := db.GetQueryUserList(r.FormValue("username"))
+	userList, err := db.GetQueryUserList("SELECT * FROM users WHERE discoverable = 1 AND !(network_id = 'NULL')")
 	if err != nil {
 		fmt.Println(err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)

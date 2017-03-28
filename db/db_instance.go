@@ -52,7 +52,7 @@ func GetQueryUserList(query string, params ...interface{}) ([]User, error) {
   var userList []User
   var user User
 
-  rows, err := db.Query("select * from users where discoverable = 1 AND !(network_id = 'NULL')")
+  rows, err := db.Query(query, params...)
   if err != nil {
     return []User{}, err
   }
