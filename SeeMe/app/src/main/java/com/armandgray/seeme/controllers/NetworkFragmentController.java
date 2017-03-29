@@ -26,6 +26,7 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
     private static final String PREPARE_UPDATE_ERROR = "Prepare Update Error!";
     private static final String UPDATE_QUERY_ERROR = "Update Query Error!";
     private static final String INTERNAL_UPDATE_ERROR = "Internal Update Error!";
+    public static final String TAG = "TAG";
 
     private String[] responseArray = {USER_NOT_FOUND, PREPARE_UPDATE_ERROR, CONNECTION_CONFIRMED, CONNECTION_DELETED,
             REQUEST_SENT, UPDATE_QUERY_ERROR, INTERNAL_UPDATE_ERROR};

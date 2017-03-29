@@ -4,9 +4,11 @@ package com.armandgray.seeme.views;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -32,6 +34,7 @@ public class NetworkFragment extends Fragment {
     public static final String NETWORK_CONNECTION_URI = API_URI + "/connection/network?";
     private static final String NO_NETWORK_HEADER = "No Network Found";
     private static final String NO_NETWORK_CONTENT = "New SeeMe Users can build their network using SeeMe Touch. On the Discover screen, press connect on available users to build your network.";
+    public static final String TAG = "NETWORK FRAGMENT";
 
     private RecyclerView rvNetwork;
     private TextView tvNoNetwork;
@@ -44,7 +47,7 @@ public class NetworkFragment extends Fragment {
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.i("BroadcastReceiver: ", "http Broadcast Received");
+            Log.i(TAG, "http Broadcast Received");
             Parcelable[] arrayExtra = intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_JSON_PAYLOAD);
             networkArray = (User[]) arrayExtra;
             toggleShowNetwork();
@@ -98,6 +101,16 @@ public class NetworkFragment extends Fragment {
     public void onResume() {
         super.onResume();
         controller.sendNetworkRequest();
+        LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
+                .registerReceiver(httpBroadcastReceiver,
+                        new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
+                .unregisterReceiver(httpBroadcastReceiver);
     }
 
     public interface NetworkController {
