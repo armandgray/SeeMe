@@ -5,46 +5,37 @@ import android.os.Parcelable;
 import android.widget.Toast;
 
 import com.armandgray.seeme.models.User;
-import com.armandgray.seeme.views.DiscoverFragment.*;
+import com.armandgray.seeme.views.NetworkFragment;
 
 import java.util.Arrays;
 
 import static com.armandgray.seeme.network.HttpHelper.sendRequest;
-import static com.armandgray.seeme.views.DiscoverFragment.NEW_CONNECTION_URI;
+import static com.armandgray.seeme.views.NetworkFragment.NETWORK_CONNECTION_URI;
 
-public class DiscoverFragmentController implements DiscoverController {
+public class NetworkFragmentController implements NetworkFragment.NetworkController {
 
-    private static final String TAG = "DISCOVER_CONTROLLER";
     private static final String USER_NOT_FOUND = "User Not Found!";
     private static final String CONNECTION_CONFIRMED = "Connection Confirmed";
     private static final String CONNECTION_DELETED = "Connection Deleted!";
     private static final String REQUEST_SENT = "Request Sent";
-    public static final String PREPARE_UPDATE_ERROR = "Prepare Update Error!";
-    public static final String UPDATE_QUERY_ERROR = "Update Query Error!";
-    public static final String INTERNAL_UPDATE_ERROR = "Internal Update Error!";
+    private static final String PREPARE_UPDATE_ERROR = "Prepare Update Error!";
+    private static final String UPDATE_QUERY_ERROR = "Update Query Error!";
+    private static final String INTERNAL_UPDATE_ERROR = "Internal Update Error!";
 
     private String[] responseArray = {USER_NOT_FOUND, PREPARE_UPDATE_ERROR, CONNECTION_CONFIRMED, CONNECTION_DELETED,
             REQUEST_SENT, UPDATE_QUERY_ERROR, INTERNAL_UPDATE_ERROR};
-
     private Context context;
-    private DiscoverClickListener listener;
     private User activeUser;
 
-    public DiscoverFragmentController(Context context, DiscoverClickListener listener, User activeUser) {
+    public NetworkFragmentController(Context context, User activeUser) {
         this.context = context;
-        this.listener = listener;
         this.activeUser = activeUser;
     }
 
     @Override
-    public void onRecyclerItemClick(User user) {
-        if (user != null) {
-            String url = NEW_CONNECTION_URI
-                    + "username=" + activeUser.getUsername()
-                    + "&connection=" + user.getUsername();
-            sendRequest(url, context);
-            listener.onUserClick(user);
-        }
+    public void sendNetworkRequest() {
+        String url = NETWORK_CONNECTION_URI + "username=" + activeUser.getUsername();
+        sendRequest(url, context);
     }
 
     @Override
