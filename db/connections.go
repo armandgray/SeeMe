@@ -11,19 +11,8 @@ func GetConnectionsMap(user string) (map[string]bool, error) {
 }
 
 func GetNetworkList(user string) ([]User, error) {
-  query := "SELECT users.* FROM connections JOIN users ON users.username = connections.connection WHERE connections.username = ?"  
-  connectionList, err := GetQueryUserList(query, user)
-  if err != nil {
-    return []User{}, err
-  }
-
-  query = "SELECT users.* FROM connections JOIN users ON users.username = connections.username WHERE connections.connection = ?"
-  userList, err := GetQueryUserList(query, user)
-  if err != nil {
-    return []User{}, err
-  }
-
-  return append(connectionList, userList...), nil
+  query := "SELECT first_name, last_name, role, users.username, secret, discoverable, ssid, connections.status FROM users LEFT JOIN networks USING (network_id) INNER JOIN connections ON users.username = connections.connection AND connections.username = ? OR users.username = connections.username AND connections.connection = ?"
+  return GetQueryUserList(query, 8, user, user)
 }
 
 func InsertNewConnection(username string, connection string) (error) {
@@ -34,8 +23,12 @@ func InsertNewConnection(username string, connection string) (error) {
 
 func UpdateConnectionStatus(username string, connection string) (error) {
 	db := GetDatabaseInstance()
-	_, err := db.Exec("UPDATE connections SET status = 'connected' WHERE username = ? AND connection = ?",
-												connection, username)
+  primaryUser, connectUser, err := getUserRelationship(username, connection)
+  if err != nil {
+    return err
+  }
+	_, err = db.Exec("UPDATE connections SET status = 'connected' WHERE username = ? AND connection = ?",
+												primaryUser, connectUser)
 	return err
 }
 
