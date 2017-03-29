@@ -7,7 +7,7 @@ import (
 )
 
 func GetUser(username string) (User, error) {
-  userList, err := GetQueryUserList("SELECT * FROM users WHERE username = ?", username)
+  userList, err := GetQueryUserList("SELECT * FROM users WHERE username = ?", 7, username)
   if err != nil || len(userList) == 0 {
     return User{}, errors.New("User Not Found")
   }

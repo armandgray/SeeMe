@@ -47,12 +47,13 @@ func PostDeleteQuery(query string, params ...interface{}) (int64, error) {
   return affect, nil
 }
 
-func GetQueryUserList(query string, params ...interface{}) ([]User, error) {
+func GetQueryUserList(query string, cols int, params ...interface{}) ([]User, error) {
   db := GetDatabaseInstance()
   var userList []User
   var user User
   var network sql.NullString
   var role sql.NullString
+  var status sql.NullString
 
   rows, err := db.Query(query, params...)
   if err != nil {
@@ -60,23 +61,37 @@ func GetQueryUserList(query string, params ...interface{}) ([]User, error) {
   }
   defer rows.Close()
   for rows.Next() {
-    if err = rows.Scan(&user.FirstName, &user.LastName, &role, &user.Username, 
-                        &user.Secret, &user.Discoverable, &network); err != nil {
-      return []User{}, err
+    if cols == 8 {
+      if err = rows.Scan(&user.FirstName, &user.LastName, &role, &user.Username, 
+                          &user.Secret, &user.Discoverable, &network, &status); err != nil {
+        return []User{}, err
+      }
     } else {
-      if role.Valid {
-        if val, err := role.Value(); err == nil {
-          user.Role = val.(string)
-        }
+      if err = rows.Scan(&user.FirstName, &user.LastName, &role, &user.Username, 
+                          &user.Secret, &user.Discoverable, &network); err != nil {
+        return []User{}, err
       }
-      if network.Valid {
-        if val, err := network.Value(); err == nil {
-          user.Network = val.(string)
-        }
-      }
-      userList = append(userList, user)
     }
+
+    if role.Valid {
+      if val, err := role.Value(); err == nil {
+        user.Role = val.(string)
+      }
+    }
+    if network.Valid {
+      if val, err := network.Value(); err == nil {
+        user.Network = val.(string)
+      }
+    }
+    user.Status = "unknown"
+    if status.Valid {
+      if val, err := status.Value(); err == nil {
+        user.Status = val.(string)
+      } 
+    }
+    userList = append(userList, user)
   }
+
   if err = rows.Err(); err != nil {
     return []User{}, err
   }
