@@ -2,6 +2,7 @@ package com.armandgray.seeme;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -76,9 +77,22 @@ public class MainActivity extends AppCompatActivity
         viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), activeUser));
         viewPager.setCurrentItem(2);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            private int oldPosition = 2;
+
             @Override
-            public void onPageSelected(int position) {
-                navbar.onPageChange(position);
+            public void onPageSelected(int newPosition) {
+                navbar.onPageChange(newPosition);
+                Fragment oldFragment = getActiveFragment(oldPosition);
+                Fragment newFragment = getActiveFragment(newPosition);
+                oldFragment.setUserVisibleHint(false);
+                oldFragment.onPause();
+                newFragment.setUserVisibleHint(true);
+                newFragment.onResume();
+                oldPosition = newPosition;
+            }
+
+            private Fragment getActiveFragment(int newPosition) {
+                return getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewPager + ":" + newPosition);
             }
 
             @Override
