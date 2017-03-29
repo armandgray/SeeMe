@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity
         activeUser = getIntent().getParcelableExtra(LOGIN_PAYLOAD);
         if (activeUser == null) {
 //            startActivity(new Intent(this, LoginActivity.class));
-            activeUser = new User("Armand", "Gray", "Creator", "armandgray@gmail.com", "1234567890", true, "");
+            activeUser = new User("Armand", "Gray", "Creator", "armandgray@gmail.com", "1234567890", true, "", "");
         } else {
             Toast.makeText(this, "Welcome Back " + activeUser.getFirstName(), Toast.LENGTH_SHORT).show();
         }
