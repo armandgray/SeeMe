@@ -50,6 +50,8 @@ public class NetworkFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             Log.i("BroadcastReceiver: ", "http Broadcast Received");
             Parcelable[] arrayExtra = intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_JSON_PAYLOAD);
+            networkArray = (User[]) arrayExtra;
+            toggleShowNetwork();
             controller.handleHttpResponse(
                     intent.getStringExtra(HttpService.HTTP_SERVICE_STRING_PAYLOAD), arrayExtra);
         }
