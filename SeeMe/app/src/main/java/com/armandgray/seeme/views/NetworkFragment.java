@@ -40,8 +40,10 @@ public class NetworkFragment extends Fragment {
     private RecyclerView rvNetwork;
     private TextView tvNoNetwork;
     private LinearLayout networkContainer;
+
     private User[] networkArray;
     private User activeUser;
+    private NetworkController controller;
 
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -103,5 +105,11 @@ public class NetworkFragment extends Fragment {
         super.onResume();
         String url = NETWORK_CONNECTION_URI + "username=" + activeUser.getUsername();
         sendRequest(url, getContext());
+        controller.sendNetworkRequest();
+    }
+
+    public interface NetworkController {
+        void sendNetworkRequest();
+        void handleHttpResponse(String response, Parcelable[] arrayExtra);
     }
 }
