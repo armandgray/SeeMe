@@ -161,8 +161,7 @@ public class DiscoverFragment extends Fragment {
             LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
                     .registerReceiver(httpBroadcastReceiver,
                             new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
-            MainActivity activity = (MainActivity) getActivity();
-            userArray = activity.getDiscoverArray();
+            userArray = ((MainActivity) getActivity()).getDiscoverArray();
             if (userArray != null && userArray.length != 0) {
                 controller.setupRvUsers(rvUsers, userArray);
             }
