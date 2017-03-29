@@ -81,7 +81,7 @@ public class NetworkFragment extends Fragment {
         tvNoNetwork = (TextView) rootView.findViewById(R.id.tvNoNetwork);
         networkContainer = (LinearLayout) rootView.findViewById(R.id.networkContainer);
         activeUser = getArguments().getParcelable(ACTIVE_USER);
-        controller = new NetworkFragmentController(getContext(), activeUser);
+        controller = new NetworkFragmentController(getActivity(), activeUser);
     }
 
     private void toggleShowNetwork() {
@@ -104,5 +104,6 @@ public class NetworkFragment extends Fragment {
         void sendNetworkRequest();
         void handleHttpResponse(String response, Parcelable[] arrayExtra);
         void setupRvUsers(RecyclerView rvUsers, final User[] userArray);
+        void onRecyclerItemClick(User user);
     }
 }

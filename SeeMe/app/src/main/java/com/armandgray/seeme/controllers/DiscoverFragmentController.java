@@ -44,17 +44,6 @@ public class DiscoverFragmentController implements DiscoverController {
     }
 
     @Override
-    public void onRecyclerItemClick(User user) {
-        if (user != null) {
-            String url = NEW_CONNECTION_URI
-                    + "username=" + activeUser.getUsername()
-                    + "&connection=" + user.getUsername();
-            sendRequest(url, activity);
-            listener.onUserClick(user);
-        }
-    }
-
-    @Override
     public void handleHttpResponse(String response, Parcelable[] arrayExtra, RecyclerView rvUsers) {
         if (response != null && !response.equals("") && Arrays.asList(responseArray).contains(response)) {
             Toast.makeText(activity, response, Toast.LENGTH_SHORT).show();
@@ -79,5 +68,16 @@ public class DiscoverFragmentController implements DiscoverController {
                         }
                     }
                 }));
+    }
+
+    @Override
+    public void onRecyclerItemClick(User user) {
+        if (user != null) {
+            String url = NEW_CONNECTION_URI
+                    + "username=" + activeUser.getUsername()
+                    + "&connection=" + user.getUsername();
+            sendRequest(url, activity);
+            listener.onUserClick(user);
+        }
     }
 }

@@ -59,9 +59,16 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
                     @Override
                     public void onItemClick(View view, int position) {
                         if (networkArray.length >= position) {
-
+                            onRecyclerItemClick(networkArray[position]);
                         }
                     }
                 }));
+    }
+
+    @Override
+    public void onRecyclerItemClick(User user) {
+        if (user != null) {
+            Toast.makeText(activity, user.getUsername() + " Click", Toast.LENGTH_SHORT).show();
+        }
     }
 }
