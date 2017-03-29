@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -61,12 +62,10 @@ public class DiscoverFragment extends Fragment {
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.e("BroadcastReceiver: ", "http Broadcast Received");
-            userArray = (User[]) intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_JSON_PAYLOAD);
-            if (userArray != null && userArray.length != 0) {
-                setupRvUsers(Arrays.asList(userArray));
-            }
-            toggleShowUsers();
+            Log.i("BroadcastReceiver: ", "http Broadcast Received");
+            Parcelable[] arrayExtra = intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_JSON_PAYLOAD);
+            controller.handleHttpResponse(
+                    intent.getStringExtra(HttpService.HTTP_SERVICE_STRING_PAYLOAD), arrayExtra);
         }
     };
 
@@ -188,6 +187,7 @@ public class DiscoverFragment extends Fragment {
 
     public interface DiscoverController {
         void onRecyclerItemClick(User user);
+        void handleHttpResponse(String stringExtra, Parcelable[] arrayExtra);
     }
 
 }
