@@ -12,31 +12,8 @@ func GetLocalUsersForNetwork(w http.ResponseWriter, r *http.Request) ([]models.U
     var userList []models.User
     return userList, err
   }
-  return getExistingUsersForNetwork(w, r), nil
-}
-
-func getExistingUsersForNetwork(w http.ResponseWriter, r *http.Request) ([]models.User) {
-  db := db.GetDatabaseInstance()
-  var userList []models.User
-  var user models.User
-
-  rows, err := db.Query("SELECT first_name, last_name, role, username, secret, discoverable, ssid FROM users INNER JOIN networks USING (network_id) WHERE discoverable = ? AND network_id=? AND !(username = ?)", 
-    1, r.FormValue("networkId"), r.FormValue("username"))
-  if err != nil {
-    http.Error(w, err.Error(), http.StatusInternalServerError)
-  }
-  defer rows.Close()
-  for rows.Next() {
-    if err = rows.Scan(&user.FirstName, &user.LastName, &user.Role, &user.Username, 
-                        &user.Secret, &user.Discoverable, &user.Network); err != nil {
-      http.Error(w, err.Error(), http.StatusInternalServerError)
-    } else {
-      userList = append(userList, user)
-    }
-  }
-  if err = rows.Err(); err != nil {
-    http.Error(w, err.Error(), http.StatusInternalServerError)
-  }
-
-  return userList
+  username := r.FormValue("username")
+  network := r.FormValue("networkId")
+  query := "SELECT first_name, last_name, role, users.username, secret, discoverable, ssid, connections.status FROM users INNER JOIN networks USING (network_id) LEFT JOIN connections ON users.username = connections.connection AND connections.username = ? OR users.username = connections.username AND connections.connection = ? WHERE discoverable = 1 AND network_id=? AND !(users.username = ?)"
+  return db.GetQueryUserList(query, 8, username, username, network, username)
 }
