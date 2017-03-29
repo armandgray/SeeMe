@@ -4,10 +4,11 @@ package com.armandgray.seeme.views;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,9 +21,6 @@ import com.armandgray.seeme.R;
 import com.armandgray.seeme.controllers.NetworkFragmentController;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.services.HttpService;
-import com.armandgray.seeme.utils.UserRVAdapter;
-
-import java.util.List;
 
 import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
 import static com.armandgray.seeme.MainActivity.API_URI;
@@ -36,6 +34,7 @@ public class NetworkFragment extends Fragment {
     public static final String NETWORK_CONNECTION_URI = API_URI + "/connection/network?";
     private static final String NO_NETWORK_HEADER = "No Network Found";
     private static final String NO_NETWORK_CONTENT = "New SeeMe Users can build their network using SeeMe Touch. On the Discover screen, press connect on available users to build your network.";
+    public static final String TAG = "NETWORK FRAGMENT";
 
     private RecyclerView rvNetwork;
     private TextView tvNoNetwork;
@@ -48,10 +47,12 @@ public class NetworkFragment extends Fragment {
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.i("BroadcastReceiver: ", "http Broadcast Received");
+            Log.i(TAG, "http Broadcast Received");
             Parcelable[] arrayExtra = intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_JSON_PAYLOAD);
+            networkArray = (User[]) arrayExtra;
+            toggleShowNetwork();
             controller.handleHttpResponse(
-                    intent.getStringExtra(HttpService.HTTP_SERVICE_STRING_PAYLOAD), arrayExtra);
+                    intent.getStringExtra(HttpService.HTTP_SERVICE_STRING_PAYLOAD), arrayExtra, rvNetwork);
         }
     };
 
@@ -83,7 +84,7 @@ public class NetworkFragment extends Fragment {
         tvNoNetwork = (TextView) rootView.findViewById(R.id.tvNoNetwork);
         networkContainer = (LinearLayout) rootView.findViewById(R.id.networkContainer);
         activeUser = getArguments().getParcelable(ACTIVE_USER);
-        controller = new NetworkFragmentController(getContext(), activeUser);
+        controller = new NetworkFragmentController(getActivity(), activeUser);
     }
 
     private void toggleShowNetwork() {
@@ -96,19 +97,30 @@ public class NetworkFragment extends Fragment {
         networkContainer.setVisibility(View.VISIBLE);
     }
 
-    private void setupRvNetwork(List<User> list) {
-        rvNetwork.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        rvNetwork.setAdapter(new UserRVAdapter(getActivity(), list));
-    }
-
     @Override
     public void onResume() {
         super.onResume();
-        controller.sendNetworkRequest();
+        if (getUserVisibleHint()) {
+            controller.sendNetworkRequest();
+            LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
+                    .registerReceiver(httpBroadcastReceiver,
+                            new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
+        }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        if (!getUserVisibleHint()) {
+            LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
+                    .unregisterReceiver(httpBroadcastReceiver);
+        }
     }
 
     public interface NetworkController {
         void sendNetworkRequest();
-        void handleHttpResponse(String response, Parcelable[] arrayExtra);
+        void handleHttpResponse(String response, Parcelable[] arrayExtra, RecyclerView rvNetwork);
+        void setupRvNetwork(RecyclerView rvNetwork, final User[] userArray);
+        void onRecyclerItemClick(User user);
     }
 }

@@ -2,6 +2,7 @@ package com.armandgray.seeme;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity
     private User activeUser;
     private ViewPager viewPager;
     private NavBarFragment navbar;
+    private User[] discoverArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,7 +59,7 @@ public class MainActivity extends AppCompatActivity
         activeUser = getIntent().getParcelableExtra(LOGIN_PAYLOAD);
         if (activeUser == null) {
 //            startActivity(new Intent(this, LoginActivity.class));
-            activeUser = new User("Armand", "Gray", "Creator", "armandgray@gmail.com", "1234567890", true, "");
+            activeUser = new User("Armand", "Gray", "Creator", "armandgray@gmail.com", "1234567890", true, "", "");
         } else {
             Toast.makeText(this, "Welcome Back " + activeUser.getFirstName(), Toast.LENGTH_SHORT).show();
         }
@@ -76,9 +78,22 @@ public class MainActivity extends AppCompatActivity
         viewPager.setAdapter(new ViewPagerAdapter(getSupportFragmentManager(), activeUser));
         viewPager.setCurrentItem(2);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            private int oldPosition = 2;
+
             @Override
-            public void onPageSelected(int position) {
-                navbar.onPageChange(position);
+            public void onPageSelected(int newPosition) {
+                navbar.onPageChange(newPosition);
+                Fragment oldFragment = getActiveFragment(oldPosition);
+                Fragment newFragment = getActiveFragment(newPosition);
+                oldFragment.setUserVisibleHint(false);
+                oldFragment.onPause();
+                newFragment.setUserVisibleHint(true);
+                newFragment.onResume();
+                oldPosition = newPosition;
+            }
+
+            private Fragment getActiveFragment(int newPosition) {
+                return getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.viewPager + ":" + newPosition);
             }
 
             @Override
@@ -96,6 +111,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onUserClick(User user) {
         viewPager.setCurrentItem(1);
+    }
+
+    @Override
+    public void onUserArrayUpdate(User[] userArray) {
+        discoverArray = userArray;
     }
 
     @Override
@@ -170,5 +190,9 @@ public class MainActivity extends AppCompatActivity
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    public User[] getDiscoverArray() {
+        return discoverArray;
     }
 }

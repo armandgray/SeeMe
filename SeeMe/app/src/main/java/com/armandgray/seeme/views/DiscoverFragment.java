@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -19,19 +18,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.armandgray.seeme.MainActivity;
 import com.armandgray.seeme.R;
 import com.armandgray.seeme.controllers.DiscoverFragmentController;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.services.HttpService;
-import com.armandgray.seeme.utils.RecyclerItemClickListener;
-import com.armandgray.seeme.utils.UserRVAdapter;
-
-import java.util.Arrays;
-import java.util.List;
 
 import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
 import static com.armandgray.seeme.MainActivity.API_URI;
+import static com.armandgray.seeme.network.HttpHelper.sendRequest;
 import static com.armandgray.seeme.utils.StringHelper.getBoldStringBuilder;
+import static com.armandgray.seeme.views.SeeMeFragment.LOCAL_USERS_URI;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -61,10 +58,12 @@ public class DiscoverFragment extends Fragment {
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.i("BroadcastReceiver: ", "http Broadcast Received");
+            Log.i(TAG, "http Broadcast Received");
             Parcelable[] arrayExtra = intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_JSON_PAYLOAD);
+            userArray = (User[]) arrayExtra;
+            toggleShowUsers();
             controller.handleHttpResponse(
-                    intent.getStringExtra(HttpService.HTTP_SERVICE_STRING_PAYLOAD), arrayExtra);
+                    intent.getStringExtra(HttpService.HTTP_SERVICE_STRING_PAYLOAD), arrayExtra, rvUsers);
         }
     };
 
@@ -112,7 +111,7 @@ public class DiscoverFragment extends Fragment {
         noUsersContainer = (LinearLayout) rootView.findViewById(R.id.noUsersContainer);
         usersContainer = (LinearLayout) rootView.findViewById(R.id.usersContainer);
         activeUser = getArguments().getParcelable(ACTIVE_USER);
-        controller = new DiscoverFragmentController(getContext(), discoverClickListener, activeUser);
+        controller = new DiscoverFragmentController(getActivity(), discoverClickListener, activeUser);
     }
 
     private void toggleShowUsers() {
@@ -134,32 +133,23 @@ public class DiscoverFragment extends Fragment {
         });
     }
 
-    private void setupRvUsers(List<User> list) {
-        rvUsers.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        rvUsers.setAdapter(new UserRVAdapter(getActivity(), list));
-        rvUsers.addOnItemTouchListener(new RecyclerItemClickListener(getContext(),
-                new RecyclerItemClickListener.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(View view, int position) {
-                        if (userArray != null && userArray.length >= position) {
-                            controller.onRecyclerItemClick(userArray[position]);
-                        }
-                    }
-                }));
-    }
-
     private void setupDummyUsers() {
         tvNoUsers.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                userArray = new User[5];
-                userArray[0] = new User("Armand", "Gray", "Creator", "danimeza@gmail.com", "1234567890", true, "");
-                userArray[1] = new User("Michael", "Mei", "Unemployed", "test@gmail.com", "1234567890", true, "");
-                userArray[2] = new User("Dylan", "Goodman", "Contract Reader", "genius@gmail.com", "1234567890", true, "");
-                userArray[3] = new User("Amazing", "Gray", "Creator", "amazing@gmail.com", "1234567890", true, "");
-                userArray[4] = new User("Blue", "Gray", "Creator", "blue@gmail.com", "1234567890", true, "");
-                setupRvUsers(Arrays.asList(userArray));
-                toggleShowUsers();
+                String url = LOCAL_USERS_URI
+                        + "5c:b0:66:e8:d4:1b"
+                        + "&ssid=thetown"
+                        + "&username=" + activeUser.getUsername();
+                sendRequest(url, getContext());
+//                userArray = new User[5];
+//                userArray[0] = new User("Armand", "Gray", "Creator", "danimeza@gmail.com", "1234567890", true, "");
+//                userArray[1] = new User("Michael", "Mei", "Unemployed", "test@gmail.com", "1234567890", true, "");
+//                userArray[2] = new User("Dylan", "Goodman", "Contract Reader", "genius@gmail.com", "1234567890", true, "");
+//                userArray[3] = new User("Amazing", "Gray", "Creator", "amazing@gmail.com", "1234567890", true, "");
+//                userArray[4] = new User("Blue", "Gray", "Creator", "blue@gmail.com", "1234567890", true, "");
+//                setupRvUsers(Arrays.asList(userArray));
+//                toggleShowUsers();
             }
         });
     }
@@ -167,26 +157,37 @@ public class DiscoverFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
-                .registerReceiver(httpBroadcastReceiver,
-                        new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
+        if (getUserVisibleHint()) {
+            LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
+                    .registerReceiver(httpBroadcastReceiver,
+                            new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
+            userArray = ((MainActivity) getActivity()).getDiscoverArray();
+            if (userArray != null && userArray.length != 0) {
+                controller.setupRvUsers(rvUsers, userArray);
+            }
+            toggleShowUsers();
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
-                .unregisterReceiver(httpBroadcastReceiver);
+        if (!getUserVisibleHint()) {
+            LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
+                    .unregisterReceiver(httpBroadcastReceiver);
+        }
     }
 
     public interface DiscoverClickListener {
         void onTouchCycle();
         void onUserClick(User user);
+        void onUserArrayUpdate(User[] arrayExtra);
     }
 
     public interface DiscoverController {
         void onRecyclerItemClick(User user);
-        void handleHttpResponse(String stringExtra, Parcelable[] arrayExtra);
+        void handleHttpResponse(String stringExtra, Parcelable[] arrayExtra, RecyclerView rvUsers);
+        void setupRvUsers(RecyclerView rvUsers, final User[] userArray);
     }
 
 }

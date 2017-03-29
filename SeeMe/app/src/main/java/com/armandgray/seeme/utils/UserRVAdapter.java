@@ -16,6 +16,9 @@ import java.util.List;
 public class UserRVAdapter extends
         RecyclerView.Adapter<UserRVAdapter.ViewHolder> {
 
+    public static final String UNKNOWN = "unknown";
+    public static final String CONNECTED = "connected";
+    public static final String PENDING = "pending";
     Activity activity;
     List<User> listUsers;
 
@@ -37,9 +40,21 @@ public class UserRVAdapter extends
         ImageView ivUserProfile = viewHolder.ivUserProfile;
         TextView tvUserName = viewHolder.tvUserName;
         TextView tvRole = viewHolder.tvRole;
+        ImageView ivStatus = viewHolder.ivStatus;
 
         tvUserName.setText(user.getFirstName() + " " + user.getLastName());
         tvRole.setText("Work: " + user.getOccupation());
+
+        switch (user.getStatus()) {
+            case PENDING:
+                ivStatus.setImageResource(R.drawable.ic_account_convert_white_48dp);
+                return;
+            case CONNECTED:
+                ivStatus.setImageResource(R.drawable.ic_account_check_white_48dp);
+                return;
+            case UNKNOWN:
+                ivStatus.setImageResource(R.drawable.ic_account_plus_white_48dp);
+        }
     }
 
     @Override
@@ -51,12 +66,14 @@ public class UserRVAdapter extends
         ImageView ivUserProfile;
         TextView tvUserName;
         TextView tvRole;
+        ImageView ivStatus;
 
         ViewHolder(View itemView) {
             super(itemView);
             ivUserProfile = (ImageView) itemView.findViewById(R.id.ivUserProfile);
             tvUserName = (TextView) itemView.findViewById(R.id.tvFullName);
             tvRole = (TextView) itemView.findViewById(R.id.tvOccupation);
+            ivStatus = (ImageView) itemView.findViewById(R.id.ivStatus);
         }
 
     }
