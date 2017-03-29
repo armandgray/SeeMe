@@ -23,8 +23,12 @@ func InsertNewConnection(username string, connection string) (error) {
 
 func UpdateConnectionStatus(username string, connection string) (error) {
 	db := GetDatabaseInstance()
-	_, err := db.Exec("UPDATE connections SET status = 'connected' WHERE username = ? AND connection = ?",
-												connection, username)
+  primaryUser, connectUser, err := getUserRelationship(username, connection)
+  if err != nil {
+    return err
+  }
+	_, err = db.Exec("UPDATE connections SET status = 'connected' WHERE username = ? AND connection = ?",
+												primaryUser, connectUser)
 	return err
 }
 
