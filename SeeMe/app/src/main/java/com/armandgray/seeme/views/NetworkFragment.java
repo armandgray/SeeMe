@@ -49,7 +49,7 @@ public class NetworkFragment extends Fragment {
             networkArray = (User[]) arrayExtra;
             toggleShowNetwork();
             controller.handleHttpResponse(
-                    intent.getStringExtra(HttpService.HTTP_SERVICE_STRING_PAYLOAD), arrayExtra);
+                    intent.getStringExtra(HttpService.HTTP_SERVICE_STRING_PAYLOAD), arrayExtra, rvNetwork);
         }
     };
 
@@ -102,8 +102,8 @@ public class NetworkFragment extends Fragment {
 
     public interface NetworkController {
         void sendNetworkRequest();
-        void handleHttpResponse(String response, Parcelable[] arrayExtra);
-        void setupRvUsers(RecyclerView rvUsers, final User[] userArray);
+        void handleHttpResponse(String response, Parcelable[] arrayExtra, RecyclerView rvNetwork);
+        void setupRvNetwork(RecyclerView rvNetwork, final User[] userArray);
         void onRecyclerItemClick(User user);
     }
 }

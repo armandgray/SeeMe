@@ -44,17 +44,19 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
     }
 
     @Override
-    public void handleHttpResponse(String response, Parcelable[] arrayExtra) {
+    public void handleHttpResponse(String response, Parcelable[] arrayExtra, RecyclerView rvNetwork) {
         if (response != null && !response.equals("") && Arrays.asList(responseArray).contains(response)) {
             Toast.makeText(activity, response, Toast.LENGTH_SHORT).show();
+        } else if (arrayExtra != null && arrayExtra.length != 0) {
+            setupRvNetwork(rvNetwork, (User[]) arrayExtra);
         }
     }
 
     @Override
-    public void setupRvUsers(RecyclerView rvUsers, final User[] networkArray) {
-        rvUsers.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
-        rvUsers.setAdapter(new UserRVAdapter(activity, Arrays.asList(networkArray)));
-        rvUsers.addOnItemTouchListener(new RecyclerItemClickListener(activity,
+    public void setupRvNetwork(RecyclerView rvNetwork, final User[] networkArray) {
+        rvNetwork.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
+        rvNetwork.setAdapter(new UserRVAdapter(activity, Arrays.asList(networkArray)));
+        rvNetwork.addOnItemTouchListener(new RecyclerItemClickListener(activity,
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
