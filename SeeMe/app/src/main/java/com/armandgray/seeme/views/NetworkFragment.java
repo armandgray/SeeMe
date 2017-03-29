@@ -1,10 +1,15 @@
 package com.armandgray.seeme.views;
 
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +18,7 @@ import android.widget.TextView;
 
 import com.armandgray.seeme.R;
 import com.armandgray.seeme.models.User;
+import com.armandgray.seeme.services.HttpService;
 import com.armandgray.seeme.utils.UserRVAdapter;
 
 import java.util.List;
@@ -36,6 +42,16 @@ public class NetworkFragment extends Fragment {
     private LinearLayout networkContainer;
     private User[] networkArray;
     private User activeUser;
+
+    private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.i("BroadcastReceiver: ", "http Broadcast Received");
+            Parcelable[] arrayExtra = intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_JSON_PAYLOAD);
+            controller.handleHttpResponse(
+                    intent.getStringExtra(HttpService.HTTP_SERVICE_STRING_PAYLOAD), arrayExtra);
+        }
+    };
 
     public NetworkFragment() {}
 
