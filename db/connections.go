@@ -11,13 +11,13 @@ func GetConnectionsMap(user string) (map[string]bool, error) {
 }
 
 func GetNetworkList(user string) ([]User, error) {
-  query := "SELECT users.* FROM connections JOIN users ON users.username = connections.connection WHERE connections.username = ?"  
+  query := "SELECT users.*, connections.status FROM connections JOIN users ON users.username = connections.connection WHERE connections.username = ?"  
   connectionList, err := GetQueryUserList(query, user)
   if err != nil {
     return []User{}, err
   }
 
-  query = "SELECT users.* FROM connections JOIN users ON users.username = connections.username WHERE connections.connection = ?"
+  query = "SELECT users.*, connections.status FROM connections JOIN users ON users.username = connections.username WHERE connections.connection = ?"
   userList, err := GetQueryUserList(query, user)
   if err != nil {
     return []User{}, err
