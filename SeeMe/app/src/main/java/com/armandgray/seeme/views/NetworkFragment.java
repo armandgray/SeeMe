@@ -100,17 +100,21 @@ public class NetworkFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        controller.sendNetworkRequest();
-        LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
-                .registerReceiver(httpBroadcastReceiver,
-                        new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
+        if (getUserVisibleHint()) {
+            controller.sendNetworkRequest();
+            LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
+                    .registerReceiver(httpBroadcastReceiver,
+                            new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
-                .unregisterReceiver(httpBroadcastReceiver);
+        if (!getUserVisibleHint()) {
+            LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
+                    .unregisterReceiver(httpBroadcastReceiver);
+        }
     }
 
     public interface NetworkController {
