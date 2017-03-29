@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.armandgray.seeme.R;
+import com.armandgray.seeme.controllers.NetworkFragmentController;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.services.HttpService;
 import com.armandgray.seeme.utils.UserRVAdapter;
@@ -82,6 +83,7 @@ public class NetworkFragment extends Fragment {
         tvNoNetwork = (TextView) rootView.findViewById(R.id.tvNoNetwork);
         networkContainer = (LinearLayout) rootView.findViewById(R.id.networkContainer);
         activeUser = getArguments().getParcelable(ACTIVE_USER);
+        controller = new NetworkFragmentController(getContext(), activeUser);
     }
 
     private void toggleShowNetwork() {
