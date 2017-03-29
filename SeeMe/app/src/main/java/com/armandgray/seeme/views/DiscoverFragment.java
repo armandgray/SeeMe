@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -29,12 +30,17 @@ import java.util.Arrays;
 import java.util.List;
 
 import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
+import static com.armandgray.seeme.MainActivity.API_URI;
 import static com.armandgray.seeme.utils.StringHelper.getBoldStringBuilder;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class DiscoverFragment extends Fragment {
+
+    public static final String UPDATE_CONNECTION_URI = API_URI + "/connection/update-status?";
+    public static final String NEW_CONNECTION_URI = API_URI + "/connection/new?";
+    public static final String DELETE_CONNECTION_URI = API_URI + "/connection/delete?";
 
     private static final String TAG = "DISCOVER_FRAGMENT";
     private static final String NO_USERS_HEADER = "No Current Available Users";
@@ -47,6 +53,7 @@ public class DiscoverFragment extends Fragment {
 
     private RecyclerView rvUsers;
     private User[] userArray;
+    private User activeUser;
 
     private DiscoverClickListener discoverClickListener;
     private DiscoverFragmentController controller;
@@ -54,12 +61,10 @@ public class DiscoverFragment extends Fragment {
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.e("BroadcastReceiver: ", "http Broadcast Received");
-            userArray = (User[]) intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_JSON_PAYLOAD);
-            if (userArray != null && userArray.length != 0) {
-                setupRvUsers(Arrays.asList(userArray));
-            }
-            toggleShowUsers();
+            Log.i("BroadcastReceiver: ", "http Broadcast Received");
+            Parcelable[] arrayExtra = intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_JSON_PAYLOAD);
+            controller.handleHttpResponse(
+                    intent.getStringExtra(HttpService.HTTP_SERVICE_STRING_PAYLOAD), arrayExtra);
         }
     };
 
@@ -106,7 +111,8 @@ public class DiscoverFragment extends Fragment {
         ivCycle = (ImageView) rootView.findViewById(R.id.ivCycle);
         noUsersContainer = (LinearLayout) rootView.findViewById(R.id.noUsersContainer);
         usersContainer = (LinearLayout) rootView.findViewById(R.id.usersContainer);
-        controller = new DiscoverFragmentController(getContext(), discoverClickListener);
+        activeUser = getArguments().getParcelable(ACTIVE_USER);
+        controller = new DiscoverFragmentController(getContext(), discoverClickListener, activeUser);
     }
 
     private void toggleShowUsers() {
@@ -180,6 +186,7 @@ public class DiscoverFragment extends Fragment {
 
     public interface DiscoverController {
         void onRecyclerItemClick(User user);
+        void handleHttpResponse(String stringExtra, Parcelable[] arrayExtra);
     }
 
 }
