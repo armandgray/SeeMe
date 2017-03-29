@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -29,6 +28,7 @@ public class DiscoverFragmentController implements DiscoverController {
     private static final String PREPARE_UPDATE_ERROR = "Prepare Update Error!";
     private static final String UPDATE_QUERY_ERROR = "Update Query Error!";
     private static final String INTERNAL_UPDATE_ERROR = "Internal Update Error!";
+    public static final String UNKNOWN = "unknown";
 
     private String[] responseArray = {USER_NOT_FOUND, PREPARE_UPDATE_ERROR, CONNECTION_CONFIRMED, CONNECTION_DELETED,
             REQUEST_SENT, UPDATE_QUERY_ERROR, INTERNAL_UPDATE_ERROR};
@@ -69,7 +69,7 @@ public class DiscoverFragmentController implements DiscoverController {
 
     @Override
     public void onRecyclerItemClick(User user) {
-        if (user != null) {
+        if (user != null && user.getStatus().equals(UNKNOWN)) {
             String url = NEW_CONNECTION_URI
                     + "username=" + activeUser.getUsername()
                     + "&connection=" + user.getUsername();
