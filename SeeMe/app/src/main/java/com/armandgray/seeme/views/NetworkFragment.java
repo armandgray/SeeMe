@@ -18,6 +18,8 @@ import com.armandgray.seeme.utils.UserRVAdapter;
 import java.util.List;
 
 import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
+import static com.armandgray.seeme.MainActivity.API_URI;
+import static com.armandgray.seeme.network.HttpHelper.sendRequest;
 import static com.armandgray.seeme.utils.StringHelper.getBoldStringBuilder;
 
 /**
@@ -25,13 +27,15 @@ import static com.armandgray.seeme.utils.StringHelper.getBoldStringBuilder;
  */
 public class NetworkFragment extends Fragment {
 
-
+    private static final String NETWORK_CONNECTION_URI = API_URI + "/connection/network?";
     private static final String NO_NETWORK_HEADER = "No Network Found";
     private static final String NO_NETWORK_CONTENT = "New SeeMe Users can build their network using SeeMe Touch. On the Discover screen, press connect on available users to build your network.";
+
     private RecyclerView rvNetwork;
     private TextView tvNoNetwork;
     private LinearLayout networkContainer;
     private User[] networkArray;
+    private User activeUser;
 
     public NetworkFragment() {}
 
@@ -60,6 +64,7 @@ public class NetworkFragment extends Fragment {
         rvNetwork = (RecyclerView) rootView.findViewById(R.id.rvNetwork);
         tvNoNetwork = (TextView) rootView.findViewById(R.id.tvNoNetwork);
         networkContainer = (LinearLayout) rootView.findViewById(R.id.networkContainer);
+        activeUser = getArguments().getParcelable(ACTIVE_USER);
     }
 
     private void toggleShowNetwork() {
@@ -77,4 +82,10 @@ public class NetworkFragment extends Fragment {
         rvNetwork.setAdapter(new UserRVAdapter(getActivity(), list));
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        String url = NETWORK_CONNECTION_URI + "username=" + activeUser.getUsername();
+        sendRequest(url, getContext());
+    }
 }

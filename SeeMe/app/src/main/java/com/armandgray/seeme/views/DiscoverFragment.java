@@ -41,7 +41,6 @@ public class DiscoverFragment extends Fragment {
     public static final String UPDATE_CONNECTION_URI = API_URI + "/connection/update-status?";
     public static final String NEW_CONNECTION_URI = API_URI + "/connection/new?";
     public static final String DELETE_CONNECTION_URI = API_URI + "/connection/delete?";
-    public static final String NETWORK_CONNECTION_URI = API_URI + "/connection/network?";
 
     private static final String TAG = "DISCOVER_FRAGMENT";
     private static final String NO_USERS_HEADER = "No Current Available Users";
