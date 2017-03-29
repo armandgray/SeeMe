@@ -10,7 +10,7 @@ import (
 func ConnectionNetworkController(w http.ResponseWriter, r *http.Request) {
   userMap, err := db.GetNetworkList(r.FormValue("username"))
   if err != nil {
-    w.Write([]byte("Network Search Error!"))
+    w.Write([]byte(err.Error()))
     return
   }
   js, err := json.Marshal(userMap)

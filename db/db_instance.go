@@ -53,6 +53,7 @@ func GetQueryUserList(query string, params ...interface{}) ([]User, error) {
   var user User
   var network sql.NullString
   var role sql.NullString
+  var status sql.NullString
 
   rows, err := db.Query(query, params...)
   if err != nil {
@@ -61,7 +62,7 @@ func GetQueryUserList(query string, params ...interface{}) ([]User, error) {
   defer rows.Close()
   for rows.Next() {
     if err = rows.Scan(&user.FirstName, &user.LastName, &role, &user.Username, 
-                        &user.Secret, &user.Discoverable, &network); err != nil {
+                        &user.Secret, &user.Discoverable, &network, &status); err != nil {
       return []User{}, err
     } else {
       if role.Valid {
@@ -72,6 +73,13 @@ func GetQueryUserList(query string, params ...interface{}) ([]User, error) {
       if network.Valid {
         if val, err := network.Value(); err == nil {
           user.Network = val.(string)
+        }
+      }
+      if status.Valid {
+        if val, err := status.Value(); err == nil {
+          user.Status = val.(string)
+        } else {
+          user.Status = "unknown"
         }
       }
       userList = append(userList, user)
