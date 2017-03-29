@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -20,9 +19,6 @@ import com.armandgray.seeme.R;
 import com.armandgray.seeme.controllers.NetworkFragmentController;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.services.HttpService;
-import com.armandgray.seeme.utils.UserRVAdapter;
-
-import java.util.List;
 
 import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
 import static com.armandgray.seeme.MainActivity.API_URI;
@@ -98,11 +94,6 @@ public class NetworkFragment extends Fragment {
         networkContainer.setVisibility(View.VISIBLE);
     }
 
-    private void setupRvNetwork(List<User> list) {
-        rvNetwork.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        rvNetwork.setAdapter(new UserRVAdapter(getActivity(), list));
-    }
-
     @Override
     public void onResume() {
         super.onResume();
@@ -112,5 +103,6 @@ public class NetworkFragment extends Fragment {
     public interface NetworkController {
         void sendNetworkRequest();
         void handleHttpResponse(String response, Parcelable[] arrayExtra);
+        void setupRvUsers(RecyclerView rvUsers, final User[] userArray);
     }
 }

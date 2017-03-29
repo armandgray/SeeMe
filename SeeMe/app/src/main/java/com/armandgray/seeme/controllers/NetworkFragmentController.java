@@ -1,10 +1,15 @@
 package com.armandgray.seeme.controllers;
 
-import android.content.Context;
+import android.app.Activity;
 import android.os.Parcelable;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.Toast;
 
 import com.armandgray.seeme.models.User;
+import com.armandgray.seeme.utils.RecyclerItemClickListener;
+import com.armandgray.seeme.utils.UserRVAdapter;
 import com.armandgray.seeme.views.NetworkFragment;
 
 import java.util.Arrays;
@@ -24,24 +29,39 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
 
     private String[] responseArray = {USER_NOT_FOUND, PREPARE_UPDATE_ERROR, CONNECTION_CONFIRMED, CONNECTION_DELETED,
             REQUEST_SENT, UPDATE_QUERY_ERROR, INTERNAL_UPDATE_ERROR};
-    private Context context;
+    private Activity activity;
     private User activeUser;
 
-    public NetworkFragmentController(Context context, User activeUser) {
-        this.context = context;
+    public NetworkFragmentController(Activity activity, User activeUser) {
+        this.activity = activity;
         this.activeUser = activeUser;
     }
 
     @Override
     public void sendNetworkRequest() {
         String url = NETWORK_CONNECTION_URI + "username=" + activeUser.getUsername();
-        sendRequest(url, context);
+        sendRequest(url, activity);
     }
 
     @Override
     public void handleHttpResponse(String response, Parcelable[] arrayExtra) {
         if (response != null && !response.equals("") && Arrays.asList(responseArray).contains(response)) {
-            Toast.makeText(context, response, Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, response, Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void setupRvUsers(RecyclerView rvUsers, final User[] networkArray) {
+        rvUsers.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
+        rvUsers.setAdapter(new UserRVAdapter(activity, Arrays.asList(networkArray)));
+        rvUsers.addOnItemTouchListener(new RecyclerItemClickListener(activity,
+                new RecyclerItemClickListener.OnItemClickListener() {
+                    @Override
+                    public void onItemClick(View view, int position) {
+                        if (networkArray.length >= position) {
+
+                        }
+                    }
+                }));
     }
 }
