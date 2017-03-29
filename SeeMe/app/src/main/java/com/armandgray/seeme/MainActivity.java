@@ -41,6 +41,7 @@ public class MainActivity extends AppCompatActivity
     private User activeUser;
     private ViewPager viewPager;
     private NavBarFragment navbar;
+    private User[] discoverArray;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +111,11 @@ public class MainActivity extends AppCompatActivity
     @Override
     public void onUserClick(User user) {
         viewPager.setCurrentItem(1);
+    }
+
+    @Override
+    public void onUserArrayUpdate(User[] userArray) {
+        discoverArray = userArray;
     }
 
     @Override

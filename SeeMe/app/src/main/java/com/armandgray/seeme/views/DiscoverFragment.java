@@ -175,6 +175,7 @@ public class DiscoverFragment extends Fragment {
     public interface DiscoverClickListener {
         void onTouchCycle();
         void onUserClick(User user);
+        void onUserArrayUpdate(User[] arrayExtra);
     }
 
     public interface DiscoverController {

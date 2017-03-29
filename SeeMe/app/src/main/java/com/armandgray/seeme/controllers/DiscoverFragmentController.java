@@ -49,6 +49,7 @@ public class DiscoverFragmentController implements DiscoverController {
             Toast.makeText(activity, response, Toast.LENGTH_SHORT).show();
         } else if (arrayExtra != null && arrayExtra.length != 0) {
             setupRvUsers(rvUsers, (User[]) arrayExtra);
+            listener.onUserArrayUpdate((User[]) arrayExtra);
         }
     }
 
