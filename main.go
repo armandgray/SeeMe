@@ -4,7 +4,6 @@ import (
   "seeme/login"
   "seeme/loginuser"
   "seeme/registeruser"
-  "seeme/allusers"
   "seeme/localusers"
   "seeme/updatenetwork"
   "seeme/newconnections"
@@ -31,7 +30,7 @@ func main()  {
   mux.HandleFunc(apiUrl + "/login", login.LoginController)
   mux.HandleFunc(apiUrl + "/login/user", loginuser.LoginUserController)
   mux.HandleFunc(apiUrl + "/register", registeruser.RegisterUserController)
-  mux.HandleFunc(apiUrl + "/discoverable/allusers", allusers.AllUsersController)
+  mux.HandleFunc(apiUrl + "/discoverable/allusers", controllers.AllUsersController)
   mux.HandleFunc(apiUrl + "/discoverable/localusers", localusers.LocalUsersController)
   mux.HandleFunc(apiUrl + "/discoverable/update-network", updatenetwork.UpdateUserNetworkController)
   mux.HandleFunc(apiUrl + "/connection/new", newconnections.NewConnectionController)
