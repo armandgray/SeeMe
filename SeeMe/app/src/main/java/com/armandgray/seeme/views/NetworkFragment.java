@@ -34,7 +34,7 @@ public class NetworkFragment extends Fragment {
     public static final String NETWORK_CONNECTION_URI = API_URI + "/connection/network?";
     public static final String UPDATE_CONNECTION_URI = API_URI + "/connection/update-status?";
     public static final String DELETE_CONNECTION_URI = API_URI + "/connection/delete?";
-    
+
     private static final String NO_NETWORK_HEADER = "No Network Found";
     private static final String NO_NETWORK_CONTENT = "New SeeMe Users can build their network using SeeMe Touch. On the Discover screen, press connect on available users to build your network.";
     public static final String TAG = "NETWORK FRAGMENT";
@@ -44,7 +44,6 @@ public class NetworkFragment extends Fragment {
     private LinearLayout networkContainer;
 
     private User[] networkArray;
-    private User activeUser;
     private NetworkController controller;
 
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
@@ -86,7 +85,7 @@ public class NetworkFragment extends Fragment {
         rvNetwork = (RecyclerView) rootView.findViewById(R.id.rvNetwork);
         tvNoNetwork = (TextView) rootView.findViewById(R.id.tvNoNetwork);
         networkContainer = (LinearLayout) rootView.findViewById(R.id.networkContainer);
-        activeUser = getArguments().getParcelable(ACTIVE_USER);
+        User activeUser = getArguments().getParcelable(ACTIVE_USER);
         controller = new NetworkFragmentController(getActivity(), activeUser);
     }
 

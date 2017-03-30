@@ -20,6 +20,7 @@ import java.util.Arrays;
 import static com.armandgray.seeme.models.User.getSortedUserList;
 import static com.armandgray.seeme.network.HttpHelper.sendRequest;
 import static com.armandgray.seeme.views.NetworkFragment.NETWORK_CONNECTION_URI;
+import static com.armandgray.seeme.views.NetworkFragment.UPDATE_CONNECTION_URI;
 
 public class NetworkFragmentController implements NetworkFragment.NetworkController {
 
@@ -78,7 +79,9 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
     public void onRecyclerItemClick(User user, View view) {
         if (user == null) { return; }
         if (user.getStatus().equals(REQUEST)) {
-            String url = "";
+            String url = UPDATE_CONNECTION_URI
+                    + "username=" + activeUser.getUsername()
+                    + "&connection=" + user.getUsername();
             sendRequest(url, activity);
         } else if (!user.isRemovable()) {
             user.setRemovable(true);
