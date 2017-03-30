@@ -4,6 +4,7 @@ import (
   . "seeme/models"
 
 	"errors"
+  "fmt"
 )
 
 func GetAllConnectionsMap(user string) (map[string]bool, error) {
@@ -19,17 +20,10 @@ func GetConnectionsMap(user string) (map[string]bool, error) {
 func GetNetworkList(user string) ([]User, error) {
   query := "SELECT first_name, last_name, role, users.username, secret, discoverable, ssid, connections.status FROM users LEFT JOIN networks USING (network_id) INNER JOIN connections ON users.username = connections.connection AND connections.username = ? OR users.username = connections.username AND connections.connection = ?"
   userList, err := GetQueryUserList(query, 8, user, user)
-  for i := 0; i < len(userList); i++ {
-    if userList[i].Status == "connected" { continue }
-    primaryUser, _, err := getUserRelationship(user, userList[i].Username)
-    if err != nil {
-      return []User{}, err
-    }
-    if user != primaryUser {
-      userList[i].Status = "request"      
-    }
+  if err != nil {
+    return []User{}, err
   }
-  return userList, err
+  return updateUserListStatusDirections(user, userList)
 }
 
 func InsertNewConnection(username string, connection string) (error) {
@@ -56,6 +50,21 @@ func DeleteConnection(username string, connection string) (int64, error) {
   }
   return PostDeleteQuery("DELETE FROM connections WHERE username = ? AND connection = ?", 
                               primaryUser, connectUser)
+}
+
+func updateUserListStatusDirections(user string, userList []User) ([]User, error) {
+  for i := 0; i < len(userList); i++ {
+    if userList[i].Status == "connected" { continue }
+    primaryUser, _, err := getUserRelationship(user, userList[i].Username)
+    if err != nil {
+      return []User{}, err
+    }
+    if user != primaryUser {
+      userList[i].Status = "request"      
+    }
+  }
+
+  return userList, nil
 }
 
 func getUserRelationship(username string, connection string) (string, string, error) {
