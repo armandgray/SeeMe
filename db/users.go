@@ -17,7 +17,7 @@ func GetUser(username string) (User, error) {
 func InsertUser(user User) (error) {
 	db := GetDatabaseInstance()
 	_, err := db.Exec("INSERT INTO users (first_name, last_name, role, username, secret, discoverable, network_id) VALUES (?, ?, ?, ?, ?, ?, ?)", 
-                  user.FirstName, user.LastName, user.Role, user.Username, 
+                  user.FirstName, user.LastName, user.Occupation, user.Username, 
                   user.Secret, user.Discoverable, nil)
 	return err
 }
@@ -29,7 +29,7 @@ func DeleteUser(username string) (int64, error) {
 func UpdateUser(user User) (error) {
 	db := GetDatabaseInstance()
   _, err := db.Exec("UPDATE users SET first_name=?, last_name=?, role=?, secret=?, discoverable=? WHERE username = ?", 
-                  user.FirstName, user.LastName, user.Role, 
+                  user.FirstName, user.LastName, user.Occupation, 
                   user.Secret, user.Discoverable, user.Username)
   return err
 }
