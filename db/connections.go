@@ -4,7 +4,6 @@ import (
   . "seeme/models"
 
 	"errors"
-  "fmt"
 )
 
 func GetAllConnectionsMap(user string) (map[string]bool, error) {
