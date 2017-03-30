@@ -3,7 +3,9 @@ package com.armandgray.seeme.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class User implements Parcelable {
+import java.util.Comparator;
+
+public class User implements Parcelable, Comparator<User> {
 
     private final String occupation;
     private final String firstName;
@@ -58,12 +60,47 @@ public class User implements Parcelable {
     }
 
     @Override
+    public int compare(User u1, User u2) {
+        return 0;
+    }
+
+    @Override
     public int describeContents() {
         return 0;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-
+        dest.writeString(this.occupation);
+        dest.writeString(this.firstName);
+        dest.writeString(this.lastName);
+        dest.writeString(this.username);
+        dest.writeString(this.secret);
+        dest.writeByte(this.discoverable ? (byte) 1 : (byte) 0);
+        dest.writeString(this.network);
+        dest.writeString(this.status);
     }
+
+    protected User(Parcel in) {
+        this.occupation = in.readString();
+        this.firstName = in.readString();
+        this.lastName = in.readString();
+        this.username = in.readString();
+        this.secret = in.readString();
+        this.discoverable = in.readByte() != 0;
+        this.network = in.readString();
+        this.status = in.readString();
+    }
+
+    public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
+        @Override
+        public User createFromParcel(Parcel source) {
+            return new User(source);
+        }
+
+        @Override
+        public User[] newArray(int size) {
+            return new User[size];
+        }
+    };
 }
