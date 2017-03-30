@@ -7,7 +7,7 @@ import (
   "fmt"
 )
 
-func GetConnectionsMap(user string) (map[string]bool, error) {
+func GetAllConnectionsMap(user string) (map[string]bool, error) {
   query := "SELECT connection FROM connections WHERE username = ? UNION SELECT username FROM connections WHERE connection = ?"
   return GetQueryResultsMap(query, user, user)
 }
@@ -58,7 +58,7 @@ func DeleteConnection(username string, connection string) (int64, error) {
 }
 
 func getUserRelationship(username string, connection string) (string, string, error) {
-  userMap, err := GetConnectionsMap(connection)
+  userMap, err := GetAllConnectionsMap(connection)
   if err != nil {
     return username, connection, err
   }
