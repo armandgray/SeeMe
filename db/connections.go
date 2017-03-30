@@ -25,13 +25,10 @@ func GetNetworkList(user string) ([]User, error) {
     if err != nil {
       return []User{}, err
     }
-    fmt.Println(userList[i].Username + " " + primaryUser)
-
-    if user == primaryUser {
-      fmt.Println("pending")
-    } else {
-      fmt.Println("request")      
+    if user != primaryUser {
+      userList[i].Status = "request"      
     }
+    fmt.Println(userList[i])
   }
   return userList, err
 }
