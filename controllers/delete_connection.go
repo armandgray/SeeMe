@@ -1,4 +1,4 @@
-package deleteconnection
+package controllers
 
 import (
   "seeme/db"

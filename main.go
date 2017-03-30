@@ -8,7 +8,6 @@ import (
   "seeme/localusers"
   "seeme/updatenetwork"
   "seeme/newconnections"
-  "seeme/deleteconnection"
   "seeme/updateconnection"
   "seeme/controllers"
   "seeme/profiledelete"
@@ -37,7 +36,7 @@ func main()  {
   mux.HandleFunc(apiUrl + "/discoverable/update-network", updatenetwork.UpdateUserNetworkController)
   mux.HandleFunc(apiUrl + "/connection/new", newconnections.NewConnectionController)
   mux.HandleFunc(apiUrl + "/connection/update-status", updateconnection.UpdateConnectionStatusController)
-  mux.HandleFunc(apiUrl + "/connection/delete", deleteconnection.DeleteConnectionController)
+  mux.HandleFunc(apiUrl + "/connection/delete", controllers.DeleteConnectionController)
   mux.HandleFunc(apiUrl + "/connection/network", controllers.ConnectionNetworkController)
   mux.HandleFunc(apiUrl + "/profile/delete", profiledelete.ProfileDeleteController)
   mux.HandleFunc(apiUrl + "/profile/update", profileupdate.ProfileUpdateController)
