@@ -4,7 +4,6 @@ import (
   "seeme/login"
   "seeme/loginuser"
   "seeme/registeruser"
-  "seeme/localusers"
   "seeme/updatenetwork"
   "seeme/newconnections"
   "seeme/updateconnection"
