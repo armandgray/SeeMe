@@ -94,7 +94,7 @@ public class User implements Parcelable, Comparator<User> {
         public static Comparator<User> STATUS = new Comparator<User>() {
             @Override
             public int compare(User u1, User u2) {
-                return u1.status.compareTo(u2.status);
+                return u2.status.compareTo(u1.status);
             }
         };
     }
