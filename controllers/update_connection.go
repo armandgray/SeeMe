@@ -1,4 +1,4 @@
-package updateconnection
+package controllers
 
 import (
   "seeme/helpers"
