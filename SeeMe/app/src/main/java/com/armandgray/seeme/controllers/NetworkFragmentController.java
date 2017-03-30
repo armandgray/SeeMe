@@ -19,6 +19,7 @@ import java.util.Arrays;
 
 import static com.armandgray.seeme.models.User.getSortedUserList;
 import static com.armandgray.seeme.network.HttpHelper.sendRequest;
+import static com.armandgray.seeme.views.NetworkFragment.DELETE_CONNECTION_URI;
 import static com.armandgray.seeme.views.NetworkFragment.NETWORK_CONNECTION_URI;
 import static com.armandgray.seeme.views.NetworkFragment.UPDATE_CONNECTION_URI;
 
@@ -89,6 +90,10 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
             ImageView ivStatus = (ImageView) layout.getChildAt(2);
             ivStatus.setImageResource(R.drawable.ic_account_remove_white_48dp);
         } else {
+            String url = DELETE_CONNECTION_URI
+                    + "username=" + activeUser.getUsername()
+                    + "&connection=" + user.getUsername();
+            sendRequest(url, activity);
             Toast.makeText(activity, "Remove User: " + user.getUsername(), Toast.LENGTH_SHORT).show();
         }
     }
