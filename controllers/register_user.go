@@ -1,8 +1,8 @@
-package registeruser
+package controllers
 
 import (
   . "seeme/models"
-  . "seeme/helpers"
+  "seeme/helpers"
   "seeme/db"
 
   "fmt"
@@ -15,7 +15,7 @@ func RegisterUserController(w http.ResponseWriter, r *http.Request) {
   var page Page
 
   if r.FormValue("register") != "" {
-    if err := db.InsertUser(CreateUserFromRequest(r)); err != nil { 
+    if err := db.InsertUser(helpers.CreateUserFromRequest(r)); err != nil { 
       fmt.Println("Database Insert Failure: " + err.Error())
     } else {
       http.Redirect(w, r, "/seeme/api/login/user?username=" + r.FormValue("username"), http.StatusFound)

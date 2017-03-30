@@ -1,4 +1,4 @@
-package profileupdate
+package controllers
 
 import (
   "seeme/helpers"
