@@ -6,7 +6,6 @@ import (
   "seeme/newconnections"
   "seeme/updateconnection"
   "seeme/controllers"
-  "seeme/profileupdate"
   "seeme/db"
 
   "fmt"
@@ -33,7 +32,7 @@ func main()  {
   mux.HandleFunc(apiUrl + "/connection/delete", controllers.DeleteConnectionController)
   mux.HandleFunc(apiUrl + "/connection/network", controllers.ConnectionNetworkController)
   mux.HandleFunc(apiUrl + "/profile/delete", controllers.ProfileDeleteController)
-  mux.HandleFunc(apiUrl + "/profile/update", profileupdate.ProfileUpdateController)
+  mux.HandleFunc(apiUrl + "/profile/update", controllers.ProfileUpdateController)
   mux.HandleFunc(apiUrl + "/feedback", controllers.FeedbackController)
 
   n := negroni.Classic()
