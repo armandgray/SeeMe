@@ -94,7 +94,6 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
                     + "username=" + activeUser.getUsername()
                     + "&connection=" + user.getUsername();
             sendRequest(url, activity);
-            Toast.makeText(activity, "Remove User: " + user.getUsername(), Toast.LENGTH_SHORT).show();
         }
     }
 }
