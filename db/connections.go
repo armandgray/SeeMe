@@ -27,10 +27,10 @@ func GetNetworkList(user string) ([]User, error) {
     }
     fmt.Println(userList[i].Username + " " + primaryUser)
 
-    if userList[i].Username == primaryUser {
+    if user == primaryUser {
       fmt.Println("pending")
     } else {
-      fmt.Println("pending")      
+      fmt.Println("request")      
     }
   }
   return userList, err
@@ -65,7 +65,7 @@ func DeleteConnection(username string, connection string) (int64, error) {
 func getUserRelationship(username string, connection string) (string, string, error) {
   userMap, err := GetConnectionsMap(connection)
   if err != nil {
-    return username, connection, err
+    return "", "", err
   }
   if userMap[username] {
     primaryUser := connection
