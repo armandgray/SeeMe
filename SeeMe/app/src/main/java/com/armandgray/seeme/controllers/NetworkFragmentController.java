@@ -29,7 +29,8 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
     private static final String PREPARE_UPDATE_ERROR = "Prepare Update Error!";
     private static final String UPDATE_QUERY_ERROR = "Update Query Error!";
     private static final String INTERNAL_UPDATE_ERROR = "Internal Update Error!";
-    public static final String TAG = "TAG";
+    private static final String REQUEST = "request";
+    private static final String TAG = "TAG";
 
     private String[] responseArray = {USER_NOT_FOUND, PREPARE_UPDATE_ERROR, CONNECTION_CONFIRMED, CONNECTION_DELETED,
             UPDATE_QUERY_ERROR, INTERNAL_UPDATE_ERROR};
@@ -76,7 +77,10 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
     @Override
     public void onRecyclerItemClick(User user, View view) {
         if (user == null) { return; }
-        if (!user.isRemovable()) {
+        if (user.getStatus().equals(REQUEST)) {
+            String url = "";
+            sendRequest(url, activity);
+        } else if (!user.isRemovable()) {
             user.setRemovable(true);
             LinearLayout layout = (LinearLayout) view;
             ImageView ivStatus = (ImageView) layout.getChildAt(2);
