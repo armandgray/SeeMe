@@ -57,7 +57,7 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
     public void setupRvNetwork(RecyclerView rvNetwork, final User[] networkArray) {
         rvNetwork.setLayoutManager(
                 new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
-        rvNetwork.setAdapter(new UserRVAdapter(activity,
+        rvNetwork.setAdapter(new UserRVAdapter(
                 getSortedUserList(networkArray, User.Comparators.STATUS), true));
         rvNetwork.addOnItemTouchListener(new RecyclerItemClickListener(activity,
                 new RecyclerItemClickListener.OnItemClickListener() {

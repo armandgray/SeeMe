@@ -19,14 +19,12 @@ public class UserRVAdapter extends
     private static final String UNKNOWN = "unknown";
     private static final String CONNECTED = "connected";
     private static final String PENDING = "pending";
-    public static final String REQUEST = "request";
-    private Activity activity;
+    private static final String REQUEST = "request";
     private List<User> listUsers;
     private boolean showRequest;
 
 
-    public UserRVAdapter(Activity activity, List<User> listUsers, boolean showRequest) {
-        this.activity = activity;
+    public UserRVAdapter(List<User> listUsers, boolean showRequest) {
         this.listUsers = listUsers;
         this.showRequest = showRequest;
     }
