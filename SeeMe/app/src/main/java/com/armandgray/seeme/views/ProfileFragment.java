@@ -252,16 +252,20 @@ public class ProfileFragment extends Fragment
     @Override
     public void onResume() {
         super.onResume();
-        LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
-                .registerReceiver(httpBroadcastReceiver,
-                        new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
+        if (getUserVisibleHint()) {
+            LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
+                    .registerReceiver(httpBroadcastReceiver,
+                            new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
+        }
     }
 
     @Override
     public void onPause() {
         super.onPause();
-        LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
-                .unregisterReceiver(httpBroadcastReceiver);
+        if (!getUserVisibleHint()) {
+            LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
+                    .unregisterReceiver(httpBroadcastReceiver);
+        }
     }
 
     @Override

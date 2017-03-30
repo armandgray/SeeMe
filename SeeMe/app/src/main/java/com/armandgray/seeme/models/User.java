@@ -2,8 +2,14 @@ package com.armandgray.seeme.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
-public class User implements Parcelable {
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
+
+public class User implements Parcelable, Comparator<User> {
 
     private final String occupation;
     private final String firstName;
@@ -12,8 +18,9 @@ public class User implements Parcelable {
     private final String secret;
     private final boolean discoverable;
     private final String network;
+    private String status;
 
-    public User(String firstName, String lastName, String occupation, String username, String secret, boolean discoverable, String network) {
+    public User(String firstName, String lastName, String occupation, String username, String secret, boolean discoverable, String network, String status) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.occupation = occupation;
@@ -21,6 +28,7 @@ public class User implements Parcelable {
         this.secret = secret;
         this.discoverable = discoverable;
         this.network = network;
+        this.status = status;
     }
 
     public String getFirstName() {
@@ -51,6 +59,57 @@ public class User implements Parcelable {
         return occupation;
     }
 
+    public String getStatus() {
+        return status;
+    }
+
+    @NonNull
+    public static List<User> getSortedUserList(User[] array, Comparator comparator) {
+        List<User> list = Arrays.asList(array);
+        Collections.sort(list, comparator);
+        return list;
+    }
+
+    public int compareTo(User u) {
+        return Comparators.FIRST_NAME.compare(this, u);
+    }
+
+    @Override
+    public int compare(User u1, User u2) {
+        return Comparators.FIRST_NAME.compare(u1, u2);
+    }
+
+    public static class Comparators {
+
+        public static Comparator<User> FIRST_NAME = new Comparator<User>() {
+            @Override
+            public int compare(User u1, User u2) {
+                return u1.firstName.compareTo(u2.firstName);
+            }
+        };
+
+        public static Comparator<User> LAST_NAME = new Comparator<User>() {
+            @Override
+            public int compare(User u1, User u2) {
+                return u1.lastName.compareTo(u2.lastName);
+            }
+        };
+
+        public static Comparator<User> OCCUPATION = new Comparator<User>() {
+            @Override
+            public int compare(User u1, User u2) {
+                return u1.occupation.compareTo(u2.occupation);
+            }
+        };
+
+        public static Comparator<User> STATUS = new Comparator<User>() {
+            @Override
+            public int compare(User u1, User u2) {
+                return u2.status.compareTo(u1.status);
+            }
+        };
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -65,6 +124,7 @@ public class User implements Parcelable {
         dest.writeString(this.secret);
         dest.writeByte(this.discoverable ? (byte) 1 : (byte) 0);
         dest.writeString(this.network);
+        dest.writeString(this.status);
     }
 
     protected User(Parcel in) {
@@ -75,6 +135,7 @@ public class User implements Parcelable {
         this.secret = in.readString();
         this.discoverable = in.readByte() != 0;
         this.network = in.readString();
+        this.status = in.readString();
     }
 
     public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
