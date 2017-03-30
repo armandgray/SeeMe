@@ -2,7 +2,6 @@ package com.armandgray.seeme.controllers;
 
 import android.app.Activity;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -14,9 +13,8 @@ import com.armandgray.seeme.utils.UserRVAdapter;
 import com.armandgray.seeme.views.NetworkFragment;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
+import static com.armandgray.seeme.models.User.getSortedUserList;
 import static com.armandgray.seeme.network.HttpHelper.sendRequest;
 import static com.armandgray.seeme.views.NetworkFragment.NETWORK_CONNECTION_URI;
 
@@ -58,7 +56,7 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
     @Override
     public void setupRvNetwork(RecyclerView rvNetwork, final User[] networkArray) {
         rvNetwork.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
-        rvNetwork.setAdapter(new UserRVAdapter(activity, getSortedUserList(networkArray)));
+        rvNetwork.setAdapter(new UserRVAdapter(activity, getSortedUserList(networkArray, User.Comparators.STATUS)));
         rvNetwork.addOnItemTouchListener(new RecyclerItemClickListener(activity,
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
@@ -68,13 +66,6 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
                         }
                     }
                 }));
-    }
-
-    @NonNull
-    private List<User> getSortedUserList(User[] networkArray) {
-        List<User> networkList = Arrays.asList(networkArray);
-        Collections.sort(networkList, User.Comparators.STATUS);
-        return networkList;
     }
 
     @Override

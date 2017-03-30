@@ -2,8 +2,12 @@ package com.armandgray.seeme.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 public class User implements Parcelable, Comparator<User> {
 
@@ -57,6 +61,13 @@ public class User implements Parcelable, Comparator<User> {
 
     public String getStatus() {
         return status;
+    }
+
+    @NonNull
+    public static List<User> getSortedUserList(User[] array, Comparator comparator) {
+        List<User> list = Arrays.asList(array);
+        Collections.sort(list, comparator);
+        return list;
     }
 
     public int compareTo(User u) {

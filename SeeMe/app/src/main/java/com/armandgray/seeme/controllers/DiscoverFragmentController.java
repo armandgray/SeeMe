@@ -2,7 +2,6 @@ package com.armandgray.seeme.controllers;
 
 import android.app.Activity;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -15,10 +14,8 @@ import com.armandgray.seeme.views.DiscoverFragment.DiscoverClickListener;
 import com.armandgray.seeme.views.DiscoverFragment.DiscoverController;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
+import static com.armandgray.seeme.models.User.getSortedUserList;
 import static com.armandgray.seeme.network.HttpHelper.sendRequest;
 import static com.armandgray.seeme.views.DiscoverFragment.NEW_CONNECTION_URI;
 
@@ -70,13 +67,6 @@ public class DiscoverFragmentController implements DiscoverController {
                         }
                     }
                 }));
-    }
-
-    @NonNull
-    private List<User> getSortedUserList(User[] array, Comparator comparator) {
-        List<User> list = Arrays.asList(array);
-        Collections.sort(list, comparator);
-        return list;
     }
 
     @Override
