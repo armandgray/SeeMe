@@ -5,8 +5,11 @@ import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.armandgray.seeme.R;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.utils.RecyclerItemClickListener;
 import com.armandgray.seeme.utils.UserRVAdapter;
@@ -64,16 +67,22 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
                     @Override
                     public void onItemClick(View view, int position) {
                         if (networkArray.length >= position) {
-                            onRecyclerItemClick(networkArray[position]);
+                            onRecyclerItemClick(networkArray[position], view);
                         }
                     }
                 }));
     }
 
     @Override
-    public void onRecyclerItemClick(User user) {
-        if (user != null) {
-            Toast.makeText(activity, user.getUsername() + " Click", Toast.LENGTH_SHORT).show();
+    public void onRecyclerItemClick(User user, View view) {
+        if (user == null) { return; }
+        if (!user.isRemovable()) {
+            user.setRemovable(true);
+            LinearLayout layout = (LinearLayout) view;
+            ImageView ivStatus = (ImageView) layout.getChildAt(2);
+            ivStatus.setImageResource(R.drawable.ic_account_remove_white_48dp);
+        } else {
+            Toast.makeText(activity, "Remove User: " + user.getUsername(), Toast.LENGTH_SHORT).show();
         }
     }
 }

@@ -121,6 +121,6 @@ public class NetworkFragment extends Fragment {
         void sendNetworkRequest();
         void handleHttpResponse(String response, Parcelable[] arrayExtra, RecyclerView rvNetwork);
         void setupRvNetwork(RecyclerView rvNetwork, final User[] userArray);
-        void onRecyclerItemClick(User user);
+        void onRecyclerItemClick(User user, View view);
     }
 }
