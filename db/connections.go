@@ -7,7 +7,8 @@ import (
 )
 
 func GetConnectionsMap(user string) (map[string]bool, error) {
-  return GetQueryResultsMap("SELECT connection FROM connections WHERE username = ?", user)
+  query := "SELECT connection FROM connections WHERE username = ? UNION SELECT username FROM connections WHERE connection = ?"
+  return GetQueryResultsMap(query, user, user)
 }
 
 func GetNetworkList(user string) ([]User, error) {

@@ -6,19 +6,11 @@ import (
 )
 
 func VerifyConnection(username string, connection string) (error) {
-  userMap, err := db.GetConnectionsMap(connection)
+  connectionsMap, err := db.GetConnectionsMap(username)
   if err != nil {
     return errors.New("Connection Search Error!")
   }
-  if userMap[username] {
-    return nil
-  }
-
-  userMap, err = db.GetConnectionsMap(username)
-  if err != nil {
-    return errors.New("Connection Search Error!")
-  }
-  if userMap[connection] {
+  if connectionsMap[connection] {
     return nil
   }
 
