@@ -32,6 +32,9 @@ import static com.armandgray.seeme.utils.StringHelper.getBoldStringBuilder;
 public class NetworkFragment extends Fragment {
 
     public static final String NETWORK_CONNECTION_URI = API_URI + "/connection/network?";
+    public static final String UPDATE_CONNECTION_URI = API_URI + "/connection/update-status?";
+    public static final String DELETE_CONNECTION_URI = API_URI + "/connection/delete?";
+    
     private static final String NO_NETWORK_HEADER = "No Network Found";
     private static final String NO_NETWORK_CONTENT = "New SeeMe Users can build their network using SeeMe Touch. On the Discover screen, press connect on available users to build your network.";
     public static final String TAG = "NETWORK FRAGMENT";
