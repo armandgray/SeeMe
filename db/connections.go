@@ -54,3 +54,4 @@ func getUserRelationship(username string, connection string) (string, string, er
 
   return username, connection, nil
 }
+
