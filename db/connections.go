@@ -16,7 +16,17 @@ func GetNetworkList(user string) ([]User, error) {
   query := "SELECT first_name, last_name, role, users.username, secret, discoverable, ssid, connections.status FROM users LEFT JOIN networks USING (network_id) INNER JOIN connections ON users.username = connections.connection AND connections.username = ? OR users.username = connections.username AND connections.connection = ?"
   userList, err := GetQueryUserList(query, 8, user, user)
   for i := 0; i < len(userList); i++ {
-    fmt.Println(userList[i])
+    primaryUser, _, err := getUserRelationship(user, userList[i].Username)
+    if err != nil {
+      return []User{}, err
+    }
+    fmt.Println(userList[i].Username + " " + primaryUser)
+
+    if userList[i].Username == primaryUser {
+      fmt.Println("pending")
+    } else {
+      fmt.Println("pending")      
+    }
   }
   return userList, err
 }
