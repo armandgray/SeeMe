@@ -12,6 +12,11 @@ func GetAllConnectionsMap(user string) (map[string]bool, error) {
   return GetQueryResultsMap(query, user, user)
 }
 
+func GetConnectionsMap(user string) (map[string]bool, error) {
+  query := "SELECT connection FROM connections WHERE username = ?"
+  return GetQueryResultsMap(query, user)
+}
+
 func GetNetworkList(user string) ([]User, error) {
   query := "SELECT first_name, last_name, role, users.username, secret, discoverable, ssid, connections.status FROM users LEFT JOIN networks USING (network_id) INNER JOIN connections ON users.username = connections.connection AND connections.username = ? OR users.username = connections.username AND connections.connection = ?"
   userList, err := GetQueryUserList(query, 8, user, user)
@@ -58,7 +63,7 @@ func DeleteConnection(username string, connection string) (int64, error) {
 }
 
 func getUserRelationship(username string, connection string) (string, string, error) {
-  userMap, err := GetAllConnectionsMap(connection)
+  userMap, err := GetConnectionsMap(connection)
   if err != nil {
     return username, connection, err
   }
