@@ -3,7 +3,9 @@ package com.armandgray.seeme.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class User implements Parcelable {
+import java.util.Comparator;
+
+public class User implements Parcelable, Comparator<User> {
 
     private final String occupation;
     private final String firstName;
@@ -57,7 +59,10 @@ public class User implements Parcelable {
         return status;
     }
 
-
+    @Override
+    public int compare(User u1, User u2) {
+        return 0;
+    }
 
     @Override
     public int describeContents() {
