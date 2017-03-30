@@ -57,7 +57,8 @@ public class DiscoverFragmentController implements DiscoverController {
     @Override
     public void setupRvUsers(RecyclerView rvUsers, final User[] userArray) {
         rvUsers.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
-        rvUsers.setAdapter(new UserRVAdapter(activity, getSortedUserList(userArray, User.Comparators.FIRST_NAME)));
+        rvUsers.setAdapter(new UserRVAdapter(activity,
+                getSortedUserList(userArray, User.Comparators.FIRST_NAME), false));
         rvUsers.addOnItemTouchListener(new RecyclerItemClickListener(activity,
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override

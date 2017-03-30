@@ -16,15 +16,19 @@ import java.util.List;
 public class UserRVAdapter extends
         RecyclerView.Adapter<UserRVAdapter.ViewHolder> {
 
-    public static final String UNKNOWN = "unknown";
-    public static final String CONNECTED = "connected";
-    public static final String PENDING = "pending";
-    Activity activity;
-    List<User> listUsers;
+    private static final String UNKNOWN = "unknown";
+    private static final String CONNECTED = "connected";
+    private static final String PENDING = "pending";
+    public static final String REQUEST = "request";
+    private Activity activity;
+    private List<User> listUsers;
+    private boolean showRequest;
 
-    public UserRVAdapter(Activity activity, List<User> listUsers) {
+
+    public UserRVAdapter(Activity activity, List<User> listUsers, boolean showRequest) {
         this.activity = activity;
         this.listUsers = listUsers;
+        this.showRequest = showRequest;
     }
 
     @Override
@@ -50,6 +54,13 @@ public class UserRVAdapter extends
                 ivStatus.setImageResource(R.drawable.ic_account_convert_white_48dp);
                 return;
             case CONNECTED:
+                ivStatus.setImageResource(R.drawable.ic_account_check_white_48dp);
+                return;
+            case REQUEST:
+                if (showRequest) {
+                    ivStatus.setImageResource(R.drawable.ic_account_plus_white_48dp);
+                    return;
+                }
                 ivStatus.setImageResource(R.drawable.ic_account_check_white_48dp);
                 return;
             case UNKNOWN:
