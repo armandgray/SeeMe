@@ -4,6 +4,7 @@ import (
   . "seeme/models"
 
 	"errors"
+  "fmt"
 )
 
 func GetConnectionsMap(user string) (map[string]bool, error) {
@@ -13,7 +14,11 @@ func GetConnectionsMap(user string) (map[string]bool, error) {
 
 func GetNetworkList(user string) ([]User, error) {
   query := "SELECT first_name, last_name, role, users.username, secret, discoverable, ssid, connections.status FROM users LEFT JOIN networks USING (network_id) INNER JOIN connections ON users.username = connections.connection AND connections.username = ? OR users.username = connections.username AND connections.connection = ?"
-  return GetQueryUserList(query, 8, user, user)
+  userList, err := GetQueryUserList(query, 8, user, user)
+  for i := 0; i < len(userList); i++ {
+    fmt.Println(userList[i])
+  }
+  return userList, err
 }
 
 func InsertNewConnection(username string, connection string) (error) {

@@ -17,6 +17,7 @@ func main()  {
   apiUrl := "/seeme/api"
 
   mux := http.NewServeMux()
+  db.GetNetworkList("armandgray@gmail.com")
   mux.HandleFunc(apiUrl + "/login", controllers.LoginController)
   mux.HandleFunc(apiUrl + "/login/user", controllers.LoginUserController)
   mux.HandleFunc(apiUrl + "/register", controllers.RegisterUserController)
