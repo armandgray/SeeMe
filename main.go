@@ -10,7 +10,6 @@ import (
   "seeme/controllers"
   "seeme/profiledelete"
   "seeme/profileupdate"
-  "seeme/feedback"
   "seeme/db"
 
   "fmt"
@@ -30,7 +29,7 @@ func main()  {
   mux.HandleFunc(apiUrl + "/login/user", loginuser.LoginUserController)
   mux.HandleFunc(apiUrl + "/register", registeruser.RegisterUserController)
   mux.HandleFunc(apiUrl + "/discoverable/allusers", controllers.AllUsersController)
-  mux.HandleFunc(apiUrl + "/discoverable/localusers", localusers.LocalUsersController)
+  mux.HandleFunc(apiUrl + "/discoverable/localusers", controllers.LocalUsersController)
   mux.HandleFunc(apiUrl + "/discoverable/update-network", updatenetwork.UpdateUserNetworkController)
   mux.HandleFunc(apiUrl + "/connection/new", newconnections.NewConnectionController)
   mux.HandleFunc(apiUrl + "/connection/update-status", updateconnection.UpdateConnectionStatusController)
@@ -38,7 +37,7 @@ func main()  {
   mux.HandleFunc(apiUrl + "/connection/network", controllers.ConnectionNetworkController)
   mux.HandleFunc(apiUrl + "/profile/delete", profiledelete.ProfileDeleteController)
   mux.HandleFunc(apiUrl + "/profile/update", profileupdate.ProfileUpdateController)
-  mux.HandleFunc(apiUrl + "/feedback", feedback.FeedbackController)
+  mux.HandleFunc(apiUrl + "/feedback", controllers.FeedbackController)
 
   n := negroni.Classic()
   n.Use(negroni.HandlerFunc(db.VerifyMySQLConnection))

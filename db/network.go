@@ -1,12 +1,14 @@
 package db
 
 import (
+  "seeme/models"
+
   "net/http"
   "errors"
 )
 
 func GetLocalUsersForNetwork(w http.ResponseWriter, r *http.Request) ([]models.User, error) {
-  if err := db.RenewUserNetwork(r); err != nil {
+  if err := RenewUserNetwork(r); err != nil {
     var userList []models.User
     return userList, err
   }
