@@ -59,6 +59,10 @@ public class User implements Parcelable, Comparator<User> {
         return status;
     }
 
+    public int compareTo(User u) {
+        return Comparators.FIRST_NAME.compare(this, u);
+    }
+
     @Override
     public int compare(User u1, User u2) {
         return Comparators.FIRST_NAME.compare(u1, u2);
