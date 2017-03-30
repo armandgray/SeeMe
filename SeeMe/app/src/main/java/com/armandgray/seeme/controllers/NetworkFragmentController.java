@@ -14,6 +14,7 @@ import com.armandgray.seeme.views.NetworkFragment;
 
 import java.util.Arrays;
 
+import static com.armandgray.seeme.models.User.getSortedUserList;
 import static com.armandgray.seeme.network.HttpHelper.sendRequest;
 import static com.armandgray.seeme.views.NetworkFragment.NETWORK_CONNECTION_URI;
 
@@ -55,7 +56,7 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
     @Override
     public void setupRvNetwork(RecyclerView rvNetwork, final User[] networkArray) {
         rvNetwork.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
-        rvNetwork.setAdapter(new UserRVAdapter(activity, Arrays.asList(networkArray)));
+        rvNetwork.setAdapter(new UserRVAdapter(activity, getSortedUserList(networkArray, User.Comparators.STATUS)));
         rvNetwork.addOnItemTouchListener(new RecyclerItemClickListener(activity,
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override

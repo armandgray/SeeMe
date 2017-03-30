@@ -2,8 +2,12 @@ package com.armandgray.seeme.models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 public class User implements Parcelable, Comparator<User> {
 
@@ -59,9 +63,51 @@ public class User implements Parcelable, Comparator<User> {
         return status;
     }
 
+    @NonNull
+    public static List<User> getSortedUserList(User[] array, Comparator comparator) {
+        List<User> list = Arrays.asList(array);
+        Collections.sort(list, comparator);
+        return list;
+    }
+
+    public int compareTo(User u) {
+        return Comparators.FIRST_NAME.compare(this, u);
+    }
+
     @Override
     public int compare(User u1, User u2) {
-        return 0;
+        return Comparators.FIRST_NAME.compare(u1, u2);
+    }
+
+    public static class Comparators {
+
+        public static Comparator<User> FIRST_NAME = new Comparator<User>() {
+            @Override
+            public int compare(User u1, User u2) {
+                return u1.firstName.compareTo(u2.firstName);
+            }
+        };
+
+        public static Comparator<User> LAST_NAME = new Comparator<User>() {
+            @Override
+            public int compare(User u1, User u2) {
+                return u1.lastName.compareTo(u2.lastName);
+            }
+        };
+
+        public static Comparator<User> OCCUPATION = new Comparator<User>() {
+            @Override
+            public int compare(User u1, User u2) {
+                return u1.occupation.compareTo(u2.occupation);
+            }
+        };
+
+        public static Comparator<User> STATUS = new Comparator<User>() {
+            @Override
+            public int compare(User u1, User u2) {
+                return u2.status.compareTo(u1.status);
+            }
+        };
     }
 
     @Override

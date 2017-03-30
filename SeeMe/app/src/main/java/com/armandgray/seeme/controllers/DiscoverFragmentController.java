@@ -15,6 +15,7 @@ import com.armandgray.seeme.views.DiscoverFragment.DiscoverController;
 
 import java.util.Arrays;
 
+import static com.armandgray.seeme.models.User.getSortedUserList;
 import static com.armandgray.seeme.network.HttpHelper.sendRequest;
 import static com.armandgray.seeme.views.DiscoverFragment.NEW_CONNECTION_URI;
 
@@ -56,7 +57,7 @@ public class DiscoverFragmentController implements DiscoverController {
     @Override
     public void setupRvUsers(RecyclerView rvUsers, final User[] userArray) {
         rvUsers.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
-        rvUsers.setAdapter(new UserRVAdapter(activity, Arrays.asList(userArray)));
+        rvUsers.setAdapter(new UserRVAdapter(activity, getSortedUserList(userArray, User.Comparators.FIRST_NAME)));
         rvUsers.addOnItemTouchListener(new RecyclerItemClickListener(activity,
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
