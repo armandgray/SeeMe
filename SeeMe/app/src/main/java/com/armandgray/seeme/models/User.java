@@ -76,6 +76,27 @@ public class User implements Parcelable, Comparator<User> {
                 return u1.firstName.compareTo(u2.firstName);
             }
         };
+
+        public static Comparator<User> LAST_NAME = new Comparator<User>() {
+            @Override
+            public int compare(User u1, User u2) {
+                return u1.lastName.compareTo(u2.lastName);
+            }
+        };
+
+        public static Comparator<User> OCCUPATION = new Comparator<User>() {
+            @Override
+            public int compare(User u1, User u2) {
+                return u1.occupation.compareTo(u2.occupation);
+            }
+        };
+
+        public static Comparator<User> STATUS = new Comparator<User>() {
+            @Override
+            public int compare(User u1, User u2) {
+                return u1.status.compareTo(u2.status);
+            }
+        };
     }
 
     @Override
