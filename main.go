@@ -1,7 +1,6 @@
 package main
 
 import (
-  "seeme/loginuser"
   "seeme/registeruser"
   "seeme/updatenetwork"
   "seeme/newconnections"
@@ -25,7 +24,7 @@ func main()  {
 
   mux := http.NewServeMux()
   mux.HandleFunc(apiUrl + "/login", controllers.LoginController)
-  mux.HandleFunc(apiUrl + "/login/user", loginuser.LoginUserController)
+  mux.HandleFunc(apiUrl + "/login/user", controllers.LoginUserController)
   mux.HandleFunc(apiUrl + "/register", registeruser.RegisterUserController)
   mux.HandleFunc(apiUrl + "/discoverable/allusers", controllers.AllUsersController)
   mux.HandleFunc(apiUrl + "/discoverable/localusers", controllers.LocalUsersController)
