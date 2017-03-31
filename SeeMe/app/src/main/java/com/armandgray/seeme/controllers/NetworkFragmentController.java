@@ -25,14 +25,14 @@ import static com.armandgray.seeme.views.NetworkFragment.UPDATE_CONNECTION_URI;
 
 public class NetworkFragmentController implements NetworkFragment.NetworkController {
 
+    private static final String REQUEST = "request";
+    private static final String TAG = "TAG";
     private static final String USER_NOT_FOUND = "User Not Found!";
     private static final String CONNECTION_CONFIRMED = "Connection Confirmed";
     private static final String CONNECTION_DELETED = "Connection Deleted!";
     private static final String PREPARE_UPDATE_ERROR = "Prepare Update Error!";
     private static final String UPDATE_QUERY_ERROR = "Update Query Error!";
     private static final String INTERNAL_UPDATE_ERROR = "Internal Update Error!";
-    private static final String REQUEST = "request";
-    private static final String TAG = "TAG";
 
     private String[] responseArray = {USER_NOT_FOUND, PREPARE_UPDATE_ERROR, CONNECTION_CONFIRMED, CONNECTION_DELETED,
             UPDATE_QUERY_ERROR, INTERNAL_UPDATE_ERROR};

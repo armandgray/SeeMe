@@ -52,10 +52,9 @@ public class NetworkFragment extends Fragment {
         public void onReceive(Context context, Intent intent) {
             Log.i(TAG, "http Broadcast Received");
             Parcelable[] arrayExtra = intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_JSON_PAYLOAD);
-            networkArray = (User[]) arrayExtra;
-            toggleShowNetwork();
-            controller.handleHttpResponse(
-                    intent.getStringExtra(HttpService.HTTP_SERVICE_STRING_PAYLOAD), arrayExtra, rvNetwork);
+            String response = intent.getStringExtra(HttpService.HTTP_SERVICE_STRING_PAYLOAD);
+            controller.handleHttpResponse(response, arrayExtra, rvNetwork);
+            updateUI(arrayExtra, response);
         }
     };
 
@@ -106,6 +105,13 @@ public class NetworkFragment extends Fragment {
         }
         tvNoNetwork.setVisibility(View.INVISIBLE);
         rvNetwork.setVisibility(View.VISIBLE);
+    }
+
+    private void updateUI(Parcelable[] arrayExtra, String response) {
+        if (arrayExtra != null || response.equals("null")) {
+            networkArray = (User[]) arrayExtra;
+            toggleShowNetwork();
+        }
     }
 
     @Override
