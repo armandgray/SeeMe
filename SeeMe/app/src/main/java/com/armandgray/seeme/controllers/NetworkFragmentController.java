@@ -5,8 +5,11 @@ import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
+import com.armandgray.seeme.R;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.utils.RecyclerItemClickListener;
 import com.armandgray.seeme.utils.UserRVAdapter;
@@ -16,7 +19,8 @@ import java.util.Arrays;
 
 import static com.armandgray.seeme.models.User.getSortedUserList;
 import static com.armandgray.seeme.network.HttpHelper.sendRequest;
-import static com.armandgray.seeme.views.NetworkFragment.NETWORK_CONNECTION_URI;
+import static com.armandgray.seeme.views.NetworkFragment.DELETE_CONNECTION_URI;
+import static com.armandgray.seeme.views.NetworkFragment.UPDATE_CONNECTION_URI;
 
 public class NetworkFragmentController implements NetworkFragment.NetworkController {
 
@@ -26,7 +30,8 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
     private static final String PREPARE_UPDATE_ERROR = "Prepare Update Error!";
     private static final String UPDATE_QUERY_ERROR = "Update Query Error!";
     private static final String INTERNAL_UPDATE_ERROR = "Internal Update Error!";
-    public static final String TAG = "TAG";
+    private static final String REQUEST = "request";
+    private static final String TAG = "TAG";
 
     private String[] responseArray = {USER_NOT_FOUND, PREPARE_UPDATE_ERROR, CONNECTION_CONFIRMED, CONNECTION_DELETED,
             UPDATE_QUERY_ERROR, INTERNAL_UPDATE_ERROR};
@@ -39,9 +44,17 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
     }
 
     @Override
-    public void sendNetworkRequest() {
-        String url = NETWORK_CONNECTION_URI + "username=" + activeUser.getUsername();
-        sendRequest(url, activity);
+    public void sendNetworkRequest(RecyclerView rvNetwork) {
+//        String url = NETWORK_CONNECTION_URI + "username=" + activeUser.getUsername();
+//        sendRequest(url, activity);
+        User[] userArray = new User[6];
+        userArray[0] = new User("Armand", "Gray", "Creator", "danimeza@gmail.com", "1234567890", true, "", "pending");
+        userArray[1] = new User("Michael", "Mei", "Unemployed", "test@gmail.com", "1234567890", true, "", "request");
+        userArray[2] = new User("Dylan", "Goodman", "Contract Reader", "genius@gmail.com", "1234567890", true, "", "pending");
+        userArray[3] = new User("Amazing", "Gray", "Creator", "amazing@gmail.com", "1234567890", true, "", "connected");
+        userArray[4] = new User("Blue", "Gray", "Creator", "blue@gmail.com", "1234567890", true, "", "request");
+        userArray[5] = new User("Blasdue", "Grasday", "Creasdator", "bluasde@gmail.com", "1234567890", true, "", "connected");
+        handleHttpResponse(null, userArray, rvNetwork);
     }
 
     @Override
@@ -55,23 +68,39 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
 
     @Override
     public void setupRvNetwork(RecyclerView rvNetwork, final User[] networkArray) {
-        rvNetwork.setLayoutManager(new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
-        rvNetwork.setAdapter(new UserRVAdapter(activity, getSortedUserList(networkArray, User.Comparators.STATUS)));
+        rvNetwork.setLayoutManager(
+                new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
+        rvNetwork.setAdapter(new UserRVAdapter(
+                getSortedUserList(networkArray, User.Comparators.STATUS), true));
         rvNetwork.addOnItemTouchListener(new RecyclerItemClickListener(activity,
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
                         if (networkArray.length >= position) {
-                            onRecyclerItemClick(networkArray[position]);
+                            onRecyclerItemClick(networkArray[position], view);
                         }
                     }
                 }));
     }
 
     @Override
-    public void onRecyclerItemClick(User user) {
-        if (user != null) {
-            Toast.makeText(activity, user.getUsername() + " Click", Toast.LENGTH_SHORT).show();
+    public void onRecyclerItemClick(User user, View view) {
+        if (user == null) { return; }
+        if (user.getStatus().equals(REQUEST)) {
+            String url = UPDATE_CONNECTION_URI
+                    + "username=" + activeUser.getUsername()
+                    + "&connection=" + user.getUsername();
+            sendRequest(url, activity);
+        } else if (!user.isRemovable()) {
+            user.setRemovable(true);
+            LinearLayout layout = (LinearLayout) view;
+            ImageView ivStatus = (ImageView) layout.getChildAt(2);
+            ivStatus.setImageResource(R.drawable.ic_account_remove_white_48dp);
+        } else {
+            String url = DELETE_CONNECTION_URI
+                    + "username=" + activeUser.getUsername()
+                    + "&connection=" + user.getUsername();
+            sendRequest(url, activity);
         }
     }
 }

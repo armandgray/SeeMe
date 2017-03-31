@@ -35,9 +35,7 @@ import static com.armandgray.seeme.views.SeeMeFragment.LOCAL_USERS_URI;
  */
 public class DiscoverFragment extends Fragment {
 
-    public static final String UPDATE_CONNECTION_URI = API_URI + "/connection/update-status?";
     public static final String NEW_CONNECTION_URI = API_URI + "/connection/new?";
-    public static final String DELETE_CONNECTION_URI = API_URI + "/connection/delete?";
 
     private static final String TAG = "DISCOVER_FRAGMENT";
     private static final String NO_USERS_HEADER = "No Current Available Users";
@@ -142,14 +140,6 @@ public class DiscoverFragment extends Fragment {
                         + "&ssid=thetown"
                         + "&username=" + activeUser.getUsername();
                 sendRequest(url, getContext());
-//                userArray = new User[5];
-//                userArray[0] = new User("Armand", "Gray", "Creator", "danimeza@gmail.com", "1234567890", true, "");
-//                userArray[1] = new User("Michael", "Mei", "Unemployed", "test@gmail.com", "1234567890", true, "");
-//                userArray[2] = new User("Dylan", "Goodman", "Contract Reader", "genius@gmail.com", "1234567890", true, "");
-//                userArray[3] = new User("Amazing", "Gray", "Creator", "amazing@gmail.com", "1234567890", true, "");
-//                userArray[4] = new User("Blue", "Gray", "Creator", "blue@gmail.com", "1234567890", true, "");
-//                setupRvUsers(Arrays.asList(userArray));
-//                toggleShowUsers();
             }
         });
     }

@@ -32,16 +32,17 @@ import static com.armandgray.seeme.utils.StringHelper.getBoldStringBuilder;
 public class NetworkFragment extends Fragment {
 
     public static final String NETWORK_CONNECTION_URI = API_URI + "/connection/network?";
+    public static final String UPDATE_CONNECTION_URI = API_URI + "/connection/update-status?";
+    public static final String DELETE_CONNECTION_URI = API_URI + "/connection/delete?";
+
     private static final String NO_NETWORK_HEADER = "No Network Found";
     private static final String NO_NETWORK_CONTENT = "New SeeMe Users can build their network using SeeMe Touch. On the Discover screen, press connect on available users to build your network.";
     public static final String TAG = "NETWORK FRAGMENT";
 
     private RecyclerView rvNetwork;
     private TextView tvNoNetwork;
-    private LinearLayout networkContainer;
 
     private User[] networkArray;
-    private User activeUser;
     private NetworkController controller;
 
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
@@ -82,26 +83,25 @@ public class NetworkFragment extends Fragment {
     private void assignFields(View rootView) {
         rvNetwork = (RecyclerView) rootView.findViewById(R.id.rvNetwork);
         tvNoNetwork = (TextView) rootView.findViewById(R.id.tvNoNetwork);
-        networkContainer = (LinearLayout) rootView.findViewById(R.id.networkContainer);
-        activeUser = getArguments().getParcelable(ACTIVE_USER);
+        User activeUser = getArguments().getParcelable(ACTIVE_USER);
         controller = new NetworkFragmentController(getActivity(), activeUser);
     }
 
     private void toggleShowNetwork() {
         if (networkArray == null || networkArray.length == 0) {
-            tvNoNetwork.setVisibility(View.VISIBLE);
-            networkContainer.setVisibility(View.INVISIBLE);
+            tvNoNetwork.setVisibility(View.INVISIBLE);
+            rvNetwork.setVisibility(View.VISIBLE);
             return;
         }
         tvNoNetwork.setVisibility(View.INVISIBLE);
-        networkContainer.setVisibility(View.VISIBLE);
+        rvNetwork.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void onResume() {
         super.onResume();
         if (getUserVisibleHint()) {
-            controller.sendNetworkRequest();
+            controller.sendNetworkRequest(rvNetwork);
             LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
                     .registerReceiver(httpBroadcastReceiver,
                             new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
@@ -118,9 +118,9 @@ public class NetworkFragment extends Fragment {
     }
 
     public interface NetworkController {
-        void sendNetworkRequest();
+        void sendNetworkRequest(RecyclerView rvNetwork);
         void handleHttpResponse(String response, Parcelable[] arrayExtra, RecyclerView rvNetwork);
         void setupRvNetwork(RecyclerView rvNetwork, final User[] userArray);
-        void onRecyclerItemClick(User user);
+        void onRecyclerItemClick(User user, View view);
     }
 }
