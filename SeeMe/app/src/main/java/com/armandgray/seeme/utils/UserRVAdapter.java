@@ -37,6 +37,8 @@ public class UserRVAdapter extends
 
     private ArrayList<User> listUsers;
     private boolean isSortedByStatus;
+    private UserAdapterHelper helper;
+
     private int firstRequestIndex;
     private int firstPendingIndex;
     private int firstConnectedIndex;
@@ -44,6 +46,7 @@ public class UserRVAdapter extends
     public UserRVAdapter(ArrayList<User> listUsers, boolean isSortedByStatus) {
         this.listUsers = listUsers;
         this.isSortedByStatus = isSortedByStatus;
+        this.helper = new UserAdapterHelper();
         assignPivotIndices(isSortedByStatus);
     }
 
