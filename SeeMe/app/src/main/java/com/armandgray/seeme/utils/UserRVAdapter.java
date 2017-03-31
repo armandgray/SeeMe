@@ -1,5 +1,6 @@
 package com.armandgray.seeme.utils;
 
+import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -15,7 +16,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserRVAdapter extends
-        RecyclerView.Adapter<UserRVAdapter.ItemViewHolder> {
+        RecyclerView.Adapter<ViewHolder> {
 
     private static final int TYPE_ITEM = 0;
     private static final int TYPE_REQUEST_HEADER = 1;
@@ -61,14 +62,14 @@ public class UserRVAdapter extends
     }
 
     @Override
-    public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         switch (viewType) {
             case TYPE_ITEM:
                 return new ItemViewHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.user_listitem, parent, false));
             case TYPE_REQUEST_HEADER:
                 return new HeaderViewHolder(LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.user_listitem, parent, false));
+                        .inflate(R.layout.header_layout, parent, false));
             case TYPE_PENDING_HEADER:
                 return new ItemViewHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.user_listitem, parent, false));
@@ -81,33 +82,36 @@ public class UserRVAdapter extends
     }
 
     @Override
-    public void onBindViewHolder(ItemViewHolder viewHolder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, int position) {
         User user = listUsers.get(position);
 
-        ImageView ivUserProfile = viewHolder.ivUserProfile;
-        TextView tvUserName = viewHolder.tvUserName;
-        TextView tvRole = viewHolder.tvRole;
-        ImageView ivStatus = viewHolder.ivStatus;
+        if (holder instanceof ItemViewHolder) {
+            ItemViewHolder viewHolder = (ItemViewHolder) holder;
+            ImageView ivUserProfile = viewHolder.ivUserProfile;
+            TextView tvUserName = viewHolder.tvUserName;
+            TextView tvRole = viewHolder.tvOccupation;
+            ImageView ivStatus = viewHolder.ivStatus;
 
-        tvUserName.setText(user.getFirstName() + " " + user.getLastName());
-        tvRole.setText("Work: " + user.getOccupation());
+            tvUserName.setText(user.getFirstName() + " " + user.getLastName());
+            tvRole.setText("Work: " + user.getOccupation());
 
-        switch (user.getStatus()) {
-            case PENDING:
-                ivStatus.setImageResource(R.drawable.ic_account_convert_white_48dp);
-                return;
-            case CONNECTED:
-                ivStatus.setImageResource(R.drawable.ic_account_check_white_48dp);
-                return;
-            case REQUEST:
-                if (showRequest) {
-                    ivStatus.setImageResource(R.drawable.ic_account_plus_white_48dp);
+            switch (user.getStatus()) {
+                case PENDING:
+                    ivStatus.setImageResource(R.drawable.ic_account_convert_white_48dp);
                     return;
-                }
-                ivStatus.setImageResource(R.drawable.ic_account_check_white_48dp);
-                return;
-            case UNKNOWN:
-                ivStatus.setImageResource(R.drawable.ic_account_plus_white_48dp);
+                case CONNECTED:
+                    ivStatus.setImageResource(R.drawable.ic_account_check_white_48dp);
+                    return;
+                case REQUEST:
+                    if (showRequest) {
+                        ivStatus.setImageResource(R.drawable.ic_account_plus_white_48dp);
+                        return;
+                    }
+                    ivStatus.setImageResource(R.drawable.ic_account_check_white_48dp);
+                    return;
+                case UNKNOWN:
+                    ivStatus.setImageResource(R.drawable.ic_account_plus_white_48dp);
+            }
         }
     }
 
@@ -119,14 +123,14 @@ public class UserRVAdapter extends
     static class ItemViewHolder extends RecyclerView.ViewHolder {
         ImageView ivUserProfile;
         TextView tvUserName;
-        TextView tvRole;
+        TextView tvOccupation;
         ImageView ivStatus;
 
         ItemViewHolder(View itemView) {
             super(itemView);
             ivUserProfile = (ImageView) itemView.findViewById(R.id.ivUserProfile);
             tvUserName = (TextView) itemView.findViewById(R.id.tvFullName);
-            tvRole = (TextView) itemView.findViewById(R.id.tvOccupation);
+            tvOccupation = (TextView) itemView.findViewById(R.id.tvOccupation);
             ivStatus = (ImageView) itemView.findViewById(R.id.ivStatus);
         }
 
