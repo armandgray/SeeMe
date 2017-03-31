@@ -22,9 +22,7 @@ func RenewUserNetwork(r *http.Request) (error) {
 	db := GetDatabaseInstance()
   var networkId string
   row := db.QueryRow("select network_id from networks where network_id = ?", r.FormValue("networkId"))
-  if err := row.Scan(&networkId); err != nil {
-    return errors.New("Internal Network Error!")
-  }
+  row.Scan(&networkId)
 
   if networkId == "" {
     if err := insertNewNetwork(r); err != nil {
