@@ -27,7 +27,13 @@ public class UserRVAdapter extends
     private static final String CONNECTED = "connected";
     private static final String PENDING = "pending";
     private static final String REQUEST = "request";
+
+    private static final String CONNECTION_REQUESTS = "Connection Requests";
+    private static final String PENDING_RESPONSE = "Pending Response";
+    private static final String CURRENT_NETWORK = "Current Network";
+
     private static final String TAG = "USER_RV_ADAPTER";
+
     private List<User> listUsers;
 
     private boolean showRequest;
@@ -115,7 +121,17 @@ public class UserRVAdapter extends
         } else if (holder instanceof HeaderViewHolder) {
             HeaderViewHolder viewHolder = (HeaderViewHolder) holder;
             TextView tvHeader = viewHolder.tvHeader;
-            tvHeader.setText("HEADER");
+            switch (viewHolder.type) {
+                case TYPE_REQUEST_HEADER:
+                    tvHeader.setText(CONNECTION_REQUESTS);
+                    return;
+                case TYPE_PENDING_HEADER:
+                    tvHeader.setText(PENDING_RESPONSE);
+                    return;
+                case TYPE_CONNECTED_HEADER:
+                    tvHeader.setText(CURRENT_NETWORK);
+                    return;
+            }
         }
     }
 
