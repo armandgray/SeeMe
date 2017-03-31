@@ -22,12 +22,11 @@ public class UserRVAdapter extends
     private static final int TYPE_PENDING_HEADER = 2;
     private static final int TYPE_CONNECTED_HEADER = 3;
 
-    public static final String UNKNOWN = "unknown";
-    public static final String CONNECTED = "connected";
-    public static final String PENDING = "pending";
-    public static final String REQUEST = "request";
+    static final String UNKNOWN = "unknown";
+    static final String CONNECTED = "connected";
+    static final String PENDING = "pending";
+    static final String REQUEST = "request";
 
-    private static final String AVAILABLE_USERS = "Available Users";
     private static final String CONNECTION_REQUESTS = "Connection Requests";
     private static final String PENDING_RESPONSE = "Pending Response";
     private static final String CURRENT_NETWORK = "Current Network";
@@ -35,13 +34,11 @@ public class UserRVAdapter extends
     private static final String TAG = "USER_RV_ADAPTER";
 
     private ArrayList<User> listUsers;
-    private boolean isSortedByStatus;
     private RecyclerViewHelper helper;
     private HashMap<String, Integer> mapPivotIndices;
 
     public UserRVAdapter(ArrayList<User> listUsers, boolean isSortedByStatus) {
         this.listUsers = listUsers;
-        this.isSortedByStatus = isSortedByStatus;
         this.helper = new UserAdapterHelper(isSortedByStatus);
         this.mapPivotIndices = new HashMap<>();
 
