@@ -37,7 +37,7 @@ public class UserRVAdapter extends
 
     private ArrayList<User> listUsers;
     private boolean isSortedByStatus;
-    private boolean isfirstUserRequest;
+    private int firstRequestIndex;
     private int firstPendingIndex;
     private int firstConnectedIndex;
 
@@ -52,10 +52,10 @@ public class UserRVAdapter extends
         if (isSortedByStatus) {
             statusList = getUserStatusList(listUsers);
         }
-        isfirstUserRequest = statusList.indexOf("request") == 0;
-        if (isfirstUserRequest) {
-            listUsers.add(0, listUsers.get(0));
-            statusList.add(0, "");
+        firstRequestIndex = statusList.indexOf("request");
+        if (firstRequestIndex != -1) {
+            listUsers.add(firstRequestIndex, listUsers.get(firstRequestIndex));
+            statusList.add(firstRequestIndex, "");
         }
         firstPendingIndex = statusList.indexOf("pending");
         if (firstPendingIndex != -1) {
@@ -80,7 +80,7 @@ public class UserRVAdapter extends
 
     @Override
     public int getItemViewType(int position) {
-        if (isfirstUserRequest && position == 0) {
+        if (position == firstRequestIndex) {
             return TYPE_REQUEST_HEADER;
         } else if (position == firstPendingIndex) {
             return TYPE_PENDING_HEADER;
