@@ -4,10 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 public class User implements Parcelable, Comparator<User> {
 
@@ -19,6 +18,7 @@ public class User implements Parcelable, Comparator<User> {
     private final boolean discoverable;
     private final String network;
     private String status;
+    private boolean isRemovable;
 
     public User(String firstName, String lastName, String occupation, String username, String secret, boolean discoverable, String network, String status) {
         this.firstName = firstName;
@@ -63,9 +63,20 @@ public class User implements Parcelable, Comparator<User> {
         return status;
     }
 
+    public boolean isRemovable() {
+        return isRemovable;
+    }
+
+    public void setRemovable(boolean removable) {
+        this.isRemovable = removable;
+    }
+
     @NonNull
-    public static List<User> getSortedUserList(User[] array, Comparator comparator) {
-        List<User> list = Arrays.asList(array);
+    public static ArrayList<User> getSortedUserList(User[] array, Comparator<User> comparator) {
+        ArrayList<User> list = new ArrayList<>();
+        for (User user : array) {
+            list.add(user);
+        }
         Collections.sort(list, comparator);
         return list;
     }
@@ -125,6 +136,7 @@ public class User implements Parcelable, Comparator<User> {
         dest.writeByte(this.discoverable ? (byte) 1 : (byte) 0);
         dest.writeString(this.network);
         dest.writeString(this.status);
+        dest.writeByte(this.isRemovable ? (byte) 1 : (byte) 0);
     }
 
     protected User(Parcel in) {
@@ -136,6 +148,7 @@ public class User implements Parcelable, Comparator<User> {
         this.discoverable = in.readByte() != 0;
         this.network = in.readString();
         this.status = in.readString();
+        this.isRemovable = in.readByte() != 0;
     }
 
     public static final Parcelable.Creator<User> CREATOR = new Parcelable.Creator<User>() {
