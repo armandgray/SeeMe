@@ -12,6 +12,7 @@ import com.armandgray.seeme.R;
 import com.armandgray.seeme.models.User;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class UserRVAdapter extends
@@ -37,15 +38,14 @@ public class UserRVAdapter extends
     private ArrayList<User> listUsers;
     private boolean isSortedByStatus;
     private RecyclerViewHelper helper;
-
-    private int firstRequestIndex;
-    private int firstPendingIndex;
-    private int firstConnectedIndex;
+    private HashMap<String, Integer> mapPivotIndices;
 
     public UserRVAdapter(ArrayList<User> listUsers, boolean isSortedByStatus) {
         this.listUsers = listUsers;
         this.isSortedByStatus = isSortedByStatus;
         this.helper = new UserAdapterHelper(isSortedByStatus);
+        this.mapPivotIndices = new HashMap<>();
+
         assignPivotIndices(isSortedByStatus);
     }
 
@@ -55,12 +55,12 @@ public class UserRVAdapter extends
             statusList = helper.getUserStatusList(listUsers);
         }
 
-        firstRequestIndex = statusList.indexOf(REQUEST);
-        addHeaderPlaceholder(firstRequestIndex, statusList);
-        firstPendingIndex = statusList.indexOf(PENDING);
-        addHeaderPlaceholder(firstPendingIndex, statusList);
-        firstConnectedIndex = statusList.indexOf(CONNECTED);
-        addHeaderPlaceholder(firstConnectedIndex, statusList);
+        mapPivotIndices.put(REQUEST, statusList.indexOf(REQUEST));
+        addHeaderPlaceholder(mapPivotIndices.get(REQUEST), statusList);
+        mapPivotIndices.put(PENDING, statusList.indexOf(PENDING));
+        addHeaderPlaceholder(mapPivotIndices.get(PENDING), statusList);
+        mapPivotIndices.put(CONNECTED, statusList.indexOf(CONNECTED));
+        addHeaderPlaceholder(mapPivotIndices.get(CONNECTED), statusList);
     }
 
     private void addHeaderPlaceholder(int index, List<String> statusList) {
@@ -72,11 +72,11 @@ public class UserRVAdapter extends
 
     @Override
     public int getItemViewType(int position) {
-        if (position == firstRequestIndex) {
+        if (position == mapPivotIndices.get(REQUEST)) {
             return TYPE_REQUEST_HEADER;
-        } else if (position == firstPendingIndex) {
+        } else if (position == mapPivotIndices.get(PENDING)) {
             return TYPE_PENDING_HEADER;
-        } else if (position == firstConnectedIndex) {
+        } else if (position == mapPivotIndices.get(CONNECTED)) {
             return TYPE_CONNECTED_HEADER;
         }
         return TYPE_ITEM;
@@ -108,7 +108,6 @@ public class UserRVAdapter extends
 
         if (holder instanceof ItemViewHolder) {
             ItemViewHolder viewHolder = (ItemViewHolder) holder;
-            ImageView ivUserProfile = viewHolder.ivUserProfile;
             TextView tvUserName = viewHolder.tvUserName;
             TextView tvRole = viewHolder.tvOccupation;
             ImageView ivStatus = viewHolder.ivStatus;
