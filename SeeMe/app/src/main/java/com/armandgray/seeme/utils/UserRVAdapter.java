@@ -37,7 +37,7 @@ public class UserRVAdapter extends
 
     private ArrayList<User> listUsers;
     private boolean isSortedByStatus;
-    private UserAdapterHelper helper;
+    private RecyclerViewHelper helper;
 
     private int firstRequestIndex;
     private int firstPendingIndex;
@@ -46,7 +46,7 @@ public class UserRVAdapter extends
     public UserRVAdapter(ArrayList<User> listUsers, boolean isSortedByStatus) {
         this.listUsers = listUsers;
         this.isSortedByStatus = isSortedByStatus;
-        this.helper = new UserAdapterHelper();
+        this.helper = new UserAdapterHelper(listUsers, isSortedByStatus);
         assignPivotIndices(isSortedByStatus);
     }
 
@@ -190,6 +190,9 @@ public class UserRVAdapter extends
             tvHeader = (TextView) itemView.findViewById(R.id.tvHeader);
             type = headerType;
         }
+    }
+
+    public interface RecyclerViewHelper {
 
     }
 }
