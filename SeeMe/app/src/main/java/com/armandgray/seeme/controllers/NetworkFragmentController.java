@@ -16,6 +16,7 @@ import com.armandgray.seeme.utils.RecyclerItemClickListener;
 import com.armandgray.seeme.utils.UserRVAdapter;
 import com.armandgray.seeme.views.NetworkFragment;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 import static com.armandgray.seeme.models.User.getSortedUserList;
@@ -75,11 +76,11 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
-                        Log.i(TAG, String.valueOf(position));
                         boolean isHeaderPosition =
                                 adapter.getMapPivotIndices().containsValue(position);
-                        if (networkArray.length >= position && !isHeaderPosition) {
-                            onRecyclerItemClick(adapter.getListUsers().get(position), view);
+                        ArrayList<User> users = adapter.getListUsers();
+                        if (users.size() >= position && !isHeaderPosition) {
+                            onRecyclerItemClick(users.get(position), view);
                         }
                     }
                 }));
