@@ -62,8 +62,22 @@ public class UserRVAdapter extends
 
     @Override
     public ItemViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        switch (viewType) {
+            case TYPE_ITEM:
                 return new ItemViewHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.user_listitem, parent, false));
+            case TYPE_REQUEST_HEADER:
+                return new ItemViewHolder(LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.user_listitem, parent, false));
+            case TYPE_PENDING_HEADER:
+                return new ItemViewHolder(LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.user_listitem, parent, false));
+            case TYPE_CONNECTED_HEADER:
+                return new ItemViewHolder(LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.user_listitem, parent, false));
+        }
+
+        throw new RuntimeException("There is no type that matches the type " + viewType + " + make sure your using types correctly");
     }
 
     @Override
