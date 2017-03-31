@@ -20,7 +20,6 @@ import java.util.Arrays;
 import static com.armandgray.seeme.models.User.getSortedUserList;
 import static com.armandgray.seeme.network.HttpHelper.sendRequest;
 import static com.armandgray.seeme.views.NetworkFragment.DELETE_CONNECTION_URI;
-import static com.armandgray.seeme.views.NetworkFragment.NETWORK_CONNECTION_URI;
 import static com.armandgray.seeme.views.NetworkFragment.UPDATE_CONNECTION_URI;
 
 public class NetworkFragmentController implements NetworkFragment.NetworkController {
@@ -45,9 +44,17 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
     }
 
     @Override
-    public void sendNetworkRequest() {
-        String url = NETWORK_CONNECTION_URI + "username=" + activeUser.getUsername();
-        sendRequest(url, activity);
+    public void sendNetworkRequest(RecyclerView rvNetwork) {
+//        String url = NETWORK_CONNECTION_URI + "username=" + activeUser.getUsername();
+//        sendRequest(url, activity);
+        User[] userArray = new User[6];
+        userArray[0] = new User("Armand", "Gray", "Creator", "danimeza@gmail.com", "1234567890", true, "", "pending");
+        userArray[1] = new User("Michael", "Mei", "Unemployed", "test@gmail.com", "1234567890", true, "", "request");
+        userArray[2] = new User("Dylan", "Goodman", "Contract Reader", "genius@gmail.com", "1234567890", true, "", "pending");
+        userArray[3] = new User("Amazing", "Gray", "Creator", "amazing@gmail.com", "1234567890", true, "", "connected");
+        userArray[4] = new User("Blue", "Gray", "Creator", "blue@gmail.com", "1234567890", true, "", "request");
+        userArray[5] = new User("Blasdue", "Grasday", "Creasdator", "bluasde@gmail.com", "1234567890", true, "", "connected");
+        handleHttpResponse(null, userArray, rvNetwork);
     }
 
     @Override

@@ -1,7 +1,7 @@
 package com.armandgray.seeme.utils;
 
-import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +16,16 @@ import java.util.List;
 public class UserRVAdapter extends
         RecyclerView.Adapter<UserRVAdapter.ViewHolder> {
 
+    private static final int TYPE_REQUEST = 0;
+    private static final int TYPE_PENDING = 1;
+    private static final int TYPE_CONNECTED = 2;
+
     private static final String UNKNOWN = "unknown";
     private static final String CONNECTED = "connected";
     private static final String PENDING = "pending";
     private static final String REQUEST = "request";
+    private static final String TAG = "USER_RV_ADAPTER";
+
     private List<User> listUsers;
     private boolean showRequest;
 
@@ -27,6 +33,12 @@ public class UserRVAdapter extends
     public UserRVAdapter(List<User> listUsers, boolean showRequest) {
         this.listUsers = listUsers;
         this.showRequest = showRequest;
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        Log.i(TAG, String.valueOf(listUsers.get(position)));
+        return super.getItemViewType(position);
     }
 
     @Override

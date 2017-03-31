@@ -140,14 +140,6 @@ public class DiscoverFragment extends Fragment {
                         + "&ssid=thetown"
                         + "&username=" + activeUser.getUsername();
                 sendRequest(url, getContext());
-//                userArray = new User[5];
-//                userArray[0] = new User("Armand", "Gray", "Creator", "danimeza@gmail.com", "1234567890", true, "");
-//                userArray[1] = new User("Michael", "Mei", "Unemployed", "test@gmail.com", "1234567890", true, "");
-//                userArray[2] = new User("Dylan", "Goodman", "Contract Reader", "genius@gmail.com", "1234567890", true, "");
-//                userArray[3] = new User("Amazing", "Gray", "Creator", "amazing@gmail.com", "1234567890", true, "");
-//                userArray[4] = new User("Blue", "Gray", "Creator", "blue@gmail.com", "1234567890", true, "");
-//                setupRvUsers(Arrays.asList(userArray));
-//                toggleShowUsers();
             }
         });
     }

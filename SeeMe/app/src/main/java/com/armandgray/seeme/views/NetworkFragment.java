@@ -91,8 +91,8 @@ public class NetworkFragment extends Fragment {
 
     private void toggleShowNetwork() {
         if (networkArray == null || networkArray.length == 0) {
-            tvNoNetwork.setVisibility(View.VISIBLE);
-            networkContainer.setVisibility(View.INVISIBLE);
+            tvNoNetwork.setVisibility(View.INVISIBLE);
+            networkContainer.setVisibility(View.VISIBLE);
             return;
         }
         tvNoNetwork.setVisibility(View.INVISIBLE);
@@ -103,7 +103,7 @@ public class NetworkFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if (getUserVisibleHint()) {
-            controller.sendNetworkRequest();
+            controller.sendNetworkRequest(rvNetwork);
             LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
                     .registerReceiver(httpBroadcastReceiver,
                             new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
@@ -120,7 +120,7 @@ public class NetworkFragment extends Fragment {
     }
 
     public interface NetworkController {
-        void sendNetworkRequest();
+        void sendNetworkRequest(RecyclerView rvNetwork);
         void handleHttpResponse(String response, Parcelable[] arrayExtra, RecyclerView rvNetwork);
         void setupRvNetwork(RecyclerView rvNetwork, final User[] userArray);
         void onRecyclerItemClick(User user, View view);
