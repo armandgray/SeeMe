@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -66,10 +67,15 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
         final UserRVAdapter adapter = new UserRVAdapter(
                 getSortedUserList(networkArray, User.Comparators.STATUS), true);
         rvNetwork.setAdapter(adapter);
+        addRvItemClickListener(rvNetwork, networkArray, adapter);
+    }
+
+    private void addRvItemClickListener(RecyclerView rvNetwork, final User[] networkArray, final UserRVAdapter adapter) {
         rvNetwork.addOnItemTouchListener(new RecyclerItemClickListener(activity,
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
                     public void onItemClick(View view, int position) {
+                        Log.i(TAG, String.valueOf(position));
                         boolean isHeaderPosition =
                                 adapter.getMapPivotIndices().containsValue(position);
                         if (networkArray.length >= position && !isHeaderPosition) {
