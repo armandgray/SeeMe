@@ -1,19 +1,7 @@
 package main
 
 import (
-  "seeme/login"
-  "seeme/loginuser"
-  "seeme/registeruser"
-  "seeme/allusers"
-  "seeme/localusers"
-  "seeme/updatenetwork"
-  "seeme/newconnections"
-  "seeme/deleteconnection"
-  "seeme/updateconnection"
-  "seeme/connectionnetwork"
-  "seeme/profiledelete"
-  "seeme/profileupdate"
-  "seeme/feedback"
+  "seeme/controllers"
   "seeme/db"
 
   "fmt"
@@ -29,19 +17,19 @@ func main()  {
   apiUrl := "/seeme/api"
 
   mux := http.NewServeMux()
-  mux.HandleFunc(apiUrl + "/login", login.LoginController)
-  mux.HandleFunc(apiUrl + "/login/user", loginuser.LoginUserController)
-  mux.HandleFunc(apiUrl + "/register", registeruser.RegisterUserController)
-  mux.HandleFunc(apiUrl + "/discoverable/allusers", allusers.AllUsersController)
-  mux.HandleFunc(apiUrl + "/discoverable/localusers", localusers.LocalUsersController)
-  mux.HandleFunc(apiUrl + "/discoverable/update-network", updatenetwork.UpdateUserNetworkController)
-  mux.HandleFunc(apiUrl + "/connection/new", newconnections.NewConnectionController)
-  mux.HandleFunc(apiUrl + "/connection/update-status", updateconnection.UpdateConnectionStatusController)
-  mux.HandleFunc(apiUrl + "/connection/delete", deleteconnection.DeleteConnectionController)
-  mux.HandleFunc(apiUrl + "/connection/network", connectionnetwork.ConnectionNetworkController)
-  mux.HandleFunc(apiUrl + "/profile/delete", profiledelete.ProfileDeleteController)
-  mux.HandleFunc(apiUrl + "/profile/update", profileupdate.ProfileUpdateController)
-  mux.HandleFunc(apiUrl + "/feedback", feedback.FeedbackController)
+  mux.HandleFunc(apiUrl + "/login", controllers.LoginController)
+  mux.HandleFunc(apiUrl + "/login/user", controllers.LoginUserController)
+  mux.HandleFunc(apiUrl + "/register", controllers.RegisterUserController)
+  mux.HandleFunc(apiUrl + "/discoverable/allusers", controllers.AllUsersController)
+  mux.HandleFunc(apiUrl + "/discoverable/localusers", controllers.LocalUsersController)
+  mux.HandleFunc(apiUrl + "/discoverable/update-network", controllers.UpdateUserNetworkController)
+  mux.HandleFunc(apiUrl + "/connection/new", controllers.NewConnectionController)
+  mux.HandleFunc(apiUrl + "/connection/update-status", controllers.UpdateConnectionStatusController)
+  mux.HandleFunc(apiUrl + "/connection/delete", controllers.DeleteConnectionController)
+  mux.HandleFunc(apiUrl + "/connection/network", controllers.ConnectionNetworkController)
+  mux.HandleFunc(apiUrl + "/profile/delete", controllers.ProfileDeleteController)
+  mux.HandleFunc(apiUrl + "/profile/update", controllers.ProfileUpdateController)
+  mux.HandleFunc(apiUrl + "/feedback", controllers.FeedbackController)
 
   n := negroni.Classic()
   n.Use(negroni.HandlerFunc(db.VerifyMySQLConnection))

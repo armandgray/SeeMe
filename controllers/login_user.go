@@ -1,4 +1,4 @@
-package loginuser
+package controllers
 
 import (
   "seeme/models"

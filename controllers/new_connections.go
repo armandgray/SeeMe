@@ -1,4 +1,4 @@
-package newconnections
+package controllers
 
 import (
   "seeme/db"
@@ -14,7 +14,7 @@ func NewConnectionController(w http.ResponseWriter, r *http.Request) {
     w.Write([]byte(err.Error()))
     return
   }
-  if err := VerifyNewConnection(username, connection); err != nil {
+  if err := helpers.VerifyNewConnection(username, connection); err != nil {
     w.Write([]byte(err.Error()))
     return
   }

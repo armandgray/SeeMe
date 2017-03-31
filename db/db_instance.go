@@ -52,7 +52,7 @@ func GetQueryUserList(query string, cols int, params ...interface{}) ([]User, er
   var userList []User
   var user User
   var network sql.NullString
-  var role sql.NullString
+  var occupation sql.NullString
   var status sql.NullString
 
   rows, err := db.Query(query, params...)
@@ -62,20 +62,20 @@ func GetQueryUserList(query string, cols int, params ...interface{}) ([]User, er
   defer rows.Close()
   for rows.Next() {
     if cols == 8 {
-      if err = rows.Scan(&user.FirstName, &user.LastName, &role, &user.Username, 
+      if err = rows.Scan(&user.FirstName, &user.LastName, &occupation, &user.Username, 
                           &user.Secret, &user.Discoverable, &network, &status); err != nil {
         return []User{}, err
       }
     } else {
-      if err = rows.Scan(&user.FirstName, &user.LastName, &role, &user.Username, 
+      if err = rows.Scan(&user.FirstName, &user.LastName, &occupation, &user.Username, 
                           &user.Secret, &user.Discoverable, &network); err != nil {
         return []User{}, err
       }
     }
 
-    if role.Valid {
-      if val, err := role.Value(); err == nil {
-        user.Role = val.(string)
+    if occupation.Valid {
+      if val, err := occupation.Value(); err == nil {
+        user.Occupation = val.(string)
       }
     }
     if network.Valid {

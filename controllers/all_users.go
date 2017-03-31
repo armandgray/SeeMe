@@ -1,4 +1,4 @@
-package allusers
+package controllers
 
 import (
 	"seeme/db"

@@ -11,8 +11,7 @@ type User struct {
   Secret []byte
   Discoverable bool
   Status string
-
-  Role string
+  Occupation string
   Network string
 }
 

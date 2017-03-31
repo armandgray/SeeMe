@@ -1,4 +1,4 @@
-package connectionnetwork
+package controllers
 
 import (
   "seeme/db"
