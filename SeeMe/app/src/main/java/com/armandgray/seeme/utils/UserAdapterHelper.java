@@ -6,11 +6,18 @@ import java.util.ArrayList;
 
 public class UserAdapterHelper implements UserRVAdapter.RecyclerViewHelper {
 
-    private ArrayList<User> listUsers;
     private boolean isSortedByStatus;
 
-    public UserAdapterHelper(ArrayList<User> listUsers, boolean isSortedByStatus) {
-        this.listUsers = listUsers;
+    public UserAdapterHelper(boolean isSortedByStatus) {
         this.isSortedByStatus = isSortedByStatus;
+    }
+
+    @Override
+    public ArrayList<String> getUserStatusList(ArrayList<User> listUsers) {
+        ArrayList<String> statusList = new ArrayList<>();
+        for (int i = 0; i < listUsers.size(); i++) {
+            statusList.add(listUsers.get(i).getStatus());
+        }
+        return statusList;
     }
 }

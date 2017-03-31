@@ -1,8 +1,7 @@
 package com.armandgray.seeme.utils;
 
-import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
+import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -46,14 +45,14 @@ public class UserRVAdapter extends
     public UserRVAdapter(ArrayList<User> listUsers, boolean isSortedByStatus) {
         this.listUsers = listUsers;
         this.isSortedByStatus = isSortedByStatus;
-        this.helper = new UserAdapterHelper(listUsers, isSortedByStatus);
+        this.helper = new UserAdapterHelper(isSortedByStatus);
         assignPivotIndices(isSortedByStatus);
     }
 
     private void assignPivotIndices(boolean isSortedByStatus) {
         List<String> statusList = new ArrayList<>();
         if (isSortedByStatus) {
-            statusList = getUserStatusList();
+            statusList = helper.getUserStatusList(listUsers);
         }
 
         firstRequestIndex = statusList.indexOf(REQUEST);
@@ -62,15 +61,6 @@ public class UserRVAdapter extends
         addHeaderPlaceholder(firstPendingIndex, statusList);
         firstConnectedIndex = statusList.indexOf(CONNECTED);
         addHeaderPlaceholder(firstConnectedIndex, statusList);
-    }
-
-    private ArrayList<String> getUserStatusList() {
-        ArrayList<String> statusList = new ArrayList<>();
-        for (int i = 0; i < listUsers.size(); i++) {
-            statusList.add(listUsers.get(i).getStatus());
-            Log.i(TAG, statusList.get(i));
-        }
-        return statusList;
     }
 
     private void addHeaderPlaceholder(int index, List<String> statusList) {
@@ -155,7 +145,6 @@ public class UserRVAdapter extends
                     return;
                 case TYPE_CONNECTED_HEADER:
                     tvHeader.setText(CURRENT_NETWORK);
-                    return;
             }
         }
     }
@@ -165,7 +154,7 @@ public class UserRVAdapter extends
         return listUsers.size();
     }
 
-    static class ItemViewHolder extends RecyclerView.ViewHolder {
+    private static class ItemViewHolder extends RecyclerView.ViewHolder {
         ImageView ivUserProfile;
         TextView tvUserName;
         TextView tvOccupation;
@@ -181,7 +170,7 @@ public class UserRVAdapter extends
 
     }
 
-    static class HeaderViewHolder extends RecyclerView.ViewHolder {
+    private static class HeaderViewHolder extends RecyclerView.ViewHolder {
         TextView tvHeader;
         int type;
 
@@ -192,7 +181,7 @@ public class UserRVAdapter extends
         }
     }
 
-    public interface RecyclerViewHelper {
-
+    interface RecyclerViewHelper {
+        List<String> getUserStatusList(ArrayList<User> listUsers);
     }
 }
