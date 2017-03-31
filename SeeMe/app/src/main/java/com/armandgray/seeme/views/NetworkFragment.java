@@ -41,7 +41,6 @@ public class NetworkFragment extends Fragment {
 
     private RecyclerView rvNetwork;
     private TextView tvNoNetwork;
-    private LinearLayout networkContainer;
 
     private User[] networkArray;
     private NetworkController controller;
@@ -84,7 +83,6 @@ public class NetworkFragment extends Fragment {
     private void assignFields(View rootView) {
         rvNetwork = (RecyclerView) rootView.findViewById(R.id.rvNetwork);
         tvNoNetwork = (TextView) rootView.findViewById(R.id.tvNoNetwork);
-        networkContainer = (LinearLayout) rootView.findViewById(R.id.networkContainer);
         User activeUser = getArguments().getParcelable(ACTIVE_USER);
         controller = new NetworkFragmentController(getActivity(), activeUser);
     }
@@ -92,11 +90,11 @@ public class NetworkFragment extends Fragment {
     private void toggleShowNetwork() {
         if (networkArray == null || networkArray.length == 0) {
             tvNoNetwork.setVisibility(View.INVISIBLE);
-            networkContainer.setVisibility(View.VISIBLE);
+            rvNetwork.setVisibility(View.VISIBLE);
             return;
         }
         tvNoNetwork.setVisibility(View.INVISIBLE);
-        networkContainer.setVisibility(View.VISIBLE);
+        rvNetwork.setVisibility(View.VISIBLE);
     }
 
     @Override
