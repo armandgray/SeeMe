@@ -34,23 +34,24 @@ public class UserRVAdapter extends
 
     private static final String TAG = "USER_RV_ADAPTER";
 
-    private List<User> listUsers;
-
+    private ArrayList<User> listUsers;
     private boolean showRequest;
-    private List<String> statusList;
     private final boolean isfirstUserRequest;
     private final int firstPendingIndex;
     private final int firstConnectedIndex;
 
-    public UserRVAdapter(List<User> listUsers, boolean showRequest) {
+    public UserRVAdapter(ArrayList<User> listUsers, boolean showRequest) {
         this.listUsers = listUsers;
         this.showRequest = showRequest;
-        this.statusList = new ArrayList<>();
+        List<String> statusList = new ArrayList<>();
         for (int i = 0; i < listUsers.size(); i++) {
             statusList.add(listUsers.get(i).getStatus());
             Log.i(TAG, statusList.get(i));
         }
         isfirstUserRequest = statusList.indexOf("request") == 0;
+        if (isfirstUserRequest) {
+            listUsers.add(0, listUsers.get(0));
+        }
         firstPendingIndex = statusList.indexOf("pending");
         firstConnectedIndex = statusList.indexOf("connected");
     }

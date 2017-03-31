@@ -4,10 +4,9 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
-import java.util.List;
 
 public class User implements Parcelable, Comparator<User> {
 
@@ -73,8 +72,11 @@ public class User implements Parcelable, Comparator<User> {
     }
 
     @NonNull
-    public static List<User> getSortedUserList(User[] array, Comparator comparator) {
-        List<User> list = Arrays.asList(array);
+    public static ArrayList<User> getSortedUserList(User[] array, Comparator<User> comparator) {
+        ArrayList<User> list = new ArrayList<>();
+        for (User user : array) {
+            list.add(user);
+        }
         Collections.sort(list, comparator);
         return list;
     }
