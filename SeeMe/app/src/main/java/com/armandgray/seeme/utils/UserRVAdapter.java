@@ -51,9 +51,18 @@ public class UserRVAdapter extends
         isfirstUserRequest = statusList.indexOf("request") == 0;
         if (isfirstUserRequest) {
             listUsers.add(0, listUsers.get(0));
+            statusList.add(0, "");
         }
         firstPendingIndex = statusList.indexOf("pending");
+        if (firstPendingIndex != -1) {
+            listUsers.add(firstPendingIndex, listUsers.get(firstPendingIndex));
+            statusList.add(firstPendingIndex, "");
+        }
         firstConnectedIndex = statusList.indexOf("connected");
+        if (firstConnectedIndex != -1) {
+            listUsers.add(firstConnectedIndex, listUsers.get(firstConnectedIndex));
+            statusList.add(firstConnectedIndex, "");
+        }
     }
 
     @Override
