@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.LocalBroadcastManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,11 +20,9 @@ import com.armandgray.seeme.R;
 import com.armandgray.seeme.controllers.NetworkFragmentController;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.services.HttpService;
-import com.armandgray.seeme.utils.UserRVAdapter;
 
 import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
 import static com.armandgray.seeme.MainActivity.API_URI;
-import static com.armandgray.seeme.models.User.getSortedUserList;
 import static com.armandgray.seeme.utils.StringHelper.getBoldStringBuilder;
 
 /**
@@ -76,18 +73,9 @@ public class NetworkFragment extends Fragment {
 
         assignFields(rootView);
         tvNoNetwork.setText(getBoldStringBuilder(NO_NETWORK_HEADER, NO_NETWORK_CONTENT));
-        setupRvNetwork();
         toggleShowNetwork();
 
         return rootView;
-    }
-
-    private void setupRvNetwork() {
-        rvNetwork.setLayoutManager(
-                new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
-        final UserRVAdapter adapter = new UserRVAdapter(
-                getSortedUserList(networkArray, User.Comparators.STATUS), true);
-        rvNetwork.setAdapter(adapter);
     }
 
     private void assignFields(View rootView) {
@@ -137,7 +125,7 @@ public class NetworkFragment extends Fragment {
     public interface NetworkController {
         void sendNetworkRequest();
         void handleHttpResponse(String response, Parcelable[] arrayExtra, RecyclerView rvNetwork);
-        void updateRvNetworkData(RecyclerView rvNetwork, final User[] userArray);
+        void setupRvNetwork(RecyclerView rvNetwork, final User[] userArray);
         void onRecyclerItemClick(User user, View view);
     }
 }
