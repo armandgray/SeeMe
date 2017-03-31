@@ -14,7 +14,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.armandgray.seeme.R;
@@ -89,8 +88,8 @@ public class NetworkFragment extends Fragment {
 
     private void toggleShowNetwork() {
         if (networkArray == null || networkArray.length == 0) {
-            tvNoNetwork.setVisibility(View.INVISIBLE);
-            rvNetwork.setVisibility(View.VISIBLE);
+            tvNoNetwork.setVisibility(View.VISIBLE);
+            rvNetwork.setVisibility(View.INVISIBLE);
             return;
         }
         tvNoNetwork.setVisibility(View.INVISIBLE);
@@ -101,7 +100,7 @@ public class NetworkFragment extends Fragment {
     public void onResume() {
         super.onResume();
         if (getUserVisibleHint()) {
-            controller.sendNetworkRequest(rvNetwork);
+            controller.sendNetworkRequest();
             LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
                     .registerReceiver(httpBroadcastReceiver,
                             new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
@@ -118,7 +117,7 @@ public class NetworkFragment extends Fragment {
     }
 
     public interface NetworkController {
-        void sendNetworkRequest(RecyclerView rvNetwork);
+        void sendNetworkRequest();
         void handleHttpResponse(String response, Parcelable[] arrayExtra, RecyclerView rvNetwork);
         void setupRvNetwork(RecyclerView rvNetwork, final User[] userArray);
         void onRecyclerItemClick(User user, View view);

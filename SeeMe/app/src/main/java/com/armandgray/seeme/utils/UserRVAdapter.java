@@ -28,6 +28,7 @@ public class UserRVAdapter extends
     private static final String PENDING = "pending";
     private static final String REQUEST = "request";
 
+    private static final String AVAILABLE_USERS = "Available Users";
     private static final String CONNECTION_REQUESTS = "Connection Requests";
     private static final String PENDING_RESPONSE = "Pending Response";
     private static final String CURRENT_NETWORK = "Current Network";
@@ -35,18 +36,21 @@ public class UserRVAdapter extends
     private static final String TAG = "USER_RV_ADAPTER";
 
     private ArrayList<User> listUsers;
-    private boolean showRequest;
-    private final boolean isfirstUserRequest;
-    private final int firstPendingIndex;
-    private final int firstConnectedIndex;
+    private boolean isSortedByStatus;
+    private boolean isfirstUserRequest;
+    private int firstPendingIndex;
+    private int firstConnectedIndex;
 
-    public UserRVAdapter(ArrayList<User> listUsers, boolean showRequest) {
+    public UserRVAdapter(ArrayList<User> listUsers, boolean isSortedByStatus) {
         this.listUsers = listUsers;
-        this.showRequest = showRequest;
+        this.isSortedByStatus = isSortedByStatus;
+        assignPivotIndices(listUsers, isSortedByStatus);
+    }
+
+    private void assignPivotIndices(ArrayList<User> listUsers, boolean isSortedByStatus) {
         List<String> statusList = new ArrayList<>();
-        for (int i = 0; i < listUsers.size(); i++) {
-            statusList.add(listUsers.get(i).getStatus());
-            Log.i(TAG, statusList.get(i));
+        if (isSortedByStatus) {
+            statusList = getUserStatusList(listUsers);
         }
         isfirstUserRequest = statusList.indexOf("request") == 0;
         if (isfirstUserRequest) {
@@ -63,6 +67,15 @@ public class UserRVAdapter extends
             listUsers.add(firstConnectedIndex, listUsers.get(firstConnectedIndex));
             statusList.add(firstConnectedIndex, "");
         }
+    }
+
+    private ArrayList<String> getUserStatusList(ArrayList<User> listUsers) {
+        ArrayList<String> statusList = new ArrayList<>();
+        for (int i = 0; i < listUsers.size(); i++) {
+            statusList.add(listUsers.get(i).getStatus());
+            Log.i(TAG, statusList.get(i));
+        }
+        return statusList;
     }
 
     @Override
@@ -119,7 +132,7 @@ public class UserRVAdapter extends
                     ivStatus.setImageResource(R.drawable.ic_account_check_white_48dp);
                     return;
                 case REQUEST:
-                    if (showRequest) {
+                    if (isSortedByStatus) {
                         ivStatus.setImageResource(R.drawable.ic_account_plus_white_48dp);
                         return;
                     }
