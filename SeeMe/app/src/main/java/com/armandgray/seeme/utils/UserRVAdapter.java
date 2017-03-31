@@ -67,7 +67,7 @@ public class UserRVAdapter extends
                 return new ItemViewHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.user_listitem, parent, false));
             case TYPE_REQUEST_HEADER:
-                return new ItemViewHolder(LayoutInflater.from(parent.getContext())
+                return new HeaderViewHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.user_listitem, parent, false));
             case TYPE_PENDING_HEADER:
                 return new ItemViewHolder(LayoutInflater.from(parent.getContext())
@@ -128,6 +128,16 @@ public class UserRVAdapter extends
             tvUserName = (TextView) itemView.findViewById(R.id.tvFullName);
             tvRole = (TextView) itemView.findViewById(R.id.tvOccupation);
             ivStatus = (ImageView) itemView.findViewById(R.id.ivStatus);
+        }
+
+    }
+
+    static class HeaderViewHolder extends RecyclerView.ViewHolder {
+        TextView tvHeader;
+
+        HeaderViewHolder(View itemView) {
+            super(itemView);
+            tvHeader = (TextView) itemView.findViewById(R.id.tvHeader);
         }
 
     }
