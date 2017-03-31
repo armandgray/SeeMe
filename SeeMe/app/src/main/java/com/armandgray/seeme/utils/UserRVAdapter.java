@@ -44,38 +44,37 @@ public class UserRVAdapter extends
     public UserRVAdapter(ArrayList<User> listUsers, boolean isSortedByStatus) {
         this.listUsers = listUsers;
         this.isSortedByStatus = isSortedByStatus;
-        assignPivotIndices(listUsers, isSortedByStatus);
+        assignPivotIndices(isSortedByStatus);
     }
 
-    private void assignPivotIndices(ArrayList<User> listUsers, boolean isSortedByStatus) {
+    private void assignPivotIndices(boolean isSortedByStatus) {
         List<String> statusList = new ArrayList<>();
         if (isSortedByStatus) {
-            statusList = getUserStatusList(listUsers);
+            statusList = getUserStatusList();
         }
-        firstRequestIndex = statusList.indexOf("request");
-        if (firstRequestIndex != -1) {
-            listUsers.add(firstRequestIndex, listUsers.get(firstRequestIndex));
-            statusList.add(firstRequestIndex, "");
-        }
-        firstPendingIndex = statusList.indexOf("pending");
-        if (firstPendingIndex != -1) {
-            listUsers.add(firstPendingIndex, listUsers.get(firstPendingIndex));
-            statusList.add(firstPendingIndex, "");
-        }
-        firstConnectedIndex = statusList.indexOf("connected");
-        if (firstConnectedIndex != -1) {
-            listUsers.add(firstConnectedIndex, listUsers.get(firstConnectedIndex));
-            statusList.add(firstConnectedIndex, "");
-        }
+
+        firstRequestIndex = statusList.indexOf(REQUEST);
+        addHeaderPlaceholder(firstRequestIndex, statusList);
+        firstPendingIndex = statusList.indexOf(PENDING);
+        addHeaderPlaceholder(firstPendingIndex, statusList);
+        firstConnectedIndex = statusList.indexOf(CONNECTED);
+        addHeaderPlaceholder(firstConnectedIndex, statusList);
     }
 
-    private ArrayList<String> getUserStatusList(ArrayList<User> listUsers) {
+    private ArrayList<String> getUserStatusList() {
         ArrayList<String> statusList = new ArrayList<>();
         for (int i = 0; i < listUsers.size(); i++) {
             statusList.add(listUsers.get(i).getStatus());
             Log.i(TAG, statusList.get(i));
         }
         return statusList;
+    }
+
+    private void addHeaderPlaceholder(int index, List<String> statusList) {
+        if (index != -1) {
+            listUsers.add(index, listUsers.get(index));
+            statusList.add(index, "");
+        }
     }
 
     @Override
