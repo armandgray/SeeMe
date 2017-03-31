@@ -37,19 +37,20 @@ public class UserRVAdapter extends
 
     private ArrayList<User> listUsers;
     private boolean isSortedByStatus;
-    private final boolean isfirstUserRequest;
-    private final int firstPendingIndex;
-    private final int firstConnectedIndex;
+    private boolean isfirstUserRequest;
+    private int firstPendingIndex;
+    private int firstConnectedIndex;
 
     public UserRVAdapter(ArrayList<User> listUsers, boolean isSortedByStatus) {
         this.listUsers = listUsers;
         this.isSortedByStatus = isSortedByStatus;
+        assignPivotIndices(listUsers, isSortedByStatus);
+    }
+
+    private void assignPivotIndices(ArrayList<User> listUsers, boolean isSortedByStatus) {
         List<String> statusList = new ArrayList<>();
         if (isSortedByStatus) {
-            for (int i = 0; i < listUsers.size(); i++) {
-                statusList.add(listUsers.get(i).getStatus());
-                Log.i(TAG, statusList.get(i));
-            }
+            statusList = getUserStatusList(listUsers);
         }
         isfirstUserRequest = statusList.indexOf("request") == 0;
         if (isfirstUserRequest) {
@@ -66,6 +67,15 @@ public class UserRVAdapter extends
             listUsers.add(firstConnectedIndex, listUsers.get(firstConnectedIndex));
             statusList.add(firstConnectedIndex, "");
         }
+    }
+
+    private ArrayList<String> getUserStatusList(ArrayList<User> listUsers) {
+        ArrayList<String> statusList = new ArrayList<>();
+        for (int i = 0; i < listUsers.size(); i++) {
+            statusList.add(listUsers.get(i).getStatus());
+            Log.i(TAG, statusList.get(i));
+        }
+        return statusList;
     }
 
     @Override
