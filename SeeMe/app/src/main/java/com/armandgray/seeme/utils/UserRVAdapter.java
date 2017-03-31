@@ -28,16 +28,21 @@ public class UserRVAdapter extends
 
     private List<User> listUsers;
     private boolean showRequest;
+    private String[] statusArray;
 
 
     public UserRVAdapter(List<User> listUsers, boolean showRequest) {
         this.listUsers = listUsers;
         this.showRequest = showRequest;
+        this.statusArray = new String[listUsers.size()];
+        for (int i = 0; i < listUsers.size(); i++) {
+            statusArray[i] = listUsers.get(i).getStatus();
+            Log.i(TAG, statusArray[i]);
+        }
     }
 
     @Override
     public int getItemViewType(int position) {
-        Log.i(TAG, String.valueOf(listUsers.get(position)));
         return super.getItemViewType(position);
     }
 
