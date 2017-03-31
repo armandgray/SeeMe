@@ -66,7 +66,7 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
                 new LinearLayoutManager(activity, LinearLayoutManager.VERTICAL, false));
         final UserRVAdapter adapter = new UserRVAdapter(
                 getSortedUserList(networkArray, User.Comparators.STATUS), true);
-        rvNetwork.setAdapter(adapter);
+        setRvAdapter(rvNetwork, adapter);
         rvNetwork.addOnItemTouchListener(new RecyclerItemClickListener(activity,
                 new RecyclerItemClickListener.OnItemClickListener() {
                     @Override
@@ -79,6 +79,14 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
                         }
                     }
                 }));
+    }
+
+    private void setRvAdapter(RecyclerView rvNetwork, UserRVAdapter adapter) {
+        if (rvNetwork.getAdapter() != null) {
+            rvNetwork.swapAdapter(adapter, false);
+            return;
+        }
+        rvNetwork.setAdapter(adapter);
     }
 
     @Override
