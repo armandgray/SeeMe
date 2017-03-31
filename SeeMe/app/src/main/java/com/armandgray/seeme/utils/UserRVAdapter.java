@@ -13,7 +13,6 @@ import com.armandgray.seeme.models.User;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 public class UserRVAdapter extends
         RecyclerView.Adapter<ViewHolder> {
@@ -23,10 +22,10 @@ public class UserRVAdapter extends
     private static final int TYPE_PENDING_HEADER = 2;
     private static final int TYPE_CONNECTED_HEADER = 3;
 
-    private static final String UNKNOWN = "unknown";
-    private static final String CONNECTED = "connected";
-    private static final String PENDING = "pending";
-    private static final String REQUEST = "request";
+    public static final String UNKNOWN = "unknown";
+    public static final String CONNECTED = "connected";
+    public static final String PENDING = "pending";
+    public static final String REQUEST = "request";
 
     private static final String AVAILABLE_USERS = "Available Users";
     private static final String CONNECTION_REQUESTS = "Connection Requests";
@@ -50,24 +49,17 @@ public class UserRVAdapter extends
     }
 
     private void assignPivotIndices(boolean isSortedByStatus) {
-        List<String> statusList = new ArrayList<>();
+        ArrayList<String> statusList = new ArrayList<>();
         if (isSortedByStatus) {
             statusList = helper.getUserStatusList(listUsers);
         }
 
         mapPivotIndices.put(REQUEST, statusList.indexOf(REQUEST));
-        addHeaderPlaceholder(mapPivotIndices.get(REQUEST), statusList);
+        helper.addHeaderPlaceholder(mapPivotIndices.get(REQUEST), listUsers, statusList);
         mapPivotIndices.put(PENDING, statusList.indexOf(PENDING));
-        addHeaderPlaceholder(mapPivotIndices.get(PENDING), statusList);
+        helper.addHeaderPlaceholder(mapPivotIndices.get(PENDING), listUsers, statusList);
         mapPivotIndices.put(CONNECTED, statusList.indexOf(CONNECTED));
-        addHeaderPlaceholder(mapPivotIndices.get(CONNECTED), statusList);
-    }
-
-    private void addHeaderPlaceholder(int index, List<String> statusList) {
-        if (index != -1) {
-            listUsers.add(index, listUsers.get(index));
-            statusList.add(index, "");
-        }
+        helper.addHeaderPlaceholder(mapPivotIndices.get(CONNECTED), listUsers, statusList);
     }
 
     @Override
@@ -114,24 +106,8 @@ public class UserRVAdapter extends
 
             tvUserName.setText(user.getFirstName() + " " + user.getLastName());
             tvRole.setText("Work: " + user.getOccupation());
+            helper.setImageFromStatus(user, ivStatus);
 
-            switch (user.getStatus()) {
-                case PENDING:
-                    ivStatus.setImageResource(R.drawable.ic_account_convert_white_48dp);
-                    return;
-                case CONNECTED:
-                    ivStatus.setImageResource(R.drawable.ic_account_check_white_48dp);
-                    return;
-                case REQUEST:
-                    if (isSortedByStatus) {
-                        ivStatus.setImageResource(R.drawable.ic_account_plus_white_48dp);
-                        return;
-                    }
-                    ivStatus.setImageResource(R.drawable.ic_account_check_white_48dp);
-                    return;
-                case UNKNOWN:
-                    ivStatus.setImageResource(R.drawable.ic_account_plus_white_48dp);
-            }
         } else if (holder instanceof HeaderViewHolder) {
             HeaderViewHolder viewHolder = (HeaderViewHolder) holder;
             TextView tvHeader = viewHolder.tvHeader;
@@ -181,6 +157,8 @@ public class UserRVAdapter extends
     }
 
     interface RecyclerViewHelper {
-        List<String> getUserStatusList(ArrayList<User> listUsers);
+        ArrayList<String> getUserStatusList(ArrayList<User> listUsers);
+        void addHeaderPlaceholder(int index, ArrayList<User> listUsers, ArrayList<String> statusList);
+        void setImageFromStatus(User user, ImageView ivStatus);
     }
 }
