@@ -21,8 +21,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <include layout="@layout/header_layout" />
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rvNetwork"
             android:layout_width="match_parent"
