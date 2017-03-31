@@ -69,7 +69,7 @@ public class UserRVAdapter extends
                         .inflate(R.layout.user_listitem, parent, false));
             case TYPE_REQUEST_HEADER:
                 return new HeaderViewHolder(LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.header_layout, parent, false));
+                        .inflate(R.layout.header_layout, parent, false), TYPE_REQUEST_HEADER);
             case TYPE_PENDING_HEADER:
                 return new ItemViewHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.user_listitem, parent, false));
@@ -112,6 +112,10 @@ public class UserRVAdapter extends
                 case UNKNOWN:
                     ivStatus.setImageResource(R.drawable.ic_account_plus_white_48dp);
             }
+        } else if (holder instanceof HeaderViewHolder) {
+            HeaderViewHolder viewHolder = (HeaderViewHolder) holder;
+            TextView tvHeader = viewHolder.tvHeader;
+            tvHeader.setText("HEADER");
         }
     }
 
@@ -138,10 +142,12 @@ public class UserRVAdapter extends
 
     static class HeaderViewHolder extends RecyclerView.ViewHolder {
         TextView tvHeader;
+        int type;
 
-        HeaderViewHolder(View itemView) {
+        HeaderViewHolder(View itemView, int headerType) {
             super(itemView);
             tvHeader = (TextView) itemView.findViewById(R.id.tvHeader);
+            type = headerType;
         }
 
     }
