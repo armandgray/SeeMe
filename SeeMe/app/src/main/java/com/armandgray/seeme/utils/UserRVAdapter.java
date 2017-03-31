@@ -77,11 +77,11 @@ public class UserRVAdapter extends
                 return new HeaderViewHolder(LayoutInflater.from(parent.getContext())
                         .inflate(R.layout.header_layout, parent, false), TYPE_REQUEST_HEADER);
             case TYPE_PENDING_HEADER:
-                return new ItemViewHolder(LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.user_listitem, parent, false));
+                return new HeaderViewHolder(LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.header_layout, parent, false), TYPE_PENDING_HEADER);
             case TYPE_CONNECTED_HEADER:
-                return new ItemViewHolder(LayoutInflater.from(parent.getContext())
-                        .inflate(R.layout.user_listitem, parent, false));
+                return new HeaderViewHolder(LayoutInflater.from(parent.getContext())
+                        .inflate(R.layout.header_layout, parent, false), TYPE_CONNECTED_HEADER);
         }
 
         throw new RuntimeException("There is no type that matches the type " + viewType + " + make sure your using types correctly");
