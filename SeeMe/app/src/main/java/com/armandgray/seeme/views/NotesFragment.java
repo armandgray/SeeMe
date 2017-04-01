@@ -1,6 +1,7 @@
 package com.armandgray.seeme.views;
 
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -19,6 +20,7 @@ import android.widget.ListView;
 
 import com.armandgray.seeme.NoteEditorActivity;
 import com.armandgray.seeme.R;
+import com.armandgray.seeme.db.DatabaseHelper;
 import com.armandgray.seeme.db.NotesProvider;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.utils.NotesLvAdapter;
@@ -77,7 +79,16 @@ public class NotesFragment extends Fragment
             }
         });
 
+        insertNoteUsername("armandgray@gmail.com");
+
         return rootView;
+    }
+
+    private void insertNoteUsername(String note) {
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.NOTE_TEXT, note);
+        getActivity().getContentResolver().insert(NotesProvider.CONTENT_URI, values);
+        restartLoader();
     }
 
     private Loader<Cursor> restartLoader() {

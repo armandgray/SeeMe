@@ -15,7 +15,7 @@ import com.armandgray.seeme.models.User;
 
 public class NotesLvAdapter extends CursorAdapter {
 
-    public static final String TAG = "NOTES_LV_ADAPTER";
+    private static final String TAG = "NOTES_LV_ADAPTER";
     private User activeUser;
 
     public NotesLvAdapter(Context context, Cursor c, int flags, User activeUser) {
