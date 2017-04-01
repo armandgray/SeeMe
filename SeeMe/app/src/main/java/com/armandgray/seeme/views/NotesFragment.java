@@ -12,6 +12,7 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +34,6 @@ import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
  */
 public class NotesFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
-
 
     private static final String TAG = "NOTES_FRAGMENT";
     private static final int EDITOR_REQUEST_CODE = 1001;
@@ -78,9 +78,15 @@ public class NotesFragment extends Fragment
             }
         });
 
-        User activeUser = getArguments().getParcelable(ACTIVE_USER);
-        insertNoteUsername("armandgray@gmail.com");
+//        insertNoteUsername("armandgray@gmail.com");
+        Cursor cursor = getActivity().getContentResolver()
+                .query(NotesProvider.CONTENT_URI, DatabaseHelper.ALL_COLUMNS, null, null, null);
 
+        if (cursor != null && cursor.moveToFirst()) {
+            String noteText = cursor.getString(cursor.getColumnIndex(DatabaseHelper.NOTE_TEXT));
+            Log.i(TAG, noteText);
+            cursor.close();
+        }
         return rootView;
     }
 
