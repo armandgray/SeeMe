@@ -78,7 +78,6 @@ public class NotesFragment extends Fragment
             }
         });
 
-//        insertNoteUsername("armandgray@gmail.com");
         Cursor cursor = getActivity().getContentResolver()
                 .query(NotesProvider.CONTENT_URI, DatabaseHelper.ALL_COLUMNS, null, null, null);
 
@@ -122,5 +121,12 @@ public class NotesFragment extends Fragment
         if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK) {
             restartLoader();
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        User activeUser = getArguments().getParcelable(ACTIVE_USER);
+        if (activeUser != null) { insertNoteUsername(activeUser.getUsername()); }
     }
 }
