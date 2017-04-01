@@ -49,10 +49,12 @@ public class RegisterActivityController implements RegisterActivity.RegisterCont
             return false;
         }
         if (mapEditTextStrings.get(FIRST_NAME).equals("")
-                || mapEditTextStrings.get(FIRST_NAME).indexOf(' ') != -1
-                || mapEditTextStrings.get(LAST_NAME).equals("")
-                || mapEditTextStrings.get(LAST_NAME).indexOf(' ') != -1) {
+                || mapEditTextStrings.get(LAST_NAME).equals("")) {
             Toast.makeText(activity, "Please Enter First & Last", Toast.LENGTH_LONG).show();
+            return false;
+        } else if (mapEditTextStrings.get(FIRST_NAME).indexOf(' ') != -1
+                || mapEditTextStrings.get(LAST_NAME).indexOf(' ') != -1) {
+            Toast.makeText(activity, "Please Hyphenate Names (No Spaces)", Toast.LENGTH_LONG).show();
             return false;
         }
         if (mapEditTextStrings.get(OCCUPATION).equals("")) {
