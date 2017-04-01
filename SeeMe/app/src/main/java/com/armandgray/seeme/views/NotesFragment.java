@@ -38,6 +38,7 @@ public class NotesFragment extends Fragment
     private static final String TAG = "NOTES_FRAGMENT";
     private static final int EDITOR_REQUEST_CODE = 1001;
     private CursorAdapter adapter;
+    private User activeUser;
 
     public NotesFragment() {}
 
@@ -54,7 +55,7 @@ public class NotesFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_notes, container, false);
-
+        activeUser = getArguments().getParcelable(ACTIVE_USER);
         adapter = new NotesLvAdapter(getContext(), null, 0);
 
         ListView lvNotes = (ListView) rootView.findViewById(R.id.lvNotes);
@@ -84,16 +85,20 @@ public class NotesFragment extends Fragment
         if (cursor != null && cursor.moveToFirst()) {
             String noteText = cursor.getString(cursor.getColumnIndex(DatabaseHelper.NOTE_TEXT));
             Log.i(TAG, noteText);
+            if (noteText.equals(activeUser.getUsername())) {
+                deleteVerifiedUserNote(cursor);
+            }
             cursor.close();
         }
         return rootView;
     }
 
-    private void insertNoteUsername(String note) {
-        ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.NOTE_TEXT, note);
-        getActivity().getContentResolver().insert(NotesProvider.CONTENT_URI, values);
-        restartLoader();
+    private void deleteVerifiedUserNote(Cursor cursor) {
+        String id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.NOTE_ID));
+        Uri uri = Uri.parse(NotesProvider.CONTENT_URI + "/" + id);
+        String noteUsername = DatabaseHelper.NOTE_ID + " = " + uri.getLastPathSegment();
+        getActivity().getContentResolver()
+                .delete(NotesProvider.CONTENT_URI, noteUsername, null);
     }
 
     private Loader<Cursor> restartLoader() {
@@ -126,7 +131,13 @@ public class NotesFragment extends Fragment
     @Override
     public void onStop() {
         super.onStop();
-        User activeUser = getArguments().getParcelable(ACTIVE_USER);
         if (activeUser != null) { insertNoteUsername(activeUser.getUsername()); }
+    }
+
+    private void insertNoteUsername(String note) {
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.NOTE_TEXT, note);
+        getActivity().getContentResolver().insert(NotesProvider.CONTENT_URI, values);
+        restartLoader();
     }
 }
