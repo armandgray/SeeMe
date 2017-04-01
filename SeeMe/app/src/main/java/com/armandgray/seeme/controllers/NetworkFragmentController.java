@@ -1,6 +1,7 @@
 package com.armandgray.seeme.controllers;
 
 import android.app.Activity;
+import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -34,6 +35,8 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
     private static final String PREPARE_UPDATE_ERROR = "Prepare Update Error!";
     private static final String UPDATE_QUERY_ERROR = "Update Query Error!";
     private static final String INTERNAL_UPDATE_ERROR = "Internal Update Error!";
+    public static final String PENDING = "pending";
+    public static final String CONNECTED = "connected";
 
     private String[] responseArray = {USER_NOT_FOUND, PREPARE_UPDATE_ERROR, CONNECTION_CONFIRMED, CONNECTION_DELETED,
             UPDATE_QUERY_ERROR, INTERNAL_UPDATE_ERROR};
@@ -105,6 +108,7 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
             LinearLayout layout = (LinearLayout) view;
             ImageView ivStatus = (ImageView) layout.getChildAt(2);
             ivStatus.setImageResource(R.drawable.ic_account_remove_white_48dp);
+            startRemovableTimer(user, ivStatus);
         } else {
             String url = DELETE_CONNECTION_URI
                     + "username=" + activeUser.getUsername()
@@ -112,4 +116,20 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
             sendRequest(url, activity);
         }
     }
+
+    private void startRemovableTimer(final User user, final ImageView ivStatus) {
+        final Handler handler = new Handler();
+        handler.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                user.setRemovable(false);
+                if (user.getStatus().equals(PENDING)) {
+                    ivStatus.setImageResource(R.drawable.ic_account_convert_white_48dp);
+                } else if (user.getStatus().equals(CONNECTED)) {
+                    ivStatus.setImageResource(R.drawable.ic_account_check_white_48dp);
+                }
+            }
+        }, 3000);
+    }
+
 }
