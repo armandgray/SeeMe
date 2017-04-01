@@ -126,6 +126,14 @@ public class UserRVAdapter extends
         return listUsers.size();
     }
 
+    public ArrayList<User> getListUsers() {
+        return listUsers;
+    }
+
+    public HashMap<String, Integer> getMapPivotIndices() {
+        return mapPivotIndices;
+    }
+
     private static class ItemViewHolder extends RecyclerView.ViewHolder {
         ImageView ivUserProfile;
         TextView tvUserName;
