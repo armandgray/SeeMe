@@ -16,7 +16,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.armandgray.seeme.NoteEditorActivity;
 import com.armandgray.seeme.R;
@@ -54,7 +53,8 @@ public class NotesFragment extends Fragment
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_notes, container, false);
 
-        adapter = new NotesLvAdapter(getContext(), null, 0);
+        User activeUser = getArguments().getParcelable(ACTIVE_USER);
+        adapter = new NotesLvAdapter(getContext(), null, 0, activeUser);
 
         ListView lvNotes = (ListView) rootView.findViewById(R.id.lvNotes);
         lvNotes.setAdapter(adapter);
