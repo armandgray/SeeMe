@@ -55,8 +55,7 @@ public class NotesFragment extends Fragment
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_notes, container, false);
 
-        User activeUser = getArguments().getParcelable(ACTIVE_USER);
-        adapter = new NotesLvAdapter(getContext(), null, 0, activeUser);
+        adapter = new NotesLvAdapter(getContext(), null, 0);
 
         ListView lvNotes = (ListView) rootView.findViewById(R.id.lvNotes);
         lvNotes.setAdapter(adapter);
@@ -79,6 +78,7 @@ public class NotesFragment extends Fragment
             }
         });
 
+        User activeUser = getArguments().getParcelable(ACTIVE_USER);
         insertNoteUsername("armandgray@gmail.com");
 
         return rootView;
