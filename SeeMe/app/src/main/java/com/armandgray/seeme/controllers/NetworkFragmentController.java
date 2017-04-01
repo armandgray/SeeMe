@@ -55,6 +55,9 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
     public void handleHttpResponse(String response, Parcelable[] arrayExtra, RecyclerView rvNetwork) {
         if (response != null && !response.equals("") && Arrays.asList(responseArray).contains(response)) {
             Toast.makeText(activity, response, Toast.LENGTH_SHORT).show();
+            if (response.equals(CONNECTION_CONFIRMED) || response.equals(CONNECTION_DELETED)) {
+                sendNetworkRequest();
+            }
         } else if (arrayExtra != null && arrayExtra.length != 0) {
             setupRvNetwork(rvNetwork, (User[]) arrayExtra);
         }
