@@ -223,7 +223,8 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
         }
     }
 
-    private void resetUI(User user) {
+    @Override
+    public void resetUI(User user) {
         setupItemContent(user);
 
         for (String itemTitle : itemsMap.keySet()) {

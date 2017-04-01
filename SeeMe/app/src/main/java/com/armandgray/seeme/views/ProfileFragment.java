@@ -114,7 +114,6 @@ public class ProfileFragment extends Fragment
     }
 
     private void assignFields(View rootView) {
-
         tvFullName = (TextView) rootView.findViewById(R.id.tvFullName);
         tvUsername = (TextView) rootView.findViewById(R.id.tvUsername);
         ivProfile = (ImageView) rootView.findViewById(R.id.ivProfile);
@@ -253,6 +252,7 @@ public class ProfileFragment extends Fragment
     public void onResume() {
         super.onResume();
         if (getUserVisibleHint()) {
+            controller.resetUI(activeUser);
             LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
                     .registerReceiver(httpBroadcastReceiver,
                             new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
@@ -297,5 +297,6 @@ public class ProfileFragment extends Fragment
         void postConfirmedDeleteRequest(String username, String password);
         void handleHttpResponse(String response, Parcelable[] parcelableArrayExtra);
         void postFeedBackMessage(String message);
+        void resetUI(User activeUser);
     }
 }
