@@ -26,6 +26,10 @@ import com.armandgray.seeme.db.NotesProvider;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.utils.NotesLvAdapter;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import static android.app.Activity.RESULT_OK;
 import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
 
@@ -87,10 +91,31 @@ public class NotesFragment extends Fragment
             Log.i(TAG, noteText);
             if (noteText.equals(activeUser.getUsername())) {
                 deleteVerifiedUserNote(cursor);
+            } else {
+                JSONObject json = new JSONObject();
+                JSONArray jsonArray = new JSONArray();
+                cursor.moveToFirst();
+                String st = getNotesJson(cursor, json, jsonArray);
+                Log.i(TAG, st);
             }
             cursor.close();
         }
         return rootView;
+    }
+
+    private String getNotesJson(Cursor cursor, JSONObject json, JSONArray jsonArray) {
+        String noteText;
+        try {
+            do {
+                noteText = cursor.getString(cursor.getColumnIndex(DatabaseHelper.NOTE_TEXT));
+                jsonArray.put(cursor.getPosition(), noteText);
+            } while (cursor.moveToNext());
+            json = new JSONObject();
+            json.put("notes", jsonArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return json.toString();
     }
 
     private void deleteVerifiedUserNote(Cursor cursor) {
@@ -131,7 +156,7 @@ public class NotesFragment extends Fragment
     @Override
     public void onStop() {
         super.onStop();
-        if (activeUser != null) { insertNoteUsername(activeUser.getUsername()); }
+        if (activeUser != null) { insertNoteUsername("nlue"); }
     }
 
     private void insertNoteUsername(String note) {
