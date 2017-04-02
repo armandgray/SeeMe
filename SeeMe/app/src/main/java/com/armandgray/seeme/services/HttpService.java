@@ -29,16 +29,11 @@ public class HttpService extends IntentService {
         Uri uri = intent.getData();
         Log.i(TAG, "onHandleIntent: " + uri.toString());
 
-        String response;
-        try {
-            response = HttpHelper.downloadUrl(uri.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
-        }
+
 
         User[] userArray = null;
         Intent messageIntent = new Intent(HTTP_SERVICE_MESSAGE);
+        String response = getResponse(uri);
         if (response != null) {
             if (response.charAt(0) != '[') {
                 messageIntent.putExtra(HTTP_SERVICE_STRING_PAYLOAD, response);
@@ -54,5 +49,16 @@ public class HttpService extends IntentService {
         LocalBroadcastManager broadcastManager =
                 LocalBroadcastManager.getInstance(getApplicationContext());
         broadcastManager.sendBroadcast(messageIntent);
+    }
+
+    private String getResponse(Uri uri) {
+        String response;
+        try {
+            response = HttpHelper.downloadUrl(uri.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return response;
     }
 }
