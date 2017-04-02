@@ -34,6 +34,7 @@ public class HttpService extends IntentService {
             String body = intent.getStringExtra(JSON_BODY);
             response = "";
             Log.i(TAG, body);
+
         } else {
             response = getResponse(uri);
         }
@@ -47,7 +48,7 @@ public class HttpService extends IntentService {
     private String getResponse(Uri uri) {
         String response;
         try {
-            response = HttpHelper.downloadUrl(uri.toString());
+            response = HttpHelper.downloadUrl(uri.toString(), HttpHelper.GET);
         } catch (IOException e) {
             e.printStackTrace();
             return null;

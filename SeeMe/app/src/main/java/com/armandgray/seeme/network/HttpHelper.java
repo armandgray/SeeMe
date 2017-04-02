@@ -7,9 +7,12 @@ import android.net.Uri;
 import com.armandgray.seeme.services.HttpService;
 
 import java.io.BufferedOutputStream;
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
@@ -19,6 +22,9 @@ import static com.armandgray.seeme.services.HttpService.JSON_BODY;
  * Helper class for working with a remote server
  */
 public class HttpHelper {
+
+    public static final String GET = "GET";
+    public static final String POST = "POST";
 
     public static void sendPostRequest(String url, String body, Context context) {
         Intent intent = new Intent(context, HttpService.class);
@@ -38,7 +44,7 @@ public class HttpHelper {
      * @return
      * @throws IOException
      */
-    public static String downloadUrl(String address) throws IOException {
+    public static String downloadUrl(String address, String requestType) throws IOException {
 
         InputStream is = null;
         try {
@@ -47,9 +53,19 @@ public class HttpHelper {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(10000);
             conn.setConnectTimeout(15000);
-            conn.setRequestMethod("GET");
+            conn.setRequestMethod(POST);
             conn.setDoInput(true);
             conn.connect();
+
+            if (requestType.equals(POST)) {
+                OutputStream os = conn.getOutputStream();
+                BufferedWriter writer = new BufferedWriter(
+                        new OutputStreamWriter(os, "UTF-8"));
+                writer.write("");
+                writer.flush();
+                writer.close();
+                os.close();
+            }
 
             int responseCode = conn.getResponseCode();
             if (responseCode != 200) {
