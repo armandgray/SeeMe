@@ -29,26 +29,12 @@ public class HttpService extends IntentService {
         Uri uri = intent.getData();
         Log.i(TAG, "onHandleIntent: " + uri.toString());
 
-
-
-        User[] userArray = null;
-        Intent messageIntent = new Intent(HTTP_SERVICE_MESSAGE);
         String response = getResponse(uri);
-        if (response != null) {
-            if (response.charAt(0) != '[') {
-                messageIntent.putExtra(HTTP_SERVICE_STRING_PAYLOAD, response);
-            } else {
-                Gson gson = new GsonBuilder()
-                        .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
-                        .create();
-                userArray = gson.fromJson(response, User[].class);
-                messageIntent.putExtra(HTTP_SERVICE_JSON_PAYLOAD, userArray);
-            }
-        }
 
-        LocalBroadcastManager broadcastManager =
-                LocalBroadcastManager.getInstance(getApplicationContext());
-        broadcastManager.sendBroadcast(messageIntent);
+        Intent messageIntent = new Intent(HTTP_SERVICE_MESSAGE);
+        putMessageIntentExtra(messageIntent, response);
+        LocalBroadcastManager.getInstance(getApplicationContext())
+                .sendBroadcast(messageIntent);
     }
 
     private String getResponse(Uri uri) {
@@ -60,5 +46,20 @@ public class HttpService extends IntentService {
             return null;
         }
         return response;
+    }
+
+    private void putMessageIntentExtra(Intent messageIntent, String response) {
+        User[] userArray;
+        if (response != null) {
+            if (response.charAt(0) != '[') {
+                messageIntent.putExtra(HTTP_SERVICE_STRING_PAYLOAD, response);
+            } else {
+                Gson gson = new GsonBuilder()
+                        .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                        .create();
+                userArray = gson.fromJson(response, User[].class);
+                messageIntent.putExtra(HTTP_SERVICE_JSON_PAYLOAD, userArray);
+            }
+        }
     }
 }
