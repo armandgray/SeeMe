@@ -32,6 +32,8 @@ import org.json.JSONObject;
 
 import static android.app.Activity.RESULT_OK;
 import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
+import static com.armandgray.seeme.MainActivity.API_URI;
+import static com.armandgray.seeme.network.HttpHelper.sendRequest;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -39,6 +41,7 @@ import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
 public class NotesFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
+    private static final String NOTES_URI = API_URI + "?";
     private static final String TAG = "NOTES_FRAGMENT";
     private static final int EDITOR_REQUEST_CODE = 1001;
     private CursorAdapter adapter;
@@ -92,15 +95,21 @@ public class NotesFragment extends Fragment
             if (noteText.equals(activeUser.getUsername())) {
                 deleteVerifiedUserNote(cursor);
             } else {
-                JSONObject json = new JSONObject();
-                JSONArray jsonArray = new JSONArray();
-                cursor.moveToFirst();
-                String st = getNotesJson(cursor, json, jsonArray);
-                Log.i(TAG, st);
+                sendUserNotesRequest(cursor);
             }
             cursor.close();
         }
         return rootView;
+    }
+
+    private void sendUserNotesRequest(Cursor cursor) {
+        JSONObject json = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+        cursor.moveToFirst();
+        String url = NOTES_URI
+                + "username=" + activeUser.getUsername()
+                + "&notes=" + getNotesJson(cursor, json, jsonArray);
+        sendRequest(url, getContext());
     }
 
     private String getNotesJson(Cursor cursor, JSONObject json, JSONArray jsonArray) {
