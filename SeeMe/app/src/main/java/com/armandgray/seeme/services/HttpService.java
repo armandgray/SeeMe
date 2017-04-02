@@ -14,6 +14,9 @@ import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 
+import static com.armandgray.seeme.network.HttpHelper.GET;
+import static com.armandgray.seeme.network.HttpHelper.POST;
+
 public class HttpService extends IntentService {
 
     public static final String TAG = "HttpService";
@@ -32,11 +35,9 @@ public class HttpService extends IntentService {
         String response;
         if (intent.getStringExtra(JSON_BODY) != null) {
             String body = intent.getStringExtra(JSON_BODY);
-            response = "";
-            Log.i(TAG, body);
-
+            response = getResponse(uri, POST, body);
         } else {
-            response = getResponse(uri);
+            response = getResponse(uri, GET, null);
         }
 
         Intent messageIntent = new Intent(HTTP_SERVICE_MESSAGE);
@@ -45,10 +46,10 @@ public class HttpService extends IntentService {
                 .sendBroadcast(messageIntent);
     }
 
-    private String getResponse(Uri uri) {
+    private String getResponse(Uri uri, String responseType, String body) {
         String response;
         try {
-            response = HttpHelper.downloadUrl(uri.toString(), HttpHelper.GET);
+            response = HttpHelper.downloadUrl(uri.toString(), responseType, body);
         } catch (IOException e) {
             e.printStackTrace();
             return null;
