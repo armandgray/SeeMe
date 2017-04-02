@@ -22,7 +22,7 @@ import java.util.Observable;
 import java.util.Observer;
 
 import static com.armandgray.seeme.LoginActivity.LOGIN_PAYLOAD;
-import static com.armandgray.seeme.network.HttpHelper.sendRequest;
+import static com.armandgray.seeme.network.HttpHelper.sendGetRequest;
 import static com.armandgray.seeme.network.NetworkHelper.getWifiConnectionState;
 import static com.armandgray.seeme.network.NetworkHelper.getWifiNetwork;
 
@@ -168,7 +168,7 @@ public class MainActivity extends AppCompatActivity
                     + network.getNetworkId()
                     + "&ssid=" + network.getSsid()
                     + "&username=" + activeUser.getUsername();
-            sendRequest(url, this);
+            sendGetRequest(url, this);
         }
     }
 

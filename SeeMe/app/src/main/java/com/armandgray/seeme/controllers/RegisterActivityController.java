@@ -14,7 +14,7 @@ import java.util.HashMap;
 
 import static com.armandgray.seeme.LoginActivity.LOGIN_PAYLOAD;
 import static com.armandgray.seeme.RegisterActivity.*;
-import static com.armandgray.seeme.network.HttpHelper.sendRequest;
+import static com.armandgray.seeme.network.HttpHelper.sendGetRequest;
 import static com.armandgray.seeme.utils.StringHelper.*;
 
 public class RegisterActivityController implements RegisterActivity.RegisterController {
@@ -73,7 +73,7 @@ public class RegisterActivityController implements RegisterActivity.RegisterCont
                 + "&lastName=" + capitalizeString(mapEditTextStrings.get(LAST_NAME))
                 + "&role=" + urlify(mapEditTextStrings.get(OCCUPATION))
                 + "&discoverable=" + discoverable;
-            sendRequest(url, activity);
+            sendGetRequest(url, activity);
     }
 
     @Override

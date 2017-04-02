@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static com.armandgray.seeme.models.User.getSortedUserList;
-import static com.armandgray.seeme.network.HttpHelper.sendRequest;
+import static com.armandgray.seeme.network.HttpHelper.sendGetRequest;
 import static com.armandgray.seeme.views.NetworkFragment.DELETE_CONNECTION_URI;
 import static com.armandgray.seeme.views.NetworkFragment.NETWORK_CONNECTION_URI;
 import static com.armandgray.seeme.views.NetworkFragment.UPDATE_CONNECTION_URI;
@@ -51,7 +51,7 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
     @Override
     public void sendNetworkRequest() {
         String url = NETWORK_CONNECTION_URI + "username=" + activeUser.getUsername();
-        sendRequest(url, activity);
+        sendGetRequest(url, activity);
     }
 
     @Override
@@ -102,7 +102,7 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
             String url = UPDATE_CONNECTION_URI
                     + "username=" + activeUser.getUsername()
                     + "&connection=" + user.getUsername();
-            sendRequest(url, activity);
+            sendGetRequest(url, activity);
         } else if (!user.isRemovable()) {
             user.setRemovable(true);
             LinearLayout layout = (LinearLayout) view;
@@ -113,7 +113,7 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
             String url = DELETE_CONNECTION_URI
                     + "username=" + activeUser.getUsername()
                     + "&connection=" + user.getUsername();
-            sendRequest(url, activity);
+            sendGetRequest(url, activity);
         }
     }
 

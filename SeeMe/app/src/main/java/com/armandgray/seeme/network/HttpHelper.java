@@ -13,12 +13,21 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
 
+import static com.armandgray.seeme.services.HttpService.JSON_BODY;
+
 /**
  * Helper class for working with a remote server
  */
 public class HttpHelper {
 
-    public static void sendRequest(String url, Context context) {
+    public static void sendPostRequest(String url, String body, Context context) {
+        Intent intent = new Intent(context, HttpService.class);
+        intent.setData(Uri.parse(url));
+        intent.putExtra(JSON_BODY, body);
+        context.startService(intent);
+    }
+
+    public static void sendGetRequest(String url, Context context) {
         Intent intent = new Intent(context, HttpService.class);
         intent.setData(Uri.parse(url));
         context.startService(intent);
@@ -38,7 +47,7 @@ public class HttpHelper {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(10000);
             conn.setConnectTimeout(15000);
-            conn.setRequestMethod("POST");
+            conn.setRequestMethod("GET");
             conn.setDoInput(true);
             conn.connect();
 

@@ -10,7 +10,7 @@ import com.armandgray.seeme.network.NetworkHelper;
 
 import static com.armandgray.seeme.LoginActivity.LOGIN_PAYLOAD;
 import static com.armandgray.seeme.LoginActivity.LOGIN_URI;
-import static com.armandgray.seeme.network.HttpHelper.sendRequest;
+import static com.armandgray.seeme.network.HttpHelper.sendGetRequest;
 
 public class LoginActivityController implements LoginActivity.LoginController {
 
@@ -29,7 +29,7 @@ public class LoginActivityController implements LoginActivity.LoginController {
         String url = LOGIN_URI
                 + "&username=" + username
                 + "&password=" + password;
-        sendRequest(url, context);
+        sendGetRequest(url, context);
     }
 
     @Override

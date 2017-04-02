@@ -20,6 +20,7 @@ public class HttpService extends IntentService {
     public static final String HTTP_SERVICE_MESSAGE = "HTTP Service Message";
     public static final String HTTP_SERVICE_JSON_PAYLOAD = "HTTP Service JSON Payload";
     public static final String HTTP_SERVICE_STRING_PAYLOAD = "HTTP Service STRING Payload";
+    public static final String JSON_BODY = "JSON_BODY";
 
     public HttpService() { super("HttpService"); }
 
