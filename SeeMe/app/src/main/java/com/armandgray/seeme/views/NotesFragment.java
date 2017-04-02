@@ -33,7 +33,7 @@ import org.json.JSONObject;
 import static android.app.Activity.RESULT_OK;
 import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
 import static com.armandgray.seeme.MainActivity.API_URI;
-import static com.armandgray.seeme.network.HttpHelper.sendGetRequest;
+import static com.armandgray.seeme.network.HttpHelper.sendPostRequest;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -107,9 +107,8 @@ public class NotesFragment extends Fragment
         JSONArray jsonArray = new JSONArray();
         cursor.moveToFirst();
         String url = NOTES_URI
-                + "username=" + activeUser.getUsername()
-                + "&notes=" + getNotesJson(cursor, json, jsonArray);
-        sendGetRequest(url, getContext());
+                + "username=" + activeUser.getUsername();
+        sendPostRequest(url, getNotesJson(cursor, json, jsonArray), getContext());
     }
 
     private String getNotesJson(Cursor cursor, JSONObject json, JSONArray jsonArray) {

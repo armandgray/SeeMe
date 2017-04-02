@@ -16,7 +16,7 @@ import com.armandgray.seeme.views.DiscoverFragment.DiscoverController;
 import java.util.Arrays;
 
 import static com.armandgray.seeme.models.User.getSortedUserList;
-import static com.armandgray.seeme.network.HttpHelper.sendGetRequest;
+import static com.armandgray.seeme.network.HttpHelper.sendPostRequest;
 import static com.armandgray.seeme.views.DiscoverFragment.NEW_CONNECTION_URI;
 
 public class DiscoverFragmentController implements DiscoverController {
@@ -77,7 +77,7 @@ public class DiscoverFragmentController implements DiscoverController {
             String url = NEW_CONNECTION_URI
                     + "username=" + activeUser.getUsername()
                     + "&connection=" + user.getUsername();
-            sendGetRequest(url, activity);
+            sendPostRequest(url, activity);
             listener.onUserClick(user);
         }
     }

@@ -29,7 +29,14 @@ public class HttpService extends IntentService {
         Uri uri = intent.getData();
         Log.i(TAG, "onHandleIntent: " + uri.toString());
 
-        String response = getResponse(uri);
+        String response;
+        if (intent.getStringExtra(JSON_BODY) != null) {
+            String body = intent.getStringExtra(JSON_BODY);
+            response = "";
+            Log.i(TAG, body);
+        } else {
+            response = getResponse(uri);
+        }
 
         Intent messageIntent = new Intent(HTTP_SERVICE_MESSAGE);
         putMessageIntentExtra(messageIntent, response);
@@ -51,7 +58,7 @@ public class HttpService extends IntentService {
     private void putMessageIntentExtra(Intent messageIntent, String response) {
         User[] userArray;
         if (response != null) {
-            if (response.charAt(0) != '[') {
+            if (!response.equals("") && response.charAt(0) != '[') {
                 messageIntent.putExtra(HTTP_SERVICE_STRING_PAYLOAD, response);
             } else {
                 Gson gson = new GsonBuilder()

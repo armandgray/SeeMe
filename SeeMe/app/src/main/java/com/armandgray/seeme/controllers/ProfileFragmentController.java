@@ -19,7 +19,7 @@ import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import static com.armandgray.seeme.network.HttpHelper.sendGetRequest;
+import static com.armandgray.seeme.network.HttpHelper.sendPostRequest;
 import static com.armandgray.seeme.utils.StringHelper.PASSWORD_PTR;
 import static com.armandgray.seeme.utils.StringHelper.capitalizeString;
 import static com.armandgray.seeme.utils.StringHelper.urlify;
@@ -179,13 +179,13 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        sendGetRequest(url, fragment.getContext());
+        sendPostRequest(url, fragment.getContext());
     }
 
     @Override
     public void onConfirmPassword(String password) {
         url += "&oldSecret=" + password;
-        sendGetRequest(url, fragment.getContext());
+        sendPostRequest(url, fragment.getContext());
     }
 
     @Override
@@ -203,7 +203,7 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
         url = DELETE_URL
                 + "username=" + username
                 + "&password=" + password;
-        sendGetRequest(url, fragment.getContext());
+        sendPostRequest(url, fragment.getContext());
     }
 
     @Override

@@ -27,7 +27,7 @@ public class HttpHelper {
         context.startService(intent);
     }
 
-    public static void sendGetRequest(String url, Context context) {
+    public static void sendPostRequest(String url, Context context) {
         Intent intent = new Intent(context, HttpService.class);
         intent.setData(Uri.parse(url));
         context.startService(intent);
