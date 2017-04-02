@@ -3,6 +3,7 @@ package db
 import (
   "errors"
   "fmt"
+  "strings"
 )
 
 func UpdateUserNotes(username string, notes []string) (error) {
@@ -10,17 +11,15 @@ func UpdateUserNotes(username string, notes []string) (error) {
   fmt.Println(db)
   if len(notes) == 0 { return errors.New("No Notes Found") }
   query := "INSERT INTO notes VALUES "
+  params := []string{}
 
   for _, note := range notes {
     query += "(?, ?),"
-    fmt.Println(note)
-    fmt.Println(query)
+    params = append(params, username, note)
 	}
-	//trim the last ,
-	query = query[0:len(query)-2]
-	//prepare the statement
 
-	//format all vals at once
+	query = strings.TrimSuffix(query, ",")
 
-  return nil
+  _, err := db.Exec(query, params...)
+  return err
 }
