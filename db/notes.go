@@ -15,7 +15,7 @@ func UpdateUserNotes(username string, notes []string) (error) {
 }
 
 func removeOldNotes(username string, notes []string) (error) {
-  
+
   return nil
 }
 

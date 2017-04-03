@@ -27,24 +27,24 @@ func GetDatabaseInstance() (*sql.DB) {
 	return db
 }
 
-func PostDeleteQuery(query string, params ...interface{}) (int64, error) {
+func PostDeleteQuery(query string, params ...interface{}) (error) {
   db := GetDatabaseInstance()
   qry, err := db.Prepare(query)
   if err != nil {
-    return 0, errors.New("Prepare Update Error!")
+    return errors.New("Prepare Update Error!")
   }
 
   res, err := qry.Exec(params...)
   if err != nil {
-    return 0, errors.New("Update Query Error!")
+    return errors.New("Update Query Error!")
   }
 
   affect, err := res.RowsAffected()
-  if err != nil {
-    return affect, errors.New("Internal Update Error!")
+  if err != nil || affect < 1 {
+    return errors.New("Internal Update Error!")
   }
 
-  return affect, nil
+  return nil
 }
 
 func GetQueryUserList(query string, cols int, params ...interface{}) ([]User, error) {

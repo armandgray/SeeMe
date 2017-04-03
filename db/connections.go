@@ -42,10 +42,10 @@ func UpdateConnectionStatus(username string, connection string) (error) {
 	return err
 }
 
-func DeleteConnection(username string, connection string) (int64, error) {
+func DeleteConnection(username string, connection string) (error) {
   primaryUser, connectUser, err := getUserRelationship(username, connection)
   if err != nil {
-    return 0, errors.New("Connection Search Error!")
+    return errors.New("Connection Search Error!")
   }
   return PostDeleteQuery("DELETE FROM connections WHERE username = ? AND connection = ?", 
                               primaryUser, connectUser)

@@ -18,8 +18,8 @@ func ProfileDeleteController(w http.ResponseWriter, r *http.Request) {
     w.Write([]byte("Password Incorrect!"))
     return
   } else {
-    affect, err := db.DeleteUser(r.FormValue("username")); 
-    if err != nil || affect < 1 {
+    err := db.DeleteUser(r.FormValue("username")); 
+    if err != nil {
       w.Write([]byte("Update Failed!"))
       return
     }
