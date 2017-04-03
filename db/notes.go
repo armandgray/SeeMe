@@ -2,7 +2,6 @@ package db
 
 import (
   "errors"
-  "fmt"
   "strings"
 )
 
@@ -16,8 +15,7 @@ func GetNotesList(username string) ([]string, error) {
 }
 
 func UpdateUserNotes(username string, notes []string) (error) {
-  fmt.Println("call")
-  if err := removeOldNotes(username, notes); err != nil {
+  if _, err := removeOldNotes(username, notes); err != nil {
     return err
   }
 	return addNewNotes(username, notes)
@@ -31,7 +29,7 @@ func mapKeys(mapForKeys map[string]bool) ([]string) {
   return keys
 }
 
-func removeOldNotes(username string, notes []string) (error) {
+func removeOldNotes(username string, notes []string) (int64, error) {
   return PostDeleteQuery("DELETE FROM notes WHERE username = ?", username)
 }
 

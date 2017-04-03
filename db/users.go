@@ -22,7 +22,7 @@ func InsertUser(user User) (error) {
 	return err
 }
 
-func DeleteUser(username string) (error) {
+func DeleteUser(username string) (int64, error) {
 	return PostDeleteQuery("DELETE FROM users WHERE username = ?", username)
 }
 
