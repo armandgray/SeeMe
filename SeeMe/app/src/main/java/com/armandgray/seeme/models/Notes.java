@@ -14,7 +14,7 @@ public class Notes implements Parcelable {
     public String[] getNotes() {
         return notes;
     }
-    
+
     @Override
     public int describeContents() {
         return 0;

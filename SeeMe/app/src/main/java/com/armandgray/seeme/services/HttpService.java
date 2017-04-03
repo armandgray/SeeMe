@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
+import com.armandgray.seeme.models.Notes;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.network.HttpHelper;
 import com.google.gson.FieldNamingPolicy;
@@ -23,7 +24,7 @@ public class HttpService extends IntentService {
     public static final String HTTP_SERVICE_MESSAGE = "HTTP Service Message";
     public static final String HTTP_SERVICE_JSON_PAYLOAD = "HTTP Service JSON Payload";
     public static final String HTTP_SERVICE_STRING_PAYLOAD = "HTTP Service STRING Payload";
-    public static final String HTTP_SERVICE_ARRAY_PAYLOAD = "HTTP Service Array Payload";
+    public static final String HTTP_SERVICE_NOTES_PAYLOAD = "HTTP Service NOTES Payload";
     public static final String JSON_BODY = "JSON_BODY";
 
     public HttpService() { super("HttpService"); }
@@ -65,8 +66,8 @@ public class HttpService extends IntentService {
             if (!response.equals("") && response.charAt(0) != '[') {
                 messageIntent.putExtra(HTTP_SERVICE_STRING_PAYLOAD, response);
             } else if (responseType.equals(POST)) {
-                messageIntent.putExtra(HTTP_SERVICE_ARRAY_PAYLOAD,
-                        gson.fromJson(response, String[].class));
+                messageIntent.putExtra(HTTP_SERVICE_NOTES_PAYLOAD,
+                        gson.fromJson(response, Notes.class));
             } else {
                 userArray = gson.fromJson(response, User[].class);
                 messageIntent.putExtra(HTTP_SERVICE_JSON_PAYLOAD, userArray);
