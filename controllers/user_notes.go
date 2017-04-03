@@ -8,6 +8,11 @@ import (
 )
 
 func GetUserNotesController(w http.ResponseWriter, r *http.Request) {
+  if _, err := db.GetUser(r.FormValue("username")); err != nil {
+    w.Write([]byte("User Not Found!"))
+    return
+  }
+
   userNotes, err := db.GetNotesList(r.FormValue("username"))
   if err != nil {
     w.Write([]byte(err.Error()))
