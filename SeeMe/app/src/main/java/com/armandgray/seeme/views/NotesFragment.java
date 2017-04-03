@@ -171,14 +171,17 @@ public class NotesFragment extends Fragment
     }
 
     private void handleHttpResponse(String[] arrayExtra) {
+        if (arrayExtra.equals(USER_NOT_FOUND)) {
+            getActivity().getContentResolver().delete(NotesProvider.CONTENT_URI, null, null);
+            return;
+        }
         if (arrayExtra != null && arrayExtra.length != 0) {
             updateSqliteDatabase(arrayExtra);
         }
     }
 
     private void updateSqliteDatabase(String[] arrayExtra) {
-        getActivity().getContentResolver()
-                .delete(NotesProvider.CONTENT_URI, null, null);
+        getActivity().getContentResolver().delete(NotesProvider.CONTENT_URI, null, null);
         for (String note : arrayExtra) {
             insertNoteUsername(note);
         }
