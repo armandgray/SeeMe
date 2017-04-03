@@ -9,7 +9,6 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -24,7 +23,6 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
-import com.armandgray.seeme.MainActivity;
 import com.armandgray.seeme.NoteEditorActivity;
 import com.armandgray.seeme.R;
 import com.armandgray.seeme.db.DatabaseHelper;
@@ -52,6 +50,16 @@ public class NotesFragment extends Fragment
     private static final String GET_NOTES_URI = API_URI + "/notes/get?";
     private static final String TAG = "NOTES_FRAGMENT";
     private static final int EDITOR_REQUEST_CODE = 1001;
+
+    private static final String USER_NOT_FOUND = "User Not Found!";
+    private static final String NOTES_UPLOADED = "Notes Uploaded";
+    private static final String PREPARE_UPDATE_ERROR = "Prepare Update Error!";
+    private static final String UPDATE_QUERY_ERROR = "Update Query Error!";
+    private static final String INTERNAL_UPDATE_ERROR = "Internal Update Error!";
+
+    private String[] responseArray = {USER_NOT_FOUND, PREPARE_UPDATE_ERROR, NOTES_UPLOADED,
+            UPDATE_QUERY_ERROR, INTERNAL_UPDATE_ERROR};
+
     private CursorAdapter adapter;
     private User activeUser;
 
@@ -59,10 +67,7 @@ public class NotesFragment extends Fragment
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.i(TAG, "http Broadcast Received");
-            Parcelable[] arrayExtra = intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_JSON_PAYLOAD);
-            notesArray = (User[]) arrayExtra;
-            handleHttpResponse(
-                    intent.getStringExtra(HttpService.HTTP_SERVICE_STRING_PAYLOAD), arrayExtra);
+            handleHttpResponse(intent.getStringArrayExtra(HttpService.HTTP_SERVICE_JSON_PAYLOAD));
         }
     };
 
@@ -76,7 +81,7 @@ public class NotesFragment extends Fragment
         fragment.setArguments(args);
         return fragment;
     }
-    
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -162,6 +167,16 @@ public class NotesFragment extends Fragment
 
     private Loader<Cursor> restartLoader() {
         return getLoaderManager().restartLoader(0, null, this);
+    }
+
+    private void handleHttpResponse(String[] arrayExtra) {
+        if (arrayExtra != null && arrayExtra.length != 0) {
+            updateSqliteDatabase(arrayExtra);
+        }
+    }
+
+    private void updateSqliteDatabase(String[] arrayExtra) {
+
     }
 
     @Override
