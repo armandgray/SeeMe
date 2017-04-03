@@ -20,6 +20,7 @@ public class HttpService extends IntentService {
     public static final String HTTP_SERVICE_MESSAGE = "HTTP Service Message";
     public static final String HTTP_SERVICE_JSON_PAYLOAD = "HTTP Service JSON Payload";
     public static final String HTTP_SERVICE_STRING_PAYLOAD = "HTTP Service STRING Payload";
+    public static final String JSON_BODY = "JSON_BODY";
 
     public HttpService() { super("HttpService"); }
 
@@ -29,17 +30,36 @@ public class HttpService extends IntentService {
         Log.i(TAG, "onHandleIntent: " + uri.toString());
 
         String response;
-        try {
-            response = HttpHelper.downloadUrl(uri.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-            return;
+        if (intent.getStringExtra(JSON_BODY) != null) {
+            String body = intent.getStringExtra(JSON_BODY);
+            response = "";
+            Log.i(TAG, body);
+
+        } else {
+            response = getResponse(uri);
         }
 
-        User[] userArray = null;
         Intent messageIntent = new Intent(HTTP_SERVICE_MESSAGE);
+        putMessageIntentExtra(messageIntent, response);
+        LocalBroadcastManager.getInstance(getApplicationContext())
+                .sendBroadcast(messageIntent);
+    }
+
+    private String getResponse(Uri uri) {
+        String response;
+        try {
+            response = HttpHelper.downloadUrl(uri.toString(), HttpHelper.GET);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+        return response;
+    }
+
+    private void putMessageIntentExtra(Intent messageIntent, String response) {
+        User[] userArray;
         if (response != null) {
-            if (response.charAt(0) != '[') {
+            if (!response.equals("") && response.charAt(0) != '[') {
                 messageIntent.putExtra(HTTP_SERVICE_STRING_PAYLOAD, response);
             } else {
                 Gson gson = new GsonBuilder()
@@ -49,9 +69,5 @@ public class HttpService extends IntentService {
                 messageIntent.putExtra(HTTP_SERVICE_JSON_PAYLOAD, userArray);
             }
         }
-
-        LocalBroadcastManager broadcastManager =
-                LocalBroadcastManager.getInstance(getApplicationContext());
-        broadcastManager.sendBroadcast(messageIntent);
     }
 }

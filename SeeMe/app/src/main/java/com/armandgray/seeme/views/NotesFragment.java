@@ -1,6 +1,7 @@
 package com.armandgray.seeme.views;
 
 
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
@@ -11,21 +12,28 @@ import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
 import android.support.v4.widget.CursorAdapter;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.armandgray.seeme.NoteEditorActivity;
 import com.armandgray.seeme.R;
+import com.armandgray.seeme.db.DatabaseHelper;
 import com.armandgray.seeme.db.NotesProvider;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.utils.NotesLvAdapter;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import static android.app.Activity.RESULT_OK;
 import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
+import static com.armandgray.seeme.MainActivity.API_URI;
+import static com.armandgray.seeme.network.HttpHelper.sendPostRequest;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -33,10 +41,11 @@ import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
 public class NotesFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
-
+    private static final String NOTES_URI = API_URI + "?";
     private static final String TAG = "NOTES_FRAGMENT";
     private static final int EDITOR_REQUEST_CODE = 1001;
     private CursorAdapter adapter;
+    private User activeUser;
 
     public NotesFragment() {}
 
@@ -53,7 +62,7 @@ public class NotesFragment extends Fragment
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_notes, container, false);
-
+        activeUser = getArguments().getParcelable(ACTIVE_USER);
         adapter = new NotesLvAdapter(getContext(), null, 0);
 
         ListView lvNotes = (ListView) rootView.findViewById(R.id.lvNotes);
@@ -77,7 +86,52 @@ public class NotesFragment extends Fragment
             }
         });
 
+        Cursor cursor = getActivity().getContentResolver()
+                .query(NotesProvider.CONTENT_URI, DatabaseHelper.ALL_COLUMNS, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+            String noteText = cursor.getString(cursor.getColumnIndex(DatabaseHelper.NOTE_TEXT));
+            Log.i(TAG, noteText);
+            if (noteText.equals(activeUser.getUsername())) {
+                deleteVerifiedUserNote(cursor);
+            } else {
+                sendUserNotesRequest(cursor);
+            }
+            cursor.close();
+        }
         return rootView;
+    }
+
+    private void sendUserNotesRequest(Cursor cursor) {
+        JSONObject json = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+        cursor.moveToFirst();
+        String url = NOTES_URI
+                + "username=" + activeUser.getUsername();
+        sendPostRequest(url, getNotesJson(cursor, json, jsonArray), getContext());
+    }
+
+    private String getNotesJson(Cursor cursor, JSONObject json, JSONArray jsonArray) {
+        String noteText;
+        try {
+            do {
+                noteText = cursor.getString(cursor.getColumnIndex(DatabaseHelper.NOTE_TEXT));
+                jsonArray.put(cursor.getPosition(), noteText);
+            } while (cursor.moveToNext());
+            json = new JSONObject();
+            json.put("notes", jsonArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return json.toString();
+    }
+
+    private void deleteVerifiedUserNote(Cursor cursor) {
+        String id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.NOTE_ID));
+        Uri uri = Uri.parse(NotesProvider.CONTENT_URI + "/" + id);
+        String noteUsername = DatabaseHelper.NOTE_ID + " = " + uri.getLastPathSegment();
+        getActivity().getContentResolver()
+                .delete(NotesProvider.CONTENT_URI, noteUsername, null);
     }
 
     private Loader<Cursor> restartLoader() {
@@ -105,5 +159,18 @@ public class NotesFragment extends Fragment
         if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK) {
             restartLoader();
         }
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        if (activeUser != null) { insertNoteUsername("nlue"); }
+    }
+
+    private void insertNoteUsername(String note) {
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.NOTE_TEXT, note);
+        getActivity().getContentResolver().insert(NotesProvider.CONTENT_URI, values);
+        restartLoader();
     }
 }

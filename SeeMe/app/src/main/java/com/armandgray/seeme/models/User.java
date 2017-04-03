@@ -74,9 +74,8 @@ public class User implements Parcelable, Comparator<User> {
     @NonNull
     public static ArrayList<User> getSortedUserList(User[] array, Comparator<User> comparator) {
         ArrayList<User> list = new ArrayList<>();
-        for (User user : array) {
-            list.add(user);
-        }
+        if (array == null) { return list; }
+        Collections.addAll(list, array);
         Collections.sort(list, comparator);
         return list;
     }

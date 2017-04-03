@@ -14,7 +14,7 @@ import java.util.HashMap;
 
 import static com.armandgray.seeme.LoginActivity.LOGIN_PAYLOAD;
 import static com.armandgray.seeme.RegisterActivity.*;
-import static com.armandgray.seeme.network.HttpHelper.sendRequest;
+import static com.armandgray.seeme.network.HttpHelper.sendPostRequest;
 import static com.armandgray.seeme.utils.StringHelper.*;
 
 public class RegisterActivityController implements RegisterActivity.RegisterController {
@@ -49,10 +49,12 @@ public class RegisterActivityController implements RegisterActivity.RegisterCont
             return false;
         }
         if (mapEditTextStrings.get(FIRST_NAME).equals("")
-                || mapEditTextStrings.get(FIRST_NAME).indexOf(' ') != -1
-                || mapEditTextStrings.get(LAST_NAME).equals("")
-                || mapEditTextStrings.get(LAST_NAME).indexOf(' ') != -1) {
+                || mapEditTextStrings.get(LAST_NAME).equals("")) {
             Toast.makeText(activity, "Please Enter First & Last", Toast.LENGTH_LONG).show();
+            return false;
+        } else if (mapEditTextStrings.get(FIRST_NAME).indexOf(' ') != -1
+                || mapEditTextStrings.get(LAST_NAME).indexOf(' ') != -1) {
+            Toast.makeText(activity, "Please Hyphenate Names (No Spaces)", Toast.LENGTH_LONG).show();
             return false;
         }
         if (mapEditTextStrings.get(OCCUPATION).equals("")) {
@@ -71,7 +73,7 @@ public class RegisterActivityController implements RegisterActivity.RegisterCont
                 + "&lastName=" + capitalizeString(mapEditTextStrings.get(LAST_NAME))
                 + "&role=" + urlify(mapEditTextStrings.get(OCCUPATION))
                 + "&discoverable=" + discoverable;
-            sendRequest(url, activity);
+            sendPostRequest(url, activity);
     }
 
     @Override

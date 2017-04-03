@@ -13,6 +13,8 @@ import com.armandgray.seeme.db.DatabaseHelper;
 
 public class NotesLvAdapter extends CursorAdapter {
 
+    private static final String TAG = "NOTES_LV_ADAPTER";
+
     public NotesLvAdapter(Context context, Cursor c, int flags) {
         super(context, c, flags);
     }
@@ -24,7 +26,6 @@ public class NotesLvAdapter extends CursorAdapter {
 
     @Override
     public void bindView(View view, Context context, Cursor cursor) {
-
         String noteText = cursor.getString(cursor.getColumnIndex(DatabaseHelper.NOTE_TEXT));
 
         int pos = noteText.indexOf(10);

@@ -26,9 +26,7 @@ import com.armandgray.seeme.services.HttpService;
 
 import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
 import static com.armandgray.seeme.MainActivity.API_URI;
-import static com.armandgray.seeme.network.HttpHelper.sendRequest;
 import static com.armandgray.seeme.utils.StringHelper.getBoldStringBuilder;
-import static com.armandgray.seeme.views.SeeMeFragment.LOCAL_USERS_URI;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -97,8 +95,6 @@ public class DiscoverFragment extends Fragment {
         toggleShowUsers();
         setupIvClickListener();
 
-        setupDummyUsers();
-
         return rootView;
     }
 
@@ -127,19 +123,6 @@ public class DiscoverFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 discoverClickListener.onTouchCycle();
-            }
-        });
-    }
-
-    private void setupDummyUsers() {
-        tvNoUsers.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String url = LOCAL_USERS_URI
-                        + "5c:b0:66:e8:d4:1b"
-                        + "&ssid=thetown"
-                        + "&username=" + activeUser.getUsername();
-                sendRequest(url, getContext());
             }
         });
     }
