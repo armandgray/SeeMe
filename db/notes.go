@@ -6,6 +6,14 @@ import (
   "strings"
 )
 
+func GetNotesList(username string) ([]string, error) {
+  query := "SELECT note FROM notes WHERE username = ?"
+  notesMap, err := GetQueryResultsMap(query, username)
+  if err != nil {
+    return []string{}, err
+  }
+}
+
 func UpdateUserNotes(username string, notes []string) (error) {
   fmt.Println("call")
   if err := removeOldNotes(username, notes); err != nil {

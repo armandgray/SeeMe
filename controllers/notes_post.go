@@ -16,7 +16,7 @@ func PostNotesController(w http.ResponseWriter, r *http.Request) {
       w.Write([]byte(err.Error()))
     }
 
-    if err := db.UpdateUserNotes("armandgray@gmail.com", notes.Notes); err != nil {
+    if err := db.UpdateUserNotes(r.FormValue("username"), notes.Notes); err != nil {
       w.Write([]byte(err.Error()))
     }
 
