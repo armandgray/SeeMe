@@ -24,7 +24,6 @@ func ProfileDeleteController(w http.ResponseWriter, r *http.Request) {
       return
     }
 
-    w.Write([]byte("Account Deleted!"))
-  
+    w.Write([]byte("Account Deleted!"))  
   }
 }

@@ -41,7 +41,7 @@ func PostDeleteQuery(query string, params ...interface{}) (int64, error) {
 
   affect, err := res.RowsAffected()
   if err != nil {
-    return affect, errors.New("Internal Update Error!")
+    return 0, errors.New("Internal Update Error!")
   }
 
   return affect, nil
