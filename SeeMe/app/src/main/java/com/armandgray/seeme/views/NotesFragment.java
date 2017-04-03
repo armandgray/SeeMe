@@ -1,8 +1,11 @@
 package com.armandgray.seeme.views;
 
 
+import android.content.BroadcastReceiver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
@@ -11,6 +14,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.widget.CursorAdapter;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -24,6 +28,7 @@ import com.armandgray.seeme.R;
 import com.armandgray.seeme.db.DatabaseHelper;
 import com.armandgray.seeme.db.NotesProvider;
 import com.armandgray.seeme.models.User;
+import com.armandgray.seeme.services.HttpService;
 import com.armandgray.seeme.utils.NotesLvAdapter;
 
 import org.json.JSONArray;
@@ -41,11 +46,31 @@ import static com.armandgray.seeme.network.HttpHelper.sendPostRequest;
 public class NotesFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String NOTES_URI = API_URI + "?";
+    private static final String POST_NOTES_URI = API_URI + "/notes/post?";
+    private static final String GET_NOTES_URI = API_URI + "/notes/get?";
     private static final String TAG = "NOTES_FRAGMENT";
     private static final int EDITOR_REQUEST_CODE = 1001;
+
+    private static final String USER_NOT_FOUND = "User Not Found!";
+    private static final String NOTES_UPLOADED = "Notes Uploaded";
+    private static final String PREPARE_UPDATE_ERROR = "Prepare Update Error!";
+    private static final String UPDATE_QUERY_ERROR = "Update Query Error!";
+    private static final String INTERNAL_UPDATE_ERROR = "Internal Update Error!";
+
+    private String[] responseArray = {USER_NOT_FOUND, PREPARE_UPDATE_ERROR, NOTES_UPLOADED,
+            UPDATE_QUERY_ERROR, INTERNAL_UPDATE_ERROR};
+
     private CursorAdapter adapter;
     private User activeUser;
+
+    private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            Log.i(TAG, "http Broadcast Received");
+            handleHttpResponse(intent.getStringExtra(HttpService.HTTP_SERVICE_STRING_PAYLOAD),
+                    intent.getStringArrayExtra(HttpService.HTTP_SERVICE_ARRAY_PAYLOAD));
+        }
+    };
 
     public NotesFragment() {}
 
@@ -57,7 +82,7 @@ public class NotesFragment extends Fragment
         fragment.setArguments(args);
         return fragment;
     }
-    
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -86,6 +111,21 @@ public class NotesFragment extends Fragment
             }
         });
 
+        return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getUserVisibleHint()) {
+            LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
+                    .registerReceiver(httpBroadcastReceiver,
+                            new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
+            verifyNotesForUser();
+        }
+    }
+
+    private void verifyNotesForUser() {
         Cursor cursor = getActivity().getContentResolver()
                 .query(NotesProvider.CONTENT_URI, DatabaseHelper.ALL_COLUMNS, null, null, null);
 
@@ -95,20 +135,26 @@ public class NotesFragment extends Fragment
             if (noteText.equals(activeUser.getUsername())) {
                 deleteVerifiedUserNote(cursor);
             } else {
-                sendUserNotesRequest(cursor);
+                sendPostNotesRequest(cursor, noteText);
+                sendGetNotesRequest();
             }
             cursor.close();
         }
-        return rootView;
     }
 
-    private void sendUserNotesRequest(Cursor cursor) {
+    private void sendPostNotesRequest(Cursor cursor, String username) {
         JSONObject json = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         cursor.moveToFirst();
-        String url = NOTES_URI
-                + "username=" + activeUser.getUsername();
+        String url = POST_NOTES_URI
+                + "username=" + username;
         sendPostRequest(url, getNotesJson(cursor, json, jsonArray), getContext());
+    }
+
+    private void sendGetNotesRequest() {
+        String url = GET_NOTES_URI
+                + "username=" + activeUser.getUsername();
+        sendPostRequest(url, getContext());
     }
 
     private String getNotesJson(Cursor cursor, JSONObject json, JSONArray jsonArray) {
@@ -138,6 +184,25 @@ public class NotesFragment extends Fragment
         return getLoaderManager().restartLoader(0, null, this);
     }
 
+    private void handleHttpResponse(String response, String[] arrayExtra) {
+        if (response != null) Log.i(TAG, response);
+        if (response != null && response.equals(USER_NOT_FOUND)) {
+            getActivity().getContentResolver().delete(NotesProvider.CONTENT_URI, null, null);
+            return;
+        }
+        if (arrayExtra != null && arrayExtra.length != 0) {
+            Log.i(TAG, arrayExtra[0]);
+            updateSqliteDatabase(arrayExtra);
+        }
+    }
+
+    private void updateSqliteDatabase(String[] arrayExtra) {
+        getActivity().getContentResolver().delete(NotesProvider.CONTENT_URI, null, null);
+        for (String note : arrayExtra) {
+            insertNoteUsername(note);
+        }
+    }
+
     @Override
     public Loader<Cursor> onCreateLoader(int id, Bundle args) {
         return new CursorLoader(getContext(), NotesProvider.CONTENT_URI,
@@ -162,9 +227,18 @@ public class NotesFragment extends Fragment
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        if (!getUserVisibleHint()) {
+            LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
+                    .unregisterReceiver(httpBroadcastReceiver);
+        }
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
-        if (activeUser != null) { insertNoteUsername("nlue"); }
+        if (activeUser != null) { insertNoteUsername(activeUser.getUsername()); }
     }
 
     private void insertNoteUsername(String note) {

@@ -44,7 +44,7 @@ public class HttpHelper {
      * @return
      * @throws IOException
      */
-    public static String downloadUrl(String address, String requestType) throws IOException {
+    public static String downloadUrl(String address, String requestType, String body) throws IOException {
 
         InputStream is = null;
         try {
@@ -61,7 +61,7 @@ public class HttpHelper {
                 OutputStream os = conn.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(
                         new OutputStreamWriter(os, "UTF-8"));
-                writer.write("");
+                writer.write(body);
                 writer.flush();
                 writer.close();
                 os.close();
