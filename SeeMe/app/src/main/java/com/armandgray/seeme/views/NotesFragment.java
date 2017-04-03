@@ -22,6 +22,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.armandgray.seeme.NoteEditorActivity;
 import com.armandgray.seeme.R;
@@ -102,7 +103,6 @@ public class NotesFragment extends Fragment
                 intent.putExtra(NotesProvider.CONTENT_ITEM_TYPE, uri);
                 startActivityForResult(intent, EDITOR_REQUEST_CODE);
                 editing = true;
-                Log.i(TAG, "Editing: " + editing);
             }
         });
 
@@ -195,15 +195,13 @@ public class NotesFragment extends Fragment
     }
 
     private void handleHttpResponse(String response, String[] arrayExtra) {
-        if (response != null) Log.i(TAG, response);
-        if (arrayExtra != null) Log.i(TAG, String.valueOf(arrayExtra.length));
         if (response != null && response.equals(USER_NOT_FOUND)) {
+            Toast.makeText(getContext(), USER_NOT_FOUND, Toast.LENGTH_SHORT).show();
             getActivity().getContentResolver().delete(NotesProvider.CONTENT_URI, null, null);
             restartLoader();
             return;
         }
         if (arrayExtra != null && arrayExtra.length != 0) {
-            Log.i(TAG, arrayExtra[0]);
             updateSqliteDatabase(arrayExtra);
         }
     }
@@ -235,7 +233,6 @@ public class NotesFragment extends Fragment
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK) {
-            editing = false;
             restartLoader();
         }
     }
