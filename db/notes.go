@@ -8,7 +8,15 @@ import (
 
 func UpdateUserNotes(username string, notes []string) (error) {
   fmt.Println("call")
+  if err := removeOldNotes(username, notes); err != nil {
+    return err
+  }
 	return addNewNotes(username, notes)
+}
+
+func removeOldNotes(username string, notes []string) (error) {
+  
+  return nil
 }
 
 func addNewNotes(username string, notes []string) (error) {
