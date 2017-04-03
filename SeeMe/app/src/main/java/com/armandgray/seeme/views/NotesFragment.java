@@ -62,6 +62,7 @@ public class NotesFragment extends Fragment
 
     private CursorAdapter adapter;
     private User activeUser;
+    private boolean editing;
 
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -100,6 +101,8 @@ public class NotesFragment extends Fragment
                 Uri uri = Uri.parse(NotesProvider.CONTENT_URI + "/" + id);
                 intent.putExtra(NotesProvider.CONTENT_ITEM_TYPE, uri);
                 startActivityForResult(intent, EDITOR_REQUEST_CODE);
+                editing = true;
+                Log.i(TAG, "Editing: " + editing);
             }
         });
 
@@ -108,8 +111,11 @@ public class NotesFragment extends Fragment
             @Override
             public void onClick(View v) {
                 startActivityForResult(new Intent(getContext(), NoteEditorActivity.class), EDITOR_REQUEST_CODE);
+                editing = true;
             }
         });
+
+        verifyNotesForUser();
 
         return rootView;
     }
@@ -121,7 +127,6 @@ public class NotesFragment extends Fragment
             LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
                     .registerReceiver(httpBroadcastReceiver,
                             new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
-            verifyNotesForUser();
         }
     }
 
@@ -221,6 +226,7 @@ public class NotesFragment extends Fragment
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK) {
+            editing = false;
             restartLoader();
         }
     }
@@ -235,8 +241,12 @@ public class NotesFragment extends Fragment
     }
 
     @Override
-    public void onDestroy() {
-        super.onDestroy();
+    public void onStop() {
+        super.onStop();
+        if (editing) {
+            editing = false;
+            return;
+        }
         if (activeUser != null) { insertNoteUsername(activeUser.getUsername()); }
     }
 
