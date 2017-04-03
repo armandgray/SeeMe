@@ -10,8 +10,8 @@ func UpdateUserNotes(username string, notes []string) (error) {
 	db := GetDatabaseInstance()
   fmt.Println(db)
   if len(notes) == 0 { return errors.New("No Notes Found") }
-  query := "INSERT INTO notes VALUES "
-  params := []string{}
+  query := "INSERT INTO notes (username, note) VALUES "
+  params := make([]interface{}, 0)
 
   for _, note := range notes {
     query += "(?, ?),"
@@ -20,6 +20,7 @@ func UpdateUserNotes(username string, notes []string) (error) {
 
 	query = strings.TrimSuffix(query, ",")
 
+  fmt.Println(params)
   _, err := db.Exec(query, params...)
   return err
 }

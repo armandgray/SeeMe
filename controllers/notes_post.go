@@ -17,5 +17,7 @@ func PostNotesController(w http.ResponseWriter, r *http.Request) {
         fmt.Println(err.Error())
     }
 
-    db.UpdateUserNotes("armandgray@gmail.com", notes.Notes)
+    if err := db.UpdateUserNotes("armandgray@gmail.com", notes.Notes); err != nil {
+      fmt.Println(err.Error())
+    }
 }
