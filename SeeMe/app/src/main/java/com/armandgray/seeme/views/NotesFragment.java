@@ -143,21 +143,11 @@ public class NotesFragment extends Fragment
             String noteText = cursor.getString(cursor.getColumnIndex(DatabaseHelper.NOTE_TEXT));
             if (noteText.equals(activeUser.getUsername())) {
                 deleteVerifiedUserNote(cursor);
-            } else {
-                sendPostNotesRequest(cursor, noteText);
-                sendGetNotesRequest();
-            }
-            cursor.close();
+                cursor.close();
+                return;
         }
-    }
+        sendGetNotesRequest();
 
-    private void sendPostNotesRequest(@NonNull Cursor cursor, String username) {
-        JSONObject json = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
-        cursor.moveToFirst();
-        String url = POST_NOTES_URI
-                + "username=" + username;
-        sendPostRequest(url, getNotesJson(cursor, json, jsonArray), getContext());
     }
 
     private void sendGetNotesRequest() {
@@ -247,6 +237,13 @@ public class NotesFragment extends Fragment
         }
     }
 
+    private void insertNoteUsername(String note) {
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.NOTE_TEXT, note);
+        getActivity().getContentResolver().insert(NotesProvider.CONTENT_URI, values);
+        restartLoader();
+    }
+
     @Override
     public void onStop() {
         super.onStop();
@@ -255,10 +252,13 @@ public class NotesFragment extends Fragment
         if (cursor != null && cursor.getCount() != 0) { sendPostNotesRequest(cursor, activeUser.getUsername()); }
     }
 
-    private void insertNoteUsername(String note) {
-        ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.NOTE_TEXT, note);
-        getActivity().getContentResolver().insert(NotesProvider.CONTENT_URI, values);
-        restartLoader();
+    private void sendPostNotesRequest(@NonNull Cursor cursor, String username) {
+        JSONObject json = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+        cursor.moveToFirst();
+        String url = POST_NOTES_URI
+                + "username=" + username;
+        sendPostRequest(url, getNotesJson(cursor, json, jsonArray), getContext());
+        cursor.close();
     }
 }
