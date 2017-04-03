@@ -2,6 +2,7 @@ package controllers
 
 import (
   "seeme/db"
+  "seeme/models"
 
   "net/http"
   "encoding/json"
@@ -18,7 +19,10 @@ func GetUserNotesController(w http.ResponseWriter, r *http.Request) {
     w.Write([]byte(err.Error()))
     return
   }
-  js, err := json.Marshal(userNotes)
+
+  var notes models.NotesJSON
+  notes.Notes = userNotes
+  js, err := json.Marshal([]models.NotesJSON{notes})
   if err != nil {
     w.Write([]byte("Notes Processing Error!"))
     return
