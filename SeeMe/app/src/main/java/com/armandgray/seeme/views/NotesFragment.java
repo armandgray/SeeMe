@@ -111,6 +111,21 @@ public class NotesFragment extends Fragment
             }
         });
 
+        return rootView;
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (getUserVisibleHint()) {
+            LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
+                    .registerReceiver(httpBroadcastReceiver,
+                            new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
+            verifyNotesForUser();
+        }
+    }
+
+    private void verifyNotesForUser() {
         Cursor cursor = getActivity().getContentResolver()
                 .query(NotesProvider.CONTENT_URI, DatabaseHelper.ALL_COLUMNS, null, null, null);
 
@@ -125,8 +140,6 @@ public class NotesFragment extends Fragment
             }
             cursor.close();
         }
-
-        return rootView;
     }
 
     private void sendPostNotesRequest(Cursor cursor, String username) {
@@ -172,11 +185,13 @@ public class NotesFragment extends Fragment
     }
 
     private void handleHttpResponse(String response, String[] arrayExtra) {
-        if (response.equals(USER_NOT_FOUND)) {
+        if (response != null) Log.i(TAG, response);
+        if (response != null && response.equals(USER_NOT_FOUND)) {
             getActivity().getContentResolver().delete(NotesProvider.CONTENT_URI, null, null);
             return;
         }
         if (arrayExtra != null && arrayExtra.length != 0) {
+            Log.i(TAG, arrayExtra[0]);
             updateSqliteDatabase(arrayExtra);
         }
     }
@@ -208,16 +223,6 @@ public class NotesFragment extends Fragment
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK) {
             restartLoader();
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        if (getUserVisibleHint()) {
-            LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
-                    .registerReceiver(httpBroadcastReceiver,
-                            new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
         }
     }
 
