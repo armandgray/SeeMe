@@ -145,6 +145,7 @@ public class NotesFragment extends Fragment
                 deleteVerifiedUserNote(cursor);
                 cursor.close();
                 return;
+            }
         }
         sendGetNotesRequest();
 
