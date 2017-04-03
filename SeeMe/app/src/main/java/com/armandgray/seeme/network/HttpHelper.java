@@ -61,7 +61,7 @@ public class HttpHelper {
                 OutputStream os = conn.getOutputStream();
                 BufferedWriter writer = new BufferedWriter(
                         new OutputStreamWriter(os, "UTF-8"));
-                writer.write("hello");
+                writer.write(body);
                 writer.flush();
                 writer.close();
                 os.close();
