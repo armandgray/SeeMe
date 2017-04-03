@@ -252,7 +252,7 @@ public class NotesFragment extends Fragment
         super.onStop();
         Cursor cursor = getActivity().getContentResolver()
                 .query(NotesProvider.CONTENT_URI, DatabaseHelper.ALL_COLUMNS, null, null, null);
-        if (cursor != null) { sendPostNotesRequest(cursor, activeUser.getUsername()); }
+        if (cursor != null && cursor.getCount() != 0) { sendPostNotesRequest(cursor, activeUser.getUsername()); }
     }
 
     private void insertNoteUsername(String note) {
