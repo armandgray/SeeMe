@@ -15,8 +15,7 @@ func UpdateUserNotes(username string, notes []string) (error) {
 }
 
 func removeOldNotes(username string, notes []string) (error) {
-
-  return nil
+  return PostDeleteQuery("DELETE FROM notes WHERE username = ?", username)
 }
 
 func addNewNotes(username string, notes []string) (error) {
