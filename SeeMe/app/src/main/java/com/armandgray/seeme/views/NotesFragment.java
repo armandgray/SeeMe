@@ -182,6 +182,7 @@ public class NotesFragment extends Fragment
         String noteUsername = DatabaseHelper.NOTE_ID + " = " + uri.getLastPathSegment();
         getActivity().getContentResolver()
                 .delete(NotesProvider.CONTENT_URI, noteUsername, null);
+        restartLoader();
     }
 
     private Loader<Cursor> restartLoader() {
@@ -192,6 +193,7 @@ public class NotesFragment extends Fragment
         if (response != null) Log.i(TAG, response);
         if (response != null && response.equals(USER_NOT_FOUND)) {
             getActivity().getContentResolver().delete(NotesProvider.CONTENT_URI, null, null);
+            restartLoader();
             return;
         }
         if (arrayExtra != null && arrayExtra.length != 0) {
@@ -205,6 +207,7 @@ public class NotesFragment extends Fragment
         for (String note : arrayExtra) {
             insertNoteUsername(note);
         }
+        restartLoader();
     }
 
     @Override
