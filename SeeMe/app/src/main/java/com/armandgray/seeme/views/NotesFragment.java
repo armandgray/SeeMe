@@ -115,8 +115,6 @@ public class NotesFragment extends Fragment
             }
         });
 
-        verifyNotesForUser();
-
         return rootView;
     }
 
@@ -127,6 +125,8 @@ public class NotesFragment extends Fragment
             LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
                     .registerReceiver(httpBroadcastReceiver,
                             new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
+
+            verifyNotesForUser();
         }
     }
 
@@ -191,6 +191,7 @@ public class NotesFragment extends Fragment
 
     private void handleHttpResponse(String response, String[] arrayExtra) {
         if (response != null) Log.i(TAG, response);
+        if (arrayExtra != null) Log.i(TAG, String.valueOf(arrayExtra.length));
         if (response != null && response.equals(USER_NOT_FOUND)) {
             getActivity().getContentResolver().delete(NotesProvider.CONTENT_URI, null, null);
             restartLoader();
