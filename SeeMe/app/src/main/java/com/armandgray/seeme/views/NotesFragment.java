@@ -22,7 +22,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.armandgray.seeme.NoteEditorActivity;
 import com.armandgray.seeme.R;
@@ -196,7 +195,6 @@ public class NotesFragment extends Fragment
 
     private void handleHttpResponse(String response, String[] arrayExtra) {
         if (response != null && response.equals(USER_NOT_FOUND)) {
-            Toast.makeText(getContext(), USER_NOT_FOUND, Toast.LENGTH_SHORT).show();
             getActivity().getContentResolver().delete(NotesProvider.CONTENT_URI, null, null);
             restartLoader();
             return;
@@ -243,13 +241,9 @@ public class NotesFragment extends Fragment
         if (!getUserVisibleHint()) {
             LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
                     .unregisterReceiver(httpBroadcastReceiver);
-        }
-    }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (activeUser != null && !editing) { insertNoteUsername(activeUser.getUsername()); }
+            if (activeUser != null && !editing) { insertNoteUsername(activeUser.getUsername()); }
+        }
     }
 
     private void insertNoteUsername(String note) {
