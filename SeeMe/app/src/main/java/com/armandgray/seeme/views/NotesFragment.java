@@ -176,7 +176,11 @@ public class NotesFragment extends Fragment
     }
 
     private void updateSqliteDatabase(String[] arrayExtra) {
-
+        getActivity().getContentResolver()
+                .delete(NotesProvider.CONTENT_URI, null, null);
+        for (String note : arrayExtra) {
+            insertNoteUsername(note);
+        }
     }
 
     @Override
