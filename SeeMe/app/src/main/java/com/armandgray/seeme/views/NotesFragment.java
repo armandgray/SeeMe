@@ -41,7 +41,8 @@ import static com.armandgray.seeme.network.HttpHelper.sendPostRequest;
 public class NotesFragment extends Fragment
         implements LoaderManager.LoaderCallbacks<Cursor> {
 
-    private static final String NOTES_URI = API_URI + "?";
+    private static final String POST_NOTES_URI = API_URI + "/notes/post?";
+    private static final String GET_NOTES_URI = API_URI + "/notes/get?";
     private static final String TAG = "NOTES_FRAGMENT";
     private static final int EDITOR_REQUEST_CODE = 1001;
     private CursorAdapter adapter;
@@ -95,20 +96,27 @@ public class NotesFragment extends Fragment
             if (noteText.equals(activeUser.getUsername())) {
                 deleteVerifiedUserNote(cursor);
             } else {
-                sendUserNotesRequest(cursor);
+                sendPostNotesRequest(cursor, noteText);
+                sendGetNotesRequest();
             }
             cursor.close();
         }
         return rootView;
     }
 
-    private void sendUserNotesRequest(Cursor cursor) {
+    private void sendPostNotesRequest(Cursor cursor, String username) {
         JSONObject json = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         cursor.moveToFirst();
-        String url = NOTES_URI
-                + "username=" + activeUser.getUsername();
+        String url = POST_NOTES_URI
+                + "username=" + username;
         sendPostRequest(url, getNotesJson(cursor, json, jsonArray), getContext());
+    }
+
+    private void sendGetNotesRequest() {
+        String url = GET_NOTES_URI
+                + "username=" + activeUser.getUsername();
+        sendPostRequest(url, getContext());
     }
 
     private String getNotesJson(Cursor cursor, JSONObject json, JSONArray jsonArray) {
@@ -164,7 +172,7 @@ public class NotesFragment extends Fragment
     @Override
     public void onStop() {
         super.onStop();
-        if (activeUser != null) { insertNoteUsername("nlue"); }
+        if (activeUser != null) { insertNoteUsername(activeUser.getUsername()); }
     }
 
     private void insertNoteUsername(String note) {
