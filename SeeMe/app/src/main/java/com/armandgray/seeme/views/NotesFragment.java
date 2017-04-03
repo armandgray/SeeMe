@@ -67,7 +67,8 @@ public class NotesFragment extends Fragment
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.i(TAG, "http Broadcast Received");
-            handleHttpResponse(intent.getStringArrayExtra(HttpService.HTTP_SERVICE_JSON_PAYLOAD));
+            handleHttpResponse(intent.getStringExtra(HttpService.HTTP_SERVICE_STRING_PAYLOAD),
+                    intent.getStringArrayExtra(HttpService.HTTP_SERVICE_ARRAY_PAYLOAD));
         }
     };
 
@@ -170,8 +171,8 @@ public class NotesFragment extends Fragment
         return getLoaderManager().restartLoader(0, null, this);
     }
 
-    private void handleHttpResponse(String[] arrayExtra) {
-        if (arrayExtra.equals(USER_NOT_FOUND)) {
+    private void handleHttpResponse(String response, String[] arrayExtra) {
+        if (response.equals(USER_NOT_FOUND)) {
             getActivity().getContentResolver().delete(NotesProvider.CONTENT_URI, null, null);
             return;
         }
