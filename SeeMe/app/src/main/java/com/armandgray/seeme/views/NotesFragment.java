@@ -124,6 +124,7 @@ public class NotesFragment extends Fragment
             }
             cursor.close();
         }
+
         return rootView;
     }
 
