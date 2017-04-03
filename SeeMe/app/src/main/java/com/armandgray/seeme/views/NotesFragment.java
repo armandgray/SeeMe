@@ -131,7 +131,6 @@ public class NotesFragment extends Fragment
 
         if (cursor != null && cursor.moveToFirst()) {
             String noteText = cursor.getString(cursor.getColumnIndex(DatabaseHelper.NOTE_TEXT));
-            Log.i(TAG, noteText);
             if (noteText.equals(activeUser.getUsername())) {
                 deleteVerifiedUserNote(cursor);
             } else {
@@ -236,8 +235,8 @@ public class NotesFragment extends Fragment
     }
 
     @Override
-    public void onStop() {
-        super.onStop();
+    public void onDestroy() {
+        super.onDestroy();
         if (activeUser != null) { insertNoteUsername(activeUser.getUsername()); }
     }
 
