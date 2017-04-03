@@ -131,6 +131,11 @@ public class NotesFragment extends Fragment
     }
 
     private void verifyNotesForUser() {
+        if (editing) {
+            editing = false;
+            return;
+        }
+
         Cursor cursor = getActivity().getContentResolver()
                 .query(NotesProvider.CONTENT_URI, DatabaseHelper.ALL_COLUMNS, null, null, null);
 
@@ -247,11 +252,7 @@ public class NotesFragment extends Fragment
     @Override
     public void onStop() {
         super.onStop();
-        if (editing) {
-            editing = false;
-            return;
-        }
-        if (activeUser != null) { insertNoteUsername(activeUser.getUsername()); }
+        if (activeUser != null && !editing) { insertNoteUsername(activeUser.getUsername()); }
     }
 
     private void insertNoteUsername(String note) {
