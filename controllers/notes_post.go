@@ -5,7 +5,6 @@ import (
   "seeme/db"
 
   "io"
-	"fmt"
   "net/http"
   "encoding/json"
 )

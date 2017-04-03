@@ -30,6 +30,7 @@ func main()  {
   mux.HandleFunc(apiUrl + "/profile/delete", controllers.ProfileDeleteController)
   mux.HandleFunc(apiUrl + "/profile/update", controllers.ProfileUpdateController)
   mux.HandleFunc(apiUrl + "/notes/post", controllers.PostNotesController)
+  mux.HandleFunc(apiUrl + "/notes/get", controllers.GetUserNotesController)
   mux.HandleFunc(apiUrl + "/feedback", controllers.FeedbackController)
 
   n := negroni.Classic()
