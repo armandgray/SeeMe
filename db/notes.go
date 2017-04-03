@@ -25,7 +25,7 @@ func UpdateUserNotes(username string, notes []string) (error) {
 
 func mapKeys(mapForKeys map[string]bool) ([]string) {
   keys := make([]string, 0, len(mapForKeys))
-  for key := range mymap {
+  for key := range mapForKeys {
       keys = append(keys, key)
   }
   return keys

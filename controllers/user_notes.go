@@ -1,11 +1,14 @@
 package controllers
 
 import (
+  "seeme/db"
+
   "net/http"
+  "encoding/json"
 )
 
 func GetUserNotesController(w http.ResponseWriter, r *http.Request) {
-  userNotes, err := db.GetUserNotesList(r.FormValue("username"))
+  userNotes, err := db.GetNotesList(r.FormValue("username"))
   if err != nil {
     w.Write([]byte(err.Error()))
     return
