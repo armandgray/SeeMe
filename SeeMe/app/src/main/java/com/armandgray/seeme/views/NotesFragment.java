@@ -138,7 +138,6 @@ public class NotesFragment extends Fragment
 
         Cursor cursor = getActivity().getContentResolver()
                 .query(NotesProvider.CONTENT_URI, DatabaseHelper.ALL_COLUMNS, null, null, null);
-        Log.i(TAG, "Cursor count verify: " + cursor.getCount());
 
         if (cursor != null && cursor.moveToFirst()) {
             String noteText = cursor.getString(cursor.getColumnIndex(DatabaseHelper.NOTE_TEXT));
@@ -156,7 +155,6 @@ public class NotesFragment extends Fragment
         JSONObject json = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         cursor.moveToFirst();
-        Log.i(TAG, "Cursor count Post: " + cursor.getCount());
         String url = POST_NOTES_URI
                 + "username=" + username;
         sendPostRequest(url, getNotesJson(cursor, json, jsonArray), getContext());
@@ -254,8 +252,7 @@ public class NotesFragment extends Fragment
         super.onStop();
         Cursor cursor = getActivity().getContentResolver()
                 .query(NotesProvider.CONTENT_URI, DatabaseHelper.ALL_COLUMNS, null, null, null);
-        Log.i(TAG, "Cursor count: " + cursor.getCount());
-        if (cursor != null && cursor.getCount() != 0) { sendPostNotesRequest(cursor, activeUser.getUsername()); }
+        if (cursor != null) { sendPostNotesRequest(cursor, activeUser.getUsername()); }
     }
 
     private void insertNoteUsername(String note) {

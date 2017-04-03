@@ -36,12 +36,8 @@ public class HttpService extends IntentService {
         String body = intent.getStringExtra(JSON_BODY);
         String responseType = body != null ? POST : GET;
         String response = getResponse(uri, responseType, body);
+        if (response == null) { return; }
 
-        if (response == null) {
-            Log.i(TAG, "response is null");
-        } else {
-            Log.i(TAG, response);
-        }
         Intent messageIntent = new Intent(HTTP_SERVICE_MESSAGE);
         putMessageIntentExtra(messageIntent, response, responseType);
         LocalBroadcastManager.getInstance(getApplicationContext())
