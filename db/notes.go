@@ -12,6 +12,7 @@ func GetNotesList(username string) ([]string, error) {
   if err != nil {
     return []string{}, err
   }
+  return mapKeys(notesMap), nil
 }
 
 func UpdateUserNotes(username string, notes []string) (error) {
@@ -20,6 +21,14 @@ func UpdateUserNotes(username string, notes []string) (error) {
     return err
   }
 	return addNewNotes(username, notes)
+}
+
+func mapKeys(mapForKeys map[string]bool) ([]string) {
+  keys := make([]string, 0, len(mapForKeys))
+  for key := range mymap {
+      keys = append(keys, key)
+  }
+  return keys
 }
 
 func removeOldNotes(username string, notes []string) (error) {
