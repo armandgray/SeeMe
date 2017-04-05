@@ -118,11 +118,10 @@ public class NotesFragment extends Fragment
         });
 
         Log.i(TAG, "Start call");
-        String json = "{'Notes':['Test Array','Test other','Testing other','Testing other note']}";
+        String json = "[{'Notes':['Test Array','Test other','Testing other','Testing other note']}]";
         JSONArray array = null;
         try {
-            JSONObject o = (new JSONObject(json));
-            array = o.getJSONArray("Notes");
+            array = new JSONArray(json).getJSONObject(0).getJSONArray("Notes");
             for (int i = 0; i < array.length(); i++) {
                 Log.i(TAG, "Array: " + array.get(i));
             }
