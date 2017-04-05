@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -38,7 +39,10 @@ import org.json.JSONObject;
 import static android.app.Activity.RESULT_OK;
 import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
 import static com.armandgray.seeme.MainActivity.API_URI;
+import static com.armandgray.seeme.network.HttpHelper.NOTES;
+import static com.armandgray.seeme.network.HttpHelper.sendGetRequest;
 import static com.armandgray.seeme.network.HttpHelper.sendPostRequest;
+import static com.armandgray.seeme.services.HttpService.HTTP_SERVICE_MESSAGE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -62,13 +66,14 @@ public class NotesFragment extends Fragment
 
     private CursorAdapter adapter;
     private User activeUser;
+    private boolean editing;
 
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.i(TAG, "http Broadcast Received");
             handleHttpResponse(intent.getStringExtra(HttpService.HTTP_SERVICE_STRING_PAYLOAD),
-                    intent.getStringArrayExtra(HttpService.HTTP_SERVICE_ARRAY_PAYLOAD));
+                    intent.getStringArrayExtra(HttpService.HTTP_SERVICE_NOTES_PAYLOAD));
         }
     };
 
@@ -100,6 +105,7 @@ public class NotesFragment extends Fragment
                 Uri uri = Uri.parse(NotesProvider.CONTENT_URI + "/" + id);
                 intent.putExtra(NotesProvider.CONTENT_ITEM_TYPE, uri);
                 startActivityForResult(intent, EDITOR_REQUEST_CODE);
+                editing = true;
             }
         });
 
@@ -108,6 +114,7 @@ public class NotesFragment extends Fragment
             @Override
             public void onClick(View v) {
                 startActivityForResult(new Intent(getContext(), NoteEditorActivity.class), EDITOR_REQUEST_CODE);
+                editing = true;
             }
         });
 
@@ -120,41 +127,37 @@ public class NotesFragment extends Fragment
         if (getUserVisibleHint()) {
             LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
                     .registerReceiver(httpBroadcastReceiver,
-                            new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
+                            new IntentFilter(HTTP_SERVICE_MESSAGE));
+
             verifyNotesForUser();
         }
     }
 
     private void verifyNotesForUser() {
+        if (editing) {
+            editing = false;
+            return;
+        }
+
         Cursor cursor = getActivity().getContentResolver()
                 .query(NotesProvider.CONTENT_URI, DatabaseHelper.ALL_COLUMNS, null, null, null);
 
         if (cursor != null && cursor.moveToFirst()) {
             String noteText = cursor.getString(cursor.getColumnIndex(DatabaseHelper.NOTE_TEXT));
-            Log.i(TAG, noteText);
             if (noteText.equals(activeUser.getUsername())) {
                 deleteVerifiedUserNote(cursor);
-            } else {
-                sendPostNotesRequest(cursor, noteText);
-                sendGetNotesRequest();
+                cursor.close();
+                return;
             }
-            cursor.close();
         }
-    }
+        sendGetNotesRequest();
 
-    private void sendPostNotesRequest(Cursor cursor, String username) {
-        JSONObject json = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
-        cursor.moveToFirst();
-        String url = POST_NOTES_URI
-                + "username=" + username;
-        sendPostRequest(url, getNotesJson(cursor, json, jsonArray), getContext());
     }
 
     private void sendGetNotesRequest() {
         String url = GET_NOTES_URI
                 + "username=" + activeUser.getUsername();
-        sendPostRequest(url, getContext());
+        sendGetRequest(url, NOTES, getContext());
     }
 
     private String getNotesJson(Cursor cursor, JSONObject json, JSONArray jsonArray) {
@@ -178,29 +181,30 @@ public class NotesFragment extends Fragment
         String noteUsername = DatabaseHelper.NOTE_ID + " = " + uri.getLastPathSegment();
         getActivity().getContentResolver()
                 .delete(NotesProvider.CONTENT_URI, noteUsername, null);
+        restartLoader();
     }
 
     private Loader<Cursor> restartLoader() {
         return getLoaderManager().restartLoader(0, null, this);
     }
 
-    private void handleHttpResponse(String response, String[] arrayExtra) {
-        if (response != null) Log.i(TAG, response);
+    private void handleHttpResponse(String response, String[] notes) {
         if (response != null && response.equals(USER_NOT_FOUND)) {
             getActivity().getContentResolver().delete(NotesProvider.CONTENT_URI, null, null);
+            restartLoader();
             return;
         }
-        if (arrayExtra != null && arrayExtra.length != 0) {
-            Log.i(TAG, arrayExtra[0]);
-            updateSqliteDatabase(arrayExtra);
-        }
+
+        if (notes == null || notes.length == 0) { return; }
+        updateSqliteDatabase(notes);
     }
 
-    private void updateSqliteDatabase(String[] arrayExtra) {
+    private void updateSqliteDatabase(String[] notes) {
         getActivity().getContentResolver().delete(NotesProvider.CONTENT_URI, null, null);
-        for (String note : arrayExtra) {
+        for (String note : notes) {
             insertNoteUsername(note);
         }
+        restartLoader();
     }
 
     @Override
@@ -232,13 +236,9 @@ public class NotesFragment extends Fragment
         if (!getUserVisibleHint()) {
             LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
                     .unregisterReceiver(httpBroadcastReceiver);
-        }
-    }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (activeUser != null) { insertNoteUsername(activeUser.getUsername()); }
+            if (activeUser != null && !editing) { insertNoteUsername(activeUser.getUsername()); }
+        }
     }
 
     private void insertNoteUsername(String note) {
@@ -246,5 +246,23 @@ public class NotesFragment extends Fragment
         values.put(DatabaseHelper.NOTE_TEXT, note);
         getActivity().getContentResolver().insert(NotesProvider.CONTENT_URI, values);
         restartLoader();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Cursor cursor = getActivity().getContentResolver()
+                .query(NotesProvider.CONTENT_URI, DatabaseHelper.ALL_COLUMNS, null, null, null);
+        if (cursor != null && cursor.getCount() != 0) { sendPostNotesRequest(cursor, activeUser.getUsername()); }
+    }
+
+    private void sendPostNotesRequest(@NonNull Cursor cursor, String username) {
+        JSONObject json = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+        cursor.moveToFirst();
+        String url = POST_NOTES_URI
+                + "username=" + username;
+        sendPostRequest(url, getNotesJson(cursor, json, jsonArray), getContext());
+        cursor.close();
     }
 }

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.armandgray.seeme.models.User;
+import com.armandgray.seeme.network.HttpHelper;
 import com.armandgray.seeme.utils.RecyclerItemClickListener;
 import com.armandgray.seeme.utils.UserRVAdapter;
 import com.armandgray.seeme.views.DiscoverFragment.DiscoverClickListener;
@@ -77,7 +78,7 @@ public class DiscoverFragmentController implements DiscoverController {
             String url = NEW_CONNECTION_URI
                     + "username=" + activeUser.getUsername()
                     + "&connection=" + user.getUsername();
-            sendPostRequest(url, activity);
+            HttpHelper.sendGetRequest(url, activity);
             listener.onUserClick(user);
         }
     }
