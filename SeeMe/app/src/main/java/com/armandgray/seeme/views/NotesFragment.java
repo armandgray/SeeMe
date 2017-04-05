@@ -28,7 +28,6 @@ import com.armandgray.seeme.NoteEditorActivity;
 import com.armandgray.seeme.R;
 import com.armandgray.seeme.db.DatabaseHelper;
 import com.armandgray.seeme.db.NotesProvider;
-import com.armandgray.seeme.models.Notes;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.services.HttpService;
 import com.armandgray.seeme.utils.NotesLvAdapter;
@@ -74,7 +73,7 @@ public class NotesFragment extends Fragment
         public void onReceive(Context context, Intent intent) {
             Log.i(TAG, "http Broadcast Received");
             handleHttpResponse(intent.getStringExtra(HttpService.HTTP_SERVICE_STRING_PAYLOAD),
-                    (Notes) intent.getParcelableExtra(HttpService.HTTP_SERVICE_NOTES_PAYLOAD));
+                    intent.getStringArrayExtra(HttpService.HTTP_SERVICE_NOTES_PAYLOAD));
         }
     };
 
@@ -189,15 +188,15 @@ public class NotesFragment extends Fragment
         return getLoaderManager().restartLoader(0, null, this);
     }
 
-    private void handleHttpResponse(String response, Notes notes) {
+    private void handleHttpResponse(String response, String[] notes) {
         if (response != null && response.equals(USER_NOT_FOUND)) {
             getActivity().getContentResolver().delete(NotesProvider.CONTENT_URI, null, null);
             restartLoader();
             return;
         }
-        if (notes != null && notes.getNotes() != null && notes.getNotes().length != 0) {
-            updateSqliteDatabase(notes.getNotes());
-        }
+
+        if (notes == null || notes.length == 0) { return; }
+        updateSqliteDatabase(notes);
     }
 
     private void updateSqliteDatabase(String[] notes) {
