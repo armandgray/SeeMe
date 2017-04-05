@@ -6,7 +6,6 @@ import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 
-import com.armandgray.seeme.models.Notes;
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.network.HttpHelper;
 import com.google.gson.FieldNamingPolicy;
@@ -76,17 +75,19 @@ public class HttpService extends IntentService {
                 messageIntent.putExtra(HTTP_SERVICE_STRING_PAYLOAD, response);
             } else if (responseType.equals(NOTES)) {
                 Log.i(TAG, "Open + POST");
-                JSONArray array = null;
+                JSONArray jsonArray = null;
                 try {
-                    array = new JSONArray(response).getJSONObject(0).getJSONArray("Notes");
-                    for (int i = 0; i < array.length(); i++) {
-                        Log.i(TAG, "Array: " + array.get(i));
+                    jsonArray = new JSONArray(response).getJSONObject(0).getJSONArray("Notes");
+                    String[] array = new String[jsonArray.length()];
+                    for (int i = 0; i < jsonArray.length(); i++) {
+                        Log.i(TAG, "Array: " + jsonArray.get(i));
+                        array[i] = jsonArray.get(i).toString();
                     }
+                    messageIntent.putExtra(HTTP_SERVICE_NOTES_PAYLOAD, array);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-                messageIntent.putExtra(HTTP_SERVICE_NOTES_PAYLOAD,
-                        gson.fromJson(response, Notes.class));
+
             } else {
                 Log.i(TAG, "Open + GET");
                 userArray = gson.fromJson(response, User[].class);
