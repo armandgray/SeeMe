@@ -41,6 +41,7 @@ import static android.app.Activity.RESULT_OK;
 import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
 import static com.armandgray.seeme.MainActivity.API_URI;
 import static com.armandgray.seeme.network.HttpHelper.sendPostRequest;
+import static com.armandgray.seeme.services.HttpService.HTTP_SERVICE_MESSAGE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -116,6 +117,19 @@ public class NotesFragment extends Fragment
             }
         });
 
+        Log.i(TAG, "Start call");
+        String json = "{'Notes':['Test Array','Test other','Testing other','Testing other note']}";
+        JSONArray array = null;
+        try {
+            JSONObject o = (new JSONObject(json));
+            array = o.getJSONArray("Notes");
+            for (int i = 0; i < array.length(); i++) {
+                Log.i(TAG, "Array: " + array.get(i));
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
         return rootView;
     }
 
@@ -125,7 +139,7 @@ public class NotesFragment extends Fragment
         if (getUserVisibleHint()) {
             LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
                     .registerReceiver(httpBroadcastReceiver,
-                            new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
+                            new IntentFilter(HTTP_SERVICE_MESSAGE));
 
             verifyNotesForUser();
         }
