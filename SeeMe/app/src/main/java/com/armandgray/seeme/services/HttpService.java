@@ -67,17 +67,9 @@ public class HttpService extends IntentService {
     private void putMessageIntentExtra(Intent messageIntent, String response, String responseType) {
         User[] userArray;
         if (response != null) {
-            Gson gson = new GsonBuilder()
-                    .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
-                    .create();
-            if (!response.equals("") && response.charAt(0) != '[') {
-                Log.i(TAG, "No openining bracket");
-                messageIntent.putExtra(HTTP_SERVICE_STRING_PAYLOAD, response);
-            } else if (responseType.equals(NOTES)) {
-                Log.i(TAG, "Open + POST");
-                JSONArray jsonArray = null;
+            if (responseType.equals(NOTES)) {
                 try {
-                    jsonArray = new JSONArray(response).getJSONObject(0).getJSONArray("Notes");
+                    JSONArray jsonArray = new JSONArray(response).getJSONObject(0).getJSONArray("Notes");
                     String[] array = new String[jsonArray.length()];
                     for (int i = 0; i < jsonArray.length(); i++) {
                         Log.i(TAG, "Array: " + jsonArray.get(i));
@@ -87,9 +79,12 @@ public class HttpService extends IntentService {
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
+            } else if (!response.equals("") && response.charAt(0) != '[') {
+                messageIntent.putExtra(HTTP_SERVICE_STRING_PAYLOAD, response);
             } else {
-                Log.i(TAG, "Open + GET");
+                Gson gson = new GsonBuilder()
+                        .setFieldNamingPolicy(FieldNamingPolicy.UPPER_CAMEL_CASE)
+                        .create();
                 userArray = gson.fromJson(response, User[].class);
                 messageIntent.putExtra(HTTP_SERVICE_JSON_PAYLOAD, userArray);
             }

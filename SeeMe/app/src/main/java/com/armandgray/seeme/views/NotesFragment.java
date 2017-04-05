@@ -195,12 +195,15 @@ public class NotesFragment extends Fragment
             return;
         }
 
-        if (notes == null || notes.length == 0) { return; }
         updateSqliteDatabase(notes);
     }
 
     private void updateSqliteDatabase(String[] notes) {
         getActivity().getContentResolver().delete(NotesProvider.CONTENT_URI, null, null);
+        if (notes == null || notes.length == 0) {
+            restartLoader();
+            return;
+        }
         for (String note : notes) {
             insertNoteUsername(note);
         }
