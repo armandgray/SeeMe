@@ -25,6 +25,7 @@ public class HttpHelper {
 
     public static final String GET = "GET";
     public static final String POST = "POST";
+    public static final String NOTES = "NOTES";
 
     public static void sendPostRequest(String url, String body, Context context) {
         Intent intent = new Intent(context, HttpService.class);
@@ -32,8 +33,8 @@ public class HttpHelper {
         intent.putExtra(JSON_BODY, body);
         context.startService(intent);
     }
-
-    public static void sendPostRequest(String url, Context context) {
+    {}
+    public static void sendGetRequest(String url, Context context) {
         Intent intent = new Intent(context, HttpService.class);
         intent.setData(Uri.parse(url));
         context.startService(intent);

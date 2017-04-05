@@ -7,6 +7,7 @@ import android.widget.Toast;
 
 import com.armandgray.seeme.models.Network;
 import com.armandgray.seeme.models.User;
+import com.armandgray.seeme.network.HttpHelper;
 import com.armandgray.seeme.views.SeeMeFragment;
 import com.armandgray.seeme.views.SeeMeFragment.SeeMeTouchListener;
 
@@ -53,7 +54,7 @@ public class SeeMeFragmentController implements SeeMeFragment.SeeMeController {
                 + networkId
                 + "&ssid="+ ssid.substring(1, ssid.length() - 1).replaceAll(" ", "%20")
                 + "&username=" + activeUser.getUsername();
-        sendPostRequest(url, context);
+        HttpHelper.sendGetRequest(url, context);
     }
 
     @Override

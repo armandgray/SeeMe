@@ -8,6 +8,7 @@ import android.widget.Toast;
 import com.armandgray.seeme.MainActivity;
 import com.armandgray.seeme.RegisterActivity;
 import com.armandgray.seeme.models.User;
+import com.armandgray.seeme.network.HttpHelper;
 import com.armandgray.seeme.views.DiscoverableDialog;
 
 import java.util.HashMap;
@@ -73,7 +74,7 @@ public class RegisterActivityController implements RegisterActivity.RegisterCont
                 + "&lastName=" + capitalizeString(mapEditTextStrings.get(LAST_NAME))
                 + "&role=" + urlify(mapEditTextStrings.get(OCCUPATION))
                 + "&discoverable=" + discoverable;
-            sendPostRequest(url, activity);
+            HttpHelper.sendGetRequest(url, activity);
     }
 
     @Override

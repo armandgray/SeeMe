@@ -6,6 +6,7 @@ import android.widget.Toast;
 
 import com.armandgray.seeme.LoginActivity;
 import com.armandgray.seeme.RegisterActivity;
+import com.armandgray.seeme.network.HttpHelper;
 import com.armandgray.seeme.network.NetworkHelper;
 
 import static com.armandgray.seeme.LoginActivity.LOGIN_PAYLOAD;
@@ -29,7 +30,7 @@ public class LoginActivityController implements LoginActivity.LoginController {
         String url = LOGIN_URI
                 + "&username=" + username
                 + "&password=" + password;
-        sendPostRequest(url, context);
+        HttpHelper.sendGetRequest(url, context);
     }
 
     @Override

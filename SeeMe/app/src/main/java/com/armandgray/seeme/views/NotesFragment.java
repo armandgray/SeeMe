@@ -40,6 +40,7 @@ import org.json.JSONObject;
 import static android.app.Activity.RESULT_OK;
 import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
 import static com.armandgray.seeme.MainActivity.API_URI;
+import static com.armandgray.seeme.network.HttpHelper.sendGetRequest;
 import static com.armandgray.seeme.network.HttpHelper.sendPostRequest;
 import static com.armandgray.seeme.services.HttpService.HTTP_SERVICE_MESSAGE;
 
@@ -117,18 +118,6 @@ public class NotesFragment extends Fragment
             }
         });
 
-        Log.i(TAG, "Start call");
-        String json = "[{'Notes':['Test Array','Test other','Testing other','Testing other note']}]";
-        JSONArray array = null;
-        try {
-            array = new JSONArray(json).getJSONObject(0).getJSONArray("Notes");
-            for (int i = 0; i < array.length(); i++) {
-                Log.i(TAG, "Array: " + array.get(i));
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-
         return rootView;
     }
 
@@ -168,7 +157,7 @@ public class NotesFragment extends Fragment
     private void sendGetNotesRequest() {
         String url = GET_NOTES_URI
                 + "username=" + activeUser.getUsername();
-        sendPostRequest(url, getContext());
+        sendGetRequest(url, getContext());
     }
 
     private String getNotesJson(Cursor cursor, JSONObject json, JSONArray jsonArray) {

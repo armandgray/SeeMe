@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.armandgray.seeme.R;
 import com.armandgray.seeme.models.User;
+import com.armandgray.seeme.network.HttpHelper;
 import com.armandgray.seeme.views.ConfirmPasswordDialog;
 import com.armandgray.seeme.views.DeleteAccountDialog;
 import com.armandgray.seeme.views.PostFeedbackDialog;
@@ -179,13 +180,13 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
-        sendPostRequest(url, fragment.getContext());
+        HttpHelper.sendGetRequest(url, fragment.getContext());
     }
 
     @Override
     public void onConfirmPassword(String password) {
         url += "&oldSecret=" + password;
-        sendPostRequest(url, fragment.getContext());
+        HttpHelper.sendGetRequest(url, fragment.getContext());
     }
 
     @Override
@@ -203,7 +204,7 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
         url = DELETE_URL
                 + "username=" + username
                 + "&password=" + password;
-        sendPostRequest(url, fragment.getContext());
+        HttpHelper.sendGetRequest(url, fragment.getContext());
     }
 
     @Override

@@ -13,6 +13,7 @@ import android.widget.Toast;
 import com.armandgray.seeme.controllers.ProfileFragmentController;
 import com.armandgray.seeme.models.Network;
 import com.armandgray.seeme.models.User;
+import com.armandgray.seeme.network.HttpHelper;
 import com.armandgray.seeme.utils.ViewPagerAdapter;
 import com.armandgray.seeme.views.DiscoverFragment;
 import com.armandgray.seeme.views.NavBarFragment;
@@ -168,7 +169,7 @@ public class MainActivity extends AppCompatActivity
                     + network.getNetworkId()
                     + "&ssid=" + network.getSsid()
                     + "&username=" + activeUser.getUsername();
-            sendPostRequest(url, this);
+            HttpHelper.sendGetRequest(url, this);
         }
     }
 

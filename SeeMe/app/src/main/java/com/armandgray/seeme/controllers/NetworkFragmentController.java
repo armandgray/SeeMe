@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.armandgray.seeme.R;
 import com.armandgray.seeme.models.User;
+import com.armandgray.seeme.network.HttpHelper;
 import com.armandgray.seeme.utils.RecyclerItemClickListener;
 import com.armandgray.seeme.utils.UserRVAdapter;
 import com.armandgray.seeme.views.NetworkFragment;
@@ -51,7 +52,7 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
     @Override
     public void sendNetworkRequest() {
         String url = NETWORK_CONNECTION_URI + "username=" + activeUser.getUsername();
-        sendPostRequest(url, activity);
+        HttpHelper.sendGetRequest(url, activity);
     }
 
     @Override
@@ -102,7 +103,7 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
             String url = UPDATE_CONNECTION_URI
                     + "username=" + activeUser.getUsername()
                     + "&connection=" + user.getUsername();
-            sendPostRequest(url, activity);
+            HttpHelper.sendGetRequest(url, activity);
         } else if (!user.isRemovable()) {
             user.setRemovable(true);
             LinearLayout layout = (LinearLayout) view;
@@ -113,7 +114,7 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
             String url = DELETE_CONNECTION_URI
                     + "username=" + activeUser.getUsername()
                     + "&connection=" + user.getUsername();
-            sendPostRequest(url, activity);
+            HttpHelper.sendGetRequest(url, activity);
         }
     }
 
