@@ -40,6 +40,7 @@ import org.json.JSONObject;
 import static android.app.Activity.RESULT_OK;
 import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
 import static com.armandgray.seeme.MainActivity.API_URI;
+import static com.armandgray.seeme.network.HttpHelper.NOTES;
 import static com.armandgray.seeme.network.HttpHelper.sendGetRequest;
 import static com.armandgray.seeme.network.HttpHelper.sendPostRequest;
 import static com.armandgray.seeme.services.HttpService.HTTP_SERVICE_MESSAGE;
@@ -157,7 +158,7 @@ public class NotesFragment extends Fragment
     private void sendGetNotesRequest() {
         String url = GET_NOTES_URI
                 + "username=" + activeUser.getUsername();
-        sendGetRequest(url, getContext());
+        sendGetRequest(url, NOTES, getContext());
     }
 
     private String getNotesJson(Cursor cursor, JSONObject json, JSONArray jsonArray) {

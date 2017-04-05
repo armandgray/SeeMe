@@ -17,6 +17,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import static com.armandgray.seeme.services.HttpService.JSON_BODY;
+import static com.armandgray.seeme.services.HttpService.RESPONSE_TYPE;
 
 /**
  * Helper class for working with a remote server
@@ -33,10 +34,17 @@ public class HttpHelper {
         intent.putExtra(JSON_BODY, body);
         context.startService(intent);
     }
-    {}
+
     public static void sendGetRequest(String url, Context context) {
         Intent intent = new Intent(context, HttpService.class);
         intent.setData(Uri.parse(url));
+        context.startService(intent);
+    }
+
+    public static void sendGetRequest(String url, String responseType, Context context) {
+        Intent intent = new Intent(context, HttpService.class);
+        intent.setData(Uri.parse(url));
+        intent.putExtra(RESPONSE_TYPE, responseType);
         context.startService(intent);
     }
 
