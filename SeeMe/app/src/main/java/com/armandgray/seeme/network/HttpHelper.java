@@ -3,11 +3,11 @@ package com.armandgray.seeme.network;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 
 import com.armandgray.seeme.services.HttpService;
 
 import java.io.BufferedOutputStream;
-import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,6 +27,7 @@ public class HttpHelper {
     public static final String GET = "GET";
     public static final String POST = "POST";
     public static final String NOTES = "NOTES";
+    public static final String TAG = "HTTP_HELPER";
 
     public static void sendPostRequest(String url, String body, Context context) {
         Intent intent = new Intent(context, HttpService.class);
@@ -65,11 +66,12 @@ public class HttpHelper {
             conn.setRequestMethod(POST);
             conn.setDoInput(true);
             conn.connect();
+            Log.i(TAG, "downloadUrl()");
 
             if (requestType.equals(POST)) {
+                Log.i(TAG, POST + ": " + body);
                 OutputStream os = conn.getOutputStream();
-                BufferedWriter writer = new BufferedWriter(
-                        new OutputStreamWriter(os, "UTF-8"));
+                OutputStreamWriter writer = new OutputStreamWriter(os, "UTF-8");
                 writer.write(body);
                 writer.flush();
                 writer.close();

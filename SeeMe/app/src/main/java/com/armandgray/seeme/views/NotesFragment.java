@@ -160,21 +160,6 @@ public class NotesFragment extends Fragment
         sendGetRequest(url, NOTES, getContext());
     }
 
-    private String getNotesJson(Cursor cursor, JSONObject json, JSONArray jsonArray) {
-        String noteText;
-        try {
-            do {
-                noteText = cursor.getString(cursor.getColumnIndex(DatabaseHelper.NOTE_TEXT));
-                jsonArray.put(cursor.getPosition(), noteText);
-            } while (cursor.moveToNext());
-            json = new JSONObject();
-            json.put("notes", jsonArray);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return json.toString();
-    }
-
     private void deleteVerifiedUserNote(Cursor cursor) {
         String id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.NOTE_ID));
         Uri uri = Uri.parse(NotesProvider.CONTENT_URI + "/" + id);
@@ -189,7 +174,7 @@ public class NotesFragment extends Fragment
     }
 
     private void handleHttpResponse(String response, String[] notes) {
-        if (response != null && response.equals(USER_NOT_FOUND)) {
+        if (response != null && response.equals(USER_NOT_FOUND) && getActivity() != null) {
             getActivity().getContentResolver().delete(NotesProvider.CONTENT_URI, null, null);
             restartLoader();
             return;
@@ -199,6 +184,7 @@ public class NotesFragment extends Fragment
     }
 
     private void updateSqliteDatabase(String[] notes) {
+        if (getActivity() == null) { return; }
         getActivity().getContentResolver().delete(NotesProvider.CONTENT_URI, null, null);
         if (notes == null || notes.length == 0) {
             restartLoader();
@@ -260,12 +246,28 @@ public class NotesFragment extends Fragment
     }
 
     private void sendPostNotesRequest(@NonNull Cursor cursor, String username) {
-        JSONObject json = new JSONObject();
         JSONArray jsonArray = new JSONArray();
         cursor.moveToFirst();
         String url = POST_NOTES_URI
                 + "username=" + username;
-        sendPostRequest(url, getNotesJson(cursor, json, jsonArray), getContext());
+        String json = getNotesJson(cursor, new JSONObject(), jsonArray);
+        Log.i(TAG, "JSON: " + json);
+        sendPostRequest(url, json, getContext());
         cursor.close();
+    }
+
+    private String getNotesJson(Cursor cursor, JSONObject json, JSONArray jsonArray) {
+        String noteText;
+        try {
+            do {
+                noteText = cursor.getString(cursor.getColumnIndex(DatabaseHelper.NOTE_TEXT));
+                jsonArray.put(cursor.getPosition(), noteText);
+            } while (cursor.moveToNext());
+            json = new JSONObject();
+            json.put("notes", jsonArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return json.toString();
     }
 }
