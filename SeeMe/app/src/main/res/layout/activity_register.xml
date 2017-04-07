@@ -113,6 +113,9 @@
                 android:hint="@string/first_name"
                 android:inputType="textShortMessage"
                 android:paddingRight="@dimen/register_margin_between"
+                android:paddingEnd="@dimen/register_margin_between"
+                android:paddingLeft="0dp"
+                android:paddingStart="0dp"
                 android:textColorHint="@color/colorGray"
                 android:textSize="14sp" />
 
