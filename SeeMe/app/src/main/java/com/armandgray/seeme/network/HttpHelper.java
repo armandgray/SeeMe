@@ -31,6 +31,7 @@ public class HttpHelper {
     public static final String TAG = "HTTP_HELPER";
 
     public static void sendPostRequest(String url, String body, Context context) {
+        if (!isNetworkOk(context)) { return; }
         Intent intent = new Intent(context, HttpService.class);
         intent.setData(Uri.parse(url));
         intent.putExtra(JSON_BODY, body);
@@ -38,16 +39,26 @@ public class HttpHelper {
     }
 
     public static void sendGetRequest(String url, Context context) {
+        if (!isNetworkOk(context)) { return; }
         Intent intent = new Intent(context, HttpService.class);
         intent.setData(Uri.parse(url));
         context.startService(intent);
     }
 
     public static void sendGetRequest(String url, String responseType, Context context) {
+        if (!isNetworkOk(context)) { return; }
         Intent intent = new Intent(context, HttpService.class);
         intent.setData(Uri.parse(url));
         intent.putExtra(RESPONSE_TYPE, responseType);
         context.startService(intent);
+    }
+
+    private static boolean isNetworkOk(Context context) {
+        if (!NetworkHelper.hasNetworkAccess(context)) {
+            Toast.makeText(context, "Bad Network Connection", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
     }
 
     /**
@@ -98,8 +109,6 @@ public class HttpHelper {
         return null;
     }
 
-
-
     /**
      * Reads an InputStream and converts it to a String.
      * @return
@@ -126,13 +135,5 @@ public class HttpHelper {
                 out.close();
             }
         }
-    }
-
-    private static boolean isNetworkOk(Context context) {
-        if (!NetworkHelper.hasNetworkAccess(context)) {
-            Toast.makeText(context, "Bad Network Connection", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        return true;
     }
 }
