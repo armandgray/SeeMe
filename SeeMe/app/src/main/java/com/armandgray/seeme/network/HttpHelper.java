@@ -3,7 +3,6 @@ package com.armandgray.seeme.network;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.util.Log;
 import android.widget.Toast;
 
 import com.armandgray.seeme.services.HttpService;

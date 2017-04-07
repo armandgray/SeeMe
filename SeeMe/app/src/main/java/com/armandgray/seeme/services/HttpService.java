@@ -4,7 +4,6 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.net.Uri;
 import android.support.v4.content.LocalBroadcastManager;
-import android.util.Log;
 
 import com.armandgray.seeme.models.User;
 import com.armandgray.seeme.network.HttpHelper;
