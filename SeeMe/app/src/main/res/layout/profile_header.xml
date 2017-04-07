@@ -52,6 +52,6 @@
             android:layout_marginEnd="@dimen/fab_margin_bot_r"
             android:layout_marginRight="@dimen/fab_margin_bot_r"
             app:backgroundTint="@color/colorPrimary"
-            app:srcCompat="@drawable/ic_camera_white_48dp" />
+            app:srcCompat="@drawable/ic_camera_white" />
     </FrameLayout>
 </LinearLayout>
