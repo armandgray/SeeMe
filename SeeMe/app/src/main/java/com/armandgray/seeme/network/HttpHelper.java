@@ -123,7 +123,7 @@ public class HttpHelper {
         ByteArrayOutputStream byteArray = new ByteArrayOutputStream();
         BufferedOutputStream out = null;
         try {
-            int length = 0;
+            int length;
             out = new BufferedOutputStream(byteArray);
             while ((length = stream.read(buffer)) > 0) {
                 out.write(buffer, 0, length);

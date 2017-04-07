@@ -53,13 +53,6 @@ public class NotesFragment extends Fragment
     private static final int EDITOR_REQUEST_CODE = 1001;
 
     private static final String USER_NOT_FOUND = "User Not Found!";
-    private static final String NOTES_UPLOADED = "Notes Uploaded";
-    private static final String PREPARE_UPDATE_ERROR = "Prepare Update Error!";
-    private static final String UPDATE_QUERY_ERROR = "Update Query Error!";
-    private static final String INTERNAL_UPDATE_ERROR = "Internal Update Error!";
-
-    private String[] responseArray = {USER_NOT_FOUND, PREPARE_UPDATE_ERROR, NOTES_UPLOADED,
-            UPDATE_QUERY_ERROR, INTERNAL_UPDATE_ERROR};
 
     private CursorAdapter adapter;
     private User activeUser;
