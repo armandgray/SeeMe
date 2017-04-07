@@ -20,7 +20,6 @@ import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import static com.armandgray.seeme.network.HttpHelper.sendPostRequest;
 import static com.armandgray.seeme.utils.StringHelper.PASSWORD_PTR;
 import static com.armandgray.seeme.utils.StringHelper.capitalizeString;
 import static com.armandgray.seeme.utils.StringHelper.urlify;

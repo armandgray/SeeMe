@@ -63,9 +63,10 @@ public class HttpHelper {
     }
 
     /**
-     * Returns text from a URL on a web server
      * @return
+     * Returns text from a URL on a web server
      * @throws IOException
+     * otherwise
      */
     public static String downloadUrl(String address, String requestType, String body) throws IOException {
 
@@ -111,9 +112,10 @@ public class HttpHelper {
     }
 
     /**
-     * Reads an InputStream and converts it to a String.
      * @return
+     * Reads an InputStream and converts it to a String.
      * @throws IOException
+     * otherwise
      */
     private static String readStream(InputStream stream) throws IOException {
 
