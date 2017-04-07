@@ -64,6 +64,8 @@ public class HttpHelper {
             conn.setReadTimeout(10000);
             conn.setConnectTimeout(15000);
             conn.setRequestMethod(POST);
+            conn.setRequestProperty( "Content-Type", "application/json" );
+            conn.setRequestProperty("Accept", "application/json");
             conn.setDoInput(true);
             conn.connect();
             Log.i(TAG, "downloadUrl()");
