@@ -4,6 +4,7 @@ package com.armandgray.seeme.views;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -130,10 +131,8 @@ public class SeeMeFragment extends Fragment
 
     @Override
     public void update(Observable o, Object data) {
-        isWifiConnected = data != null;
-        if (data != null) {
-            updateUI(getWifiConnectionState(getContext()));
-        }
+        isWifiConnected = getWifiConnectionState(getContext());
+        updateUI(isWifiConnected);
     }
 
     public interface SeeMeTouchListener {
