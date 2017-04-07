@@ -9,7 +9,6 @@ import android.content.IntentFilter;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
@@ -39,10 +38,8 @@ import org.json.JSONObject;
 import static android.app.Activity.RESULT_OK;
 import static com.armandgray.seeme.MainActivity.ACTIVE_USER;
 import static com.armandgray.seeme.MainActivity.API_URI;
-import static com.armandgray.seeme.network.HttpHelper.NOTES;
 import static com.armandgray.seeme.network.HttpHelper.sendGetRequest;
 import static com.armandgray.seeme.network.HttpHelper.sendPostRequest;
-import static com.armandgray.seeme.services.HttpService.HTTP_SERVICE_MESSAGE;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -127,7 +124,7 @@ public class NotesFragment extends Fragment
         if (getUserVisibleHint()) {
             LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
                     .registerReceiver(httpBroadcastReceiver,
-                            new IntentFilter(HTTP_SERVICE_MESSAGE));
+                            new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
 
             verifyNotesForUser();
         }
@@ -146,18 +143,42 @@ public class NotesFragment extends Fragment
             String noteText = cursor.getString(cursor.getColumnIndex(DatabaseHelper.NOTE_TEXT));
             if (noteText.equals(activeUser.getUsername())) {
                 deleteVerifiedUserNote(cursor);
-                cursor.close();
-                return;
+            } else {
+                sendPostNotesRequest(cursor, noteText);
+                sendGetNotesRequest();
             }
+            cursor.close();
         }
-        sendGetNotesRequest();
+    }
 
+    private void sendPostNotesRequest(Cursor cursor, String username) {
+        JSONObject json = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+        cursor.moveToFirst();
+        String url = POST_NOTES_URI
+                + "username=" + username;
+        sendPostRequest(url, getNotesJson(cursor, json, jsonArray), getContext());
     }
 
     private void sendGetNotesRequest() {
         String url = GET_NOTES_URI
                 + "username=" + activeUser.getUsername();
-        sendGetRequest(url, NOTES, getContext());
+        sendGetRequest(url, getContext());
+    }
+
+    private String getNotesJson(Cursor cursor, JSONObject json, JSONArray jsonArray) {
+        String noteText;
+        try {
+            do {
+                noteText = cursor.getString(cursor.getColumnIndex(DatabaseHelper.NOTE_TEXT));
+                jsonArray.put(cursor.getPosition(), noteText);
+            } while (cursor.moveToNext());
+            json = new JSONObject();
+            json.put("notes", jsonArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return json.toString();
     }
 
     private void deleteVerifiedUserNote(Cursor cursor) {
@@ -173,24 +194,20 @@ public class NotesFragment extends Fragment
         return getLoaderManager().restartLoader(0, null, this);
     }
 
-    private void handleHttpResponse(String response, String[] notes) {
-        if (response != null && response.equals(USER_NOT_FOUND) && getActivity() != null) {
+    private void handleHttpResponse(String response, String[] arrayExtra) {
+        if (response != null && response.equals(USER_NOT_FOUND)) {
             getActivity().getContentResolver().delete(NotesProvider.CONTENT_URI, null, null);
             restartLoader();
             return;
         }
-
-        updateSqliteDatabase(notes);
+        if (arrayExtra != null && arrayExtra.length != 0) {
+            updateSqliteDatabase(arrayExtra);
+        }
     }
 
-    private void updateSqliteDatabase(String[] notes) {
-        if (getActivity() == null) { return; }
+    private void updateSqliteDatabase(String[] arrayExtra) {
         getActivity().getContentResolver().delete(NotesProvider.CONTENT_URI, null, null);
-        if (notes == null || notes.length == 0) {
-            restartLoader();
-            return;
-        }
-        for (String note : notes) {
+        for (String note : arrayExtra) {
             insertNoteUsername(note);
         }
         restartLoader();
@@ -235,39 +252,5 @@ public class NotesFragment extends Fragment
         values.put(DatabaseHelper.NOTE_TEXT, note);
         getActivity().getContentResolver().insert(NotesProvider.CONTENT_URI, values);
         restartLoader();
-    }
-
-    @Override
-    public void onStop() {
-        super.onStop();
-        Cursor cursor = getActivity().getContentResolver()
-                .query(NotesProvider.CONTENT_URI, DatabaseHelper.ALL_COLUMNS, null, null, null);
-        if (cursor != null && cursor.getCount() != 0) { sendPostNotesRequest(cursor, activeUser.getUsername()); }
-    }
-
-    private void sendPostNotesRequest(@NonNull Cursor cursor, String username) {
-        JSONArray jsonArray = new JSONArray();
-        cursor.moveToFirst();
-        String url = POST_NOTES_URI
-                + "username=" + username;
-        String json = getNotesJson(cursor, new JSONObject(), jsonArray);
-        Log.i(TAG, "JSON: " + json);
-        sendPostRequest(url, json, getContext());
-        cursor.close();
-    }
-
-    private String getNotesJson(Cursor cursor, JSONObject json, JSONArray jsonArray) {
-        String noteText;
-        try {
-            do {
-                noteText = cursor.getString(cursor.getColumnIndex(DatabaseHelper.NOTE_TEXT));
-                jsonArray.put(cursor.getPosition(), noteText);
-            } while (cursor.moveToNext());
-            json = new JSONObject();
-            json.put("notes", jsonArray);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return json.toString();
     }
 }
