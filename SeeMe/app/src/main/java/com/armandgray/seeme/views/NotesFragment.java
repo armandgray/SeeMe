@@ -89,7 +89,7 @@ public class NotesFragment extends Fragment
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_notes, container, false);
         activeUser = getArguments().getParcelable(ACTIVE_USER);
-        adapter = new NotesLvAdapter(getContext(), null, 0);
+        adapter = new NotesLvAdapter(getContext());
 
         ListView lvNotes = (ListView) rootView.findViewById(R.id.lvNotes);
         lvNotes.setAdapter(adapter);

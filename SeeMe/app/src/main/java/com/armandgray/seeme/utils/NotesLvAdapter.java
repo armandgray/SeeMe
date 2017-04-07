@@ -15,8 +15,8 @@ public class NotesLvAdapter extends CursorAdapter {
 
     private static final String TAG = "NOTES_LV_ADAPTER";
 
-    public NotesLvAdapter(Context context, Cursor c, int flags) {
-        super(context, c, flags);
+    public NotesLvAdapter(Context context) {
+        super(context, null, 0);
     }
 
     @Override
