@@ -186,8 +186,15 @@ public class NotesFragment extends Fragment
     private void updateSqliteDatabase(String[] arrayExtra) {
         getActivity().getContentResolver().delete(NotesProvider.CONTENT_URI, null, null);
         for (String note : arrayExtra) {
-            insertNoteUsername(note);
+            insertNote(note);
         }
+        restartLoader();
+    }
+
+    private void insertNote(String note) {
+        ContentValues values = new ContentValues();
+        values.put(DatabaseHelper.NOTE_TEXT, note);
+        getActivity().getContentResolver().insert(NotesProvider.CONTENT_URI, values);
         restartLoader();
     }
 
@@ -249,15 +256,6 @@ public class NotesFragment extends Fragment
         if (!getUserVisibleHint()) {
             LocalBroadcastManager.getInstance(getActivity().getApplicationContext())
                     .unregisterReceiver(httpBroadcastReceiver);
-
-            if (activeUser != null && !editing) { insertNoteUsername(activeUser.getUsername()); }
         }
-    }
-
-    private void insertNoteUsername(String note) {
-        ContentValues values = new ContentValues();
-        values.put(DatabaseHelper.NOTE_TEXT, note);
-        getActivity().getContentResolver().insert(NotesProvider.CONTENT_URI, values);
-        restartLoader();
     }
 }
