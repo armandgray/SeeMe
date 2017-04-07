@@ -47,7 +47,7 @@
             android:authorities="com.armandgray.seeme.db.notesprovider"
             android:exported="false" />
 
-        <activity android:name=".NoteEditorActivity"></activity>
+        <activity android:name=".NoteEditorActivity" />
     </application>
 
 </manifest>

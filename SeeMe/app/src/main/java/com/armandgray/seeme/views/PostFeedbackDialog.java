@@ -1,5 +1,6 @@
 package com.armandgray.seeme.views;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -32,12 +33,13 @@ public class PostFeedbackDialog extends DialogFragment {
         }
     }
 
-
+    @SuppressLint("InflateParams")
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         final AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        final View dialogLayout = LayoutInflater.from(getContext()).inflate(R.layout.feedback_dialog_layout, null);
+        final View dialogLayout = LayoutInflater.from(getContext())
+                .inflate(R.layout.feedback_dialog_layout, null);
         builder.setView(dialogLayout);
         builder.setMessage(getBoldStringBuilder(CONFIRM_HEADER, CONFIRM_CONTENT))
                 .setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
