@@ -19,8 +19,14 @@
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="http"
+                    android:host="www.armandgray.com"
+                    android:pathPrefix="/seeme" />
+                <data android:scheme="armandgray"
+                    android:host="seeme" />
             </intent-filter>
         </activity>
         <activity
