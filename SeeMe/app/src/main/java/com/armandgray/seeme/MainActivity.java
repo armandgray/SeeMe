@@ -1,6 +1,7 @@
 package com.armandgray.seeme;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -37,6 +38,8 @@ public class MainActivity extends AppCompatActivity
     public static final String UPDATE_NETWORK_URI = API_URI + "/discoverable/update-network?networkId=";
     public static final String ACTIVE_USER = "ACTIVE_USER";
     private static final String TAG = "MAIN_ACTIVITY";
+    public static final String ARMANDGRAY_COM = "http://armandgray.com";
+    public static final String DEV_MISSION_COM = "https://dev-mission.github.io/devmission.org/";
 
     private User activeUser;
     private ViewPager viewPager;
@@ -183,12 +186,10 @@ public class MainActivity extends AppCompatActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.the_developer:
-                activeUser = null;
-                startActivity(new Intent(this, LoginActivity.class));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(ARMANDGRAY_COM)));
                 return true;
             case R.id.dev_mission:
-                activeUser = null;
-                startActivity(new Intent(this, LoginActivity.class));
+                startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse(DEV_MISSION_COM)));
                 return true;
             case R.id.action_settings:
             viewPager.setCurrentItem(4);
