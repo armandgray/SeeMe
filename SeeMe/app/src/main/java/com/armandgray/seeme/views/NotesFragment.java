@@ -143,42 +143,14 @@ public class NotesFragment extends Fragment
             String noteText = cursor.getString(cursor.getColumnIndex(DatabaseHelper.NOTE_TEXT));
             if (noteText.equals(activeUser.getUsername())) {
                 deleteVerifiedUserNote(cursor);
-            } else {
-                sendPostNotesRequest(cursor, noteText);
-                sendGetNotesRequest();
+                restartLoader();
+                cursor.close();
+                return;
             }
+
+            sendGetNotesRequest();
             cursor.close();
         }
-    }
-
-    private void sendPostNotesRequest(Cursor cursor, String username) {
-        JSONObject json = new JSONObject();
-        JSONArray jsonArray = new JSONArray();
-        cursor.moveToFirst();
-        String url = POST_NOTES_URI
-                + "username=" + username;
-        sendPostRequest(url, getNotesJson(cursor, json, jsonArray), getContext());
-    }
-
-    private void sendGetNotesRequest() {
-        String url = GET_NOTES_URI
-                + "username=" + activeUser.getUsername();
-        sendGetRequest(url, getContext());
-    }
-
-    private String getNotesJson(Cursor cursor, JSONObject json, JSONArray jsonArray) {
-        String noteText;
-        try {
-            do {
-                noteText = cursor.getString(cursor.getColumnIndex(DatabaseHelper.NOTE_TEXT));
-                jsonArray.put(cursor.getPosition(), noteText);
-            } while (cursor.moveToNext());
-            json = new JSONObject();
-            json.put("notes", jsonArray);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return json.toString();
     }
 
     private void deleteVerifiedUserNote(Cursor cursor) {
@@ -188,6 +160,12 @@ public class NotesFragment extends Fragment
         getActivity().getContentResolver()
                 .delete(NotesProvider.CONTENT_URI, noteUsername, null);
         restartLoader();
+    }
+
+    private void sendGetNotesRequest() {
+        String url = GET_NOTES_URI
+                + "username=" + activeUser.getUsername();
+        sendGetRequest(url, getContext());
     }
 
     private Loader<Cursor> restartLoader() {
@@ -232,8 +210,37 @@ public class NotesFragment extends Fragment
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == EDITOR_REQUEST_CODE && resultCode == RESULT_OK) {
+            sendPostNotesRequest();
             restartLoader();
         }
+    }
+
+    private void sendPostNotesRequest() {
+        JSONObject json = new JSONObject();
+        JSONArray jsonArray = new JSONArray();
+        Cursor cursor = getActivity().getContentResolver()
+                .query(NotesProvider.CONTENT_URI, null, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+            String url = POST_NOTES_URI
+                    + "username=" + activeUser.getUsername();
+            sendPostRequest(url, getNotesJson(cursor, json, jsonArray), getContext());
+        }
+    }
+
+    private String getNotesJson(Cursor cursor, JSONObject json, JSONArray jsonArray) {
+        String noteText;
+        try {
+            do {
+                noteText = cursor.getString(cursor.getColumnIndex(DatabaseHelper.NOTE_TEXT));
+                jsonArray.put(cursor.getPosition(), noteText);
+            } while (cursor.moveToNext());
+            json = new JSONObject();
+            json.put("notes", jsonArray);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return json.toString();
     }
 
     @Override
