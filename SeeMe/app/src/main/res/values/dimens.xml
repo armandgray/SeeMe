@@ -11,12 +11,10 @@
     <dimen name="register_margin_between">5dp</dimen>
     <dimen name="navbar_text_size">10sp</dimen>
     <dimen name="nav_logo_size">40dp</dimen>
-    <dimen name="nav_logo_margin">5dp</dimen>
     <dimen name="main_logo_size">125dp</dimen>
     <dimen name="main_icindicator_size">35dp</dimen>
     <dimen name="btn_padding">15dp</dimen>
     <dimen name="menu_icon_size">20dp</dimen>
-    <dimen name="menu_text_padding">40dp</dimen>
     <dimen name="header_text_top_padding">5dp</dimen>
     <dimen name="header_text_size">12sp</dimen>
     <dimen name="fab_margin_bot_r">3dp</dimen>

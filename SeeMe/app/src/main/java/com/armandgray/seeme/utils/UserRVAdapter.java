@@ -27,10 +27,6 @@ public class UserRVAdapter extends
     static final String PENDING = "pending";
     static final String REQUEST = "request";
 
-    private static final String CONNECTION_REQUESTS = "Connection Requests";
-    private static final String PENDING_RESPONSE = "Pending Response";
-    private static final String CURRENT_NETWORK = "Current Network";
-
     private static final String TAG = "USER_RV_ADAPTER";
 
     private ArrayList<User> listUsers;
@@ -110,13 +106,13 @@ public class UserRVAdapter extends
             TextView tvHeader = viewHolder.tvHeader;
             switch (viewHolder.type) {
                 case TYPE_REQUEST_HEADER:
-                    tvHeader.setText(CONNECTION_REQUESTS);
+                    tvHeader.setText(R.string.connection_requests);
                     return;
                 case TYPE_PENDING_HEADER:
-                    tvHeader.setText(PENDING_RESPONSE);
+                    tvHeader.setText(R.string.pending_response);
                     return;
                 case TYPE_CONNECTED_HEADER:
-                    tvHeader.setText(CURRENT_NETWORK);
+                    tvHeader.setText(R.string.current_network);
             }
         }
     }
