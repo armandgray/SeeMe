@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.armandgray.seeme.services.HttpService;
 
@@ -127,4 +128,11 @@ public class HttpHelper {
         }
     }
 
+    private static boolean isNetworkOk(Context context) {
+        if (!NetworkHelper.hasNetworkAccess(context)) {
+            Toast.makeText(context, "Bad Network Connection", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
 }
