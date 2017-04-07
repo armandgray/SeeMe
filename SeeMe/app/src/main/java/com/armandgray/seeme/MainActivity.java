@@ -23,7 +23,6 @@ import java.util.Observable;
 import java.util.Observer;
 
 import static com.armandgray.seeme.LoginActivity.LOGIN_PAYLOAD;
-import static com.armandgray.seeme.network.HttpHelper.sendPostRequest;
 import static com.armandgray.seeme.network.NetworkHelper.getWifiConnectionState;
 import static com.armandgray.seeme.network.NetworkHelper.getWifiNetwork;
 
@@ -59,9 +58,9 @@ public class MainActivity extends AppCompatActivity
     private void setActiveUser() {
         activeUser = getIntent().getParcelableExtra(LOGIN_PAYLOAD);
         if (activeUser == null) {
-//            startActivity(new Intent(this, LoginActivity.class));
-//            finish();
-            activeUser = new User("Test", "Test", "Test", "test@gmail.com", "test", true, "", "");
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
+//            activeUser = new User("Test", "Test", "Test", "test@gmail.com", "test", true, "", "");
         } else {
             Toast.makeText(this, "Welcome Back " + activeUser.getFirstName(), Toast.LENGTH_SHORT).show();
         }
