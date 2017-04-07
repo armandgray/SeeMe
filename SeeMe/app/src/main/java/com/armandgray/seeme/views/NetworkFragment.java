@@ -36,7 +36,7 @@ public class NetworkFragment extends Fragment {
 
     private static final String NO_NETWORK_HEADER = "No Network Found";
     private static final String NO_NETWORK_CONTENT = "New SeeMe Users can build their network using SeeMe Touch. On the Discover screen, press connect on available users to build your network.";
-    public static final String TAG = "NETWORK FRAGMENT";
+    private static final String TAG = "NETWORK FRAGMENT";
 
     private RecyclerView rvNetwork;
     private TextView tvNoNetwork;

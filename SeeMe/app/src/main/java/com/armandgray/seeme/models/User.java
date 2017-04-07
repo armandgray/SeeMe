@@ -138,7 +138,7 @@ public class User implements Parcelable, Comparator<User> {
         dest.writeByte(this.isRemovable ? (byte) 1 : (byte) 0);
     }
 
-    protected User(Parcel in) {
+    private User(Parcel in) {
         this.occupation = in.readString();
         this.firstName = in.readString();
         this.lastName = in.readString();

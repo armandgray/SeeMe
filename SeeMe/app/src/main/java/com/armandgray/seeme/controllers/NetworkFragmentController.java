@@ -21,7 +21,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import static com.armandgray.seeme.models.User.getSortedUserList;
-import static com.armandgray.seeme.network.HttpHelper.sendPostRequest;
 import static com.armandgray.seeme.views.NetworkFragment.DELETE_CONNECTION_URI;
 import static com.armandgray.seeme.views.NetworkFragment.NETWORK_CONNECTION_URI;
 import static com.armandgray.seeme.views.NetworkFragment.UPDATE_CONNECTION_URI;
@@ -36,8 +35,8 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
     private static final String PREPARE_UPDATE_ERROR = "Prepare Update Error!";
     private static final String UPDATE_QUERY_ERROR = "Update Query Error!";
     private static final String INTERNAL_UPDATE_ERROR = "Internal Update Error!";
-    public static final String PENDING = "pending";
-    public static final String CONNECTED = "connected";
+    private static final String PENDING = "pending";
+    private static final String CONNECTED = "connected";
 
     private String[] responseArray = {USER_NOT_FOUND, PREPARE_UPDATE_ERROR, CONNECTION_CONFIRMED, CONNECTION_DELETED,
             UPDATE_QUERY_ERROR, INTERNAL_UPDATE_ERROR};

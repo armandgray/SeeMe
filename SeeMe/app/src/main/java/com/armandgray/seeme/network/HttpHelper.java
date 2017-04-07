@@ -28,7 +28,7 @@ public class HttpHelper {
     public static final String GET = "GET";
     public static final String POST = "POST";
     public static final String NOTES = "NOTES";
-    public static final String TAG = "HTTP_HELPER";
+    private static final String TAG = "HTTP_HELPER";
 
     public static void sendPostRequest(String url, String body, Context context) {
         if (!isNetworkOk(context)) { return; }

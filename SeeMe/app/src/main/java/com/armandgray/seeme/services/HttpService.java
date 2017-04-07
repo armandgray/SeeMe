@@ -23,7 +23,7 @@ import static com.armandgray.seeme.network.HttpHelper.POST;
 
 public class HttpService extends IntentService {
 
-    public static final String TAG = "HttpService";
+    private static final String TAG = "HttpService";
     public static final String HTTP_SERVICE_MESSAGE = "HTTP Service Message";
     public static final String HTTP_SERVICE_JSON_PAYLOAD = "HTTP Service JSON Payload";
     public static final String HTTP_SERVICE_STRING_PAYLOAD = "HTTP Service STRING Payload";

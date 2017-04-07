@@ -17,7 +17,6 @@ import com.armandgray.seeme.views.DiscoverFragment.DiscoverController;
 import java.util.Arrays;
 
 import static com.armandgray.seeme.models.User.getSortedUserList;
-import static com.armandgray.seeme.network.HttpHelper.sendPostRequest;
 import static com.armandgray.seeme.views.DiscoverFragment.NEW_CONNECTION_URI;
 
 public class DiscoverFragmentController implements DiscoverController {
@@ -30,7 +29,7 @@ public class DiscoverFragmentController implements DiscoverController {
     private static final String PREPARE_UPDATE_ERROR = "Prepare Update Error!";
     private static final String UPDATE_QUERY_ERROR = "Update Query Error!";
     private static final String INTERNAL_UPDATE_ERROR = "Internal Update Error!";
-    public static final String UNKNOWN = "unknown";
+    private static final String UNKNOWN = "unknown";
 
     private String[] responseArray = {USER_NOT_FOUND, PREPARE_UPDATE_ERROR, CONNECTION_CONFIRMED, CONNECTION_DELETED,
             REQUEST_SENT, UPDATE_QUERY_ERROR, INTERNAL_UPDATE_ERROR};

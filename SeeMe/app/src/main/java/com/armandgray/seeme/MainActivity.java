@@ -35,11 +35,11 @@ public class MainActivity extends AppCompatActivity
         Observer {
 
     public static final String API_URI = "http://armandgray.com/seeme/api";
-    public static final String UPDATE_NETWORK_URI = API_URI + "/discoverable/update-network?networkId=";
+    private static final String UPDATE_NETWORK_URI = API_URI + "/discoverable/update-network?networkId=";
     public static final String ACTIVE_USER = "ACTIVE_USER";
     private static final String TAG = "MAIN_ACTIVITY";
-    public static final String ARMANDGRAY_COM = "http://armandgray.com";
-    public static final String DEV_MISSION_COM = "https://dev-mission.github.io/devmission.org/";
+    private static final String ARMANDGRAY_COM = "http://armandgray.com";
+    private static final String DEV_MISSION_COM = "https://dev-mission.github.io/devmission.org/";
 
     private User activeUser;
     private ViewPager viewPager;
