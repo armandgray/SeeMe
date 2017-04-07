@@ -66,6 +66,7 @@ public class LoginActivity extends AppCompatActivity {
                 controller.authenticateUser(
                         etUsername.getText().toString(),
                         etPassword.getText().toString());
+                etPassword.setText("");
             }
         });
 

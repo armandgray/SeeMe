@@ -11,7 +11,6 @@ import com.armandgray.seeme.network.NetworkHelper;
 
 import static com.armandgray.seeme.LoginActivity.LOGIN_PAYLOAD;
 import static com.armandgray.seeme.LoginActivity.LOGIN_URI;
-import static com.armandgray.seeme.network.HttpHelper.sendPostRequest;
 
 public class LoginActivityController implements LoginActivity.LoginController {
 
