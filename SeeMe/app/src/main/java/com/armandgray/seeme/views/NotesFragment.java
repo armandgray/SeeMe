@@ -143,7 +143,7 @@ public class NotesFragment extends Fragment
             restartLoader();
             return;
         }
-        if (arrayExtra != null && arrayExtra.length != 0) {
+        if (arrayExtra != null) {
             updateSqliteDatabase(arrayExtra);
         }
     }
