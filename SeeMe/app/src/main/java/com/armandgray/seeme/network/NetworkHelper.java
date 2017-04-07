@@ -13,6 +13,7 @@ public class NetworkHelper {
 
     public static final String WIFI_BROADCAST_MESSAGE = "android.net.wifi.STATE_CHANGE";
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     public static boolean hasNetworkAccess(Context context) {
         NetworkInfo networkInfo = getNetworkInfo(context);
         return networkInfo != null && networkInfo.isConnectedOrConnecting();

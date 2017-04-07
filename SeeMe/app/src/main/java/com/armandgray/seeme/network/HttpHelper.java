@@ -53,6 +53,7 @@ public class HttpHelper {
         context.startService(intent);
     }
 
+    @SuppressWarnings("BooleanMethodIsAlwaysInverted")
     private static boolean isNetworkOk(Context context) {
         if (!NetworkHelper.hasNetworkAccess(context)) {
             Toast.makeText(context, "Bad Network Connection", Toast.LENGTH_SHORT).show();
