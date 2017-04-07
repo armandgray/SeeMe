@@ -43,7 +43,7 @@ public class ProfileFragment extends Fragment
         ConfirmPasswordDialog.ConfirmPasswordListener,
         PostFeedbackDialog.PostFeedbackListener {
 
-    public static final String UDPATE_URL = API_URI + "/profile/update?";
+    public static final String UPDATE_URL = API_URI + "/profile/update?";
     public static final String DELETE_URL = API_URI + "/profile/delete?";
     public static final String FEEDBACK_URL = API_URI + "/feedback?";
 

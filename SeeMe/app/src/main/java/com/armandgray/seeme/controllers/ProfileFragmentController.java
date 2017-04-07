@@ -35,7 +35,7 @@ import static com.armandgray.seeme.views.ProfileFragment.ITEM_OCCUPATION;
 import static com.armandgray.seeme.views.ProfileFragment.IV_CLOUD;
 import static com.armandgray.seeme.views.ProfileFragment.IV_ICON;
 import static com.armandgray.seeme.views.ProfileFragment.TV_CONTENT;
-import static com.armandgray.seeme.views.ProfileFragment.UDPATE_URL;
+import static com.armandgray.seeme.views.ProfileFragment.UPDATE_URL;
 
 public class ProfileFragmentController implements ProfileFragment.ProfileController {
 
@@ -87,7 +87,7 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
 
     @Override
     public void postUpdateRequest(HashMap<String, HashMap> itemsMap) {
-        String defaultUrl = UDPATE_URL + "username=" + activeUser.getUsername();
+        String defaultUrl = UPDATE_URL + "username=" + activeUser.getUsername();
         StringBuilder urlBuilder = new StringBuilder(defaultUrl);
 
         for (String itemTitle : itemsMap.keySet()) {
@@ -121,12 +121,12 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
     }
 
     private boolean verifyFullName(String text) {
-        int indexOfSpaceDelimeter = text.indexOf(' ');
-        if (indexOfSpaceDelimeter == -1) {
+        int indexOfSpaceDelimiter = text.indexOf(' ');
+        if (indexOfSpaceDelimiter == -1) {
             Toast.makeText(fragment.getContext(), "Please Enter Full Name", Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (text.substring(indexOfSpaceDelimeter + 1, text.length()).indexOf(' ') != -1) {
+        if (text.substring(indexOfSpaceDelimiter + 1, text.length()).indexOf(' ') != -1) {
             Toast.makeText(fragment.getContext(), "Please Hyphenate Additional Names", Toast.LENGTH_SHORT).show();
             return false;
         }
@@ -136,9 +136,9 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
     private void addUrlParameter(String itemTitle, String text, StringBuilder url) {
         switch (itemTitle) {
             case ITEM_FULL_NAME:
-                int indexOfSpaceDelimeter = text.indexOf(' ');
-                String firstName = text.substring(0, indexOfSpaceDelimeter);
-                String lastName = text.substring(indexOfSpaceDelimeter + 1, text.length());
+                int indexOfSpaceDelimiter = text.indexOf(' ');
+                String firstName = text.substring(0, indexOfSpaceDelimiter);
+                String lastName = text.substring(indexOfSpaceDelimiter + 1, text.length());
 
                 url.append("&firstName=").append(capitalizeString(firstName));
                 url.append("&lastName=").append(capitalizeString(lastName));
