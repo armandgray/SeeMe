@@ -2,8 +2,8 @@ package com.armandgray.seeme.models;
 
 public class Network {
 
-    private String ssid;
-    private String networkId;
+    private final String ssid;
+    private final String networkId;
 
     public Network(String ssid, String networkId) {
         this.ssid = ssid;

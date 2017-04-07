@@ -13,7 +13,7 @@ import com.armandgray.seeme.views.SeeMeFragment;
 
 public class ViewPagerAdapter extends FragmentPagerAdapter {
     private static final int NUM_PAGES = 5;
-    private User activeUser;
+    private final User activeUser;
 
     public ViewPagerAdapter(FragmentManager manager, User activeUser) {
         super(manager);

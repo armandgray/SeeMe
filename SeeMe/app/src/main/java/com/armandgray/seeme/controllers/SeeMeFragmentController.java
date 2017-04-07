@@ -18,11 +18,11 @@ import static com.armandgray.seeme.views.SeeMeFragment.LOCAL_USERS_URI;
 public class SeeMeFragmentController implements SeeMeFragment.SeeMeController {
 
     private static final String TAG = "SEEME_CONTROLLER";
-    private User activeUser;
-    private SeeMeTouchListener seeMeTouchListener;
-    private Context context;
+    private final User activeUser;
+    private final SeeMeTouchListener seeMeTouchListener;
+    private final Context context;
 
-    private Handler handler;
+    private final Handler handler;
 
     public SeeMeFragmentController(User activeUser, SeeMeTouchListener seeMeTouchListener, Context context) {
         this.activeUser = activeUser;
@@ -66,21 +66,17 @@ public class SeeMeFragmentController implements SeeMeFragment.SeeMeController {
         handler.removeCallbacks(statusChecker);
     }
 
-    private Runnable statusChecker = new Runnable() {
+    private final Runnable statusChecker = new Runnable() {
         @Override
         public void run() {
             try {
                 if (getWifiConnectionState(context)) {
-//                    sendLocalUsersRequest();
                     Log.i(TAG, "Requesting...");
                 }
-                updateStatusOrRequestInterval();
             } finally {
                 int requestInterval = 3000;
                 handler.postDelayed(statusChecker, requestInterval);
             }
         }
     };
-
-    private void updateStatusOrRequestInterval() {}
 }

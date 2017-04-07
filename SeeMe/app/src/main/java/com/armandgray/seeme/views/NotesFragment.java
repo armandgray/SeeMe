@@ -64,7 +64,7 @@ public class NotesFragment extends Fragment
     private CursorAdapter adapter;
     private User activeUser;
 
-    private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.i(TAG, "http Broadcast Received");
@@ -133,8 +133,8 @@ public class NotesFragment extends Fragment
         sendNotesRequest(url, getContext());
     }
 
-    private Loader<Cursor> restartLoader() {
-        return getLoaderManager().restartLoader(0, null, this);
+    private void restartLoader() {
+        getLoaderManager().restartLoader(0, null, this);
     }
 
     private void handleHttpResponse(String response, String[] arrayExtra) {

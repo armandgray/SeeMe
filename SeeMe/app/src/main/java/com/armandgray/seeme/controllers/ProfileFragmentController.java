@@ -49,12 +49,12 @@ public class ProfileFragmentController implements ProfileFragment.ProfileControl
     private static final String MESSAGE_SENT = "Message Sent!";
     private static final String MESSAGE_UPLOAD_FAILED = "Message Upload Failed!";
 
-    private String[] responseArray = {USER_NOT_FOUND, PASSWORD_INCORRECT, UPDATE_FAILED, ACCOUNT_DELETED,
+    private final String[] responseArray = {USER_NOT_FOUND, PASSWORD_INCORRECT, UPDATE_FAILED, ACCOUNT_DELETED,
             MESSAGE_UPLOAD_FAILED, MESSAGE_SENT};
-    private User activeUser;
-    private Fragment fragment;
-    private ProfileUpdateListener updateListener;
-    private HashMap<String, HashMap> itemsMap;
+    private final User activeUser;
+    private final Fragment fragment;
+    private final ProfileUpdateListener updateListener;
+    private final HashMap<String, HashMap> itemsMap;
     private String url;
 
     public ProfileFragmentController(User activeUser,

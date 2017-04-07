@@ -38,7 +38,7 @@ public class RegisterActivity extends AppCompatActivity
 
     private RegisterActivityController controller;
 
-    private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             controller.getUserFromResponse(

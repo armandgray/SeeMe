@@ -44,7 +44,7 @@ public class NetworkFragment extends Fragment {
     private User[] networkArray;
     private NetworkController controller;
 
-    private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.i(TAG, "http Broadcast Received");

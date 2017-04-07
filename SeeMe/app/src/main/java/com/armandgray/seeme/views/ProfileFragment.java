@@ -78,7 +78,7 @@ public class ProfileFragment extends Fragment
     private LinearLayout feedbackContainer;
     private Button btnDeleteAccount;
 
-    private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.i(TAG, "http Broadcast Received");

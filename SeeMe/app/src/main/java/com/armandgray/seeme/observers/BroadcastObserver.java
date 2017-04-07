@@ -6,7 +6,7 @@ import java.util.Observable;
 
 public class BroadcastObserver extends Observable {
 
-    private static BroadcastObserver instance = new BroadcastObserver();
+    private static final BroadcastObserver instance = new BroadcastObserver();
 
     public static BroadcastObserver getInstance() { return instance; }
 

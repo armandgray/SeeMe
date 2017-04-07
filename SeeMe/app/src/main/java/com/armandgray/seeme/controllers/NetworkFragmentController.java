@@ -38,10 +38,10 @@ public class NetworkFragmentController implements NetworkFragment.NetworkControl
     private static final String PENDING = "pending";
     private static final String CONNECTED = "connected";
 
-    private String[] responseArray = {USER_NOT_FOUND, PREPARE_UPDATE_ERROR, CONNECTION_CONFIRMED, CONNECTION_DELETED,
+    private final String[] responseArray = {USER_NOT_FOUND, PREPARE_UPDATE_ERROR, CONNECTION_CONFIRMED, CONNECTION_DELETED,
             UPDATE_QUERY_ERROR, INTERNAL_UPDATE_ERROR};
-    private Activity activity;
-    private User activeUser;
+    private final Activity activity;
+    private final User activeUser;
 
     public NetworkFragmentController(Activity activity, User activeUser) {
         this.activity = activity;

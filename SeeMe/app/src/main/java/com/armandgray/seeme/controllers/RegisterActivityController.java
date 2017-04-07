@@ -23,7 +23,7 @@ public class RegisterActivityController implements RegisterActivity.RegisterCont
     private static final String TAG = "REGISTER_CONTROLLER";
     private static final String DIALOG = "DIALOG";
 
-    private AppCompatActivity activity;
+    private final AppCompatActivity activity;
     private HashMap<String, String> mapEditTextStrings;
 
     public RegisterActivityController(AppCompatActivity activity) {

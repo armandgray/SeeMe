@@ -31,7 +31,7 @@ public class LoginActivity extends AppCompatActivity {
 
     private LoginActivityController controller;
 
-    private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
+    private final BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             Log.i("BroadcastReceiver: ", "http Broadcast Received");

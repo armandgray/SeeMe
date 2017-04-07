@@ -29,9 +29,9 @@ public class UserRVAdapter extends
 
     private static final String TAG = "USER_RV_ADAPTER";
 
-    private ArrayList<User> listUsers;
-    private RecyclerViewHelper helper;
-    private HashMap<String, Integer> mapPivotIndices;
+    private final ArrayList<User> listUsers;
+    private final RecyclerViewHelper helper;
+    private final HashMap<String, Integer> mapPivotIndices;
 
     public UserRVAdapter(ArrayList<User> listUsers, boolean isSortedByStatus) {
         this.listUsers = listUsers;
@@ -131,10 +131,10 @@ public class UserRVAdapter extends
     }
 
     private static class ItemViewHolder extends RecyclerView.ViewHolder {
-        ImageView ivUserProfile;
-        TextView tvUserName;
-        TextView tvOccupation;
-        ImageView ivStatus;
+        final ImageView ivUserProfile;
+        final TextView tvUserName;
+        final TextView tvOccupation;
+        final ImageView ivStatus;
 
         ItemViewHolder(View itemView) {
             super(itemView);
@@ -147,8 +147,8 @@ public class UserRVAdapter extends
     }
 
     private static class HeaderViewHolder extends RecyclerView.ViewHolder {
-        TextView tvHeader;
-        int type;
+        final TextView tvHeader;
+        final int type;
 
         HeaderViewHolder(View itemView, int headerType) {
             super(itemView);

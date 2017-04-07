@@ -14,7 +14,7 @@ import static com.armandgray.seeme.LoginActivity.LOGIN_URI;
 
 public class LoginActivityController implements LoginActivity.LoginController {
 
-    private Context context;
+    private final Context context;
 
     public LoginActivityController(Context context) {
         this.context = context;

@@ -14,7 +14,7 @@ import static com.armandgray.seeme.utils.UserRVAdapter.UNKNOWN;
 
 public class UserAdapterHelper implements UserRVAdapter.RecyclerViewHelper {
 
-    private boolean isSortedByStatus;
+    private final boolean isSortedByStatus;
 
     public UserAdapterHelper(boolean isSortedByStatus) {
         this.isSortedByStatus = isSortedByStatus;

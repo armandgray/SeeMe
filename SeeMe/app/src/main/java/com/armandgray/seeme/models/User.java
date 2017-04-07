@@ -17,7 +17,7 @@ public class User implements Parcelable, Comparator<User> {
     private final String secret;
     private final boolean discoverable;
     private final String network;
-    private String status;
+    private final String status;
     private boolean isRemovable;
 
     public User(String firstName, String lastName, String occupation, String username, String secret, boolean discoverable, String network, String status) {
@@ -91,7 +91,7 @@ public class User implements Parcelable, Comparator<User> {
 
     public static class Comparators {
 
-        public static Comparator<User> FIRST_NAME = new Comparator<User>() {
+        public static final Comparator<User> FIRST_NAME = new Comparator<User>() {
             @Override
             public int compare(User u1, User u2) {
                 return u1.firstName.compareTo(u2.firstName);
@@ -112,7 +112,7 @@ public class User implements Parcelable, Comparator<User> {
             }
         };
 
-        public static Comparator<User> STATUS = new Comparator<User>() {
+        public static final Comparator<User> STATUS = new Comparator<User>() {
             @Override
             public int compare(User u1, User u2) {
                 return u2.status.compareTo(u1.status);
