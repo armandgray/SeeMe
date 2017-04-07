@@ -44,11 +44,6 @@ public class NetworkHelper {
         WifiInfo wifiInfo = wifiManager.getConnectionInfo();
         String ssid = wifiInfo.getSSID();
         String networkId = wifiInfo.getBSSID();
-        if (ssid.equals("<unknown ssid>")) {
-            Log.i("ActiveNetInfo", "Wifi Network Not Found: " + String.valueOf(ssid));
-        } else {
-            Log.i("ActiveNetInfo", "Wifi Network " + String.valueOf(ssid) + ": " + networkId);
-        }
 
         return new Network(ssid, networkId);
     }

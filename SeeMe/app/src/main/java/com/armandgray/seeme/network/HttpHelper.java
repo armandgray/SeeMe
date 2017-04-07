@@ -82,10 +82,8 @@ public class HttpHelper {
             conn.setRequestProperty("Accept", "application/json");
             conn.setDoInput(true);
             conn.connect();
-            Log.i(TAG, "downloadUrl()");
 
             if (requestType.equals(POST)) {
-                Log.i(TAG, POST + ": " + body);
                 OutputStream os = conn.getOutputStream();
                 OutputStreamWriter writer = new OutputStreamWriter(os, "UTF-8");
                 writer.write(body);

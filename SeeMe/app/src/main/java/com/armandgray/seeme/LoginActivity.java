@@ -34,7 +34,6 @@ public class LoginActivity extends AppCompatActivity {
     private final BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.i("BroadcastReceiver: ", "http Broadcast Received");
             User[] userList = (User[]) intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_JSON_PAYLOAD);
             if (userList == null || userList.length == 0) {
                 Toast.makeText(LoginActivity.this,

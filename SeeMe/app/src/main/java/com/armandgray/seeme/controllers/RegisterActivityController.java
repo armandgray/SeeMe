@@ -79,7 +79,6 @@ public class RegisterActivityController implements RegisterActivity.RegisterCont
     @Override
     public void getUserFromResponse(User[] userList) {
         if (userList.length == 0) {
-            Log.e(TAG, "REGISTRATION ERROR ON RETURN");
             Toast.makeText(activity, "Registration Failed!", Toast.LENGTH_SHORT).show();
         } else {
             Intent loginIntent = new Intent(activity, MainActivity.class);

@@ -47,7 +47,6 @@ public class NetworkFragment extends Fragment {
     private final BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.i(TAG, "http Broadcast Received");
             Parcelable[] arrayExtra = intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_JSON_PAYLOAD);
             String response = intent.getStringExtra(HttpService.HTTP_SERVICE_STRING_PAYLOAD);
             controller.handleHttpResponse(response, arrayExtra, rvNetwork);

@@ -53,7 +53,6 @@ public class DiscoverFragment extends Fragment {
     private final BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.i(TAG, "http Broadcast Received");
             Parcelable[] arrayExtra = intent.getParcelableArrayExtra(HttpService.HTTP_SERVICE_JSON_PAYLOAD);
             userArray = (User[]) arrayExtra;
             toggleShowUsers();

@@ -60,7 +60,6 @@ public class NotesFragment extends Fragment
     private final BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            Log.i(TAG, "http Broadcast Received");
             handleHttpResponse(intent.getStringExtra(HttpService.HTTP_SERVICE_STRING_PAYLOAD),
                     intent.getStringArrayExtra(HttpService.HTTP_SERVICE_NOTES_PAYLOAD));
         }

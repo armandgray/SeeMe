@@ -37,7 +37,6 @@ public class HttpService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Uri uri = intent.getData();
-        Log.i(TAG, "onHandleIntent: " + uri.toString());
 
         String body = intent.getStringExtra(JSON_BODY);
         String responseType = body != null ? POST : GET;
@@ -46,7 +45,6 @@ public class HttpService extends IntentService {
 
         String response = getResponse(uri, responseType, body);
         if (response == null) { return; }
-        Log.i(TAG, response);
 
         Intent messageIntent = new Intent(HTTP_SERVICE_MESSAGE);
         putMessageIntentExtra(messageIntent, response);
@@ -73,7 +71,6 @@ public class HttpService extends IntentService {
                     JSONArray jsonArray = new JSONArray(response).getJSONObject(0).getJSONArray("Notes");
                     String[] array = new String[jsonArray.length()];
                     for (int i = 0; i < jsonArray.length(); i++) {
-                        Log.i(TAG, "Array: " + jsonArray.get(i));
                         array[i] = jsonArray.get(i).toString();
                     }
                     messageIntent.putExtra(HTTP_SERVICE_NOTES_PAYLOAD, array);
