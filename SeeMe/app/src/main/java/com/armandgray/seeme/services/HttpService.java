@@ -49,7 +49,7 @@ public class HttpService extends IntentService {
         Log.i(TAG, response);
 
         Intent messageIntent = new Intent(HTTP_SERVICE_MESSAGE);
-        putMessageIntentExtra(messageIntent, response, responseType);
+        putMessageIntentExtra(messageIntent, response);
         LocalBroadcastManager.getInstance(getApplicationContext())
                 .sendBroadcast(messageIntent);
     }
@@ -65,7 +65,7 @@ public class HttpService extends IntentService {
         return response;
     }
 
-    private void putMessageIntentExtra(Intent messageIntent, String response, String responseType) {
+    private void putMessageIntentExtra(Intent messageIntent, String response) {
         User[] userArray;
         if (response != null) {
             if (dataType.equals(NOTES)) {

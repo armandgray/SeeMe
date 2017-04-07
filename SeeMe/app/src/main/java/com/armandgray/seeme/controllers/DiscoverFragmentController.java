@@ -78,7 +78,7 @@ public class DiscoverFragmentController implements DiscoverController {
                     + "username=" + activeUser.getUsername()
                     + "&connection=" + user.getUsername();
             HttpHelper.sendGetRequest(url, activity);
-            listener.onUserClick(user);
+            listener.onUserClick();
         }
     }
 }

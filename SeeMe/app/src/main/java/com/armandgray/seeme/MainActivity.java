@@ -113,7 +113,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public void onUserClick(User user) {
+    public void onUserClick() {
         viewPager.setCurrentItem(1);
     }
 
