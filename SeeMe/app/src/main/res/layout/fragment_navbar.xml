@@ -5,6 +5,7 @@
     android:layout_width="fill_parent"
     android:layout_height="match_parent"
     android:background="@drawable/navbar_border"
+    android:baselineAligned="false"
     android:gravity="center"
     android:orientation="horizontal"
     android:padding="5dp"

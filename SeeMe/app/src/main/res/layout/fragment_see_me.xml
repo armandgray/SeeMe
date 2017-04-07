@@ -6,7 +6,8 @@
     android:background="@color/colorPrimary"
     android:orientation="vertical"
     android:padding="@dimen/activity_horizontal_margin"
-    tools:context="com.armandgray.seeme.views.SeeMeFragment">
+    tools:context="com.armandgray.seeme.views.SeeMeFragment"
+    tools:ignore="Overdraw">
 
     <TextView
         android:id="@+id/tvAuto"
