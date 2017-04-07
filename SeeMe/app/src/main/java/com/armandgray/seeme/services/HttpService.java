@@ -29,7 +29,7 @@ public class HttpService extends IntentService {
     public static final String HTTP_SERVICE_STRING_PAYLOAD = "HTTP Service STRING Payload";
     public static final String HTTP_SERVICE_NOTES_PAYLOAD = "HTTP Service NOTES Payload";
     public static final String JSON_BODY = "JSON_BODY";
-    public static final String RESPONSE_TYPE = "RESPONSE_TYPE";
+    public static final String DATA_TYPE = "DATA_TYPE";
     private String dataType;
 
     public HttpService() { super("HttpService"); }
@@ -41,8 +41,8 @@ public class HttpService extends IntentService {
 
         String body = intent.getStringExtra(JSON_BODY);
         String responseType = body != null ? POST : GET;
-        dataType = intent.getStringExtra(RESPONSE_TYPE) == null ?
-                "" : intent.getStringExtra(RESPONSE_TYPE);
+        dataType = intent.getStringExtra(DATA_TYPE) == null ?
+                "" : intent.getStringExtra(DATA_TYPE);
 
         String response = getResponse(uri, responseType, body);
         if (response == null) { return; }

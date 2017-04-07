@@ -18,7 +18,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 import static com.armandgray.seeme.services.HttpService.JSON_BODY;
-import static com.armandgray.seeme.services.HttpService.RESPONSE_TYPE;
+import static com.armandgray.seeme.services.HttpService.DATA_TYPE;
 
 /**
  * Helper class for working with a remote server
@@ -45,11 +45,11 @@ public class HttpHelper {
         context.startService(intent);
     }
 
-    public static void sendGetRequest(String url, String responseType, Context context) {
+    public static void sendNotesRequest(String url, Context context) {
         if (!isNetworkOk(context)) { return; }
         Intent intent = new Intent(context, HttpService.class);
         intent.setData(Uri.parse(url));
-        intent.putExtra(RESPONSE_TYPE, responseType);
+        intent.putExtra(DATA_TYPE, NOTES);
         context.startService(intent);
     }
 
@@ -76,7 +76,7 @@ public class HttpHelper {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setReadTimeout(10000);
             conn.setConnectTimeout(15000);
-            conn.setRequestMethod(POST);
+            conn.setRequestMethod(requestType);
             conn.setRequestProperty( "Content-Type", "application/json" );
             conn.setRequestProperty("Accept", "application/json");
             conn.setDoInput(true);
