@@ -11,7 +11,6 @@ import com.armandgray.seeme.network.HttpHelper;
 import com.armandgray.seeme.views.SeeMeFragment;
 import com.armandgray.seeme.views.SeeMeFragment.SeeMeTouchListener;
 
-import static com.armandgray.seeme.network.HttpHelper.sendPostRequest;
 import static com.armandgray.seeme.network.NetworkHelper.getWifiConnectionState;
 import static com.armandgray.seeme.network.NetworkHelper.getWifiNetwork;
 import static com.armandgray.seeme.views.SeeMeFragment.LOCAL_USERS_URI;
@@ -23,10 +22,6 @@ public class SeeMeFragmentController implements SeeMeFragment.SeeMeController {
     private SeeMeTouchListener seeMeTouchListener;
     private Context context;
 
-    private String ssid = "";
-    private String networkId = "";
-
-    private int requestInterval = 3000;
     private Handler handler;
 
     public SeeMeFragmentController(User activeUser, SeeMeTouchListener seeMeTouchListener, Context context) {
@@ -48,8 +43,8 @@ public class SeeMeFragmentController implements SeeMeFragment.SeeMeController {
 
     private void sendLocalUsersRequest() {
         Network network = getWifiNetwork(context);
-        ssid = network.getSsid();
-        networkId = network.getNetworkId();
+        String ssid = network.getSsid();
+        String networkId = network.getNetworkId();
         String url = LOCAL_USERS_URI
                 + networkId
                 + "&ssid="+ ssid.substring(1, ssid.length() - 1).replaceAll(" ", "%20")
@@ -81,6 +76,7 @@ public class SeeMeFragmentController implements SeeMeFragment.SeeMeController {
                 }
                 updateStatusOrRequestInterval();
             } finally {
+                int requestInterval = 3000;
                 handler.postDelayed(statusChecker, requestInterval);
             }
         }

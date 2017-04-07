@@ -46,7 +46,6 @@ public class DiscoverFragment extends Fragment {
 
     private RecyclerView rvUsers;
     private User[] userArray;
-    private User activeUser;
 
     private DiscoverClickListener discoverClickListener;
     private DiscoverFragmentController controller;
@@ -104,7 +103,7 @@ public class DiscoverFragment extends Fragment {
         ivCycle = (ImageView) rootView.findViewById(R.id.ivCycle);
         noUsersContainer = (LinearLayout) rootView.findViewById(R.id.noUsersContainer);
         usersContainer = (LinearLayout) rootView.findViewById(R.id.usersContainer);
-        activeUser = getArguments().getParcelable(ACTIVE_USER);
+        User activeUser = getArguments().getParcelable(ACTIVE_USER);
         controller = new DiscoverFragmentController(getActivity(), discoverClickListener, activeUser);
     }
 

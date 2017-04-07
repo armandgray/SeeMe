@@ -4,7 +4,6 @@ package com.armandgray.seeme.views;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,11 +36,9 @@ public class SeeMeFragment extends Fragment
     private TextView tvAuto;
     private ImageView ivSeeMe;
 
-    private boolean isWifiConnected;
     private boolean networkOK;
     private boolean autoUpdate;
 
-    private User activeUser;
     private SeeMeTouchListener seeMeTouchListener;
     private SeeMeFragmentController controller;
 
@@ -84,7 +81,7 @@ public class SeeMeFragment extends Fragment
         ivWifi = (ImageView) rootView.findViewById(R.id.ivWifi);
         ivSeeMe = (ImageView) rootView.findViewById(R.id.ivSeeMe);
         tvAuto = (TextView) rootView.findViewById(R.id.tvAuto);
-        activeUser = getArguments().getParcelable(ACTIVE_USER);
+        User activeUser = getArguments().getParcelable(ACTIVE_USER);
         controller = new SeeMeFragmentController(activeUser, seeMeTouchListener, getContext());
         autoUpdate = false;
     }
@@ -131,8 +128,7 @@ public class SeeMeFragment extends Fragment
 
     @Override
     public void update(Observable o, Object data) {
-        isWifiConnected = getWifiConnectionState(getContext());
-        updateUI(isWifiConnected);
+        updateUI(getWifiConnectionState(getContext()));
     }
 
     public interface SeeMeTouchListener {
