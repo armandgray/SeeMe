@@ -16,7 +16,7 @@ public class NetworkHelper {
     public static boolean hasNetworkAccess(Context context) {
         NetworkInfo networkInfo = getNetworkInfo(context);
         return networkInfo != null && networkInfo.isConnectedOrConnecting();
-    };
+    }
 
     private static NetworkInfo getNetworkInfo(Context context) {
         try {
