@@ -182,11 +182,20 @@ public class MainActivity extends AppCompatActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.sign_out_menu:
+            case R.id.the_developer:
+                activeUser = null;
+                startActivity(new Intent(this, LoginActivity.class));
+                return true;
+            case R.id.dev_mission:
                 activeUser = null;
                 startActivity(new Intent(this, LoginActivity.class));
                 return true;
             case R.id.action_settings:
+            viewPager.setCurrentItem(4);
+            return true;
+            case R.id.sign_out_menu:
+                activeUser = null;
+                startActivity(new Intent(this, LoginActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

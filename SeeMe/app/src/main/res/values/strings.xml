@@ -50,4 +50,6 @@
     <string name="action_delete">Delete</string>
     <string name="note_deleted">Note Deleted</string>
     <string name="pending_requests">Pending Requests</string>
+    <string name="the_developer">The Developer</string>
+    <string name="dev_mission">Dev Mission</string>
 </resources>
