@@ -63,7 +63,6 @@ public class NotesFragment extends Fragment
 
     private CursorAdapter adapter;
     private User activeUser;
-    private boolean editing;
 
     private BroadcastReceiver httpBroadcastReceiver = new BroadcastReceiver() {
         @Override
@@ -102,7 +101,6 @@ public class NotesFragment extends Fragment
                 Uri uri = Uri.parse(NotesProvider.CONTENT_URI + "/" + id);
                 intent.putExtra(NotesProvider.CONTENT_ITEM_TYPE, uri);
                 startActivityForResult(intent, EDITOR_REQUEST_CODE);
-                editing = true;
             }
         });
 
@@ -111,7 +109,6 @@ public class NotesFragment extends Fragment
             @Override
             public void onClick(View v) {
                 startActivityForResult(new Intent(getContext(), NoteEditorActivity.class), EDITOR_REQUEST_CODE);
-                editing = true;
             }
         });
 
@@ -126,40 +123,8 @@ public class NotesFragment extends Fragment
                     .registerReceiver(httpBroadcastReceiver,
                             new IntentFilter(HttpService.HTTP_SERVICE_MESSAGE));
 
-            verifyNotesForUser();
-        }
-    }
-
-    private void verifyNotesForUser() {
-        if (editing) {
-            editing = false;
-            return;
-        }
-
-        Cursor cursor = getActivity().getContentResolver()
-                .query(NotesProvider.CONTENT_URI, DatabaseHelper.ALL_COLUMNS, null, null, null);
-
-        if (cursor != null && cursor.moveToFirst()) {
-            String noteText = cursor.getString(cursor.getColumnIndex(DatabaseHelper.NOTE_TEXT));
-            if (noteText.equals(activeUser.getUsername())) {
-                deleteVerifiedUserNote(cursor);
-                restartLoader();
-                cursor.close();
-                return;
-            }
-
             sendGetNotesRequest();
-            cursor.close();
         }
-    }
-
-    private void deleteVerifiedUserNote(Cursor cursor) {
-        String id = cursor.getString(cursor.getColumnIndex(DatabaseHelper.NOTE_ID));
-        Uri uri = Uri.parse(NotesProvider.CONTENT_URI + "/" + id);
-        String noteUsername = DatabaseHelper.NOTE_ID + " = " + uri.getLastPathSegment();
-        getActivity().getContentResolver()
-                .delete(NotesProvider.CONTENT_URI, noteUsername, null);
-        restartLoader();
     }
 
     private void sendGetNotesRequest() {
