@@ -1,24 +1,87 @@
 # SeeMe
 
-One Paragraph of project description goes here
+The SeeMe app provides Wifi based local area, social networking connections. SeeMe is a native android app with a Go server running on AWS with Nginx. Users can link to anyone connected with the same Wifi address with the click of a button. 
+
+SeeMe fills the gap between limited Facebook and LinkedIn search results to streamline user connection in conference, meetup and networking environments. SeeMe offers an easy 1-click solution to meeting people on the fly.
+
+---------------------------------------
+This app is available for download on the [Google Play Store](https://play.google.com/store/search?q=SeeMe&hl=en)
+
+---------------------------------------
+
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+### Clone the repo
 
-### Prerequisites
-
-What things you need to install the software and how to install them
-
-```
-Give examples
+In your terminal, navigate to a your GOPATH directory:
+```bash
+  git clone https://github.com/armandgray/SeeMe.git
 ```
 
-### Installing
+### Setup mysql with the following tables:
 
-A step by step series of examples that tell you have to get a development env running
+```bash
+CREATE TABLE Books (
+	pk int NOT NULL AUTO_INCREMENT,  
+	title varchar(50) NOT NULL default '', 
+	author varchar(50) NOT NULL default '', 
+	id varchar(20) NOT NULL default '',
+	classification varchar(50) default '', 
+	PRIMARY KEY (pk));
+```
 
-Say what the step will be
+```bash
+CREATE TABLE feebacks (
+	username varchar(50) NOT NULL default '', 
+	timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+	message TEXT NOT NULL,
+	PRIMARY KEY (username, timestamp));
+```
+
+```bash
+CREATE TABLE connections (
+	username varchar(50) NOT NULL default '', 
+	connection varchar(50) NOT NULL default '', 
+	status varchar(50) NOT NULL default '', 
+	PRIMARY KEY (username, connection));
+```
+
+```bash
+CREATE TABLE notes (
+	username varchar(50) NOT NULL default '', 
+	note TEXT NOT NULL, 
+	PRIMARY KEY (username, note(255)));
+```
+
+After installing Go and setting up your GOPATH
+### Navigate to the Go server directory (on Mac) and run the seeme executable:
+```bash
+  cd $GOPATH/
+  seeme
+```
+
+### Download the following libraries:
+```bash
+  go get github.com/go-sql-driver/mysql
+  go get golang.org/x/crypto/bcrypt
+  go get github.com/urfave/negroni
+```
+
+After installing and setting up Android Studio
+### Open Android Studio and run the Project on a preferred device
+
+## Requirements
+  * Go 1.2 or higher
+  * MySQL (4.1+)
+  * Android Studio
+  * Java 
+
+---------------------------------------
+
+### Usage
+
+The SeeMe app can be used by clicking the SeeMe button on the main tab window. The button then displays a list of users who are using your local Wifi network on the Discover Tab. To send a connection request simply click the plus account icon to the right of the desired users name.
 
 ```
 Give the example
