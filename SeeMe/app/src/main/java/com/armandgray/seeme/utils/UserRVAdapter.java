@@ -98,7 +98,7 @@ public class UserRVAdapter extends
             ImageView ivStatus = viewHolder.ivStatus;
 
             tvUserName.setText(user.getFirstName() + " " + user.getLastName());
-            tvRole.setText("Work: " + user.getOccupation());
+            tvRole.setText("Title: " + user.getOccupation());
             helper.setImageFromStatus(user, ivStatus);
 
         } else if (holder instanceof HeaderViewHolder) {
