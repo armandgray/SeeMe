@@ -98,7 +98,7 @@ Click the add account icon to send connection requests to users and add them to 
 
 ## Description
 
-The SeeMe app was developed as a team project for the DeveloperWeek 2016 Hackathon. This repo contains contents from the original Node.js and Ruby on Rails project developed for the Flock.os challenge. SeeMe is a social networking app designed to streamline user connections based on location through network connection. SeeMe fills the gap in other social networking app by connecting any users in your area, where apps like Facebook and LinkedIn limit connection search results. The SeeMe app provides an espcially useful 1-click connection for users at Meetups, Conferences, Talks, Meetings and Networking Events.
+The SeeMe app was developed as a team project for the DeveloperWeek 2016 Hackathon. This repo contains contents from the original Node.js and Ruby on Rails project developed for the Flock.os challenge. SeeMe is a social networking app designed to streamline user connections based on location through network connection. SeeMe fills the gap in other social networking app by connecting any users in your area, where apps like Facebook and LinkedIn limit connection search results. The SeeMe app provides a specifically useful 1-click connection for users at Meetups, Conferences, Talks, Meetings and Networking Events.
 
 ## Built With
 
